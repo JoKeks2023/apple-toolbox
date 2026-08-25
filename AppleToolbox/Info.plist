@@ -16,5 +16,7 @@
 	<string>Joris Apple Toolbox uses speech recognition for the Speech experiment.</string>
 	<key>NSHomeKitUsageDescription</key>
 	<string>Joris Apple Toolbox discovers homes and accessories for the HomeKit experiment.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Joris Apple Toolbox reads step count only when you explicitly authorize the HealthKit experiment.</string>
 </dict>
 </plist>

@@ -31,6 +31,7 @@
 		8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */; };
 		8B87AAEF9DA9C6E84749E107 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4691BC4FB0542A9F48651C6D /* Foundation.framework */; };
 		8C61E5E3F42FE1E43DB3FE6F /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16267023E26A916BA5DC5D26 /* ExperimentServices.swift */; };
+		8EC214171F1DEC0594DF6882 /* HealthNotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C041F896020A77B69B72580 /* HealthNotificationServices.swift */; };
 		91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
 		982DBF88B14E4318F6F8A632 /* AppleToolbox Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D355699843CD5D90FEB47FD3 /* AppleToolbox Widget.appex */; };
 		A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
@@ -39,6 +40,7 @@
 		ADF9091B6F51DFF8D8D3B85F /* MediaAvailabilityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */; };
 		B34FC4792DE8CC4C2BA80188 /* NearbyExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA737256039EE77698DB285C /* NearbyExperimentServices.swift */; };
 		C06E0D233CB35A8B959B5923 /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */; };
+		C08C990114221453FB6071CD /* HealthNotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C041F896020A77B69B72580 /* HealthNotificationServices.swift */; };
 		C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */; };
 		D7D5FFADFBF55D38047A9437 /* MediaExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */; };
 		D96D47FB485F8CD6F8B02E1B /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F116C6D7FF33A263B2CDAF /* CapabilityInspector.swift */; };
@@ -104,6 +106,7 @@
 		5B13F611303DA61D00AA8D3F /* AppleToolbox iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B13F622303DA62000AA8D3F /* AppleToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B13F62C303DA62000AA8D3F /* AppleToolboxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleToolboxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C041F896020A77B69B72580 /* HealthNotificationServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthNotificationServices.swift; path = AppleToolbox/Shared/Services/HealthNotificationServices.swift; sourceTree = "<group>"; };
 		72488DD19EEE0B1FB51ECCF0 /* ExperimentModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentModels.swift; path = AppleToolbox/Shared/Models/ExperimentModels.swift; sourceTree = "<group>"; };
 		7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContinuityServices.swift; path = AppleToolbox/Shared/Services/ContinuityServices.swift; sourceTree = "<group>"; };
 		7C1C9A39A25D48656AA850C5 /* AppleToolbox watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -272,6 +275,7 @@
 				37EB0157A5B7AB3F867DC86F /* SpatialExperimentServices.swift */,
 				49F6AA785AF459607AEC827E /* AIExperimentServices.swift */,
 				AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */,
+				5C041F896020A77B69B72580 /* HealthNotificationServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -548,6 +552,7 @@
 				6401109C53B0CE02031BCFE1 /* SpatialExperimentServices.swift in Sources */,
 				F118426398FB6D04E6035390 /* AIExperimentServices.swift in Sources */,
 				E395E65F9B94FCEE553C1DCA /* MediaAvailabilityServices.swift in Sources */,
+				8EC214171F1DEC0594DF6882 /* HealthNotificationServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,6 +577,7 @@
 				1C12C846CEC25637F2274637 /* SpatialExperimentServices.swift in Sources */,
 				AC9EDD2733A299C7EC70F94A /* AIExperimentServices.swift in Sources */,
 				ADF9091B6F51DFF8D8D3B85F /* MediaAvailabilityServices.swift in Sources */,
+				C08C990114221453FB6071CD /* HealthNotificationServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

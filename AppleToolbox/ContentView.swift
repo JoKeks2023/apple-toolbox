@@ -89,6 +89,8 @@ struct ExperimentDetailView: View {
     @StateObject private var ar = ARExperimentService()
     @StateObject private var speech = SpeechExperimentService()
     @StateObject private var music = MusicExperimentService()
+    @StateObject private var health = HealthAuthorizationExperimentService()
+    @StateObject private var notifications = NotificationExperimentService()
     @State private var showingIMDFImporter = false
 
     var body: some View {
@@ -159,9 +161,16 @@ struct ExperimentDetailView: View {
                 } else if experiment.id == "foundation-models" {
                     OutputView(text: FoundationModelsExperimentService.statusText(), isError: false)
                 } else if experiment.id == "healthkit-status" {
-                    OutputView(text: HealthExperimentService.statusText(), isError: false)
+                    Button("Request HealthKit Read Authorization", action: health.requestReadAuthorization).buttonStyle(.borderedProminent)
+                    OutputView(text: health.output, isError: health.output.localizedCaseInsensitiveContains("error") || health.output.localizedCaseInsensitiveContains("not available") || health.output.localizedCaseInsensitiveContains("denied"))
                 } else if experiment.id == "wallet-status" {
                     OutputView(text: WalletExperimentService.statusText(), isError: false)
+                } else if experiment.id == "notifications" {
+                    HStack {
+                        Button("Request Notification Authorization", action: notifications.requestAuthorization).buttonStyle(.borderedProminent)
+                        Button("Schedule Test Notification", action: notifications.scheduleTestNotification).buttonStyle(.bordered)
+                    }
+                    OutputView(text: notifications.output, isError: notifications.output.localizedCaseInsensitiveContains("error") || notifications.output.localizedCaseInsensitiveContains("denied"))
                 } else if experiment.id == "widgetkit" {
                     OutputView(text: "WidgetKit extension is included in the iOS app.\nAdd “Apple Toolbox” from the Home Screen widget gallery.", isError: false)
                 } else if experiment.id == "nearby-interaction" {
