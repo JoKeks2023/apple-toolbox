@@ -52,18 +52,22 @@ final class BluetoothExperimentService: NSObject, ObservableObject {
     @Published private(set) var output = "Bluetooth scan is ready."
     @Published private(set) var isScanning = false
     #if canImport(CoreBluetooth) && !os(tvOS)
-    private var central: CBCentralManager!
+    private var central: CBCentralManager?
     #endif
 
     override init() {
         super.init()
-        #if canImport(CoreBluetooth) && !os(tvOS)
-        central = CBCentralManager(delegate: self, queue: nil)
-        #endif
     }
 
     func start() {
         #if canImport(CoreBluetooth) && !os(tvOS)
+        if central == nil {
+            central = CBCentralManager(delegate: self, queue: nil)
+            isScanning = true
+            output = "Waiting for Bluetooth permission and hardware state…"
+            return
+        }
+        guard let central else { return }
         guard central.state == .poweredOn else { output = "Bluetooth is not ready: \(central.state.displayName)."; return }
         central.scanForPeripherals(withServices: nil)
         isScanning = true
@@ -75,7 +79,7 @@ final class BluetoothExperimentService: NSObject, ObservableObject {
 
     func stop() {
         #if canImport(CoreBluetooth) && !os(tvOS)
-        central.stopScan()
+        central?.stopScan()
         #endif
         isScanning = false
         output = "Bluetooth scan stopped."
@@ -86,6 +90,10 @@ final class BluetoothExperimentService: NSObject, ObservableObject {
 @MainActor extension BluetoothExperimentService: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         output = "Bluetooth state: \(central.state.displayName)"
+        if central.state == .poweredOn, isScanning {
+            central.scanForPeripherals(withServices: nil)
+            output = "Scanning for nearby Bluetooth LE peripherals…"
+        }
     }
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         let name = peripheral.name ?? "Unnamed peripheral"
