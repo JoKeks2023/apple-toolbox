@@ -12,6 +12,8 @@
 	<string>Joris Apple Toolbox uses the camera for the Camera and Vision experiment.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Joris Apple Toolbox uses the microphone for the Audio Input experiment.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Joris Apple Toolbox uses speech recognition for the Speech experiment.</string>
 	<key>NSHomeKitUsageDescription</key>
 	<string>Joris Apple Toolbox discovers homes and accessories for the HomeKit experiment.</string>
 </dict>

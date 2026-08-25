@@ -87,6 +87,7 @@ struct ExperimentDetailView: View {
     @StateObject private var nearby = NearbyExperimentService()
     @StateObject private var indoor = IndoorIMDFExperimentService()
     @StateObject private var ar = ARExperimentService()
+    @StateObject private var speech = SpeechExperimentService()
     @State private var showingIMDFImporter = false
 
     var body: some View {
@@ -181,6 +182,16 @@ struct ExperimentDetailView: View {
                     OutputView(text: ar.output, isError: ar.output.localizedCaseInsensitiveContains("error") || ar.output.localizedCaseInsensitiveContains("not supported"))
                 } else if experiment.id == "roomplan" {
                     OutputView(text: RoomPlanExperimentService.statusText(), isError: false)
+                } else if experiment.id == "speech" {
+                    if speech.isRunning { Button("Stop Speech Recognition", action: speech.stop).buttonStyle(.borderedProminent) }
+                    else { Button("Start Speech Recognition", action: speech.start).buttonStyle(.borderedProminent) }
+                    OutputView(text: speech.output, isError: speech.output.localizedCaseInsensitiveContains("error") || speech.output.localizedCaseInsensitiveContains("denied"))
+                } else if experiment.id == "core-ml" {
+                    OutputView(text: AIAvailabilityExperimentService.coreMLStatus(), isError: false)
+                } else if experiment.id == "translation" {
+                    OutputView(text: AIAvailabilityExperimentService.translationStatus(), isError: false)
+                } else if experiment.id == "sound-analysis" {
+                    OutputView(text: AIAvailabilityExperimentService.soundAnalysisStatus(), isError: false)
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))
