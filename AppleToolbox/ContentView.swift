@@ -176,9 +176,11 @@ struct ExperimentDetailView: View {
                     OutputView(text: nfc.output, isError: nfc.output.localizedCaseInsensitiveContains("not available") || nfc.output.localizedCaseInsensitiveContains("ended"))
                 } else if experiment.id == "camera-vision" {
                     Button(media.isRunning ? "Stop Camera & Vision" : "Start Camera & Vision") { media.isRunning ? media.stop() : media.start() }.buttonStyle(.borderedProminent)
+                    VisionResultsView(results: media.detectedTexts)
                     OutputView(text: media.output, isError: media.status != .available)
                 } else if experiment.id == "audio-input" {
                     Button(audio.isRunning ? "Stop Audio Input" : "Start Audio Input") { audio.isRunning ? audio.stop() : audio.start() }.buttonStyle(.borderedProminent)
+                    AudioMeterView(audio: audio)
                     OutputView(text: audio.output, isError: audio.status != .available)
                 } else if experiment.id == "mapkit-search" {
                     Button(maps.isSearching ? "Searching…" : "Search Apple Store Locations", action: maps.search).buttonStyle(.borderedProminent).disabled(maps.isSearching)
@@ -395,6 +397,65 @@ private struct NetworkInterfacesView: View {
     }
 }
 
+private struct VisionResultsView: View {
+    let results: [VisionTextResult]
+
+    var body: some View {
+        Section("Recognized text") {
+            if results.isEmpty {
+                Text("Start the camera and point it at readable text.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(results) { result in
+                    HStack {
+                        Text(result.text)
+                        Spacer()
+                        Text("\(Int(result.confidence * 100))%")
+                            .font(.caption.monospacedDigit())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
+    }
+}
+
+private struct AudioMeterView: View {
+    @ObservedObject var audio: AudioExperimentService
+
+    var body: some View {
+        Section("Live microphone meter") {
+            LabeledContent("Channels", value: audio.channelCount == 0 ? "—" : "\(audio.channelCount)")
+            LabeledContent("Sample rate", value: audio.sampleRate == 0 ? "—" : "\(audio.sampleRate) Hz")
+            LevelRow(title: "RMS", value: audio.rmsLevel)
+            LevelRow(title: "Peak", value: audio.peakLevel)
+            Text("Speak or make a sound near the microphone to see the levels move.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+}
+
+private struct LevelRow: View {
+    let title: String
+    let value: Double
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text(title)
+                Spacer()
+                Text(value.formatted(.number.precision(.fractionLength(4))))
+                    .font(.caption.monospacedDigit())
+                    .foregroundStyle(.secondary)
+            }
+            ProgressView(value: min(max(value, 0), 1))
+                .tint(value > 0.8 ? .red : .accentColor)
+        }
+    }
+}
+
 private struct NFCRecordsView: View {
     let records: [NFCRecordResult]
 
@@ -482,7 +543,7 @@ private struct MotionReadingView: View {
             VectorRow(title: "Rotation rate", symbol: "rotate.3d", vector: motion.rotationRate, unit: "rad/s")
             VectorRow(title: "Gravity", symbol: "arrow.down", vector: motion.gravity, unit: "g")
             if let lastUpdated = motion.lastUpdated {
-                Text("Updated (lastUpdated.formatted(date: .omitted, time: .standard))")
+                Text("Updated \(lastUpdated.formatted(date: .omitted, time: .standard))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {

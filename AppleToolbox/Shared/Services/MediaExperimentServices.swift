@@ -6,6 +6,12 @@ import AVFoundation
 #if canImport(Vision)
 import Vision
 #endif
+
+struct VisionTextResult: Identifiable, Equatable {
+    let id = UUID()
+    let text: String
+    let confidence: Double
+}
 #endif
 
 @MainActor
@@ -13,6 +19,7 @@ final class CameraVisionExperimentService: NSObject, ObservableObject {
     @Published private(set) var output = "Camera and Vision are ready."
     @Published private(set) var isRunning = false
     @Published private(set) var status: ExperimentStatus = .available
+    @Published private(set) var detectedTexts: [VisionTextResult] = []
     #if canImport(AVFoundation) && (os(iOS) || os(macOS))
     private let session = AVCaptureSession()
     private let videoOutput = AVCaptureVideoDataOutput()
@@ -42,6 +49,7 @@ final class CameraVisionExperimentService: NSObject, ObservableObject {
             session.startRunning()
             isRunning = true
             status = .available
+            detectedTexts.removeAll()
             output = "Camera running. Vision will inspect incoming frames for text."
         } catch { session.commitConfiguration(); output = "Camera error: \(error.localizedDescription)"; status = .unavailable }
         #else
@@ -65,13 +73,20 @@ extension CameraVisionExperimentService: AVCaptureVideoDataOutputSampleBufferDel
     nonisolated func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         let request = VNRecognizeTextRequest { [weak self] request, error in
             let observations = (request.results as? [VNRecognizedTextObservation]) ?? []
-            let text = observations.compactMap { $0.topCandidates(1).first?.string }.prefix(5).joined(separator: "\n")
+            let results = observations.compactMap { observation -> VisionTextResult? in
+                guard let candidate = observation.topCandidates(1).first else { return nil }
+                return VisionTextResult(text: candidate.string, confidence: Double(candidate.confidence))
+            }.prefix(8)
+            let text = results.map(\.text).joined(separator: "\n")
             Task { @MainActor in
                 if let error { self?.output = "Vision error: \(error.localizedDescription)" }
-                else { self?.output = text.isEmpty ? "Camera running. No text detected in the latest frame." : "Detected text:\n\(text)" }
+                else {
+                    self?.detectedTexts = Array(results)
+                    self?.output = text.isEmpty ? "Camera running. No text detected in the latest frame." : "Detected \(results.count) text item(s) in the latest frame."
+                }
             }
         }
-        request.recognitionLevel = .fast
+        request.recognitionLevel = VNRequestTextRecognitionLevel.fast
         request.usesLanguageCorrection = false
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .right).perform([request])
@@ -84,6 +99,10 @@ final class AudioExperimentService: ObservableObject {
     @Published private(set) var output = "Microphone input is ready."
     @Published private(set) var isRunning = false
     @Published private(set) var status: ExperimentStatus = .available
+    @Published private(set) var rmsLevel: Double = 0
+    @Published private(set) var peakLevel: Double = 0
+    @Published private(set) var channelCount = 0
+    @Published private(set) var sampleRate = 0
     #if canImport(AVFoundation) && (os(iOS) || os(macOS))
     private let engine = AVAudioEngine()
     #endif
@@ -101,12 +120,20 @@ final class AudioExperimentService: ObservableObject {
         }
         let input = engine.inputNode
         let format = input.outputFormat(forBus: 0)
+        channelCount = Int(format.channelCount)
+        sampleRate = Int(format.sampleRate)
         input.installTap(onBus: 0, bufferSize: 1_024, format: format) { [weak self] buffer, _ in
             guard let channel = buffer.floatChannelData?[0], buffer.frameLength > 0 else { return }
             var sum: Float = 0
+            var peak: Float = 0
             for index in 0..<Int(buffer.frameLength) { sum += channel[index] * channel[index] }
+            for index in 0..<Int(buffer.frameLength) { peak = max(peak, abs(channel[index])) }
             let rms = sqrt(sum / Float(buffer.frameLength))
-            Task { @MainActor in self?.output = "Input channels: \(buffer.format.channelCount)\nSample rate: \(Int(buffer.format.sampleRate)) Hz\nRMS level: \(rms.formatted(.number.precision(.fractionLength(4))))" }
+            Task { @MainActor in
+                self?.rmsLevel = Double(rms)
+                self?.peakLevel = Double(peak)
+                self?.output = "Live microphone input is updating."
+            }
         }
         do { try engine.start(); isRunning = true; status = .available }
         catch { input.removeTap(onBus: 0); output = "Audio engine error: \(error.localizedDescription)"; status = .unavailable }
