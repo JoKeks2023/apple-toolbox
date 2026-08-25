@@ -8,5 +8,9 @@
 	<string>Joris Apple Toolbox reads nearby NFC tags as part of the NFC experiment.</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Joris Apple Toolbox scans nearby Bluetooth LE peripherals as part of the Bluetooth experiment.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Joris Apple Toolbox uses the camera for the Camera and Vision experiment.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Joris Apple Toolbox uses the microphone for the Audio Input experiment.</string>
 </dict>
 </plist>

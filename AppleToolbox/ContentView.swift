@@ -75,6 +75,8 @@ struct ExperimentDetailView: View {
     @StateObject private var network = NetworkExperimentService()
     @StateObject private var bluetooth = BluetoothExperimentService()
     @StateObject private var nfc = NFCExperimentService()
+    @StateObject private var media = CameraVisionExperimentService()
+    @StateObject private var audio = AudioExperimentService()
 
     var body: some View {
         List {
@@ -119,6 +121,12 @@ struct ExperimentDetailView: View {
                 } else if experiment.id == "core-nfc" {
                     Button(nfc.isScanning ? "Scanning…" : "Scan NFC Tag", action: nfc.start).buttonStyle(.borderedProminent).disabled(nfc.isScanning)
                     OutputView(text: nfc.output, isError: nfc.output.localizedCaseInsensitiveContains("not available") || nfc.output.localizedCaseInsensitiveContains("ended"))
+                } else if experiment.id == "camera-vision" {
+                    Button(media.isRunning ? "Stop Camera & Vision" : "Start Camera & Vision") { media.isRunning ? media.stop() : media.start() }.buttonStyle(.borderedProminent)
+                    OutputView(text: media.output, isError: media.status != .available)
+                } else if experiment.id == "audio-input" {
+                    Button(audio.isRunning ? "Stop Audio Input" : "Start Audio Input") { audio.isRunning ? audio.stop() : audio.start() }.buttonStyle(.borderedProminent)
+                    OutputView(text: audio.output, isError: audio.status != .available)
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))

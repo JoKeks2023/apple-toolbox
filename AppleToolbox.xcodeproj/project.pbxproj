@@ -18,10 +18,12 @@
 		69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		6BAC23922CAF79F26D0D3AD5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7038E16D7861010D524C6A0 /* ContentView.swift */; };
 		7EB5E16B390A579D13F08EF9 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6341838527B1254170EB98B /* MotionExperimentService.swift */; };
+		8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */; };
 		8C61E5E3F42FE1E43DB3FE6F /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16267023E26A916BA5DC5D26 /* ExperimentServices.swift */; };
 		A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		C06E0D233CB35A8B959B5923 /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */; };
 		C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */; };
+		D7D5FFADFBF55D38047A9437 /* MediaExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */; };
 		D96D47FB485F8CD6F8B02E1B /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F116C6D7FF33A263B2CDAF /* CapabilityInspector.swift */; };
 		DC2F33217E3BD78E6106A78C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38BA171C1BD9FFF49970FB71 /* Foundation.framework */; };
 		DDA60F5B33B0D35FBB7A2512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26C2310F800CD115CE32E91B /* Assets.xcassets */; };
@@ -70,6 +72,7 @@
 		D4F116C6D7FF33A263B2CDAF /* CapabilityInspector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CapabilityInspector.swift; path = AppleToolbox/Shared/CapabilitySystem/CapabilityInspector.swift; sourceTree = "<group>"; };
 		DF1D7149C0845814E69E6D75 /* AppleToolbox macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6341838527B1254170EB98B /* MotionExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MotionExperimentService.swift; path = AppleToolbox/Shared/Services/MotionExperimentService.swift; sourceTree = "<group>"; };
+		E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MediaExperimentServices.swift; path = AppleToolbox/Shared/Services/MediaExperimentServices.swift; sourceTree = "<group>"; };
 		F9BF27AFEC11D19A6140F698 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -191,6 +194,7 @@
 				59A0C059D1CBDDE4615E7D92 /* Watch App */,
 				26C2310F800CD115CE32E91B /* Assets.xcassets */,
 				CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */,
+				E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -429,6 +433,7 @@
 				C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */,
 				01841B06D7B180262FF5CEA4 /* MotionExperimentService.swift in Sources */,
 				A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */,
+				D7D5FFADFBF55D38047A9437 /* MediaExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,6 +449,7 @@
 				7EB5E16B390A579D13F08EF9 /* MotionExperimentService.swift in Sources */,
 				2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */,
 				69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */,
+				8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
