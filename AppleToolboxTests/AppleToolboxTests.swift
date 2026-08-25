@@ -6,13 +6,23 @@
 //
 
 import Testing
+import Foundation
+@testable import AppleToolbox
 
 struct AppleToolboxTests {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-        // Swift Testing Documentation
-        // https://developer.apple.com/documentation/testing
+    @Test func registryContainsOnlyFoundationExperiments() async throws {
+        #expect(ExperimentRegistry.all.map(\.id) == ["localauthentication", "cryptokit", "keychain", "secure-enclave", "core-location", "core-motion"])
+        #expect(ExperimentRegistry.all.count == 6)
+    }
+
+    @Test func everyExperimentHasDocumentationAndMetadata() async throws {
+        for experiment in ExperimentRegistry.all {
+            #expect(!experiment.name.isEmpty)
+            #expect(!experiment.frameworks.isEmpty)
+            #expect(!experiment.supportedPlatforms.isEmpty)
+            #expect(experiment.documentationURL.host == "developer.apple.com")
+        }
     }
 
 }
