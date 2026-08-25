@@ -12,6 +12,7 @@
 		20B9764A8DC5824AF307B483 /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56858954E5E0944457C887E7 /* CapabilityInspector.swift */; };
 		2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B980C3CB49C1F8123D7332FE /* WatchApp.swift */; };
 		2F0DA5944349E83E62C2BC95 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BFDA128F91D87755734120 /* LocationExperimentService.swift */; };
+		4367F062F15F2162043DF56A /* AppleToolboxWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5875FE96A6C202C8E1644886 /* AppleToolboxWidget.swift */; };
 		45970B5B1E74E8CA88031D7A /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
 		4A54901DD3646D0A3C8A510F /* ContinuityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */; };
 		4C3B640184E25FA116351E87 /* ExperimentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72488DD19EEE0B1FB51ECCF0 /* ExperimentModels.swift */; };
@@ -24,8 +25,10 @@
 		70DCF696D8C398C35582A0B1 /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
 		7EB5E16B390A579D13F08EF9 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6341838527B1254170EB98B /* MotionExperimentService.swift */; };
 		8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */; };
+		8B87AAEF9DA9C6E84749E107 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4691BC4FB0542A9F48651C6D /* Foundation.framework */; };
 		8C61E5E3F42FE1E43DB3FE6F /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16267023E26A916BA5DC5D26 /* ExperimentServices.swift */; };
 		91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
+		982DBF88B14E4318F6F8A632 /* AppleToolbox Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D355699843CD5D90FEB47FD3 /* AppleToolbox Widget.appex */; };
 		A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		C06E0D233CB35A8B959B5923 /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */; };
 		C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */; };
@@ -52,7 +55,28 @@
 			remoteGlobalIDString = 5B13F610303DA61D00AA8D3F;
 			remoteInfo = "AppleToolbox iOS";
 		};
+		B4C014163BEAAA33BB8B3327 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B13F609303DA61D00AA8D3F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EF6F48A1A97D0D6BE48BE6A;
+			remoteInfo = "AppleToolbox Widget";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		18EFB5B1B522A7489F2A5B5E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				982DBF88B14E4318F6F8A632 /* AppleToolbox Widget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0D2879F1D49212E98DB2D386 /* MotionExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MotionExperimentService.swift; path = AppleToolbox/Shared/Services/MotionExperimentService.swift; sourceTree = "<group>"; };
@@ -62,7 +86,9 @@
 		26C2310F800CD115CE32E91B /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = AppleToolbox/Assets.xcassets; sourceTree = "<group>"; };
 		38BA171C1BD9FFF49970FB71 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		3D918E681B9B9936F90DC083 /* ExperimentModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentModels.swift; path = AppleToolbox/Shared/Models/ExperimentModels.swift; sourceTree = "<group>"; };
+		4691BC4FB0542A9F48651C6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		56858954E5E0944457C887E7 /* CapabilityInspector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CapabilityInspector.swift; path = AppleToolbox/Shared/CapabilitySystem/CapabilityInspector.swift; sourceTree = "<group>"; };
+		5875FE96A6C202C8E1644886 /* AppleToolboxWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleToolboxWidget.swift; path = AppleToolbox/Widget/AppleToolboxWidget.swift; sourceTree = "<group>"; };
 		5B13F611303DA61D00AA8D3F /* AppleToolbox iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B13F622303DA62000AA8D3F /* AppleToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B13F62C303DA62000AA8D3F /* AppleToolboxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleToolboxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +104,7 @@
 		CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConnectivityExperimentServices.swift; path = AppleToolbox/Shared/Services/ConnectivityExperimentServices.swift; sourceTree = "<group>"; };
 		CD282A8176D3DFEDDE0E7A7D /* AppleToolboxApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleToolboxApp.swift; path = AppleToolbox/AppleToolboxApp.swift; sourceTree = "<group>"; };
 		D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AIHealthWalletServices.swift; path = AppleToolbox/Shared/Services/AIHealthWalletServices.swift; sourceTree = "<group>"; };
+		D355699843CD5D90FEB47FD3 /* AppleToolbox Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "AppleToolbox Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F116C6D7FF33A263B2CDAF /* CapabilityInspector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CapabilityInspector.swift; path = AppleToolbox/Shared/CapabilitySystem/CapabilityInspector.swift; sourceTree = "<group>"; };
 		DF1D7149C0845814E69E6D75 /* AppleToolbox macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6341838527B1254170EB98B /* MotionExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MotionExperimentService.swift; path = AppleToolbox/Shared/Services/MotionExperimentService.swift; sourceTree = "<group>"; };
@@ -91,6 +118,7 @@
 			membershipExceptions = (
 				Info.plist,
 				WatchApp/WatchApp.swift,
+				Widget/AppleToolboxWidget.swift,
 			);
 			target = 5B13F610303DA61D00AA8D3F /* AppleToolbox iOS */;
 		};
@@ -151,6 +179,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		846CFBCE4F9A6C1A793C4465 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B87AAEF9DA9C6E84749E107 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A0EAF559FB33C254E11FB38C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -183,6 +219,14 @@
 			name = "Shared Sources";
 			sourceTree = "<group>";
 		};
+		35E02E80227FE3C4E2F4CA43 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				4691BC4FB0542A9F48651C6D /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 		59A0C059D1CBDDE4615E7D92 /* Watch App */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +251,7 @@
 				A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */,
 				7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */,
 				D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */,
+				5875FE96A6C202C8E1644886 /* AppleToolboxWidget.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -218,6 +263,7 @@
 				5B13F62C303DA62000AA8D3F /* AppleToolboxUITests.xctest */,
 				DF1D7149C0845814E69E6D75 /* AppleToolbox macOS.app */,
 				7C1C9A39A25D48656AA850C5 /* AppleToolbox watchOS.app */,
+				D355699843CD5D90FEB47FD3 /* AppleToolbox Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -243,6 +289,7 @@
 			children = (
 				6E1D60A3D8268DE0265711A8 /* OS X */,
 				ACDB501BE4EC0AC6793AEC94 /* watchOS */,
+				35E02E80227FE3C4E2F4CA43 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -250,6 +297,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1EF6F48A1A97D0D6BE48BE6A /* AppleToolbox Widget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A27BD0E2E1ACB1817DAEC5B2 /* Build configuration list for PBXNativeTarget "AppleToolbox Widget" */;
+			buildPhases = (
+				DDDFE7BE978B7D947E0B0AED /* Sources */,
+				846CFBCE4F9A6C1A793C4465 /* Frameworks */,
+				28D42D32D82B9046B569A4F9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppleToolbox Widget";
+			productName = "AppleToolbox Widget";
+			productReference = D355699843CD5D90FEB47FD3 /* AppleToolbox Widget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		379913DD905DBAF404E04507 /* AppleToolbox macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6D50A92DCBC61D280461A86F /* Build configuration list for PBXNativeTarget "AppleToolbox macOS" */;
@@ -274,10 +338,12 @@
 				5B13F60D303DA61D00AA8D3F /* Sources */,
 				5B13F60E303DA61D00AA8D3F /* Frameworks */,
 				5B13F60F303DA61D00AA8D3F /* Resources */,
+				18EFB5B1B522A7489F2A5B5E /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D418667C09282FC017F313FB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5B13F613303DA61D00AA8D3F /* AppleToolbox */,
@@ -388,11 +454,19 @@
 				5B13F62B303DA62000AA8D3F /* AppleToolboxUITests */,
 				379913DD905DBAF404E04507 /* AppleToolbox macOS */,
 				61001C144839CC8E0408EC65 /* AppleToolbox watchOS */,
+				1EF6F48A1A97D0D6BE48BE6A /* AppleToolbox Widget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		28D42D32D82B9046B569A4F9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4DE41F69BC28C0ADBFEE5A05 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -492,6 +566,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DDDFE7BE978B7D947E0B0AED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4367F062F15F2162043DF56A /* AppleToolboxWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -505,9 +587,32 @@
 			target = 5B13F610303DA61D00AA8D3F /* AppleToolbox iOS */;
 			targetProxy = 5B13F62D303DA62000AA8D3F /* PBXContainerItemProxy */;
 		};
+		D418667C09282FC017F313FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppleToolbox Widget";
+			target = 1EF6F48A1A97D0D6BE48BE6A /* AppleToolbox Widget */;
+			targetProxy = B4C014163BEAAA33BB8B3327 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		44E341D065D098CF02CBA77E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		49FED749C40CAA324AC8CC34 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -846,6 +951,22 @@
 			};
 			name = Debug;
 		};
+		BFB0CE38DAECB8712CE57C86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		C456D5D18EB5D94427B4E647 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -934,6 +1055,15 @@
 			buildConfigurations = (
 				C456D5D18EB5D94427B4E647 /* Release */,
 				EC9D65F2C1555FBDC7A6D379 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A27BD0E2E1ACB1817DAEC5B2 /* Build configuration list for PBXNativeTarget "AppleToolbox Widget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44E341D065D098CF02CBA77E /* Release */,
+				BFB0CE38DAECB8712CE57C86 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

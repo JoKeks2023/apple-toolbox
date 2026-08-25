@@ -153,6 +153,8 @@ struct ExperimentDetailView: View {
                     OutputView(text: HealthExperimentService.statusText(), isError: false)
                 } else if experiment.id == "wallet-status" {
                     OutputView(text: WalletExperimentService.statusText(), isError: false)
+                } else if experiment.id == "widgetkit" {
+                    OutputView(text: "WidgetKit extension is included in the iOS app.\nAdd “Apple Toolbox” from the Home Screen widget gallery.", isError: false)
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))

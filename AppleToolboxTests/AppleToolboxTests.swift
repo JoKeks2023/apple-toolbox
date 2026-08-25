@@ -12,8 +12,8 @@ import Foundation
 struct AppleToolboxTests {
 
     @Test func registryContainsOnlyFoundationExperiments() async throws {
-        #expect(ExperimentRegistry.all.map(\.id) == ["localauthentication", "cryptokit", "keychain", "secure-enclave", "core-location", "core-motion", "core-nfc", "core-bluetooth", "network-path", "camera-vision", "audio-input", "mapkit-search", "homekit-discovery", "matter-status", "continuity", "app-intents", "natural-language", "foundation-models", "healthkit-status", "wallet-status"])
-        #expect(ExperimentRegistry.all.count == 20)
+        #expect(ExperimentRegistry.all.map(\.id) == ["localauthentication", "cryptokit", "keychain", "secure-enclave", "core-location", "core-motion", "core-nfc", "core-bluetooth", "network-path", "camera-vision", "audio-input", "mapkit-search", "homekit-discovery", "matter-status", "continuity", "app-intents", "natural-language", "foundation-models", "healthkit-status", "wallet-status", "widgetkit"])
+        #expect(ExperimentRegistry.all.count == 21)
     }
 
     @Test func everyExperimentHasDocumentationAndMetadata() async throws {
