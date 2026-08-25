@@ -149,7 +149,11 @@ struct ExperimentDetailView: View {
                     Button(network.isMonitoring ? "Stop Network Monitor" : "Start Network Monitor") { network.isMonitoring ? network.stop() : network.start() }.buttonStyle(.borderedProminent)
                     OutputView(text: network.output, isError: network.output.localizedCaseInsensitiveContains("not available"))
                 } else if experiment.id == "core-bluetooth" {
-                    Button(bluetooth.isScanning ? "Stop Bluetooth Scan" : "Start Bluetooth Scan") { bluetooth.isScanning ? bluetooth.stop() : bluetooth.start() }.buttonStyle(.borderedProminent)
+                    HStack {
+                        Button(bluetooth.isScanning ? "Stop Bluetooth Scan" : "Start Bluetooth Scan") { bluetooth.isScanning ? bluetooth.stop() : bluetooth.start() }.buttonStyle(.borderedProminent)
+                        Button("Clear", action: bluetooth.clearResults).buttonStyle(.bordered)
+                    }
+                    BluetoothResultsView(peripherals: bluetooth.peripherals)
                     OutputView(text: bluetooth.output, isError: bluetooth.output.localizedCaseInsensitiveContains("not available") || bluetooth.output.localizedCaseInsensitiveContains("unauthorized"))
                 } else if experiment.id == "core-nfc" {
                     Button(nfc.isScanning ? "Scanning…" : "Scan NFC Tag", action: nfc.start).buttonStyle(.borderedProminent).disabled(nfc.isScanning)
@@ -291,6 +295,48 @@ struct ExperimentDetailView: View {
                 }
             } catch { output = "Error: \(error.localizedDescription)" }
             isRunning = false
+        }
+    }
+}
+
+private struct BluetoothResultsView: View {
+    let peripherals: [BluetoothPeripheralResult]
+
+    var body: some View {
+        Section("Discovered peripherals (\(peripherals.count))") {
+            if peripherals.isEmpty {
+                Label("No peripherals discovered yet", systemImage: "dot.radiowaves.left.and.right")
+                    .foregroundStyle(.secondary)
+                Text("Start a scan and keep this screen open. Results update live as advertisements arrive.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(peripherals) { peripheral in
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            Label(peripheral.name, systemImage: "dot.radiowaves.left.and.right")
+                                .font(.headline)
+                            Spacer()
+                            Text("\(peripheral.rssi) dBm")
+                                .font(.caption.monospacedDigit())
+                                .foregroundStyle(peripheral.rssi >= -60 ? .green : .secondary)
+                        }
+                        Text(peripheral.id.uuidString)
+                            .font(.caption.monospaced())
+                            .foregroundStyle(.secondary)
+                        HStack {
+                            Text(peripheral.advertisedServices.isEmpty ? "No advertised services" : "Services: \(peripheral.advertisedServices.joined(separator: ", "))")
+                            Spacer()
+                            if peripheral.manufacturerDataBytes > 0 {
+                                Text("Manufacturer: \(peripheral.manufacturerDataBytes) B")
+                            }
+                        }
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
         }
     }
 }

@@ -48,9 +48,20 @@ final class NetworkExperimentService: ObservableObject {
 }
 
 @MainActor
+struct BluetoothPeripheralResult: Identifiable, Equatable {
+    let id: UUID
+    var name: String
+    var rssi: Int
+    var advertisedServices: [String]
+    var manufacturerDataBytes: Int
+    var lastSeen: Date
+}
+
+@MainActor
 final class BluetoothExperimentService: NSObject, ObservableObject {
     @Published private(set) var output = "Bluetooth scan is ready."
     @Published private(set) var isScanning = false
+    @Published private(set) var peripherals: [BluetoothPeripheralResult] = []
     #if canImport(CoreBluetooth) && !os(tvOS)
     private var central: CBCentralManager?
     #endif
@@ -61,6 +72,7 @@ final class BluetoothExperimentService: NSObject, ObservableObject {
 
     func start() {
         #if canImport(CoreBluetooth) && !os(tvOS)
+        peripherals.removeAll()
         if central == nil {
             central = CBCentralManager(delegate: self, queue: nil)
             isScanning = true
@@ -84,6 +96,11 @@ final class BluetoothExperimentService: NSObject, ObservableObject {
         isScanning = false
         output = "Bluetooth scan stopped."
     }
+
+    func clearResults() {
+        peripherals.removeAll()
+        output = "Bluetooth results cleared."
+    }
 }
 
 #if canImport(CoreBluetooth) && !os(tvOS)
@@ -97,7 +114,17 @@ final class BluetoothExperimentService: NSObject, ObservableObject {
     }
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         let name = peripheral.name ?? "Unnamed peripheral"
-        output = "Found: \(name)\nIdentifier: \(peripheral.identifier.uuidString)\nRSSI: \(RSSI) dBm"
+        let services = (advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID] ?? []).map(\.uuidString)
+        let manufacturerDataBytes = (advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data)?.count ?? 0
+        let result = BluetoothPeripheralResult(id: peripheral.identifier, name: name, rssi: RSSI.intValue,
+                                               advertisedServices: services, manufacturerDataBytes: manufacturerDataBytes, lastSeen: Date())
+        if let index = peripherals.firstIndex(where: { $0.id == result.id }) {
+            peripherals[index] = result
+        } else {
+            peripherals.append(result)
+        }
+        peripherals.sort { $0.rssi > $1.rssi }
+        output = "Found \(peripherals.count) nearby peripheral\(peripherals.count == 1 ? "" : "s")."
     }
 }
 private extension CBManagerState {
