@@ -16,10 +16,11 @@ import PassKit
 @MainActor
 final class AIExperimentService: ObservableObject {
     @Published private(set) var output = "On-device language analysis is ready."
+    @Published var input = "Joris Apple Toolbox explores native Apple technologies."
 
     func analyze() {
         #if canImport(NaturalLanguage)
-        let text = "Joris Apple Toolbox explores native Apple technologies."
+        let text = input
         let recognizer = NLLanguageRecognizer()
         recognizer.processString(text)
         let language = recognizer.dominantLanguage?.rawValue ?? "Unknown"

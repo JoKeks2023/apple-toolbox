@@ -201,7 +201,8 @@ struct ExperimentDetailView: View {
                     Button("Refresh App Intents Report") { output = "App Intent registered: ToolboxStatusIntent\nUse Siri or Shortcuts to discover it." }.buttonStyle(.borderedProminent)
                     OutputView(text: output == "No run yet." ? "Use the button to inspect the registered App Intent." : output, isError: false)
                 } else if experiment.id == "natural-language" {
-                    Button("Analyze Sample Text", action: ai.analyze).buttonStyle(.borderedProminent)
+                    TextField("Text to analyze", text: $ai.input, axis: .vertical)
+                    Button("Analyze Text", action: ai.analyze).buttonStyle(.borderedProminent).disabled(ai.input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     OutputView(text: ai.output, isError: false)
                 } else if experiment.id == "foundation-models" {
                     Button("Check Foundation Models Availability") { output = FoundationModelsExperimentService.statusText() }.buttonStyle(.borderedProminent)
