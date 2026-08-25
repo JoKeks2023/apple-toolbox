@@ -25,10 +25,12 @@
 		5C9EBF044DA7122E8E4E9E6F /* ContinuityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */; };
 		6401109C53B0CE02031BCFE1 /* SpatialExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB0157A5B7AB3F867DC86F /* SpatialExperimentServices.swift */; };
 		656F254B26F90D1352E87D36 /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D4F104C8A2D9E3C1C17B5B /* ExperimentServices.swift */; };
+		68A696176658BE1A4C9DE591 /* CapabilityExplorerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30846DAAA11AF56E4F480E57 /* CapabilityExplorerService.swift */; };
 		69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		6BAC23922CAF79F26D0D3AD5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7038E16D7861010D524C6A0 /* ContentView.swift */; };
 		70DCF696D8C398C35582A0B1 /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
 		73FBDEEFAC66E893605D15A2 /* IdentitySecurityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCDEE58AB23A44A8DAA3D49 /* IdentitySecurityServices.swift */; };
+		796B54C80880B59011C01911 /* CapabilityExplorerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30846DAAA11AF56E4F480E57 /* CapabilityExplorerService.swift */; };
 		7EB5E16B390A579D13F08EF9 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6341838527B1254170EB98B /* MotionExperimentService.swift */; };
 		8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */; };
 		8B87AAEF9DA9C6E84749E107 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4691BC4FB0542A9F48651C6D /* Foundation.framework */; };
@@ -98,6 +100,7 @@
 		19D4F104C8A2D9E3C1C17B5B /* ExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentServices.swift; path = AppleToolbox/Shared/Services/ExperimentServices.swift; sourceTree = "<group>"; };
 		21BFDA128F91D87755734120 /* LocationExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationExperimentService.swift; path = AppleToolbox/Shared/Services/LocationExperimentService.swift; sourceTree = "<group>"; };
 		26C2310F800CD115CE32E91B /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = AppleToolbox/Assets.xcassets; sourceTree = "<group>"; };
+		30846DAAA11AF56E4F480E57 /* CapabilityExplorerService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CapabilityExplorerService.swift; path = AppleToolbox/Shared/Services/CapabilityExplorerService.swift; sourceTree = "<group>"; };
 		37EB0157A5B7AB3F867DC86F /* SpatialExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpatialExperimentServices.swift; path = AppleToolbox/Shared/Services/SpatialExperimentServices.swift; sourceTree = "<group>"; };
 		38BA171C1BD9FFF49970FB71 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		3D918E681B9B9936F90DC083 /* ExperimentModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentModels.swift; path = AppleToolbox/Shared/Models/ExperimentModels.swift; sourceTree = "<group>"; };
@@ -280,6 +283,7 @@
 				AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */,
 				5C041F896020A77B69B72580 /* HealthNotificationServices.swift */,
 				AFCDEE58AB23A44A8DAA3D49 /* IdentitySecurityServices.swift */,
+				30846DAAA11AF56E4F480E57 /* CapabilityExplorerService.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -558,6 +562,7 @@
 				E395E65F9B94FCEE553C1DCA /* MediaAvailabilityServices.swift in Sources */,
 				8EC214171F1DEC0594DF6882 /* HealthNotificationServices.swift in Sources */,
 				31186D7D3B032512CD8E91E0 /* IdentitySecurityServices.swift in Sources */,
+				796B54C80880B59011C01911 /* CapabilityExplorerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,6 +589,7 @@
 				ADF9091B6F51DFF8D8D3B85F /* MediaAvailabilityServices.swift in Sources */,
 				C08C990114221453FB6071CD /* HealthNotificationServices.swift in Sources */,
 				73FBDEEFAC66E893605D15A2 /* IdentitySecurityServices.swift in Sources */,
+				68A696176658BE1A4C9DE591 /* CapabilityExplorerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -177,6 +177,9 @@ struct ExperimentDetailView: View {
                     OutputView(text: IdentitySecurityExperimentService.passkeyStatus(), isError: false)
                 } else if experiment.id == "sign-in-with-apple" {
                     OutputView(text: IdentitySecurityExperimentService.signInWithAppleStatus(), isError: false)
+                } else if experiment.id == "capability-explorer" {
+                    Button("Refresh Device and Capability Report", action: { output = CapabilityExplorerService.report() }).buttonStyle(.borderedProminent)
+                    OutputView(text: output, isError: false)
                 } else if experiment.id == "widgetkit" {
                     OutputView(text: "WidgetKit extension is included in the iOS app.\nAdd “Apple Toolbox” from the Home Screen widget gallery.", isError: false)
                 } else if experiment.id == "nearby-interaction" {
