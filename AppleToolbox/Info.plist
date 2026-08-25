@@ -4,5 +4,9 @@
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Joris Apple Toolbox uses your location to inspect live Core Location updates.</string>
+	<key>NFCReaderUsageDescription</key>
+	<string>Joris Apple Toolbox reads nearby NFC tags as part of the NFC experiment.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Joris Apple Toolbox scans nearby Bluetooth LE peripherals as part of the Bluetooth experiment.</string>
 </dict>
 </plist>

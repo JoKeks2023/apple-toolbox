@@ -28,7 +28,13 @@ enum ExperimentRegistry {
         ExperimentDescriptor(id: "core-motion", name: "Core Motion", category: .sensors,
             description: "Stream device motion with user acceleration, rotation rate, and gravity values.",
             frameworks: ["CoreMotion"], supportedPlatforms: [.iOS, .iPadOS, .watchOS], hardwareRequirements: ["Motion sensors"], osRequirements: ["iOS 7+ · watchOS 2+"], permissions: [], capabilities: [], entitlements: [],
-            documentationURL: URL(string: "https://developer.apple.com/documentation/coremotion")!, evaluate: { DeviceCapabilities.current.motion ? .available : .hardwareUnsupported })
+            documentationURL: URL(string: "https://developer.apple.com/documentation/coremotion")!, evaluate: { DeviceCapabilities.current.motion ? .available : .hardwareUnsupported }),
+        ExperimentDescriptor(id: "core-nfc", name: "Core NFC", category: .nfc,
+            description: "Read NDEF tags and inspect their records with a real NFC reader session.", frameworks: ["CoreNFC"], supportedPlatforms: [.iOS, .iPadOS], hardwareRequirements: ["NFC-capable iPhone or iPad"], osRequirements: ["iOS 11+"], permissions: ["NFC Reader Usage Description"], capabilities: ["Near Field Communication"], entitlements: ["Near Field Communication Tag Reading"], documentationURL: URL(string: "https://developer.apple.com/documentation/corenfc")!, evaluate: { CurrentPlatform.value == .iOS || CurrentPlatform.value == .iPadOS ? .available : .platformUnsupported }),
+        ExperimentDescriptor(id: "core-bluetooth", name: "Core Bluetooth", category: .connectivity,
+            description: "Scan for nearby Bluetooth Low Energy peripherals and inspect identifiers and signal strength.", frameworks: ["CoreBluetooth"], supportedPlatforms: [.iOS, .iPadOS, .macOS, .watchOS], hardwareRequirements: ["Bluetooth hardware"], osRequirements: ["iOS 5+ · macOS 10.9+ · watchOS 4+"], permissions: ["Bluetooth Usage Description"], capabilities: [], entitlements: [], documentationURL: URL(string: "https://developer.apple.com/documentation/corebluetooth")!, evaluate: { .available }),
+        ExperimentDescriptor(id: "network-path", name: "Network Path", category: .networking,
+            description: "Monitor live connectivity, available interfaces, cost, and constrained-network state.", frameworks: ["Network"], supportedPlatforms: [.iOS, .iPadOS, .macOS, .watchOS, .tvOS], hardwareRequirements: [], osRequirements: ["iOS 12+ · macOS 10.14+ · watchOS 5+ · tvOS 12+"], permissions: [], capabilities: [], entitlements: [], documentationURL: URL(string: "https://developer.apple.com/documentation/network")!, evaluate: { .available })
     ]
 
     static func descriptor(for id: String) -> ExperimentDescriptor? { all.first { $0.id == id } }

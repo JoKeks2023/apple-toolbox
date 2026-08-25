@@ -15,9 +15,11 @@
 		4C82F13786CD94007CF8675B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9BF27AFEC11D19A6140F698 /* Cocoa.framework */; };
 		53B23958B745455A8EC5367D /* AppleToolboxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD282A8176D3DFEDDE0E7A7D /* AppleToolboxApp.swift */; };
 		656F254B26F90D1352E87D36 /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D4F104C8A2D9E3C1C17B5B /* ExperimentServices.swift */; };
+		69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		6BAC23922CAF79F26D0D3AD5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7038E16D7861010D524C6A0 /* ContentView.swift */; };
 		7EB5E16B390A579D13F08EF9 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6341838527B1254170EB98B /* MotionExperimentService.swift */; };
 		8C61E5E3F42FE1E43DB3FE6F /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16267023E26A916BA5DC5D26 /* ExperimentServices.swift */; };
+		A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		C06E0D233CB35A8B959B5923 /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */; };
 		C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */; };
 		D96D47FB485F8CD6F8B02E1B /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F116C6D7FF33A263B2CDAF /* CapabilityInspector.swift */; };
@@ -53,7 +55,7 @@
 		38BA171C1BD9FFF49970FB71 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		3D918E681B9B9936F90DC083 /* ExperimentModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentModels.swift; path = AppleToolbox/Shared/Models/ExperimentModels.swift; sourceTree = "<group>"; };
 		56858954E5E0944457C887E7 /* CapabilityInspector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CapabilityInspector.swift; path = AppleToolbox/Shared/CapabilitySystem/CapabilityInspector.swift; sourceTree = "<group>"; };
-		5B13F611303DA61D00AA8D3F /* AppleToolbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleToolbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B13F611303DA61D00AA8D3F /* AppleToolbox iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B13F622303DA62000AA8D3F /* AppleToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B13F62C303DA62000AA8D3F /* AppleToolboxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleToolboxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72488DD19EEE0B1FB51ECCF0 /* ExperimentModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentModels.swift; path = AppleToolbox/Shared/Models/ExperimentModels.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 		B7038E16D7861010D524C6A0 /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = AppleToolbox/ContentView.swift; sourceTree = "<group>"; };
 		B980C3CB49C1F8123D7332FE /* WatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchApp.swift; path = AppleToolbox/WatchApp/WatchApp.swift; sourceTree = "<group>"; };
 		BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentRegistry.swift; path = AppleToolbox/Shared/ExperimentRegistry/ExperimentRegistry.swift; sourceTree = "<group>"; };
+		CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConnectivityExperimentServices.swift; path = AppleToolbox/Shared/Services/ConnectivityExperimentServices.swift; sourceTree = "<group>"; };
 		CD282A8176D3DFEDDE0E7A7D /* AppleToolboxApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleToolboxApp.swift; path = AppleToolbox/AppleToolboxApp.swift; sourceTree = "<group>"; };
 		D4F116C6D7FF33A263B2CDAF /* CapabilityInspector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CapabilityInspector.swift; path = AppleToolbox/Shared/CapabilitySystem/CapabilityInspector.swift; sourceTree = "<group>"; };
 		DF1D7149C0845814E69E6D75 /* AppleToolbox macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,13 +190,14 @@
 				1458ECAADB2AE125DF845A13 /* Shared Sources */,
 				59A0C059D1CBDDE4615E7D92 /* Watch App */,
 				26C2310F800CD115CE32E91B /* Assets.xcassets */,
+				CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
 		5B13F612303DA61D00AA8D3F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5B13F611303DA61D00AA8D3F /* AppleToolbox.app */,
+				5B13F611303DA61D00AA8D3F /* AppleToolbox iOS.app */,
 				5B13F622303DA62000AA8D3F /* AppleToolboxTests.xctest */,
 				5B13F62C303DA62000AA8D3F /* AppleToolboxUITests.xctest */,
 				DF1D7149C0845814E69E6D75 /* AppleToolbox macOS.app */,
@@ -264,7 +268,7 @@
 			);
 			name = "AppleToolbox iOS";
 			productName = "AppleToolbox iOS";
-			productReference = 5B13F611303DA61D00AA8D3F /* AppleToolbox.app */;
+			productReference = 5B13F611303DA61D00AA8D3F /* AppleToolbox iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5B13F621303DA62000AA8D3F /* AppleToolboxTests */ = {
@@ -424,6 +428,7 @@
 				8C61E5E3F42FE1E43DB3FE6F /* ExperimentServices.swift in Sources */,
 				C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */,
 				01841B06D7B180262FF5CEA4 /* MotionExperimentService.swift in Sources */,
+				A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +443,7 @@
 				2F0DA5944349E83E62C2BC95 /* LocationExperimentService.swift in Sources */,
 				7EB5E16B390A579D13F08EF9 /* MotionExperimentService.swift in Sources */,
 				2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */,
+				69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,9 +488,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				GENERATE_INFOPLIST_FILE = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -493,8 +499,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.macos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
 				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -503,7 +509,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				GENERATE_INFOPLIST_FILE = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -800,9 +805,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				GENERATE_INFOPLIST_FILE = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -811,8 +816,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.macos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
 				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -821,8 +826,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				GENERATE_INFOPLIST_FILE = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				GENERATE_INFOPLIST_FILE = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -839,8 +844,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				GENERATE_INFOPLIST_FILE = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				GENERATE_INFOPLIST_FILE = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;

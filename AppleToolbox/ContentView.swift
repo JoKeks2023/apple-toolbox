@@ -72,6 +72,9 @@ struct ExperimentDetailView: View {
     @State private var isRunning = false
     @StateObject private var location = LocationExperimentService()
     @StateObject private var motion = MotionExperimentService()
+    @StateObject private var network = NetworkExperimentService()
+    @StateObject private var bluetooth = BluetoothExperimentService()
+    @StateObject private var nfc = NFCExperimentService()
 
     var body: some View {
         List {
@@ -107,6 +110,15 @@ struct ExperimentDetailView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available"))
+                } else if experiment.id == "network-path" {
+                    Button(network.isMonitoring ? "Stop Network Monitor" : "Start Network Monitor") { network.isMonitoring ? network.stop() : network.start() }.buttonStyle(.borderedProminent)
+                    OutputView(text: network.output, isError: network.output.localizedCaseInsensitiveContains("not available"))
+                } else if experiment.id == "core-bluetooth" {
+                    Button(bluetooth.isScanning ? "Stop Bluetooth Scan" : "Start Bluetooth Scan") { bluetooth.isScanning ? bluetooth.stop() : bluetooth.start() }.buttonStyle(.borderedProminent)
+                    OutputView(text: bluetooth.output, isError: bluetooth.output.localizedCaseInsensitiveContains("not available") || bluetooth.output.localizedCaseInsensitiveContains("unauthorized"))
+                } else if experiment.id == "core-nfc" {
+                    Button(nfc.isScanning ? "Scanning…" : "Scan NFC Tag", action: nfc.start).buttonStyle(.borderedProminent).disabled(nfc.isScanning)
+                    OutputView(text: nfc.output, isError: nfc.output.localizedCaseInsensitiveContains("not available") || nfc.output.localizedCaseInsensitiveContains("ended"))
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))
