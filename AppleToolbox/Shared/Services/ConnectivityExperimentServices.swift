@@ -13,10 +13,17 @@ import CoreBluetooth
 import CoreNFC
 #endif
 
+struct NetworkInterfaceResult: Identifiable, Equatable {
+    let id: String
+    let name: String
+    let type: String
+}
+
 @MainActor
 final class NetworkExperimentService: ObservableObject {
     @Published private(set) var output = "Ready to inspect network path."
     @Published private(set) var isMonitoring = false
+    @Published private(set) var interfaces: [NetworkInterfaceResult] = []
     #if canImport(Network)
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "apple-toolbox.network-monitor")
@@ -28,8 +35,10 @@ final class NetworkExperimentService: ObservableObject {
         isMonitoring = true
         monitor.pathUpdateHandler = { [weak self] path in
             Task { @MainActor in
-                let interfaces = path.availableInterfaces.map { String(describing: $0.type) }.joined(separator: ", ")
-                self?.output = "Status: \(String(describing: path.status))\nExpensive: \(path.isExpensive)\nConstrained: \(path.isConstrained)\nInterfaces: \(interfaces.isEmpty ? "None" : interfaces)"
+                let results = path.availableInterfaces.map { NetworkInterfaceResult(id: $0.name, name: $0.name, type: String(describing: $0.type)) }
+                self?.interfaces = results
+                let names = results.map { "\($0.name) (\($0.type))" }.joined(separator: ", ")
+                self?.output = "Status: \(String(describing: path.status))\nExpensive: \(path.isExpensive)\nConstrained: \(path.isConstrained)\nInterfaces: \(names.isEmpty ? "None" : names)"
             }
         }
         monitor.start(queue: queue)
@@ -43,6 +52,7 @@ final class NetworkExperimentService: ObservableObject {
         monitor.cancel()
         #endif
         isMonitoring = false
+        interfaces = []
         output = "Network path monitoring stopped."
     }
 }
@@ -138,6 +148,7 @@ private extension CBManagerState {
 final class NFCExperimentService: NSObject, ObservableObject {
     @Published private(set) var output = "NFC tag reading is ready."
     @Published private(set) var isScanning = false
+    @Published private(set) var records: [NFCRecordResult] = []
     #if canImport(CoreNFC) && os(iOS)
     private var session: NFCNDEFReaderSession?
     #endif
@@ -145,6 +156,7 @@ final class NFCExperimentService: NSObject, ObservableObject {
     func start() {
         #if canImport(CoreNFC) && os(iOS)
         guard NFCNDEFReaderSession.readingAvailable else { output = "NFC reading is not available on this device."; return }
+        records.removeAll()
         let session = NFCNDEFReaderSession(delegate: self, queue: nil, invalidateAfterFirstRead: true)
         session.alertMessage = "Hold your iPhone near an NFC tag."
         self.session = session
@@ -161,7 +173,10 @@ final class NFCExperimentService: NSObject, ObservableObject {
 extension NFCExperimentService: NFCNDEFReaderSessionDelegate {
     func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
         let records = messages.flatMap(\.records)
-        output = "Detected \(messages.count) NDEF message(s)\nRecords: \(records.count)\n" + records.map { "Type: \($0.typeNameFormat.rawValue), payload: \($0.payload.count) bytes" }.joined(separator: "\n")
+        self.records = records.enumerated().map { index, record in
+            NFCRecordResult(id: index, format: record.typeNameFormat.rawValue, type: String(data: record.type, encoding: .utf8) ?? "Unknown", payloadBytes: record.payload.count)
+        }
+        output = "Detected \(messages.count) NDEF message(s) with \(records.count) record(s)."
         isScanning = false
     }
     func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
@@ -170,3 +185,10 @@ extension NFCExperimentService: NFCNDEFReaderSessionDelegate {
     }
 }
 #endif
+
+struct NFCRecordResult: Identifiable, Equatable {
+    let id: Int
+    let format: UInt8
+    let type: String
+    let payloadBytes: Int
+}

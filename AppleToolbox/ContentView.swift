@@ -161,6 +161,7 @@ struct ExperimentDetailView: View {
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("error") || output.localizedCaseInsensitiveContains("not available"))
                 } else if experiment.id == "network-path" {
                     Button(network.isMonitoring ? "Stop Network Monitor" : "Start Network Monitor") { network.isMonitoring ? network.stop() : network.start() }.buttonStyle(.borderedProminent)
+                    NetworkInterfacesView(interfaces: network.interfaces)
                     OutputView(text: network.output, isError: network.output.localizedCaseInsensitiveContains("not available"))
                 } else if experiment.id == "core-bluetooth" {
                     HStack {
@@ -171,6 +172,7 @@ struct ExperimentDetailView: View {
                     OutputView(text: bluetooth.output, isError: bluetooth.output.localizedCaseInsensitiveContains("not available") || bluetooth.output.localizedCaseInsensitiveContains("unauthorized"))
                 } else if experiment.id == "core-nfc" {
                     Button(nfc.isScanning ? "Scanning…" : "Scan NFC Tag", action: nfc.start).buttonStyle(.borderedProminent).disabled(nfc.isScanning)
+                    NFCRecordsView(records: nfc.records)
                     OutputView(text: nfc.output, isError: nfc.output.localizedCaseInsensitiveContains("not available") || nfc.output.localizedCaseInsensitiveContains("ended"))
                 } else if experiment.id == "camera-vision" {
                     Button(media.isRunning ? "Stop Camera & Vision" : "Start Camera & Vision") { media.isRunning ? media.stop() : media.start() }.buttonStyle(.borderedProminent)
@@ -362,6 +364,55 @@ private struct BluetoothResultsView: View {
                         .foregroundStyle(.secondary)
                     }
                     .padding(.vertical, 4)
+                }
+            }
+        }
+    }
+}
+
+private struct NetworkInterfacesView: View {
+    let interfaces: [NetworkInterfaceResult]
+
+    var body: some View {
+        Section("Available interfaces") {
+            if interfaces.isEmpty {
+                Text("Start the monitor to inspect the current network path.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(interfaces) { interface in
+                    Label {
+                        VStack(alignment: .leading) {
+                            Text(interface.name)
+                            Text(interface.type).font(.caption).foregroundStyle(.secondary)
+                        }
+                    } icon: {
+                        Image(systemName: interface.type.localizedCaseInsensitiveContains("wifi") ? "wifi" : "network")
+                    }
+                }
+            }
+        }
+    }
+}
+
+private struct NFCRecordsView: View {
+    let records: [NFCRecordResult]
+
+    var body: some View {
+        Section("NDEF records ((records.count))") {
+            if records.isEmpty {
+                Text("Scan a physical NFC tag to inspect its records.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(records) { record in
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(record.type)
+                            .font(.headline)
+                        Text("Format \(record.format) · Payload \(record.payloadBytes) bytes")
+                            .font(.caption.monospaced())
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
         }
