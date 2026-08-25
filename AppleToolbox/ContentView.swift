@@ -171,6 +171,12 @@ struct ExperimentDetailView: View {
                         Button("Schedule Test Notification", action: notifications.scheduleTestNotification).buttonStyle(.bordered)
                     }
                     OutputView(text: notifications.output, isError: notifications.output.localizedCaseInsensitiveContains("error") || notifications.output.localizedCaseInsensitiveContains("denied"))
+                } else if experiment.id == "app-attest" {
+                    OutputView(text: IdentitySecurityExperimentService.appAttestStatus(), isError: false)
+                } else if experiment.id == "passkeys" {
+                    OutputView(text: IdentitySecurityExperimentService.passkeyStatus(), isError: false)
+                } else if experiment.id == "sign-in-with-apple" {
+                    OutputView(text: IdentitySecurityExperimentService.signInWithAppleStatus(), isError: false)
                 } else if experiment.id == "widgetkit" {
                     OutputView(text: "WidgetKit extension is included in the iOS app.\nAdd “Apple Toolbox” from the Home Screen widget gallery.", isError: false)
                 } else if experiment.id == "nearby-interaction" {

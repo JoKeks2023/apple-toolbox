@@ -14,6 +14,7 @@
 		26516AF6B4AF0B92E9454DDD /* IndoorExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */; };
 		2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B980C3CB49C1F8123D7332FE /* WatchApp.swift */; };
 		2F0DA5944349E83E62C2BC95 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BFDA128F91D87755734120 /* LocationExperimentService.swift */; };
+		31186D7D3B032512CD8E91E0 /* IdentitySecurityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCDEE58AB23A44A8DAA3D49 /* IdentitySecurityServices.swift */; };
 		3D853BCC7FBF269FF532FC55 /* NearbyExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA737256039EE77698DB285C /* NearbyExperimentServices.swift */; };
 		4367F062F15F2162043DF56A /* AppleToolboxWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5875FE96A6C202C8E1644886 /* AppleToolboxWidget.swift */; };
 		45970B5B1E74E8CA88031D7A /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
@@ -27,6 +28,7 @@
 		69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		6BAC23922CAF79F26D0D3AD5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7038E16D7861010D524C6A0 /* ContentView.swift */; };
 		70DCF696D8C398C35582A0B1 /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
+		73FBDEEFAC66E893605D15A2 /* IdentitySecurityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCDEE58AB23A44A8DAA3D49 /* IdentitySecurityServices.swift */; };
 		7EB5E16B390A579D13F08EF9 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6341838527B1254170EB98B /* MotionExperimentService.swift */; };
 		8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */; };
 		8B87AAEF9DA9C6E84749E107 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4691BC4FB0542A9F48651C6D /* Foundation.framework */; };
@@ -115,6 +117,7 @@
 		AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationExperimentService.swift; path = AppleToolbox/Shared/Services/LocationExperimentService.swift; sourceTree = "<group>"; };
 		ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IndoorExperimentServices.swift; path = AppleToolbox/Shared/Services/IndoorExperimentServices.swift; sourceTree = "<group>"; };
 		AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MediaAvailabilityServices.swift; path = AppleToolbox/Shared/Services/MediaAvailabilityServices.swift; sourceTree = "<group>"; };
+		AFCDEE58AB23A44A8DAA3D49 /* IdentitySecurityServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IdentitySecurityServices.swift; path = AppleToolbox/Shared/Services/IdentitySecurityServices.swift; sourceTree = "<group>"; };
 		B7038E16D7861010D524C6A0 /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = AppleToolbox/ContentView.swift; sourceTree = "<group>"; };
 		B980C3CB49C1F8123D7332FE /* WatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchApp.swift; path = AppleToolbox/WatchApp/WatchApp.swift; sourceTree = "<group>"; };
 		BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentRegistry.swift; path = AppleToolbox/Shared/ExperimentRegistry/ExperimentRegistry.swift; sourceTree = "<group>"; };
@@ -276,6 +279,7 @@
 				49F6AA785AF459607AEC827E /* AIExperimentServices.swift */,
 				AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */,
 				5C041F896020A77B69B72580 /* HealthNotificationServices.swift */,
+				AFCDEE58AB23A44A8DAA3D49 /* IdentitySecurityServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -553,6 +557,7 @@
 				F118426398FB6D04E6035390 /* AIExperimentServices.swift in Sources */,
 				E395E65F9B94FCEE553C1DCA /* MediaAvailabilityServices.swift in Sources */,
 				8EC214171F1DEC0594DF6882 /* HealthNotificationServices.swift in Sources */,
+				31186D7D3B032512CD8E91E0 /* IdentitySecurityServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,6 +583,7 @@
 				AC9EDD2733A299C7EC70F94A /* AIExperimentServices.swift in Sources */,
 				ADF9091B6F51DFF8D8D3B85F /* MediaAvailabilityServices.swift in Sources */,
 				C08C990114221453FB6071CD /* HealthNotificationServices.swift in Sources */,
+				73FBDEEFAC66E893605D15A2 /* IdentitySecurityServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
