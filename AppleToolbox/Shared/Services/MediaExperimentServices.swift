@@ -1,17 +1,17 @@
 import Foundation
 import Combine
 
-#if canImport(AVFoundation) && (os(iOS) || os(macOS))
-import AVFoundation
-#if canImport(Vision)
-import Vision
-#endif
-
 struct VisionTextResult: Identifiable, Equatable {
     let id = UUID()
     let text: String
     let confidence: Double
 }
+
+#if canImport(AVFoundation) && (os(iOS) || os(macOS))
+import AVFoundation
+#if canImport(Vision)
+import Vision
+#endif
 #endif
 
 @MainActor
