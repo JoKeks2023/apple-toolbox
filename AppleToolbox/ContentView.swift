@@ -86,6 +86,8 @@ struct ExperimentDetailView: View {
     let experiment: ExperimentDescriptor
     @State private var output = "No run yet."
     @State private var isRunning = false
+    @State private var securityMessage = "Hello from Joris Apple Toolbox"
+    @State private var keychainValue = "A secret I chose to store"
     @StateObject private var location = LocationExperimentService()
     @StateObject private var motion = MotionExperimentService()
     @StateObject private var network = NetworkExperimentService()
@@ -114,8 +116,8 @@ struct ExperimentDetailView: View {
                 Text(experiment.description)
                 HStack { Text("Status"); Spacer(); StatusBadge(status: currentStatus) }
             }
-            if experiment.id == "multipeer-connectivity" {
-                UseCaseSection(useCase: ExperimentUseCaseCatalog.multipeerConnectivity)
+            if let useCase = ExperimentUseCaseCatalog.forExperimentID(experiment.id) {
+                UseCaseSection(useCase: useCase)
             }
             Section("Run") {
                 if experiment.id == "core-location" {
@@ -132,19 +134,29 @@ struct ExperimentDetailView: View {
                         .buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("error"))
                 } else if experiment.id == "cryptokit" {
-                    Button("Hash with SHA-256") { output = CryptoService.hash() }
-                    Button("Sign and Verify with P-256") { output = CryptoService.signAndVerify() }
+                    TextField("Message to hash or sign", text: $securityMessage)
+                    Button("Hash with SHA-256") { output = CryptoService.hash(message: securityMessage) }
+                    Button("Sign and Verify with P-256") { output = CryptoService.signAndVerify(message: securityMessage) }
                         .buttonStyle(.borderedProminent)
-                    Button("Run Complete Crypto Experiment") { output = CryptoService.run() }
+                    Button("Run Complete Crypto Experiment") { output = CryptoService.run(message: securityMessage) }
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("not available"))
                 } else if experiment.id == "keychain" {
+                    TextField("Value to store", text: $keychainValue)
                     HStack {
-                        Button("Save", action: { output = KeychainService.save() })
+                        Button("Save", action: { output = KeychainService.save(value: keychainValue) })
                         Button("Read", action: { output = KeychainService.read() })
                         Button("Delete", action: { output = KeychainService.delete() })
                     }
                     .buttonStyle(.borderedProminent)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available"))
+                } else if experiment.id == "secure-enclave" {
+                    TextField("Message to sign", text: $securityMessage)
+                    Button("Create key and sign message") {
+                        do { output = try SecureEnclaveService.run(message: securityMessage) }
+                        catch { output = "Error: \(error.localizedDescription)" }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    OutputView(text: output, isError: output.localizedCaseInsensitiveContains("error") || output.localizedCaseInsensitiveContains("not available"))
                 } else if experiment.id == "network-path" {
                     Button(network.isMonitoring ? "Stop Network Monitor" : "Start Network Monitor") { network.isMonitoring ? network.stop() : network.start() }.buttonStyle(.borderedProminent)
                     OutputView(text: network.output, isError: network.output.localizedCaseInsensitiveContains("not available"))

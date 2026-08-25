@@ -72,36 +72,38 @@ private extension LABiometryType {
 #endif
 
 struct CryptoService {
-    private static let message = Data("Joris Apple Toolbox · CryptoKit".utf8)
+    private static let defaultMessage = "Joris Apple Toolbox · CryptoKit"
 
-    static func hash() -> String {
+    static func hash(message: String = defaultMessage) -> String {
         #if canImport(CryptoKit)
-        let digest = SHA256.hash(data: message).map { String(format: "%02x", $0) }.joined()
-        return "Message: \(String(data: message, encoding: .utf8)!)\nSHA-256: \(digest)"
+        let data = Data(message.utf8)
+        let digest = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+        return "Message: \(message)\nSHA-256: \(digest)"
         #else
         return "CryptoKit is not available on this platform."
         #endif
     }
 
-    static func signAndVerify() -> String {
+    static func signAndVerify(message: String = defaultMessage) -> String {
         #if canImport(CryptoKit)
+        let data = Data(message.utf8)
         let key = P256.Signing.PrivateKey()
-        let signature = try? key.signature(for: message)
-        let verified = signature.map { (try? key.publicKey.isValidSignature($0, for: message)) == true } ?? false
-        return "P256 public key: \(key.publicKey.rawRepresentation.base64EncodedString())\nSignature bytes: \(signature?.rawRepresentation.count ?? 0)\nSignature verified: \(verified)"
+        let signature = try? key.signature(for: data)
+        let verified = signature.map { (try? key.publicKey.isValidSignature($0, for: data)) == true } ?? false
+        return "Message: \(message)\nP256 public key: \(key.publicKey.rawRepresentation.base64EncodedString())\nSignature bytes: \(signature?.rawRepresentation.count ?? 0)\nSignature verified: \(verified)"
         #else
         return "CryptoKit is not available on this platform."
         #endif
     }
 
-    static func run() -> String { "\(hash())\n\n\(signAndVerify())" }
+    static func run(message: String = defaultMessage) -> String { "\(hash(message: message))\n\n\(signAndVerify(message: message))" }
 }
 
 struct KeychainService {
     private static let account = "com.jorisconrad.appletoolbox.demo"
-    static func save() -> String {
+    static func save(value: String = "Keychain test · \(ISO8601DateFormatter().string(from: Date()))") -> String {
         #if canImport(Security)
-        let value = Data("Keychain test · \(ISO8601DateFormatter().string(from: Date()))".utf8)
+        let value = Data(value.utf8)
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrAccount as String: account]
         SecItemDelete(query as CFDictionary)
         var add = query
@@ -140,18 +142,18 @@ struct KeychainService {
     }
     #endif
 
-    static func run() -> String { "\(save())\n\(read())\n\(delete())" }
+    static func run(value: String = "Keychain test") -> String { "\(save(value: value))\n\(read())\n\(delete())" }
 }
 
 struct SecureEnclaveService {
-    static func run() throws -> String {
+    static func run(message: String = "Secure Enclave test") throws -> String {
         #if canImport(CryptoKit)
         guard SecureEnclave.isAvailable else { throw ExperimentServiceError.unavailable("This device or simulator does not provide a Secure Enclave.") }
         let key = try SecureEnclave.P256.Signing.PrivateKey()
-        let message = Data("Secure Enclave test".utf8)
-        let signature = try key.signature(for: message)
-        let verified = key.publicKey.isValidSignature(signature, for: message)
-        return "Non-exportable key created\nPublic key: \(key.publicKey.rawRepresentation.base64EncodedString())\nSignature verified: \(verified)"
+        let data = Data(message.utf8)
+        let signature = try key.signature(for: data)
+        let verified = key.publicKey.isValidSignature(signature, for: data)
+        return "Message: \(message)\nNon-exportable key created\nPublic key: \(key.publicKey.rawRepresentation.base64EncodedString())\nSignature verified: \(verified)"
         #else
         throw ExperimentServiceError.unavailable("CryptoKit is not available on this platform.")
         #endif

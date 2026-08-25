@@ -119,6 +119,22 @@ struct ExperimentUseCase: Identifiable {
 }
 
 enum ExperimentUseCaseCatalog {
+    static let cryptoKit = ExperimentUseCase(id: "crypto-message", title: "Sign a message", summary: "Use CryptoKit to hash and sign text that you choose.", interaction: "Enter a message, then run hashing or signing and inspect the live output.")
+    static let keychain = ExperimentUseCase(id: "keychain-value", title: "Store a secret", summary: "Use the Keychain as a small persistent credential store.", interaction: "Enter a value, save it, read it back, and delete it again.")
+    static let secureEnclave = ExperimentUseCase(id: "secure-enclave-signature", title: "Sign with hardware-backed storage", summary: "Create a non-exportable Secure Enclave key and sign your own message.", interaction: "Enter a message and run the signing flow; the private key never leaves the enclave.")
+    static let localAuthentication = ExperimentUseCase(id: "biometric-gate", title: "Protect an action", summary: "Use the device owner authentication policy before releasing a result.", interaction: "Run authentication and inspect the real biometric or passcode outcome.")
+
+    static func forExperimentID(_ id: String) -> ExperimentUseCase? {
+        switch id {
+        case "cryptokit": cryptoKit
+        case "keychain": keychain
+        case "secure-enclave": secureEnclave
+        case "localauthentication": localAuthentication
+        case "multipeer-connectivity": multipeerConnectivity
+        default: nil
+        }
+    }
+
     static let multipeerConnectivity = ExperimentUseCase(
         id: "multipeer-messaging",
         title: "Nearby device messaging",
