@@ -131,8 +131,13 @@ enum ExperimentUseCaseCatalog {
         case "secure-enclave": secureEnclave
         case "localauthentication": localAuthentication
         case "multipeer-connectivity": multipeerConnectivity
-        default: nil
-        }
+        default: ExperimentUseCase(
+            id: "inspect-\(id)",
+            title: "Try the real API",
+            summary: "Run this experiment against the current device and inspect the result returned by Apple’s public framework.",
+            interaction: "Use the action below to query availability or start the experiment. Unsupported and permission states remain visible."
+        )
+    }
     }
 
     static let multipeerConnectivity = ExperimentUseCase(

@@ -183,22 +183,26 @@ struct ExperimentDetailView: View {
                     Button("Refresh Homes and Accessories", action: home.refresh).buttonStyle(.borderedProminent)
                     OutputView(text: home.output, isError: home.status == .unavailable)
                 } else if experiment.id == "matter-status" {
-                    OutputView(text: MatterExperimentService.statusText(), isError: false)
+                    Button("Inspect Matter Availability") { output = MatterExperimentService.statusText() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? MatterExperimentService.statusText() : output, isError: false)
                 } else if experiment.id == "continuity" {
                     Button("Activate WatchConnectivity", action: continuity.activate).buttonStyle(.borderedProminent)
                     OutputView(text: continuity.output, isError: continuity.output.localizedCaseInsensitiveContains("error"))
                 } else if experiment.id == "app-intents" {
-                    OutputView(text: "App Intent registered: ToolboxStatusIntent\nUse Siri or Shortcuts to discover it.", isError: false)
+                    Button("Refresh App Intents Report") { output = "App Intent registered: ToolboxStatusIntent\nUse Siri or Shortcuts to discover it." }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? "Use the button to inspect the registered App Intent." : output, isError: false)
                 } else if experiment.id == "natural-language" {
                     Button("Analyze Sample Text", action: ai.analyze).buttonStyle(.borderedProminent)
                     OutputView(text: ai.output, isError: false)
                 } else if experiment.id == "foundation-models" {
-                    OutputView(text: FoundationModelsExperimentService.statusText(), isError: false)
+                    Button("Check Foundation Models Availability") { output = FoundationModelsExperimentService.statusText() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? FoundationModelsExperimentService.statusText() : output, isError: false)
                 } else if experiment.id == "healthkit-status" {
                     Button("Request HealthKit Read Authorization", action: health.requestReadAuthorization).buttonStyle(.borderedProminent)
                     OutputView(text: health.output, isError: health.output.localizedCaseInsensitiveContains("error") || health.output.localizedCaseInsensitiveContains("not available") || health.output.localizedCaseInsensitiveContains("denied"))
                 } else if experiment.id == "wallet-status" {
-                    OutputView(text: WalletExperimentService.statusText(), isError: false)
+                    Button("Inspect Wallet Capability") { output = WalletExperimentService.statusText() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? WalletExperimentService.statusText() : output, isError: false)
                 } else if experiment.id == "wallet-creator" {
                     TextField("Pass name", text: $walletCreator.passName)
                     TextField("Organization", text: $walletCreator.organizationName)
@@ -217,16 +221,20 @@ struct ExperimentDetailView: View {
                     }
                     OutputView(text: notifications.output, isError: notifications.output.localizedCaseInsensitiveContains("error") || notifications.output.localizedCaseInsensitiveContains("denied"))
                 } else if experiment.id == "app-attest" {
-                    OutputView(text: IdentitySecurityExperimentService.appAttestStatus(), isError: false)
+                    Button("Check App Attest Boundary") { output = IdentitySecurityExperimentService.appAttestStatus() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? "Press the button to inspect App Attest support." : output, isError: false)
                 } else if experiment.id == "passkeys" {
-                    OutputView(text: IdentitySecurityExperimentService.passkeyStatus(), isError: false)
+                    Button("Check Passkey Configuration") { output = IdentitySecurityExperimentService.passkeyStatus() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? "Press the button to inspect the passkey boundary." : output, isError: false)
                 } else if experiment.id == "sign-in-with-apple" {
-                    OutputView(text: IdentitySecurityExperimentService.signInWithAppleStatus(), isError: false)
+                    Button("Check Sign in with Apple") { output = IdentitySecurityExperimentService.signInWithAppleStatus() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? "Press the button to inspect Sign in with Apple requirements." : output, isError: false)
                 } else if experiment.id == "capability-explorer" {
                     Button("Refresh Device and Capability Report", action: { output = CapabilityExplorerService.report() }).buttonStyle(.borderedProminent)
                     OutputView(text: output, isError: false)
                 } else if experiment.id == "widgetkit" {
-                    OutputView(text: "WidgetKit extension is included in the iOS app.\nAdd “Apple Toolbox” from the Home Screen widget gallery.", isError: false)
+                    Button("Inspect Widget Extension") { output = "WidgetKit extension is included in the iOS app.\nAdd “Apple Toolbox” from the Home Screen widget gallery." }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? "Press the button to inspect the WidgetKit experiment." : output, isError: false)
                 } else if experiment.id == "nearby-interaction" {
                     if nearby.isRunning {
                         Button("Stop Nearby Interaction", action: nearby.stop).buttonStyle(.borderedProminent)
@@ -247,22 +255,27 @@ struct ExperimentDetailView: View {
                     }
                     OutputView(text: ar.output, isError: ar.output.localizedCaseInsensitiveContains("error") || ar.output.localizedCaseInsensitiveContains("not supported"))
                 } else if experiment.id == "roomplan" {
-                    OutputView(text: RoomPlanExperimentService.statusText(), isError: false)
+                    Button("Check RoomPlan Hardware") { output = RoomPlanExperimentService.statusText() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? RoomPlanExperimentService.statusText() : output, isError: false)
                 } else if experiment.id == "speech" {
                     if speech.isRunning { Button("Stop Speech Recognition", action: speech.stop).buttonStyle(.borderedProminent) }
                     else { Button("Start Speech Recognition", action: speech.start).buttonStyle(.borderedProminent) }
                     OutputView(text: speech.output, isError: speech.output.localizedCaseInsensitiveContains("error") || speech.output.localizedCaseInsensitiveContains("denied"))
                 } else if experiment.id == "core-ml" {
-                    OutputView(text: AIAvailabilityExperimentService.coreMLStatus(), isError: false)
+                    Button("Inspect Core ML Availability") { output = AIAvailabilityExperimentService.coreMLStatus() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? "Press the button to inspect Core ML." : output, isError: false)
                 } else if experiment.id == "translation" {
-                    OutputView(text: AIAvailabilityExperimentService.translationStatus(), isError: false)
+                    Button("Inspect Translation Availability") { output = AIAvailabilityExperimentService.translationStatus() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? "Press the button to inspect Translation." : output, isError: false)
                 } else if experiment.id == "sound-analysis" {
-                    OutputView(text: AIAvailabilityExperimentService.soundAnalysisStatus(), isError: false)
+                    Button("Inspect Sound Analysis") { output = AIAvailabilityExperimentService.soundAnalysisStatus() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? "Press the button to inspect Sound Analysis." : output, isError: false)
                 } else if experiment.id == "musickit" {
                     Button("Request MusicKit Authorization", action: music.requestAuthorization).buttonStyle(.borderedProminent)
                     OutputView(text: music.output, isError: music.output.localizedCaseInsensitiveContains("denied") || music.output.localizedCaseInsensitiveContains("restricted"))
                 } else if experiment.id == "shazamkit" {
-                    OutputView(text: ShazamExperimentService.statusText(), isError: false)
+                    Button("Check ShazamKit Session") { output = ShazamExperimentService.statusText() }.buttonStyle(.borderedProminent)
+                    OutputView(text: output == "No run yet." ? "Press the button to inspect ShazamKit." : output, isError: false)
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))
