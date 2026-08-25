@@ -14,7 +14,9 @@ final class LocationExperimentService: NSObject, ObservableObject {
     #if canImport(CoreLocation)
     private let manager = CLLocationManager()
     private var latestLocation: CLLocation?
+    #if !os(tvOS)
     private var latestHeading: CLHeading?
+    #endif
     #endif
 
     override init() {
@@ -34,7 +36,7 @@ final class LocationExperimentService: NSObject, ObservableObject {
     }
 
     func start() {
-        #if canImport(CoreLocation)
+        #if canImport(CoreLocation) && !os(tvOS)
         #if os(macOS)
         let authorized = manager.authorizationStatus == .authorizedAlways
         #else
@@ -47,16 +49,18 @@ final class LocationExperimentService: NSObject, ObservableObject {
         }
         isUpdating = true
         manager.startUpdatingLocation()
+        #if !os(tvOS)
         if CLLocationManager.headingAvailable() {
             manager.startUpdatingHeading()
         }
+        #endif
         #else
         output = "Core Location is not available on this platform."
         #endif
     }
 
     func stop() {
-        #if canImport(CoreLocation)
+        #if canImport(CoreLocation) && !os(tvOS)
         manager.stopUpdatingLocation()
         #if !os(macOS)
         manager.stopUpdatingHeading()
@@ -96,15 +100,21 @@ final class LocationExperimentService: NSObject, ObservableObject {
         guard let location = locations.last else { return }
         latestLocation = location
         let coordinate = String(format: "%.6f, %.6f", location.coordinate.latitude, location.coordinate.longitude)
+        #if os(tvOS)
+        let heading: Double? = nil
+        #else
         let heading = latestHeading.map { $0.trueHeading >= 0 ? $0.trueHeading : $0.magneticHeading }
+        #endif
         output = "Coordinate: \(coordinate)\nAccuracy: \(location.horizontalAccuracy.formatted(.number.precision(.fractionLength(1)))) m\nAltitude: \(location.altitude.formatted(.number.precision(.fractionLength(1)))) m\nSpeed: \(location.speed >= 0 ? location.speed.formatted(.number.precision(.fractionLength(1))) + " m/s" : "Unknown")\nCourse: \(location.course >= 0 ? location.course.formatted(.number.precision(.fractionLength(1))) + "°" : "Unknown")\nHeading: \(heading.map { $0.formatted(.number.precision(.fractionLength(1))) + "°" } ?? "Unknown")"
     }
 
+    #if !os(tvOS)
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         latestHeading = newHeading
         guard let latestLocation else { return }
         locationManager(manager, didUpdateLocations: [latestLocation])
     }
+    #endif
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         output = "Location error: \(error.localizedDescription)"

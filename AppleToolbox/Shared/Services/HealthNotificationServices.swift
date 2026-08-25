@@ -48,7 +48,7 @@ final class NotificationExperimentService: ObservableObject {
     }
 
     func scheduleTestNotification() {
-        #if canImport(UserNotifications)
+        #if canImport(UserNotifications) && !os(tvOS)
         let content = UNMutableNotificationContent()
         content.title = "Apple Toolbox"
         content.body = "This notification came from the real UserNotifications API."

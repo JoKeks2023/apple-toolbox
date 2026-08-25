@@ -226,7 +226,7 @@ struct ExperimentDetailView: View {
         }
         .navigationTitle(experiment.name)
         .task { output = initialStatusMessage }
-        #if canImport(UniformTypeIdentifiers)
+        #if canImport(UniformTypeIdentifiers) && !os(tvOS)
         .fileImporter(isPresented: $showingIMDFImporter, allowedContentTypes: [.json], allowsMultipleSelection: false) { result in
             if case .success(let urls) = result, let url = urls.first { indoor.load(url: url) }
             if case .failure(let error) = result { output = "File import error: \(error.localizedDescription)" }
@@ -281,7 +281,13 @@ private struct RequirementsView: View {
 private struct RequirementLine: View { let title: String; let value: String; var body: some View { LabeledContent(title, value: value) } }
 private struct OutputView: View {
     let text: String; let isError: Bool
-    var body: some View { Text(text).font(.system(.body, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading).padding(12).background((isError ? Color.red : Color.secondary).opacity(0.1), in: RoundedRectangle(cornerRadius: 10)) }
+    var body: some View {
+        #if os(tvOS)
+        Text(text).font(.system(.body, design: .monospaced)).frame(maxWidth: .infinity, alignment: .leading).padding(12).background((isError ? Color.red : Color.secondary).opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
+        #else
+        Text(text).font(.system(.body, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading).padding(12).background((isError ? Color.red : Color.secondary).opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
+        #endif
+    }
 }
 private struct StatusBadge: View {
     let status: ExperimentStatus
