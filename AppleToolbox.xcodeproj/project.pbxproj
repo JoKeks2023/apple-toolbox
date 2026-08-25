@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		01841B06D7B180262FF5CEA4 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2879F1D49212E98DB2D386 /* MotionExperimentService.swift */; };
+		15882EB002496A70E298D8D6 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
 		20B9764A8DC5824AF307B483 /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56858954E5E0944457C887E7 /* CapabilityInspector.swift */; };
 		2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B980C3CB49C1F8123D7332FE /* WatchApp.swift */; };
 		2F0DA5944349E83E62C2BC95 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BFDA128F91D87755734120 /* LocationExperimentService.swift */; };
@@ -20,6 +21,7 @@
 		7EB5E16B390A579D13F08EF9 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6341838527B1254170EB98B /* MotionExperimentService.swift */; };
 		8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */; };
 		8C61E5E3F42FE1E43DB3FE6F /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16267023E26A916BA5DC5D26 /* ExperimentServices.swift */; };
+		91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
 		A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		C06E0D233CB35A8B959B5923 /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */; };
 		C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */; };
@@ -63,6 +65,7 @@
 		72488DD19EEE0B1FB51ECCF0 /* ExperimentModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentModels.swift; path = AppleToolbox/Shared/Models/ExperimentModels.swift; sourceTree = "<group>"; };
 		7C1C9A39A25D48656AA850C5 /* AppleToolbox watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B7955456D2F8B46EF0B18FF /* ExperimentRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentRegistry.swift; path = AppleToolbox/Shared/ExperimentRegistry/ExperimentRegistry.swift; sourceTree = "<group>"; };
+		A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapsHomeServices.swift; path = AppleToolbox/Shared/Services/MapsHomeServices.swift; sourceTree = "<group>"; };
 		AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationExperimentService.swift; path = AppleToolbox/Shared/Services/LocationExperimentService.swift; sourceTree = "<group>"; };
 		B7038E16D7861010D524C6A0 /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = AppleToolbox/ContentView.swift; sourceTree = "<group>"; };
 		B980C3CB49C1F8123D7332FE /* WatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchApp.swift; path = AppleToolbox/WatchApp/WatchApp.swift; sourceTree = "<group>"; };
@@ -195,6 +198,7 @@
 				26C2310F800CD115CE32E91B /* Assets.xcassets */,
 				CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */,
 				E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */,
+				A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -434,6 +438,7 @@
 				01841B06D7B180262FF5CEA4 /* MotionExperimentService.swift in Sources */,
 				A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */,
 				D7D5FFADFBF55D38047A9437 /* MediaExperimentServices.swift in Sources */,
+				91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +455,7 @@
 				2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */,
 				69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */,
 				8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */,
+				15882EB002496A70E298D8D6 /* MapsHomeServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

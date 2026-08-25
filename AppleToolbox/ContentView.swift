@@ -77,6 +77,8 @@ struct ExperimentDetailView: View {
     @StateObject private var nfc = NFCExperimentService()
     @StateObject private var media = CameraVisionExperimentService()
     @StateObject private var audio = AudioExperimentService()
+    @StateObject private var maps = MapExperimentService()
+    @StateObject private var home = HomeExperimentService()
 
     var body: some View {
         List {
@@ -127,6 +129,14 @@ struct ExperimentDetailView: View {
                 } else if experiment.id == "audio-input" {
                     Button(audio.isRunning ? "Stop Audio Input" : "Start Audio Input") { audio.isRunning ? audio.stop() : audio.start() }.buttonStyle(.borderedProminent)
                     OutputView(text: audio.output, isError: audio.status != .available)
+                } else if experiment.id == "mapkit-search" {
+                    Button(maps.isSearching ? "Searching…" : "Search Apple Store Locations", action: maps.search).buttonStyle(.borderedProminent).disabled(maps.isSearching)
+                    OutputView(text: maps.output, isError: maps.output.localizedCaseInsensitiveContains("error") || maps.output.localizedCaseInsensitiveContains("not available"))
+                } else if experiment.id == "homekit-discovery" {
+                    Button("Refresh Homes and Accessories", action: home.refresh).buttonStyle(.borderedProminent)
+                    OutputView(text: home.output, isError: home.status == .unavailable)
+                } else if experiment.id == "matter-status" {
+                    OutputView(text: MatterExperimentService.statusText(), isError: false)
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))
