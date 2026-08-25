@@ -18,5 +18,11 @@
 	<string>Joris Apple Toolbox discovers homes and accessories for the HomeKit experiment.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>Joris Apple Toolbox reads step count only when you explicitly authorize the HealthKit experiment.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Joris Apple Toolbox discovers nearby devices for the MultipeerConnectivity experiment.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_apple-toolbox._tcp</string>
+	</array>
 </dict>
 </plist>

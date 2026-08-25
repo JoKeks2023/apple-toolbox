@@ -110,3 +110,19 @@ struct ExperimentResult: Identifiable {
     let text: String
     let isError: Bool
 }
+
+struct ExperimentUseCase: Identifiable {
+    let id: String
+    let title: String
+    let summary: String
+    let interaction: String
+}
+
+enum ExperimentUseCaseCatalog {
+    static let multipeerConnectivity = ExperimentUseCase(
+        id: "multipeer-messaging",
+        title: "Nearby device messaging",
+        summary: "Turn two Apple devices into a small local playground without a server or internet connection.",
+        interaction: "Start discovery on both devices, accept the connection, then send a message between them."
+    )
+}

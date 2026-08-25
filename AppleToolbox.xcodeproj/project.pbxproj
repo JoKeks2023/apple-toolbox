@@ -714,6 +714,7 @@
 				4D783256C87C8B34D7D8D555 /* MediaExperimentServices.swift in Sources */,
 				8DD9C5B838BB612227F681DF /* MotionExperimentService.swift in Sources */,
 				A6817680AE6E75A09D605F5B /* NearbyExperimentServices.swift in Sources */,
+				0B3E573977E1BACB4B5F63EE /* WalletPassCreatorService.swift in Sources */,
 				8C5B6EA5CE0075EC1360BB75 /* SpatialExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

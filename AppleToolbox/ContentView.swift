@@ -98,6 +98,7 @@ struct ExperimentDetailView: View {
     @StateObject private var continuity = ContinuityExperimentService()
     @StateObject private var ai = AIExperimentService()
     @StateObject private var nearby = NearbyExperimentService()
+    @StateObject private var multipeer = MultipeerConnectivityExperimentService()
     @StateObject private var indoor = IndoorIMDFExperimentService()
     @StateObject private var ar = ARExperimentService()
     @StateObject private var speech = SpeechExperimentService()
@@ -112,6 +113,9 @@ struct ExperimentDetailView: View {
             Section {
                 Text(experiment.description)
                 HStack { Text("Status"); Spacer(); StatusBadge(status: currentStatus) }
+            }
+            if experiment.id == "multipeer-connectivity" {
+                UseCaseSection(useCase: ExperimentUseCaseCatalog.multipeerConnectivity)
             }
             Section("Run") {
                 if experiment.id == "core-location" {
@@ -184,9 +188,11 @@ struct ExperimentDetailView: View {
                     TextField("Organization", text: $walletCreator.organizationName)
                     TextField("Serial number", text: $walletCreator.serialNumber)
                     Button("Create Wallet Pass Draft", action: walletCreator.createDraft).buttonStyle(.borderedProminent)
+                    #if !os(tvOS)
                     if let draftURL = walletCreator.draftURL {
                         ShareLink(item: draftURL) { Label("Share pass.json draft", systemImage: "square.and.arrow.up") }
                     }
+                    #endif
                     OutputView(text: walletCreator.output, isError: walletCreator.output.localizedCaseInsensitiveContains("could not"))
                 } else if experiment.id == "notifications" {
                     HStack {
@@ -212,6 +218,8 @@ struct ExperimentDetailView: View {
                         Button("Inspect Nearby Interaction", action: nearby.start).buttonStyle(.borderedProminent)
                     }
                     OutputView(text: nearby.output, isError: nearby.output.localizedCaseInsensitiveContains("error") || nearby.output.localizedCaseInsensitiveContains("not supported"))
+                } else if experiment.id == "multipeer-connectivity" {
+                    MultipeerUseCaseView(service: multipeer)
                 } else if experiment.id == "indoor-imdf" {
                     Button("Import IMDF JSON", action: { showingIMDFImporter = true }).buttonStyle(.borderedProminent)
                     OutputView(text: indoor.output, isError: indoor.status == .unavailable)
@@ -284,6 +292,45 @@ struct ExperimentDetailView: View {
             } catch { output = "Error: \(error.localizedDescription)" }
             isRunning = false
         }
+    }
+}
+
+private struct UseCaseSection: View {
+    let useCase: ExperimentUseCase
+
+    var body: some View {
+        Section("Try it") {
+            Label(useCase.title, systemImage: "play.circle")
+                .font(.headline)
+            Text(useCase.summary)
+            Text(useCase.interaction)
+                .foregroundStyle(.secondary)
+        }
+    }
+}
+
+private struct MultipeerUseCaseView: View {
+    @ObservedObject var service: MultipeerConnectivityExperimentService
+    @State private var message = "Hello from Apple Toolbox"
+
+    var body: some View {
+        if service.isRunning {
+            LabeledContent("Connected peers", value: service.connectedPeers.isEmpty ? "None yet" : service.connectedPeers.joined(separator: ", "))
+            if !service.discoveredPeers.isEmpty {
+                LabeledContent("Discovered peers", value: service.discoveredPeers.joined(separator: ", "))
+            }
+            TextField("Message to send", text: $message)
+            HStack {
+                Button("Send to connected peers") { service.send(message: message) }
+                    .buttonStyle(.borderedProminent)
+                Button("Stop", action: service.stop)
+                    .buttonStyle(.bordered)
+            }
+        } else {
+            Button("Discover nearby devices", action: service.start)
+                .buttonStyle(.borderedProminent)
+        }
+        OutputView(text: service.output, isError: service.output.localizedCaseInsensitiveContains("could not") || service.output.localizedCaseInsensitiveContains("not supported") || service.output.localizedCaseInsensitiveContains("no connected"))
     }
 }
 

@@ -1,5 +1,5 @@
 import Foundation
-#if canImport(LocalAuthentication) && !os(watchOS)
+#if canImport(LocalAuthentication) && !os(watchOS) && !os(tvOS)
 import LocalAuthentication
 #endif
 #if canImport(CoreMotion)
@@ -16,7 +16,7 @@ struct DeviceCapabilities {
     let location: Bool
 
     static var current: DeviceCapabilities {
-        #if canImport(LocalAuthentication) && !os(watchOS)
+        #if canImport(LocalAuthentication) && !os(watchOS) && !os(tvOS)
         let context = LAContext()
         var error: NSError?
         let canEvaluate = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)

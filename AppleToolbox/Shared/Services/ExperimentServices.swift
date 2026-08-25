@@ -19,7 +19,7 @@ enum ExperimentServiceError: LocalizedError {
 
 struct AuthenticationService {
     static func availability() -> String {
-        #if canImport(LocalAuthentication) && !os(watchOS)
+        #if canImport(LocalAuthentication) && !os(watchOS) && !os(tvOS)
         let context = LAContext()
         var error: NSError?
         let available = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
@@ -30,7 +30,7 @@ struct AuthenticationService {
     }
 
     static func authenticate() async throws -> String {
-        #if canImport(LocalAuthentication) && !os(watchOS)
+        #if canImport(LocalAuthentication) && !os(watchOS) && !os(tvOS)
         let context = LAContext()
         var biometricError: NSError?
         let biometricAvailable = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &biometricError)
@@ -63,7 +63,7 @@ struct AuthenticationService {
     }
 }
 
-#if canImport(LocalAuthentication)
+#if canImport(LocalAuthentication) && !os(tvOS)
 private extension LABiometryType {
     var displayName: String {
         switch self { case .faceID: "Face ID"; case .touchID: "Touch ID"; default: "passcode / device authentication" }

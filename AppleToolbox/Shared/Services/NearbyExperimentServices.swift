@@ -5,8 +5,25 @@ import Combine
 import NearbyInteraction
 #endif
 
-#if canImport(MultipeerConnectivity) && os(iOS)
+#if !canImport(MultipeerConnectivity) || os(watchOS) || os(tvOS)
+@MainActor
+final class MultipeerConnectivityExperimentService: ObservableObject {
+    @Published private(set) var output = "MultipeerConnectivity is not supported on this platform."
+    @Published private(set) var isRunning = false
+    @Published private(set) var connectedPeers: [String] = []
+    @Published private(set) var discoveredPeers: [String] = []
+
+    func start() { output = "MultipeerConnectivity is not supported on this platform." }
+    func stop() { output = "MultipeerConnectivity is not supported on this platform." }
+    func send(message: String) { output = "MultipeerConnectivity is not supported on this platform." }
+}
+#endif
+
+#if canImport(MultipeerConnectivity) && !os(watchOS) && !os(tvOS)
 import MultipeerConnectivity
+#if canImport(UIKit)
+import UIKit
+#endif
 #endif
 
 @MainActor
@@ -166,6 +183,130 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
 #endif
 
 #if canImport(MultipeerConnectivity) && os(iOS)
+#endif
+
+#if canImport(MultipeerConnectivity) && !os(watchOS) && !os(tvOS)
+@MainActor
+final class MultipeerConnectivityExperimentService: NSObject, ObservableObject {
+    @Published private(set) var output = "Ready to discover nearby Apple Toolbox peers."
+    @Published private(set) var isRunning = false
+    @Published private(set) var connectedPeers: [String] = []
+    @Published private(set) var discoveredPeers: [String] = []
+
+    private let peerID: MCPeerID
+    private var session: MCSession?
+    private var advertiser: MCNearbyServiceAdvertiser?
+    private var browser: MCNearbyServiceBrowser?
+
+    override init() {
+        #if os(macOS)
+        let displayName = Host.current().localizedName ?? "Mac"
+        #else
+        let displayName = UIDevice.current.name
+        #endif
+        peerID = MCPeerID(displayName: displayName)
+        super.init()
+    }
+
+    func start() {
+        guard !isRunning else { return }
+        let session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
+        session.delegate = self
+        self.session = session
+
+        let advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: ["app": "apple-toolbox"], serviceType: "apple-toolbox")
+        advertiser.delegate = self
+        advertiser.startAdvertisingPeer()
+        self.advertiser = advertiser
+
+        let browser = MCNearbyServiceBrowser(peer: peerID, serviceType: "apple-toolbox")
+        browser.delegate = self
+        browser.startBrowsingForPeers()
+        self.browser = browser
+
+        isRunning = true
+        output = "Advertising as \(peerID.displayName) and browsing for nearby peers.\n\nStart this experiment on another Apple Toolbox device to connect."
+    }
+
+    func stop() {
+        advertiser?.stopAdvertisingPeer()
+        browser?.stopBrowsingForPeers()
+        session?.disconnect()
+        advertiser = nil
+        browser = nil
+        session = nil
+        isRunning = false
+        connectedPeers = []
+        discoveredPeers = []
+        output = "MultipeerConnectivity session stopped."
+    }
+
+    func send(message: String) {
+        let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            output = "Enter a message before sending."
+            return
+        }
+        guard let session, !session.connectedPeers.isEmpty else {
+            output = "No connected peer. Start the experiment on another device first."
+            return
+        }
+        do {
+            try session.send(Data(trimmed.utf8), toPeers: session.connectedPeers, with: .reliable)
+            output = "Sent to \(session.connectedPeers.map(\.displayName).joined(separator: ", ")):\n\(trimmed)"
+        } catch {
+            output = "Could not send message: \(error.localizedDescription)"
+        }
+    }
+}
+
+extension MultipeerConnectivityExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate {
+    nonisolated func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        Task { @MainActor [weak self] in
+            self?.connectedPeers = session.connectedPeers.map(\.displayName)
+            self?.output = "Peer \(peerID.displayName): \(state.title).\nConnected peers: \(session.connectedPeers.count)"
+        }
+    }
+
+    nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        let message = String(decoding: data, as: UTF8.self)
+        Task { @MainActor [weak self] in self?.output = "Received from \(peerID.displayName):\n\(message)" }
+    }
+
+    nonisolated func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {}
+    nonisolated func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {}
+    nonisolated func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {}
+
+    nonisolated func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        Task { @MainActor [weak self] in invitationHandler(true, self?.session) }
+    }
+
+    nonisolated func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
+        Task { @MainActor [weak self] in self?.output = "Could not advertise: \(error.localizedDescription)" }
+    }
+
+    nonisolated func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        Task { @MainActor [weak self] in
+            guard let self, !discoveredPeers.contains(peerID.displayName) else { return }
+            discoveredPeers.append(peerID.displayName)
+            guard let session else { return }
+            browser.invitePeer(peerID, to: session, withContext: nil, timeout: 15)
+            output = "Found \(peerID.displayName). Sending connection invitation…"
+        }
+    }
+
+    nonisolated func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        Task { @MainActor [weak self] in
+            self?.discoveredPeers.removeAll { $0 == peerID.displayName }
+            self?.output = "Peer left discovery: \(peerID.displayName)."
+        }
+    }
+
+    nonisolated func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
+        Task { @MainActor [weak self] in self?.output = "Could not browse for peers: \(error.localizedDescription)" }
+    }
+}
+
 private extension MCSessionState {
     var title: String {
         switch self {
