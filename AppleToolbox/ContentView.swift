@@ -183,10 +183,13 @@ struct ExperimentDetailView: View {
                     AudioMeterView(audio: audio)
                     OutputView(text: audio.output, isError: audio.status != .available)
                 } else if experiment.id == "mapkit-search" {
-                    Button(maps.isSearching ? "Searching…" : "Search Apple Store Locations", action: maps.search).buttonStyle(.borderedProminent).disabled(maps.isSearching)
+                    TextField("Search places", text: $maps.query)
+                    Button(maps.isSearching ? "Searching…" : "Search", action: maps.search).buttonStyle(.borderedProminent).disabled(maps.isSearching || maps.query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    MapResultsView(results: maps.results)
                     OutputView(text: maps.output, isError: maps.output.localizedCaseInsensitiveContains("error") || maps.output.localizedCaseInsensitiveContains("not available"))
                 } else if experiment.id == "homekit-discovery" {
                     Button("Refresh Homes and Accessories", action: home.refresh).buttonStyle(.borderedProminent)
+                    HomeResultsView(homes: home.homes)
                     OutputView(text: home.output, isError: home.status == .unavailable)
                 } else if experiment.id == "matter-status" {
                     Button("Inspect Matter Availability") { output = MatterExperimentService.statusText() }.buttonStyle(.borderedProminent)
@@ -413,6 +416,53 @@ private struct VisionResultsView: View {
                         Spacer()
                         Text("\(Int(result.confidence * 100))%")
                             .font(.caption.monospacedDigit())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
+    }
+}
+
+private struct MapResultsView: View {
+    let results: [MapSearchResult]
+
+    var body: some View {
+        Section("Map results ((results.count))") {
+            if results.isEmpty {
+                Text("Search for a place to inspect real MKMapItem results.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(results) { result in
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label(result.name, systemImage: "mappin.and.ellipse")
+                            .font(.headline)
+                        if !result.address.isEmpty { Text(result.address).font(.subheadline) }
+                        Text(result.coordinate).font(.caption.monospaced()).foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
+    }
+}
+
+private struct HomeResultsView: View {
+    let homes: [HomeSummary]
+
+    var body: some View {
+        Section("HomeKit homes ((homes.count))") {
+            if homes.isEmpty {
+                Text("Refresh to inspect homes shared with this device.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(homes) { home in
+                    HStack {
+                        Label(home.name, systemImage: "house")
+                        Spacer()
+                        Text("\(home.rooms) rooms · \(home.accessories) accessories")
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                 }
