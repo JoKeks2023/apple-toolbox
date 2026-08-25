@@ -88,6 +88,7 @@ struct ExperimentDetailView: View {
     @StateObject private var indoor = IndoorIMDFExperimentService()
     @StateObject private var ar = ARExperimentService()
     @StateObject private var speech = SpeechExperimentService()
+    @StateObject private var music = MusicExperimentService()
     @State private var showingIMDFImporter = false
 
     var body: some View {
@@ -192,6 +193,11 @@ struct ExperimentDetailView: View {
                     OutputView(text: AIAvailabilityExperimentService.translationStatus(), isError: false)
                 } else if experiment.id == "sound-analysis" {
                     OutputView(text: AIAvailabilityExperimentService.soundAnalysisStatus(), isError: false)
+                } else if experiment.id == "musickit" {
+                    Button("Request MusicKit Authorization", action: music.requestAuthorization).buttonStyle(.borderedProminent)
+                    OutputView(text: music.output, isError: music.output.localizedCaseInsensitiveContains("denied") || music.output.localizedCaseInsensitiveContains("restricted"))
+                } else if experiment.id == "shazamkit" {
+                    OutputView(text: ShazamExperimentService.statusText(), isError: false)
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))

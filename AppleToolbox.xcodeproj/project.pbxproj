@@ -36,6 +36,7 @@
 		A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		AAE4713ED5D9FBF889661441 /* IndoorExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */; };
 		AC9EDD2733A299C7EC70F94A /* AIExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6AA785AF459607AEC827E /* AIExperimentServices.swift */; };
+		ADF9091B6F51DFF8D8D3B85F /* MediaAvailabilityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */; };
 		B34FC4792DE8CC4C2BA80188 /* NearbyExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA737256039EE77698DB285C /* NearbyExperimentServices.swift */; };
 		C06E0D233CB35A8B959B5923 /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */; };
 		C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */; };
@@ -45,6 +46,7 @@
 		DDA60F5B33B0D35FBB7A2512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26C2310F800CD115CE32E91B /* Assets.xcassets */; };
 		E35C1FFC452413EC3AE0AF12 /* ExperimentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D918E681B9B9936F90DC083 /* ExperimentModels.swift */; };
 		E3682075B93860A77FD6A29E /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7955456D2F8B46EF0B18FF /* ExperimentRegistry.swift */; };
+		E395E65F9B94FCEE553C1DCA /* MediaAvailabilityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */; };
 		F118426398FB6D04E6035390 /* AIExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6AA785AF459607AEC827E /* AIExperimentServices.swift */; };
 /* End PBXBuildFile section */
 
@@ -109,6 +111,7 @@
 		A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapsHomeServices.swift; path = AppleToolbox/Shared/Services/MapsHomeServices.swift; sourceTree = "<group>"; };
 		AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationExperimentService.swift; path = AppleToolbox/Shared/Services/LocationExperimentService.swift; sourceTree = "<group>"; };
 		ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IndoorExperimentServices.swift; path = AppleToolbox/Shared/Services/IndoorExperimentServices.swift; sourceTree = "<group>"; };
+		AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MediaAvailabilityServices.swift; path = AppleToolbox/Shared/Services/MediaAvailabilityServices.swift; sourceTree = "<group>"; };
 		B7038E16D7861010D524C6A0 /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = AppleToolbox/ContentView.swift; sourceTree = "<group>"; };
 		B980C3CB49C1F8123D7332FE /* WatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchApp.swift; path = AppleToolbox/WatchApp/WatchApp.swift; sourceTree = "<group>"; };
 		BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentRegistry.swift; path = AppleToolbox/Shared/ExperimentRegistry/ExperimentRegistry.swift; sourceTree = "<group>"; };
@@ -268,6 +271,7 @@
 				ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */,
 				37EB0157A5B7AB3F867DC86F /* SpatialExperimentServices.swift */,
 				49F6AA785AF459607AEC827E /* AIExperimentServices.swift */,
+				AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -543,6 +547,7 @@
 				AAE4713ED5D9FBF889661441 /* IndoorExperimentServices.swift in Sources */,
 				6401109C53B0CE02031BCFE1 /* SpatialExperimentServices.swift in Sources */,
 				F118426398FB6D04E6035390 /* AIExperimentServices.swift in Sources */,
+				E395E65F9B94FCEE553C1DCA /* MediaAvailabilityServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +571,7 @@
 				26516AF6B4AF0B92E9454DDD /* IndoorExperimentServices.swift in Sources */,
 				1C12C846CEC25637F2274637 /* SpatialExperimentServices.swift in Sources */,
 				AC9EDD2733A299C7EC70F94A /* AIExperimentServices.swift in Sources */,
+				ADF9091B6F51DFF8D8D3B85F /* MediaAvailabilityServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
