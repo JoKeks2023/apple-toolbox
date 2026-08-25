@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		01841B06D7B180262FF5CEA4 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2879F1D49212E98DB2D386 /* MotionExperimentService.swift */; };
+		0B3E573977E1BACB4B5F63EE /* WalletPassCreatorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED66FED6768B2835466E441 /* WalletPassCreatorService.swift */; };
 		122BE204673248C7DCF7C2CB /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7955456D2F8B46EF0B18FF /* ExperimentRegistry.swift */; };
 		15882EB002496A70E298D8D6 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
 		164C7E4CAE6B880C3915EBD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26C2310F800CD115CE32E91B /* Assets.xcassets */; };
@@ -51,6 +52,7 @@
 		8EC214171F1DEC0594DF6882 /* HealthNotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C041F896020A77B69B72580 /* HealthNotificationServices.swift */; };
 		91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
 		91E83B85C98E0E41373D53D1 /* MediaAvailabilityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */; };
+		980C2D665DD1DE7D7EEDE068 /* WalletPassCreatorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED66FED6768B2835466E441 /* WalletPassCreatorService.swift */; };
 		982DBF88B14E4318F6F8A632 /* AppleToolbox Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D355699843CD5D90FEB47FD3 /* AppleToolbox Widget.appex */; };
 		9D6ED6D130E3312223C9DA7B /* AppleToolboxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD282A8176D3DFEDDE0E7A7D /* AppleToolboxApp.swift */; };
 		A6817680AE6E75A09D605F5B /* NearbyExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA737256039EE77698DB285C /* NearbyExperimentServices.swift */; };
@@ -138,6 +140,7 @@
 		72488DD19EEE0B1FB51ECCF0 /* ExperimentModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentModels.swift; path = AppleToolbox/Shared/Models/ExperimentModels.swift; sourceTree = "<group>"; };
 		7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContinuityServices.swift; path = AppleToolbox/Shared/Services/ContinuityServices.swift; sourceTree = "<group>"; };
 		7C1C9A39A25D48656AA850C5 /* AppleToolbox watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8ED66FED6768B2835466E441 /* WalletPassCreatorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WalletPassCreatorService.swift; path = AppleToolbox/Shared/Services/WalletPassCreatorService.swift; sourceTree = "<group>"; };
 		9B7955456D2F8B46EF0B18FF /* ExperimentRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentRegistry.swift; path = AppleToolbox/Shared/ExperimentRegistry/ExperimentRegistry.swift; sourceTree = "<group>"; };
 		A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapsHomeServices.swift; path = AppleToolbox/Shared/Services/MapsHomeServices.swift; sourceTree = "<group>"; };
 		AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationExperimentService.swift; path = AppleToolbox/Shared/Services/LocationExperimentService.swift; sourceTree = "<group>"; };
@@ -185,11 +188,15 @@
 		};
 		5B13F625303DA62000AA8D3F /* AppleToolboxTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = AppleToolboxTests;
 			sourceTree = "<group>";
 		};
 		5B13F62F303DA62000AA8D3F /* AppleToolboxUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = AppleToolboxUITests;
 			sourceTree = "<group>";
 		};
@@ -322,6 +329,7 @@
 				5C041F896020A77B69B72580 /* HealthNotificationServices.swift */,
 				AFCDEE58AB23A44A8DAA3D49 /* IdentitySecurityServices.swift */,
 				30846DAAA11AF56E4F480E57 /* CapabilityExplorerService.swift */,
+				8ED66FED6768B2835466E441 /* WalletPassCreatorService.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -629,6 +637,7 @@
 				8EC214171F1DEC0594DF6882 /* HealthNotificationServices.swift in Sources */,
 				31186D7D3B032512CD8E91E0 /* IdentitySecurityServices.swift in Sources */,
 				796B54C80880B59011C01911 /* CapabilityExplorerService.swift in Sources */,
+				980C2D665DD1DE7D7EEDE068 /* WalletPassCreatorService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,6 +665,7 @@
 				C08C990114221453FB6071CD /* HealthNotificationServices.swift in Sources */,
 				73FBDEEFAC66E893605D15A2 /* IdentitySecurityServices.swift in Sources */,
 				68A696176658BE1A4C9DE591 /* CapabilityExplorerService.swift in Sources */,
+				0B3E573977E1BACB4B5F63EE /* WalletPassCreatorService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

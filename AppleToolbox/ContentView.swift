@@ -5,6 +5,7 @@ import UniformTypeIdentifiers
 
 struct ContentView: View {
     @State private var selectedCategory: ExperimentCategory?
+    @State private var detailPath: [String] = []
     private let experiments = ExperimentRegistry.all
 
     var body: some View {
@@ -23,11 +24,23 @@ struct ContentView: View {
             }
             .navigationTitle("Apple Toolbox")
         } detail: {
-            if let selectedCategory {
-                CategoryView(category: selectedCategory, experiments: experiments.filter { $0.category == selectedCategory })
-            } else { WelcomeView() }
+            NavigationStack(path: $detailPath) {
+                Group {
+                    if let selectedCategory {
+                        CategoryView(category: selectedCategory, experiments: experiments.filter { $0.category == selectedCategory })
+                    } else { WelcomeView() }
+                }
+                .navigationDestination(for: String.self) { experimentID in
+                    if let experiment = ExperimentRegistry.descriptor(for: experimentID) {
+                        ExperimentDetailView(experiment: experiment)
+                    } else {
+                        ContentUnavailableView("Experiment unavailable", systemImage: "questionmark.circle")
+                    }
+                }
+            }
         }
         .navigationSplitViewStyle(.balanced)
+        .onChange(of: selectedCategory) { detailPath.removeAll() }
     }
 }
 
@@ -48,7 +61,7 @@ private struct CategoryView: View {
         List {
             Section { Text("Foundation experiments for \(category.rawValue.lowercased()).").foregroundStyle(.secondary) }
             ForEach(experiments) { experiment in
-                NavigationLink { ExperimentDetailView(experiment: experiment) } label: { ExperimentRow(experiment: experiment) }
+                NavigationLink(value: experiment.id) { ExperimentRow(experiment: experiment) }
             }
         }.navigationTitle(category.rawValue)
     }
@@ -91,6 +104,7 @@ struct ExperimentDetailView: View {
     @StateObject private var music = MusicExperimentService()
     @StateObject private var health = HealthAuthorizationExperimentService()
     @StateObject private var notifications = NotificationExperimentService()
+    @StateObject private var walletCreator = WalletPassCreatorService()
     @State private var showingIMDFImporter = false
 
     var body: some View {
@@ -165,6 +179,15 @@ struct ExperimentDetailView: View {
                     OutputView(text: health.output, isError: health.output.localizedCaseInsensitiveContains("error") || health.output.localizedCaseInsensitiveContains("not available") || health.output.localizedCaseInsensitiveContains("denied"))
                 } else if experiment.id == "wallet-status" {
                     OutputView(text: WalletExperimentService.statusText(), isError: false)
+                } else if experiment.id == "wallet-creator" {
+                    TextField("Pass name", text: $walletCreator.passName)
+                    TextField("Organization", text: $walletCreator.organizationName)
+                    TextField("Serial number", text: $walletCreator.serialNumber)
+                    Button("Create Wallet Pass Draft", action: walletCreator.createDraft).buttonStyle(.borderedProminent)
+                    if let draftURL = walletCreator.draftURL {
+                        ShareLink(item: draftURL) { Label("Share pass.json draft", systemImage: "square.and.arrow.up") }
+                    }
+                    OutputView(text: walletCreator.output, isError: walletCreator.output.localizedCaseInsensitiveContains("could not"))
                 } else if experiment.id == "notifications" {
                     HStack {
                         Button("Request Notification Authorization", action: notifications.requestAuthorization).buttonStyle(.borderedProminent)
