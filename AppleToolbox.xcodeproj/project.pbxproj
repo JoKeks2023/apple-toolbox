@@ -12,6 +12,7 @@
 		20B9764A8DC5824AF307B483 /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56858954E5E0944457C887E7 /* CapabilityInspector.swift */; };
 		2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B980C3CB49C1F8123D7332FE /* WatchApp.swift */; };
 		2F0DA5944349E83E62C2BC95 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BFDA128F91D87755734120 /* LocationExperimentService.swift */; };
+		3D853BCC7FBF269FF532FC55 /* NearbyExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA737256039EE77698DB285C /* NearbyExperimentServices.swift */; };
 		4367F062F15F2162043DF56A /* AppleToolboxWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5875FE96A6C202C8E1644886 /* AppleToolboxWidget.swift */; };
 		45970B5B1E74E8CA88031D7A /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
 		4A54901DD3646D0A3C8A510F /* ContinuityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */; };
@@ -30,6 +31,7 @@
 		91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
 		982DBF88B14E4318F6F8A632 /* AppleToolbox Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D355699843CD5D90FEB47FD3 /* AppleToolbox Widget.appex */; };
 		A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
+		B34FC4792DE8CC4C2BA80188 /* NearbyExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA737256039EE77698DB285C /* NearbyExperimentServices.swift */; };
 		C06E0D233CB35A8B959B5923 /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */; };
 		C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */; };
 		D7D5FFADFBF55D38047A9437 /* MediaExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */; };
@@ -109,6 +111,7 @@
 		DF1D7149C0845814E69E6D75 /* AppleToolbox macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6341838527B1254170EB98B /* MotionExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MotionExperimentService.swift; path = AppleToolbox/Shared/Services/MotionExperimentService.swift; sourceTree = "<group>"; };
 		E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MediaExperimentServices.swift; path = AppleToolbox/Shared/Services/MediaExperimentServices.swift; sourceTree = "<group>"; };
+		EA737256039EE77698DB285C /* NearbyExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NearbyExperimentServices.swift; path = AppleToolbox/Shared/Services/NearbyExperimentServices.swift; sourceTree = "<group>"; };
 		F9BF27AFEC11D19A6140F698 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -252,6 +255,7 @@
 				7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */,
 				D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */,
 				5875FE96A6C202C8E1644886 /* AppleToolboxWidget.swift */,
+				EA737256039EE77698DB285C /* NearbyExperimentServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -523,6 +527,7 @@
 				91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */,
 				4A54901DD3646D0A3C8A510F /* ContinuityServices.swift in Sources */,
 				70DCF696D8C398C35582A0B1 /* AIHealthWalletServices.swift in Sources */,
+				3D853BCC7FBF269FF532FC55 /* NearbyExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -542,6 +547,7 @@
 				15882EB002496A70E298D8D6 /* MapsHomeServices.swift in Sources */,
 				5C9EBF044DA7122E8E4E9E6F /* ContinuityServices.swift in Sources */,
 				45970B5B1E74E8CA88031D7A /* AIHealthWalletServices.swift in Sources */,
+				B34FC4792DE8CC4C2BA80188 /* NearbyExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

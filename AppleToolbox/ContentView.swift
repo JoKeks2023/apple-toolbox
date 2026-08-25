@@ -81,6 +81,7 @@ struct ExperimentDetailView: View {
     @StateObject private var home = HomeExperimentService()
     @StateObject private var continuity = ContinuityExperimentService()
     @StateObject private var ai = AIExperimentService()
+    @StateObject private var nearby = NearbyExperimentService()
 
     var body: some View {
         List {
@@ -155,6 +156,13 @@ struct ExperimentDetailView: View {
                     OutputView(text: WalletExperimentService.statusText(), isError: false)
                 } else if experiment.id == "widgetkit" {
                     OutputView(text: "WidgetKit extension is included in the iOS app.\nAdd “Apple Toolbox” from the Home Screen widget gallery.", isError: false)
+                } else if experiment.id == "nearby-interaction" {
+                    if nearby.isRunning {
+                        Button("Stop Nearby Interaction", action: nearby.stop).buttonStyle(.borderedProminent)
+                    } else {
+                        Button("Inspect Nearby Interaction", action: nearby.start).buttonStyle(.borderedProminent)
+                    }
+                    OutputView(text: nearby.output, isError: nearby.output.localizedCaseInsensitiveContains("error") || nearby.output.localizedCaseInsensitiveContains("not supported"))
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))
