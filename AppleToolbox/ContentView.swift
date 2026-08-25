@@ -86,6 +86,7 @@ struct ExperimentDetailView: View {
     @StateObject private var ai = AIExperimentService()
     @StateObject private var nearby = NearbyExperimentService()
     @StateObject private var indoor = IndoorIMDFExperimentService()
+    @StateObject private var ar = ARExperimentService()
     @State private var showingIMDFImporter = false
 
     var body: some View {
@@ -171,6 +172,15 @@ struct ExperimentDetailView: View {
                 } else if experiment.id == "indoor-imdf" {
                     Button("Import IMDF JSON", action: { showingIMDFImporter = true }).buttonStyle(.borderedProminent)
                     OutputView(text: indoor.output, isError: indoor.status == .unavailable)
+                } else if experiment.id == "arkit" {
+                    if ar.isRunning {
+                        Button("Stop ARKit", action: ar.stop).buttonStyle(.borderedProminent)
+                    } else {
+                        Button("Start ARKit", action: ar.start).buttonStyle(.borderedProminent)
+                    }
+                    OutputView(text: ar.output, isError: ar.output.localizedCaseInsensitiveContains("error") || ar.output.localizedCaseInsensitiveContains("not supported"))
+                } else if experiment.id == "roomplan" {
+                    OutputView(text: RoomPlanExperimentService.statusText(), isError: false)
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))

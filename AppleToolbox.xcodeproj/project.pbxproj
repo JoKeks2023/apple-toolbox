@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		01841B06D7B180262FF5CEA4 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2879F1D49212E98DB2D386 /* MotionExperimentService.swift */; };
 		15882EB002496A70E298D8D6 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
+		1C12C846CEC25637F2274637 /* SpatialExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB0157A5B7AB3F867DC86F /* SpatialExperimentServices.swift */; };
 		20B9764A8DC5824AF307B483 /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56858954E5E0944457C887E7 /* CapabilityInspector.swift */; };
 		26516AF6B4AF0B92E9454DDD /* IndoorExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */; };
 		2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B980C3CB49C1F8123D7332FE /* WatchApp.swift */; };
@@ -21,6 +22,7 @@
 		4C82F13786CD94007CF8675B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9BF27AFEC11D19A6140F698 /* Cocoa.framework */; };
 		53B23958B745455A8EC5367D /* AppleToolboxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD282A8176D3DFEDDE0E7A7D /* AppleToolboxApp.swift */; };
 		5C9EBF044DA7122E8E4E9E6F /* ContinuityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */; };
+		6401109C53B0CE02031BCFE1 /* SpatialExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB0157A5B7AB3F867DC86F /* SpatialExperimentServices.swift */; };
 		656F254B26F90D1352E87D36 /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D4F104C8A2D9E3C1C17B5B /* ExperimentServices.swift */; };
 		69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		6BAC23922CAF79F26D0D3AD5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7038E16D7861010D524C6A0 /* ContentView.swift */; };
@@ -88,6 +90,7 @@
 		19D4F104C8A2D9E3C1C17B5B /* ExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentServices.swift; path = AppleToolbox/Shared/Services/ExperimentServices.swift; sourceTree = "<group>"; };
 		21BFDA128F91D87755734120 /* LocationExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationExperimentService.swift; path = AppleToolbox/Shared/Services/LocationExperimentService.swift; sourceTree = "<group>"; };
 		26C2310F800CD115CE32E91B /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = AppleToolbox/Assets.xcassets; sourceTree = "<group>"; };
+		37EB0157A5B7AB3F867DC86F /* SpatialExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpatialExperimentServices.swift; path = AppleToolbox/Shared/Services/SpatialExperimentServices.swift; sourceTree = "<group>"; };
 		38BA171C1BD9FFF49970FB71 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		3D918E681B9B9936F90DC083 /* ExperimentModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentModels.swift; path = AppleToolbox/Shared/Models/ExperimentModels.swift; sourceTree = "<group>"; };
 		4691BC4FB0542A9F48651C6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -260,6 +263,7 @@
 				5875FE96A6C202C8E1644886 /* AppleToolboxWidget.swift */,
 				EA737256039EE77698DB285C /* NearbyExperimentServices.swift */,
 				ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */,
+				37EB0157A5B7AB3F867DC86F /* SpatialExperimentServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -533,6 +537,7 @@
 				70DCF696D8C398C35582A0B1 /* AIHealthWalletServices.swift in Sources */,
 				3D853BCC7FBF269FF532FC55 /* NearbyExperimentServices.swift in Sources */,
 				AAE4713ED5D9FBF889661441 /* IndoorExperimentServices.swift in Sources */,
+				6401109C53B0CE02031BCFE1 /* SpatialExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,6 +559,7 @@
 				45970B5B1E74E8CA88031D7A /* AIHealthWalletServices.swift in Sources */,
 				B34FC4792DE8CC4C2BA80188 /* NearbyExperimentServices.swift in Sources */,
 				26516AF6B4AF0B92E9454DDD /* IndoorExperimentServices.swift in Sources */,
+				1C12C846CEC25637F2274637 /* SpatialExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
