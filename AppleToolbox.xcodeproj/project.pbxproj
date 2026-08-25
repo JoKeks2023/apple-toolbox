@@ -12,9 +12,11 @@
 		20B9764A8DC5824AF307B483 /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56858954E5E0944457C887E7 /* CapabilityInspector.swift */; };
 		2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B980C3CB49C1F8123D7332FE /* WatchApp.swift */; };
 		2F0DA5944349E83E62C2BC95 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BFDA128F91D87755734120 /* LocationExperimentService.swift */; };
+		4A54901DD3646D0A3C8A510F /* ContinuityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */; };
 		4C3B640184E25FA116351E87 /* ExperimentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72488DD19EEE0B1FB51ECCF0 /* ExperimentModels.swift */; };
 		4C82F13786CD94007CF8675B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9BF27AFEC11D19A6140F698 /* Cocoa.framework */; };
 		53B23958B745455A8EC5367D /* AppleToolboxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD282A8176D3DFEDDE0E7A7D /* AppleToolboxApp.swift */; };
+		5C9EBF044DA7122E8E4E9E6F /* ContinuityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */; };
 		656F254B26F90D1352E87D36 /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D4F104C8A2D9E3C1C17B5B /* ExperimentServices.swift */; };
 		69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		6BAC23922CAF79F26D0D3AD5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7038E16D7861010D524C6A0 /* ContentView.swift */; };
@@ -63,6 +65,7 @@
 		5B13F622303DA62000AA8D3F /* AppleToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B13F62C303DA62000AA8D3F /* AppleToolboxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleToolboxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72488DD19EEE0B1FB51ECCF0 /* ExperimentModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentModels.swift; path = AppleToolbox/Shared/Models/ExperimentModels.swift; sourceTree = "<group>"; };
+		7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContinuityServices.swift; path = AppleToolbox/Shared/Services/ContinuityServices.swift; sourceTree = "<group>"; };
 		7C1C9A39A25D48656AA850C5 /* AppleToolbox watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B7955456D2F8B46EF0B18FF /* ExperimentRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentRegistry.swift; path = AppleToolbox/Shared/ExperimentRegistry/ExperimentRegistry.swift; sourceTree = "<group>"; };
 		A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapsHomeServices.swift; path = AppleToolbox/Shared/Services/MapsHomeServices.swift; sourceTree = "<group>"; };
@@ -199,6 +202,7 @@
 				CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */,
 				E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */,
 				A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */,
+				7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -439,6 +443,7 @@
 				A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */,
 				D7D5FFADFBF55D38047A9437 /* MediaExperimentServices.swift in Sources */,
 				91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */,
+				4A54901DD3646D0A3C8A510F /* ContinuityServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,6 +461,7 @@
 				69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */,
 				8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */,
 				15882EB002496A70E298D8D6 /* MapsHomeServices.swift in Sources */,
+				5C9EBF044DA7122E8E4E9E6F /* ContinuityServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

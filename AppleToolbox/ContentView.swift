@@ -79,6 +79,7 @@ struct ExperimentDetailView: View {
     @StateObject private var audio = AudioExperimentService()
     @StateObject private var maps = MapExperimentService()
     @StateObject private var home = HomeExperimentService()
+    @StateObject private var continuity = ContinuityExperimentService()
 
     var body: some View {
         List {
@@ -137,6 +138,11 @@ struct ExperimentDetailView: View {
                     OutputView(text: home.output, isError: home.status == .unavailable)
                 } else if experiment.id == "matter-status" {
                     OutputView(text: MatterExperimentService.statusText(), isError: false)
+                } else if experiment.id == "continuity" {
+                    Button("Activate WatchConnectivity", action: continuity.activate).buttonStyle(.borderedProminent)
+                    OutputView(text: continuity.output, isError: continuity.output.localizedCaseInsensitiveContains("error"))
+                } else if experiment.id == "app-intents" {
+                    OutputView(text: "App Intent registered: ToolboxStatusIntent\nUse Siri or Shortcuts to discover it.", isError: false)
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))
