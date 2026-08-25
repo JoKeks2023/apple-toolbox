@@ -32,19 +32,31 @@ struct AuthenticationService {
     static func authenticate() async throws -> String {
         #if canImport(LocalAuthentication) && !os(watchOS)
         let context = LAContext()
-        var error: NSError?
+        var biometricError: NSError?
+        let biometricAvailable = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &biometricError)
         let policy: LAPolicy
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+        if biometricAvailable {
             policy = .deviceOwnerAuthenticationWithBiometrics
-        } else if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
-            policy = .deviceOwnerAuthentication
         } else {
-            throw ExperimentServiceError.unavailable(error?.localizedDescription ?? "Authentication is not available on this device.")
+            var authenticationError: NSError?
+            guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authenticationError) else {
+                throw ExperimentServiceError.unavailable(authenticationError?.localizedDescription ?? biometricError?.localizedDescription ?? "Authentication is not available on this device.")
+            }
+            policy = .deviceOwnerAuthentication
         }
         let reason = "Verify your identity to test LocalAuthentication."
-        let success = try await context.evaluatePolicy(policy, localizedReason: reason)
         let method = policy == .deviceOwnerAuthenticationWithBiometrics ? context.biometryType.displayName : "device passcode / authentication"
-        return success ? "Authentication succeeded using \(method)." : "Authentication did not succeed."
+        return try await withCheckedThrowingContinuation { continuation in
+            context.evaluatePolicy(policy, localizedReason: reason) { success, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if success {
+                    continuation.resume(returning: "Authentication succeeded using \(method).")
+                } else {
+                    continuation.resume(throwing: ExperimentServiceError.unavailable("Authentication did not succeed."))
+                }
+            }
+        }
         #else
         throw ExperimentServiceError.unavailable("LocalAuthentication is not available on this platform.")
         #endif
