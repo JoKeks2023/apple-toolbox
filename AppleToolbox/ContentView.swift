@@ -80,6 +80,7 @@ struct ExperimentDetailView: View {
     @StateObject private var maps = MapExperimentService()
     @StateObject private var home = HomeExperimentService()
     @StateObject private var continuity = ContinuityExperimentService()
+    @StateObject private var ai = AIExperimentService()
 
     var body: some View {
         List {
@@ -143,6 +144,15 @@ struct ExperimentDetailView: View {
                     OutputView(text: continuity.output, isError: continuity.output.localizedCaseInsensitiveContains("error"))
                 } else if experiment.id == "app-intents" {
                     OutputView(text: "App Intent registered: ToolboxStatusIntent\nUse Siri or Shortcuts to discover it.", isError: false)
+                } else if experiment.id == "natural-language" {
+                    Button("Analyze Sample Text", action: ai.analyze).buttonStyle(.borderedProminent)
+                    OutputView(text: ai.output, isError: false)
+                } else if experiment.id == "foundation-models" {
+                    OutputView(text: FoundationModelsExperimentService.statusText(), isError: false)
+                } else if experiment.id == "healthkit-status" {
+                    OutputView(text: HealthExperimentService.statusText(), isError: false)
+                } else if experiment.id == "wallet-status" {
+                    OutputView(text: WalletExperimentService.statusText(), isError: false)
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))

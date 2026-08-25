@@ -12,6 +12,7 @@
 		20B9764A8DC5824AF307B483 /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56858954E5E0944457C887E7 /* CapabilityInspector.swift */; };
 		2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B980C3CB49C1F8123D7332FE /* WatchApp.swift */; };
 		2F0DA5944349E83E62C2BC95 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BFDA128F91D87755734120 /* LocationExperimentService.swift */; };
+		45970B5B1E74E8CA88031D7A /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
 		4A54901DD3646D0A3C8A510F /* ContinuityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */; };
 		4C3B640184E25FA116351E87 /* ExperimentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72488DD19EEE0B1FB51ECCF0 /* ExperimentModels.swift */; };
 		4C82F13786CD94007CF8675B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9BF27AFEC11D19A6140F698 /* Cocoa.framework */; };
@@ -20,6 +21,7 @@
 		656F254B26F90D1352E87D36 /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D4F104C8A2D9E3C1C17B5B /* ExperimentServices.swift */; };
 		69A9E23B3C0E37961BC180A2 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
 		6BAC23922CAF79F26D0D3AD5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7038E16D7861010D524C6A0 /* ContentView.swift */; };
+		70DCF696D8C398C35582A0B1 /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
 		7EB5E16B390A579D13F08EF9 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6341838527B1254170EB98B /* MotionExperimentService.swift */; };
 		8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */; };
 		8C61E5E3F42FE1E43DB3FE6F /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16267023E26A916BA5DC5D26 /* ExperimentServices.swift */; };
@@ -75,6 +77,7 @@
 		BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentRegistry.swift; path = AppleToolbox/Shared/ExperimentRegistry/ExperimentRegistry.swift; sourceTree = "<group>"; };
 		CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConnectivityExperimentServices.swift; path = AppleToolbox/Shared/Services/ConnectivityExperimentServices.swift; sourceTree = "<group>"; };
 		CD282A8176D3DFEDDE0E7A7D /* AppleToolboxApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleToolboxApp.swift; path = AppleToolbox/AppleToolboxApp.swift; sourceTree = "<group>"; };
+		D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AIHealthWalletServices.swift; path = AppleToolbox/Shared/Services/AIHealthWalletServices.swift; sourceTree = "<group>"; };
 		D4F116C6D7FF33A263B2CDAF /* CapabilityInspector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CapabilityInspector.swift; path = AppleToolbox/Shared/CapabilitySystem/CapabilityInspector.swift; sourceTree = "<group>"; };
 		DF1D7149C0845814E69E6D75 /* AppleToolbox macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6341838527B1254170EB98B /* MotionExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MotionExperimentService.swift; path = AppleToolbox/Shared/Services/MotionExperimentService.swift; sourceTree = "<group>"; };
@@ -203,6 +206,7 @@
 				E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */,
 				A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */,
 				7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */,
+				D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -444,6 +448,7 @@
 				D7D5FFADFBF55D38047A9437 /* MediaExperimentServices.swift in Sources */,
 				91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */,
 				4A54901DD3646D0A3C8A510F /* ContinuityServices.swift in Sources */,
+				70DCF696D8C398C35582A0B1 /* AIHealthWalletServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,6 +467,7 @@
 				8240980CEF7D202A3D36ED5A /* MediaExperimentServices.swift in Sources */,
 				15882EB002496A70E298D8D6 /* MapsHomeServices.swift in Sources */,
 				5C9EBF044DA7122E8E4E9E6F /* ContinuityServices.swift in Sources */,
+				45970B5B1E74E8CA88031D7A /* AIHealthWalletServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
