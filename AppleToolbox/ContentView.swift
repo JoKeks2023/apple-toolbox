@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(UniformTypeIdentifiers)
+import UniformTypeIdentifiers
+#endif
 
 struct ContentView: View {
     @State private var selectedCategory: ExperimentCategory?
@@ -82,6 +85,8 @@ struct ExperimentDetailView: View {
     @StateObject private var continuity = ContinuityExperimentService()
     @StateObject private var ai = AIExperimentService()
     @StateObject private var nearby = NearbyExperimentService()
+    @StateObject private var indoor = IndoorIMDFExperimentService()
+    @State private var showingIMDFImporter = false
 
     var body: some View {
         List {
@@ -163,6 +168,9 @@ struct ExperimentDetailView: View {
                         Button("Inspect Nearby Interaction", action: nearby.start).buttonStyle(.borderedProminent)
                     }
                     OutputView(text: nearby.output, isError: nearby.output.localizedCaseInsensitiveContains("error") || nearby.output.localizedCaseInsensitiveContains("not supported"))
+                } else if experiment.id == "indoor-imdf" {
+                    Button("Import IMDF JSON", action: { showingIMDFImporter = true }).buttonStyle(.borderedProminent)
+                    OutputView(text: indoor.output, isError: indoor.status == .unavailable)
                 } else {
                     Button(isRunning ? "Running…" : "Run Experiment", action: run).buttonStyle(.borderedProminent).disabled(isRunning || currentStatus != .available)
                     OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("unsupported"))
@@ -173,6 +181,12 @@ struct ExperimentDetailView: View {
         }
         .navigationTitle(experiment.name)
         .task { output = initialStatusMessage }
+        #if canImport(UniformTypeIdentifiers)
+        .fileImporter(isPresented: $showingIMDFImporter, allowedContentTypes: [.json], allowsMultipleSelection: false) { result in
+            if case .success(let urls) = result, let url = urls.first { indoor.load(url: url) }
+            if case .failure(let error) = result { output = "File import error: \(error.localizedDescription)" }
+        }
+        #endif
     }
 
     private var currentStatus: ExperimentStatus {

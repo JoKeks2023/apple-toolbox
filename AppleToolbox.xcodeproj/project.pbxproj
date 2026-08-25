@@ -10,6 +10,7 @@
 		01841B06D7B180262FF5CEA4 /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2879F1D49212E98DB2D386 /* MotionExperimentService.swift */; };
 		15882EB002496A70E298D8D6 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
 		20B9764A8DC5824AF307B483 /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56858954E5E0944457C887E7 /* CapabilityInspector.swift */; };
+		26516AF6B4AF0B92E9454DDD /* IndoorExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */; };
 		2E1518437829087DE3D23F4D /* WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B980C3CB49C1F8123D7332FE /* WatchApp.swift */; };
 		2F0DA5944349E83E62C2BC95 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BFDA128F91D87755734120 /* LocationExperimentService.swift */; };
 		3D853BCC7FBF269FF532FC55 /* NearbyExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA737256039EE77698DB285C /* NearbyExperimentServices.swift */; };
@@ -31,6 +32,7 @@
 		91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
 		982DBF88B14E4318F6F8A632 /* AppleToolbox Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D355699843CD5D90FEB47FD3 /* AppleToolbox Widget.appex */; };
 		A8CEFE28FAD06C9C44254DB1 /* ConnectivityExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF936B282A734CAC47BF32C /* ConnectivityExperimentServices.swift */; };
+		AAE4713ED5D9FBF889661441 /* IndoorExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */; };
 		B34FC4792DE8CC4C2BA80188 /* NearbyExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA737256039EE77698DB285C /* NearbyExperimentServices.swift */; };
 		C06E0D233CB35A8B959B5923 /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */; };
 		C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */; };
@@ -100,6 +102,7 @@
 		9B7955456D2F8B46EF0B18FF /* ExperimentRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentRegistry.swift; path = AppleToolbox/Shared/ExperimentRegistry/ExperimentRegistry.swift; sourceTree = "<group>"; };
 		A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapsHomeServices.swift; path = AppleToolbox/Shared/Services/MapsHomeServices.swift; sourceTree = "<group>"; };
 		AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationExperimentService.swift; path = AppleToolbox/Shared/Services/LocationExperimentService.swift; sourceTree = "<group>"; };
+		ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IndoorExperimentServices.swift; path = AppleToolbox/Shared/Services/IndoorExperimentServices.swift; sourceTree = "<group>"; };
 		B7038E16D7861010D524C6A0 /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = AppleToolbox/ContentView.swift; sourceTree = "<group>"; };
 		B980C3CB49C1F8123D7332FE /* WatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchApp.swift; path = AppleToolbox/WatchApp/WatchApp.swift; sourceTree = "<group>"; };
 		BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentRegistry.swift; path = AppleToolbox/Shared/ExperimentRegistry/ExperimentRegistry.swift; sourceTree = "<group>"; };
@@ -256,6 +259,7 @@
 				D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */,
 				5875FE96A6C202C8E1644886 /* AppleToolboxWidget.swift */,
 				EA737256039EE77698DB285C /* NearbyExperimentServices.swift */,
+				ADA0C037DBBA4B6B9F800E6C /* IndoorExperimentServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -528,6 +532,7 @@
 				4A54901DD3646D0A3C8A510F /* ContinuityServices.swift in Sources */,
 				70DCF696D8C398C35582A0B1 /* AIHealthWalletServices.swift in Sources */,
 				3D853BCC7FBF269FF532FC55 /* NearbyExperimentServices.swift in Sources */,
+				AAE4713ED5D9FBF889661441 /* IndoorExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,6 +553,7 @@
 				5C9EBF044DA7122E8E4E9E6F /* ContinuityServices.swift in Sources */,
 				45970B5B1E74E8CA88031D7A /* AIHealthWalletServices.swift in Sources */,
 				B34FC4792DE8CC4C2BA80188 /* NearbyExperimentServices.swift in Sources */,
+				26516AF6B4AF0B92E9454DDD /* IndoorExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
