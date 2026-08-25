@@ -4,11 +4,25 @@ import Combine
 import CoreMotion
 #endif
 
+struct MotionVector: Equatable {
+    var x: Double = 0
+    var y: Double = 0
+    var z: Double = 0
+
+    var formattedValues: String {
+        [x, y, z].map { $0.formatted(.number.precision(.fractionLength(3))) }.joined(separator: "  ·  ")
+    }
+}
+
 @MainActor
 final class MotionExperimentService: ObservableObject {
     @Published private(set) var output = "Ready to start motion updates."
     @Published private(set) var isRunning = false
     @Published private(set) var status: ExperimentStatus = .available
+    @Published private(set) var userAcceleration = MotionVector()
+    @Published private(set) var rotationRate = MotionVector()
+    @Published private(set) var gravity = MotionVector()
+    @Published private(set) var lastUpdated: Date?
     #if os(iOS) || os(watchOS)
     private let manager = CMMotionManager()
     #endif
@@ -35,7 +49,11 @@ final class MotionExperimentService: ObservableObject {
             guard let motion else { return }
             let a = motion.userAcceleration
             let r = motion.rotationRate
-            self.output = "User acceleration: x \(a.x.formatted(.number.precision(.fractionLength(3)))) · y \(a.y.formatted(.number.precision(.fractionLength(3)))) · z \(a.z.formatted(.number.precision(.fractionLength(3))))\nRotation rate: x \(r.x.formatted(.number.precision(.fractionLength(3)))) · y \(r.y.formatted(.number.precision(.fractionLength(3)))) · z \(r.z.formatted(.number.precision(.fractionLength(3))))\nGravity: x \(motion.gravity.x.formatted(.number.precision(.fractionLength(3)))) · y \(motion.gravity.y.formatted(.number.precision(.fractionLength(3)))) · z \(motion.gravity.z.formatted(.number.precision(.fractionLength(3))))"
+            self.userAcceleration = MotionVector(x: a.x, y: a.y, z: a.z)
+            self.rotationRate = MotionVector(x: r.x, y: r.y, z: r.z)
+            self.gravity = MotionVector(x: motion.gravity.x, y: motion.gravity.y, z: motion.gravity.z)
+            self.lastUpdated = Date()
+            self.output = "Live device motion is updating."
         }
         #else
         output = "Core Motion is not available on this platform."

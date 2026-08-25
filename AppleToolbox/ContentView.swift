@@ -124,9 +124,11 @@ struct ExperimentDetailView: View {
                     HStack { Label("Authorization", systemImage: "location"); Spacer(); Text(location.authorization).foregroundStyle(.secondary) }
                     Button("Request Location Permission", action: location.requestPermission)
                     Button(location.isUpdating ? "Stop Live Updates" : "Start Live Updates") { location.isUpdating ? location.stop() : location.start() }.buttonStyle(.borderedProminent)
+                    LocationReadingView(location: location)
                     OutputView(text: location.output, isError: location.output.localizedCaseInsensitiveContains("error") || location.output.localizedCaseInsensitiveContains("denied"))
                 } else if experiment.id == "core-motion" {
                     Button(motion.isRunning ? "Stop Motion Updates" : "Start Motion Updates") { motion.isRunning ? motion.stop() : motion.start() }.buttonStyle(.borderedProminent)
+                    MotionReadingView(motion: motion)
                     OutputView(text: motion.output, isError: motion.output.localizedCaseInsensitiveContains("not available") || motion.output.localizedCaseInsensitiveContains("error"))
                 } else if experiment.id == "localauthentication" {
                     OutputView(text: AuthenticationService.availability(), isError: false)
@@ -402,6 +404,60 @@ private struct MultipeerUseCaseView: View {
                 .buttonStyle(.borderedProminent)
         }
         OutputView(text: service.output, isError: service.output.localizedCaseInsensitiveContains("could not") || service.output.localizedCaseInsensitiveContains("not supported") || service.output.localizedCaseInsensitiveContains("no connected"))
+    }
+}
+
+private struct LocationReadingView: View {
+    @ObservedObject var location: LocationExperimentService
+
+    var body: some View {
+        Section("Live reading") {
+            LabeledContent("Coordinate", value: location.coordinate)
+            LabeledContent("Accuracy", value: location.accuracy)
+            LabeledContent("Altitude", value: location.altitude)
+            LabeledContent("Speed", value: location.speed)
+            LabeledContent("Course", value: location.course)
+            LabeledContent("Heading", value: location.heading)
+        }
+    }
+}
+
+private struct MotionReadingView: View {
+    @ObservedObject var motion: MotionExperimentService
+
+    var body: some View {
+        Section("Live vectors · x  ·  y  ·  z") {
+            VectorRow(title: "User acceleration", symbol: "figure.run", vector: motion.userAcceleration, unit: "g")
+            VectorRow(title: "Rotation rate", symbol: "rotate.3d", vector: motion.rotationRate, unit: "rad/s")
+            VectorRow(title: "Gravity", symbol: "arrow.down", vector: motion.gravity, unit: "g")
+            if let lastUpdated = motion.lastUpdated {
+                Text("Updated (lastUpdated.formatted(date: .omitted, time: .standard))")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                Text("Start updates and move the device to see live values.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+}
+
+private struct VectorRow: View {
+    let title: String
+    let symbol: String
+    let vector: MotionVector
+    let unit: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Label(title, systemImage: symbol)
+                .font(.headline)
+            Text("\(vector.formattedValues) \(unit)")
+                .font(.system(.body, design: .monospaced))
+                .foregroundStyle(.secondary)
+        }
+        .padding(.vertical, 3)
     }
 }
 

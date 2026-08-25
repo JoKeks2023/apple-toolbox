@@ -10,6 +10,12 @@ final class LocationExperimentService: NSObject, ObservableObject {
     @Published private(set) var status: ExperimentStatus = .permissionRequired
     @Published private(set) var output = "Ready to request location permission."
     @Published private(set) var isUpdating = false
+    @Published private(set) var coordinate = "—"
+    @Published private(set) var accuracy = "—"
+    @Published private(set) var altitude = "—"
+    @Published private(set) var speed = "—"
+    @Published private(set) var course = "—"
+    @Published private(set) var heading = "—"
 
     #if canImport(CoreLocation)
     private let manager = CLLocationManager()
@@ -67,6 +73,7 @@ final class LocationExperimentService: NSObject, ObservableObject {
         #endif
         #endif
         isUpdating = false
+        output = latestLocation == nil ? "Live updates stopped. No location received yet." : "Live updates stopped. Last reading is still shown below."
     }
 
     #if canImport(CoreLocation)
@@ -99,13 +106,18 @@ final class LocationExperimentService: NSObject, ObservableObject {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         latestLocation = location
-        let coordinate = String(format: "%.6f, %.6f", location.coordinate.latitude, location.coordinate.longitude)
+        coordinate = String(format: "%.6f, %.6f", location.coordinate.latitude, location.coordinate.longitude)
+        accuracy = location.horizontalAccuracy >= 0 ? location.horizontalAccuracy.formatted(.number.precision(.fractionLength(1))) + " m" : "Unknown"
+        altitude = location.altitude.formatted(.number.precision(.fractionLength(1))) + " m"
+        speed = location.speed >= 0 ? location.speed.formatted(.number.precision(.fractionLength(1))) + " m/s" : "Unknown"
+        course = location.course >= 0 ? location.course.formatted(.number.precision(.fractionLength(1))) + "°" : "Unknown"
         #if os(tvOS)
         let heading: Double? = nil
         #else
         let heading = latestHeading.map { $0.trueHeading >= 0 ? $0.trueHeading : $0.magneticHeading }
         #endif
-        output = "Coordinate: \(coordinate)\nAccuracy: \(location.horizontalAccuracy.formatted(.number.precision(.fractionLength(1)))) m\nAltitude: \(location.altitude.formatted(.number.precision(.fractionLength(1)))) m\nSpeed: \(location.speed >= 0 ? location.speed.formatted(.number.precision(.fractionLength(1))) + " m/s" : "Unknown")\nCourse: \(location.course >= 0 ? location.course.formatted(.number.precision(.fractionLength(1))) + "°" : "Unknown")\nHeading: \(heading.map { $0.formatted(.number.precision(.fractionLength(1))) + "°" } ?? "Unknown")"
+        self.heading = heading.map { $0.formatted(.number.precision(.fractionLength(1))) + "°" } ?? "Unknown"
+        output = "Live location received at \(Date().formatted(date: .omitted, time: .standard))."
     }
 
     #if !os(tvOS)
