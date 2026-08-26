@@ -4,6 +4,11 @@ import Combine
 import CoreLocation
 #endif
 
+struct LocationCoordinate: Equatable {
+    let latitude: Double
+    let longitude: Double
+}
+
 @MainActor
 final class LocationExperimentService: NSObject, ObservableObject {
     @Published private(set) var authorization: String = "Not determined"
@@ -16,6 +21,7 @@ final class LocationExperimentService: NSObject, ObservableObject {
     @Published private(set) var speed = "—"
     @Published private(set) var course = "—"
     @Published private(set) var heading = "—"
+    @Published private(set) var coordinateValue: LocationCoordinate?
 
     #if canImport(CoreLocation)
     private let manager = CLLocationManager()
@@ -107,6 +113,7 @@ final class LocationExperimentService: NSObject, ObservableObject {
         guard let location = locations.last else { return }
         latestLocation = location
         coordinate = String(format: "%.6f, %.6f", location.coordinate.latitude, location.coordinate.longitude)
+        coordinateValue = LocationCoordinate(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         accuracy = location.horizontalAccuracy >= 0 ? location.horizontalAccuracy.formatted(.number.precision(.fractionLength(1))) + " m" : "Unknown"
         altitude = location.altitude.formatted(.number.precision(.fractionLength(1))) + " m"
         speed = location.speed >= 0 ? location.speed.formatted(.number.precision(.fractionLength(1))) + " m/s" : "Unknown"

@@ -2,6 +2,9 @@ import SwiftUI
 #if canImport(UniformTypeIdentifiers)
 import UniformTypeIdentifiers
 #endif
+#if canImport(MapKit) && !os(watchOS) && !os(tvOS)
+import MapKit
+#endif
 
 struct ContentView: View {
     @State private var selectedCategory: ExperimentCategory?
@@ -452,7 +455,7 @@ private struct HomeResultsView: View {
     let homes: [HomeSummary]
 
     var body: some View {
-        Section("HomeKit homes ((homes.count))") {
+        Section("HomeKit homes (\(homes.count))") {
             if homes.isEmpty {
                 Text("Refresh to inspect homes shared with this device.")
                     .font(.caption)
@@ -472,6 +475,49 @@ private struct HomeResultsView: View {
     }
 }
 
+#if canImport(MapKit) && !os(watchOS) && !os(tvOS)
+private struct LocationMapView: View {
+    let coordinate: LocationCoordinate?
+    @State private var region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 51.1657, longitude: 10.4515),
+        span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)
+    )
+
+    var body: some View {
+        Map(coordinateRegion: $region, annotationItems: markerItems) { marker in
+            MapMarker(coordinate: marker.coordinate, tint: .red)
+        }
+        .overlay(alignment: .topLeading) {
+            Label(coordinate == nil ? "Waiting for location" : "Live position", systemImage: coordinate == nil ? "location.slash" : "location.fill")
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, 10)
+                .padding(.vertical, 7)
+                .background(.regularMaterial, in: Capsule())
+                .padding(10)
+        }
+        .onChange(of: coordinate) { _, newValue in
+            guard let newValue else { return }
+            withAnimation(.easeInOut(duration: 0.35)) {
+                region = MKCoordinateRegion(
+                    center: CLLocationCoordinate2D(latitude: newValue.latitude, longitude: newValue.longitude),
+                    span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                )
+            }
+        }
+    }
+
+    private var markerItems: [LocationMapMarker] {
+        guard let coordinate else { return [] }
+        return [LocationMapMarker(coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude))]
+    }
+}
+
+private struct LocationMapMarker: Identifiable {
+    let id = UUID()
+    let coordinate: CLLocationCoordinate2D
+}
+#endif
+
 private struct AudioMeterView: View {
     @ObservedObject var audio: AudioExperimentService
 
@@ -481,6 +527,8 @@ private struct AudioMeterView: View {
             LabeledContent("Sample rate", value: audio.sampleRate == 0 ? "—" : "\(audio.sampleRate) Hz")
             LevelRow(title: "RMS", value: audio.rmsLevel)
             LevelRow(title: "Peak", value: audio.peakLevel)
+            AudioLevelChart(levels: audio.levelHistory)
+                .frame(height: 110)
             Text("Speak or make a sound near the microphone to see the levels move.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -507,11 +555,35 @@ private struct LevelRow: View {
     }
 }
 
+private struct AudioLevelChart: View {
+    let levels: [Double]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Peak history")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+            GeometryReader { proxy in
+                HStack(alignment: .bottom, spacing: 2) {
+                    ForEach(Array(levels.enumerated()), id: \.offset) { _, level in
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(level > 0.8 ? Color.red : Color.accentColor)
+                            .frame(maxWidth: .infinity, minHeight: 3, maxHeight: max(3, proxy.size.height * min(level, 1)))
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            }
+            .padding(8)
+            .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 10))
+        }
+    }
+}
+
 private struct NFCRecordsView: View {
     let records: [NFCRecordResult]
 
     var body: some View {
-        Section("NDEF records ((records.count))") {
+        Section("NDEF records (\(records.count))") {
             if records.isEmpty {
                 Text("Scan a physical NFC tag to inspect its records.")
                     .font(.caption)
@@ -575,6 +647,11 @@ private struct LocationReadingView: View {
 
     var body: some View {
         Section("Live reading") {
+            #if canImport(MapKit) && !os(watchOS) && !os(tvOS)
+            LocationMapView(coordinate: location.coordinateValue)
+                .frame(height: 220)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+            #endif
             LabeledContent("Coordinate", value: location.coordinate)
             LabeledContent("Accuracy", value: location.accuracy)
             LabeledContent("Altitude", value: location.altitude)

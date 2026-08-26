@@ -101,6 +101,7 @@ final class AudioExperimentService: ObservableObject {
     @Published private(set) var status: ExperimentStatus = .available
     @Published private(set) var rmsLevel: Double = 0
     @Published private(set) var peakLevel: Double = 0
+    @Published private(set) var levelHistory: [Double] = []
     @Published private(set) var channelCount = 0
     @Published private(set) var sampleRate = 0
     #if canImport(AVFoundation) && (os(iOS) || os(macOS))
@@ -132,6 +133,7 @@ final class AudioExperimentService: ObservableObject {
             Task { @MainActor in
                 self?.rmsLevel = Double(rms)
                 self?.peakLevel = Double(peak)
+                self?.levelHistory = Array(((self?.levelHistory ?? []) + [Double(peak)]).suffix(48))
                 self?.output = "Live microphone input is updating."
             }
         }
