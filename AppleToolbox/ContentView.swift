@@ -798,11 +798,22 @@ private struct RequirementLine: View { let title: String; let value: String; var
 private struct OutputView: View {
     let text: String; let isError: Bool
     var body: some View {
-        #if os(tvOS)
-        Text(text).font(.system(.body, design: .monospaced)).frame(maxWidth: .infinity, alignment: .leading).padding(12).background((isError ? Color.red : Color.secondary).opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
-        #else
-        Text(text).font(.system(.body, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading).padding(12).background((isError ? Color.red : Color.secondary).opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
-        #endif
+        VStack(alignment: .leading, spacing: 9) {
+            Label(isError ? "Live error" : "Live output", systemImage: isError ? "exclamationmark.triangle.fill" : "waveform.path.ecg")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(isError ? .red : .secondary)
+            #if os(tvOS)
+            Text(text).font(.system(.body, design: .monospaced)).frame(maxWidth: .infinity, alignment: .leading)
+            #else
+            Text(text).font(.system(.body, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
+            #endif
+        }
+        .padding(14)
+        .background((isError ? Color.red : Color.secondary).opacity(0.09), in: RoundedRectangle(cornerRadius: 14))
+        .overlay {
+            RoundedRectangle(cornerRadius: 14)
+                .stroke((isError ? Color.red : Color.secondary).opacity(0.18), lineWidth: 1)
+        }
     }
 }
 private struct StatusBadge: View {
