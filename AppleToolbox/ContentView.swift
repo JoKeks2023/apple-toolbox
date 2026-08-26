@@ -115,12 +115,9 @@ struct ExperimentDetailView: View {
 
     var body: some View {
         List {
-            Section {
-                Text(experiment.description)
-                HStack { Text("Status"); Spacer(); StatusBadge(status: currentStatus) }
-            }
+            ExperimentHeroView(experiment: experiment, status: currentStatus)
             if let useCase = ExperimentUseCaseCatalog.forExperimentID(experiment.id) {
-                UseCaseSection(useCase: useCase)
+                UseCaseSection(useCase: useCase, experiment: experiment)
             }
             Section("Run") {
                 if experiment.id == "core-location" {
@@ -603,16 +600,98 @@ private struct NFCRecordsView: View {
     }
 }
 
-private struct UseCaseSection: View {
-    let useCase: ExperimentUseCase
+private struct ExperimentHeroView: View {
+    let experiment: ExperimentDescriptor
+    let status: ExperimentStatus
 
     var body: some View {
-        Section("Try it") {
-            Label(useCase.title, systemImage: "play.circle")
-                .font(.headline)
-            Text(useCase.summary)
-            Text(useCase.interaction)
-                .foregroundStyle(.secondary)
+        Section {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(alignment: .top) {
+                    Image(systemName: experiment.category.symbolName)
+                        .font(.title2.weight(.semibold))
+                        .foregroundStyle(.tint)
+                        .frame(width: 48, height: 48)
+                        .background(.tint.opacity(0.14), in: RoundedRectangle(cornerRadius: 14))
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(experiment.name)
+                            .font(.title3.weight(.semibold))
+                        Text(experiment.category.rawValue)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer(minLength: 8)
+                    StatusBadge(status: status)
+                }
+                Text(experiment.description)
+                    .foregroundStyle(.secondary)
+                HStack(spacing: 8) {
+                    InfoChip(title: CurrentPlatform.value.rawValue, symbol: "display.2")
+                    InfoChip(title: experiment.frameworks.first ?? "Apple API", symbol: "shippingbox")
+                    if !experiment.hardwareRequirements.isEmpty {
+                        InfoChip(title: "Hardware", symbol: "cpu")
+                    }
+                }
+            }
+            .padding(.vertical, 8)
+        }
+    }
+}
+
+private struct InfoChip: View {
+    let title: String
+    let symbol: String
+
+    var body: some View {
+        Label(title, systemImage: symbol)
+            .font(.caption.weight(.medium))
+            .lineLimit(1)
+            .padding(.horizontal, 9)
+            .padding(.vertical, 6)
+            .background(.quaternary, in: Capsule())
+    }
+}
+
+private struct UseCaseSection: View {
+    let useCase: ExperimentUseCase
+    let experiment: ExperimentDescriptor
+
+    var body: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Label("Try it", systemImage: "sparkles")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.tint)
+                    Spacer()
+                    Text("LIVE PLAYGROUND")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(.secondary)
+                }
+                Label(useCase.title, systemImage: "play.circle.fill")
+                    .font(.headline)
+                Text(useCase.summary)
+                HStack(alignment: .top, spacing: 10) {
+                    Text("1")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 22, height: 22)
+                        .background(.tint, in: Circle())
+                    Text(useCase.interaction)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                if !experiment.permissions.isEmpty || !experiment.hardwareRequirements.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(experiment.permissions, id: \.self) { InfoChip(title: $0, symbol: "lock.open") }
+                            ForEach(experiment.hardwareRequirements, id: \.self) { InfoChip(title: $0, symbol: "cpu") }
+                        }
+                    }
+                }
+            }
+            .padding(14)
+            .background(.tint.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
         }
     }
 }
