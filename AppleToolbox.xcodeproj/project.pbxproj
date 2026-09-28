@@ -105,6 +105,8 @@
 		E5088B969FD2525DC5877C8B /* ExperimentLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797EBD875C12F1823388E1D7 /* ExperimentLifecycle.swift */; };
 		D6CF2953EBDBD4E22D501296 /* ExperimentChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */; };
 		C52B26A4F0554E00C5CADF4F /* ExperimentChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */; };
+		3BA5BA6EF4C41CFAC1A0196A /* ExperimentExplanations.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA487C367220700AA38DF75E /* ExperimentExplanations.swift */; };
+		4CF9352BF2A78380210004E7 /* ExperimentExplanations.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA487C367220700AA38DF75E /* ExperimentExplanations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -217,6 +219,7 @@
 		051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentAvailability.swift; path = AppleToolbox/Shared/PermissionSystem/ExperimentAvailability.swift; sourceTree = "<group>"; };
 		797EBD875C12F1823388E1D7 /* ExperimentLifecycle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentLifecycle.swift; path = AppleToolbox/UI/ExperimentLifecycle.swift; sourceTree = "<group>"; };
 		DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentChecks.swift; path = AppleToolbox/Shared/Models/ExperimentChecks.swift; sourceTree = "<group>"; };
+		DA487C367220700AA38DF75E /* ExperimentExplanations.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentExplanations.swift; path = AppleToolbox/Shared/Models/ExperimentExplanations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -397,6 +400,7 @@
 				051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */,
 				797EBD875C12F1823388E1D7 /* ExperimentLifecycle.swift */,
 				DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */,
+				DA487C367220700AA38DF75E /* ExperimentExplanations.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -719,6 +723,7 @@
 				0FC5345464E9588FF8FAD7CC /* ExperimentAvailability.swift in Sources */,
 				7BC901D196ED18E0E30F3035 /* ExperimentLifecycle.swift in Sources */,
 				D6CF2953EBDBD4E22D501296 /* ExperimentChecks.swift in Sources */,
+				3BA5BA6EF4C41CFAC1A0196A /* ExperimentExplanations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -810,6 +815,7 @@
 				8CD2ECB854B382302D99E96A /* ExperimentAvailability.swift in Sources */,
 				E5088B969FD2525DC5877C8B /* ExperimentLifecycle.swift in Sources */,
 				C52B26A4F0554E00C5CADF4F /* ExperimentChecks.swift in Sources */,
+				4CF9352BF2A78380210004E7 /* ExperimentExplanations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

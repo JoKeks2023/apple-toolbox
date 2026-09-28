@@ -12,6 +12,9 @@ struct ExperimentDetailView: View {
         List {
             let status = experiment.currentStatus
             ExperimentHeroView(experiment: experiment, status: status)
+            if let explanation = experiment.explanation(for: status) {
+                WhyNotSection(explanation: explanation, status: status)
+            }
             ExperimentChecksSection(checks: experiment.checks(for: status))
             if let useCase = ExperimentUseCaseCatalog.forExperimentID(experiment.id) {
                 UseCaseSection(useCase: useCase, experiment: experiment)
@@ -117,6 +120,33 @@ private struct ExperimentHeroView: View {
             }
             .padding(.vertical, 8)
         }
+    }
+}
+
+private struct WhyNotSection: View {
+    let explanation: ExperimentExplanation
+    let status: ExperimentStatus
+    @Environment(\.openURL) private var openURL
+
+    var body: some View {
+        Section("Why doesn't this work?") {
+            LabeledContent("Reason") { Text(explanation.reason).multilineTextAlignment(.trailing) }
+            LabeledContent("Required") { Text(explanation.required).multilineTextAlignment(.trailing) }
+            LabeledContent("Next step") { Text(explanation.nextStep).multilineTextAlignment(.trailing) }
+            if status == .permissionDenied, let settingsURL {
+                Button("Open Settings", systemImage: "gear") { openURL(settingsURL) }
+            }
+        }
+    }
+
+    private var settingsURL: URL? {
+        #if os(iOS) || os(tvOS)
+        URL(string: UIApplication.openSettingsURLString)
+        #elseif os(macOS)
+        URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy")
+        #else
+        nil
+        #endif
     }
 }
 

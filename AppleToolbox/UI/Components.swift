@@ -4,10 +4,9 @@ enum ExperimentOutput {
     /// First text shown in an experiment's output card before anything ran.
     static func initialMessage(for status: ExperimentStatus) -> String {
         switch status {
-        case .hardwareUnsupported: "Why this doesn't work: required hardware is not available on this device or simulator."
-        case .platformUnsupported: "Why this doesn't work: this experiment is not supported on the current platform."
-        case .permissionRequired: "Permission has not been evaluated yet. Use the permission action above."
-        default: "Ready. Results from the real system API will appear here."
+        case .available: "Ready. Results from the real system API will appear here."
+        case .permissionRequired: "Permission has not been granted yet. The system asks when the experiment starts."
+        default: "Not available right now. See “Why doesn't this work?” above; results from the real system API will still appear here."
         }
     }
 }
