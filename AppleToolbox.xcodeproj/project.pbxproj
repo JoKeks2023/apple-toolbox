@@ -81,6 +81,20 @@
 		FCFC87520A08182724B83279 /* HealthNotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C041F896020A77B69B72580 /* HealthNotificationServices.swift */; };
 		7344B541ACE0C1C5B9640191 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26C2310F800CD115CE32E91B /* Assets.xcassets */; };
 		AF378B46B735EFE2034472E2 /* AppleToolbox watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7C1C9A39A25D48656AA850C5 /* AppleToolbox watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		801E4823A9EAF6BDEC73A2B8 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = A395619DDA2EDDAFDB34F869 /* Components.swift */; };
+		BD14CD6356763478269BCBE2 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = A395619DDA2EDDAFDB34F869 /* Components.swift */; };
+		C44C707C8E6CD84292692BDD /* ExperimentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D69DFDD4568C45FCCD592 /* ExperimentDetailView.swift */; };
+		B7811F19BB3733A41AEB0CA5 /* ExperimentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D69DFDD4568C45FCCD592 /* ExperimentDetailView.swift */; };
+		EE3B4CB99986A849F0E1EE10 /* SecurityRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7035CDF2F2F3F430C498F40A /* SecurityRunViews.swift */; };
+		FA0CC7930D80C546FBE1B3AF /* SecurityRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7035CDF2F2F3F430C498F40A /* SecurityRunViews.swift */; };
+		290F4CBE6CAF2F738F9F0DE0 /* LocationMotionRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCF8E28BF7E5A6D33354BB6 /* LocationMotionRunViews.swift */; };
+		1FCB4306F7FDFDDC106CB45C /* LocationMotionRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCF8E28BF7E5A6D33354BB6 /* LocationMotionRunViews.swift */; };
+		F65F7FD060CD7E93D57F08A5 /* ConnectivityRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C551ECF45F8702113D9A642F /* ConnectivityRunViews.swift */; };
+		E6E7C1B0E94785FC454369DF /* ConnectivityRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C551ECF45F8702113D9A642F /* ConnectivityRunViews.swift */; };
+		3D1C845A0DE1E7E7DB29CCCD /* MediaAIRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB55B7EE2945DA9EBF5FADF /* MediaAIRunViews.swift */; };
+		E80983EB79E949A11ED8F17F /* MediaAIRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB55B7EE2945DA9EBF5FADF /* MediaAIRunViews.swift */; };
+		81F70D80C7AC13BEC20035AD /* HomeMapsSystemRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE0DB0BAACE73016E1D5FAE /* HomeMapsSystemRunViews.swift */; };
+		C48A1E8881EDA07254C02349 /* HomeMapsSystemRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE0DB0BAACE73016E1D5FAE /* HomeMapsSystemRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,6 +196,13 @@
 		E9AAAFF4E104E0812F0B5017 /* MediaExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MediaExperimentServices.swift; path = AppleToolbox/Shared/Services/MediaExperimentServices.swift; sourceTree = "<group>"; };
 		EA737256039EE77698DB285C /* NearbyExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NearbyExperimentServices.swift; path = AppleToolbox/Shared/Services/NearbyExperimentServices.swift; sourceTree = "<group>"; };
 		F9BF27AFEC11D19A6140F698 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		A395619DDA2EDDAFDB34F869 /* Components.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Components.swift; path = AppleToolbox/UI/Components.swift; sourceTree = "<group>"; };
+		D02D69DFDD4568C45FCCD592 /* ExperimentDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentDetailView.swift; path = AppleToolbox/UI/ExperimentDetailView.swift; sourceTree = "<group>"; };
+		7035CDF2F2F3F430C498F40A /* SecurityRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecurityRunViews.swift; path = AppleToolbox/UI/Experiments/SecurityRunViews.swift; sourceTree = "<group>"; };
+		ADCF8E28BF7E5A6D33354BB6 /* LocationMotionRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationMotionRunViews.swift; path = AppleToolbox/UI/Experiments/LocationMotionRunViews.swift; sourceTree = "<group>"; };
+		C551ECF45F8702113D9A642F /* ConnectivityRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConnectivityRunViews.swift; path = AppleToolbox/UI/Experiments/ConnectivityRunViews.swift; sourceTree = "<group>"; };
+		5DB55B7EE2945DA9EBF5FADF /* MediaAIRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MediaAIRunViews.swift; path = AppleToolbox/UI/Experiments/MediaAIRunViews.swift; sourceTree = "<group>"; };
+		6AE0DB0BAACE73016E1D5FAE /* HomeMapsSystemRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeMapsSystemRunViews.swift; path = AppleToolbox/UI/Experiments/HomeMapsSystemRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -351,6 +372,13 @@
 				AFCDEE58AB23A44A8DAA3D49 /* IdentitySecurityServices.swift */,
 				30846DAAA11AF56E4F480E57 /* CapabilityExplorerService.swift */,
 				8ED66FED6768B2835466E441 /* WalletPassCreatorService.swift */,
+				A395619DDA2EDDAFDB34F869 /* Components.swift */,
+				D02D69DFDD4568C45FCCD592 /* ExperimentDetailView.swift */,
+				7035CDF2F2F3F430C498F40A /* SecurityRunViews.swift */,
+				ADCF8E28BF7E5A6D33354BB6 /* LocationMotionRunViews.swift */,
+				C551ECF45F8702113D9A642F /* ConnectivityRunViews.swift */,
+				5DB55B7EE2945DA9EBF5FADF /* MediaAIRunViews.swift */,
+				6AE0DB0BAACE73016E1D5FAE /* HomeMapsSystemRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -662,6 +690,13 @@
 				31186D7D3B032512CD8E91E0 /* IdentitySecurityServices.swift in Sources */,
 				796B54C80880B59011C01911 /* CapabilityExplorerService.swift in Sources */,
 				980C2D665DD1DE7D7EEDE068 /* WalletPassCreatorService.swift in Sources */,
+				801E4823A9EAF6BDEC73A2B8 /* Components.swift in Sources */,
+				C44C707C8E6CD84292692BDD /* ExperimentDetailView.swift in Sources */,
+				EE3B4CB99986A849F0E1EE10 /* SecurityRunViews.swift in Sources */,
+				290F4CBE6CAF2F738F9F0DE0 /* LocationMotionRunViews.swift in Sources */,
+				F65F7FD060CD7E93D57F08A5 /* ConnectivityRunViews.swift in Sources */,
+				3D1C845A0DE1E7E7DB29CCCD /* MediaAIRunViews.swift in Sources */,
+				81F70D80C7AC13BEC20035AD /* HomeMapsSystemRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -740,6 +775,13 @@
 				A6817680AE6E75A09D605F5B /* NearbyExperimentServices.swift in Sources */,
 				0B3E573977E1BACB4B5F63EE /* WalletPassCreatorService.swift in Sources */,
 				8C5B6EA5CE0075EC1360BB75 /* SpatialExperimentServices.swift in Sources */,
+				BD14CD6356763478269BCBE2 /* Components.swift in Sources */,
+				B7811F19BB3733A41AEB0CA5 /* ExperimentDetailView.swift in Sources */,
+				FA0CC7930D80C546FBE1B3AF /* SecurityRunViews.swift in Sources */,
+				1FCB4306F7FDFDDC106CB45C /* LocationMotionRunViews.swift in Sources */,
+				E6E7C1B0E94785FC454369DF /* ConnectivityRunViews.swift in Sources */,
+				E80983EB79E949A11ED8F17F /* MediaAIRunViews.swift in Sources */,
+				C48A1E8881EDA07254C02349 /* HomeMapsSystemRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,173 @@
+import SwiftUI
+
+struct ExperimentDetailView: View {
+    let experiment: ExperimentDescriptor
+    /// Status reported by run views that observe live system state (for example location authorization).
+    @State private var liveStatus: ExperimentStatus?
+
+    var body: some View {
+        List {
+            ExperimentHeroView(experiment: experiment, status: currentStatus)
+            if let useCase = ExperimentUseCaseCatalog.forExperimentID(experiment.id) {
+                UseCaseSection(useCase: useCase, experiment: experiment)
+            }
+            Section("Run") {
+                ExperimentRunView(experiment: experiment, liveStatus: $liveStatus)
+            }
+            RequirementsView(experiment: experiment)
+            Section("Documentation") { Link(destination: experiment.documentationURL) { Label("Open Apple Developer Documentation", systemImage: "book.closed") } }
+        }
+        .navigationTitle(experiment.name)
+    }
+
+    private var currentStatus: ExperimentStatus { liveStatus ?? experiment.currentStatus }
+}
+
+/// Routes an experiment to its run view. Each run view owns only the service it needs,
+/// so opening one experiment never starts another experiment's framework.
+struct ExperimentRunView: View {
+    let experiment: ExperimentDescriptor
+    @Binding var liveStatus: ExperimentStatus?
+
+    var body: some View {
+        switch experiment.id {
+        case "localauthentication": LocalAuthenticationRunView(experiment: experiment)
+        case "cryptokit": CryptoKitRunView(experiment: experiment)
+        case "keychain": KeychainRunView(experiment: experiment)
+        case "secure-enclave": SecureEnclaveRunView(experiment: experiment)
+        case "app-attest": StatusCheckRunView(experiment: experiment, title: "Check App Attest Boundary", check: IdentitySecurityExperimentService.appAttestStatus)
+        case "passkeys": StatusCheckRunView(experiment: experiment, title: "Check Passkey Configuration", check: IdentitySecurityExperimentService.passkeyStatus)
+        case "sign-in-with-apple": StatusCheckRunView(experiment: experiment, title: "Check Sign in with Apple", check: IdentitySecurityExperimentService.signInWithAppleStatus)
+        case "core-location": CoreLocationRunView(liveStatus: $liveStatus)
+        case "core-motion": CoreMotionRunView(liveStatus: $liveStatus)
+        case "core-nfc": CoreNFCRunView()
+        case "core-bluetooth": CoreBluetoothRunView()
+        case "multipeer-connectivity": MultipeerRunView()
+        case "nearby-interaction": NearbyInteractionRunView()
+        case "network-path": NetworkPathRunView()
+        case "continuity": WatchConnectivityRunView()
+        case "camera-vision": CameraVisionRunView()
+        case "audio-input": AudioInputRunView()
+        case "musickit": MusicKitRunView()
+        case "shazamkit": StatusCheckRunView(experiment: experiment, title: "Check ShazamKit Session", check: ShazamExperimentService.statusText)
+        case "sound-analysis": StatusCheckRunView(experiment: experiment, title: "Inspect Sound Analysis", check: AIAvailabilityExperimentService.soundAnalysisStatus)
+        case "natural-language": NaturalLanguageRunView()
+        case "foundation-models": StatusCheckRunView(experiment: experiment, title: "Check Foundation Models Availability", check: FoundationModelsExperimentService.statusText)
+        case "speech": SpeechRunView()
+        case "core-ml": StatusCheckRunView(experiment: experiment, title: "Inspect Core ML Availability", check: AIAvailabilityExperimentService.coreMLStatus)
+        case "translation": StatusCheckRunView(experiment: experiment, title: "Inspect Translation Availability", check: AIAvailabilityExperimentService.translationStatus)
+        case "mapkit-search": MapKitSearchRunView()
+        case "indoor-imdf": IndoorIMDFRunView()
+        case "homekit-discovery": HomeKitRunView()
+        case "matter-status": StatusCheckRunView(experiment: experiment, title: "Inspect Matter Availability", check: MatterExperimentService.statusText)
+        case "arkit": ARKitRunView()
+        case "roomplan": StatusCheckRunView(experiment: experiment, title: "Check RoomPlan Hardware", check: RoomPlanExperimentService.statusText)
+        case "healthkit-status": HealthKitRunView()
+        case "notifications": NotificationsRunView()
+        case "wallet-status": StatusCheckRunView(experiment: experiment, title: "Inspect Wallet Capability", check: WalletExperimentService.statusText)
+        case "wallet-creator": WalletPassCreatorRunView()
+        case "app-intents": StatusCheckRunView(experiment: experiment, title: "Refresh App Intents Report") { "App Intent registered: ToolboxStatusIntent\nUse Siri or Shortcuts to discover it." }
+        case "widgetkit": StatusCheckRunView(experiment: experiment, title: "Inspect Widget Extension") { "WidgetKit extension is included in the iOS app.\nAdd “Apple Toolbox” from the Home Screen widget gallery." }
+        case "capability-explorer": StatusCheckRunView(experiment: experiment, title: "Refresh Device and Capability Report", check: CapabilityExplorerService.report)
+        default: OutputView(text: "No run view is registered for this experiment.", isError: true)
+        }
+    }
+}
+
+private struct ExperimentHeroView: View {
+    let experiment: ExperimentDescriptor
+    let status: ExperimentStatus
+
+    var body: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(alignment: .top) {
+                    Image(systemName: experiment.category.symbolName)
+                        .font(.title2.weight(.semibold))
+                        .foregroundStyle(.tint)
+                        .frame(width: 48, height: 48)
+                        .background(.tint.opacity(0.14), in: RoundedRectangle(cornerRadius: 14))
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(experiment.name)
+                            .font(.title3.weight(.semibold))
+                        Text(experiment.category.rawValue)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer(minLength: 8)
+                    StatusBadge(status: status)
+                }
+                Text(experiment.description)
+                    .foregroundStyle(.secondary)
+                HStack(spacing: 8) {
+                    InfoChip(title: CurrentPlatform.value.rawValue, symbol: "display.2")
+                    InfoChip(title: experiment.frameworks.first ?? "Apple API", symbol: "shippingbox")
+                    if !experiment.hardwareRequirements.isEmpty {
+                        InfoChip(title: "Hardware", symbol: "cpu")
+                    }
+                }
+            }
+            .padding(.vertical, 8)
+        }
+    }
+}
+
+private struct UseCaseSection: View {
+    let useCase: ExperimentUseCase
+    let experiment: ExperimentDescriptor
+
+    var body: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Label("Try it", systemImage: "sparkles")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.tint)
+                    Spacer()
+                    Text("LIVE PLAYGROUND")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(.secondary)
+                }
+                Label(useCase.title, systemImage: "play.circle.fill")
+                    .font(.headline)
+                Text(useCase.summary)
+                HStack(alignment: .top, spacing: 10) {
+                    Text("1")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 22, height: 22)
+                        .background(.tint, in: Circle())
+                    Text(useCase.interaction)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                if !experiment.permissions.isEmpty || !experiment.hardwareRequirements.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(experiment.permissions, id: \.self) { InfoChip(title: $0, symbol: "lock.open") }
+                            ForEach(experiment.hardwareRequirements, id: \.self) { InfoChip(title: $0, symbol: "cpu") }
+                        }
+                    }
+                }
+            }
+            .padding(14)
+            .background(.tint.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
+        }
+    }
+}
+
+private struct RequirementsView: View {
+    let experiment: ExperimentDescriptor
+
+    var body: some View {
+        Section("Requirements") {
+            LabeledContent("Frameworks", value: experiment.frameworks.joined(separator: ", "))
+            LabeledContent("Platforms", value: experiment.supportedPlatforms.map(\.rawValue).joined(separator: " · "))
+            LabeledContent("Hardware", value: experiment.hardwareRequirements.isEmpty ? "None listed" : experiment.hardwareRequirements.joined(separator: ", "))
+            LabeledContent("OS", value: experiment.osRequirements.joined(separator: ", "))
+            LabeledContent("Permissions", value: experiment.permissions.isEmpty ? "None" : experiment.permissions.joined(separator: ", "))
+            LabeledContent("Capabilities", value: experiment.capabilities.isEmpty ? "None" : experiment.capabilities.joined(separator: ", "))
+            LabeledContent("Entitlements", value: experiment.entitlements.isEmpty ? "None" : experiment.entitlements.joined(separator: ", "))
+        }
+    }
+}

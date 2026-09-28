@@ -56,39 +56,64 @@ final class MapExperimentService: ObservableObject {
 
 @MainActor
 final class HomeExperimentService: NSObject, ObservableObject {
-    @Published private(set) var output = "HomeKit discovery is ready."
+    @Published private(set) var output = "HomeKit discovery is ready. Refresh to request access."
     @Published private(set) var status: ExperimentStatus = .permissionRequired
     @Published private(set) var homes: [HomeSummary] = []
     #if canImport(HomeKit) && !os(macOS)
-    private var manager: HMHomeManager!
+    /// Created on the first refresh: instantiating HMHomeManager triggers the HomeKit privacy prompt.
+    private var manager: HMHomeManager?
     #endif
 
     override init() {
         super.init()
-        #if canImport(HomeKit) && !os(macOS)
-        manager = HMHomeManager()
-        manager.delegate = self
-        #else
+        #if !canImport(HomeKit) || os(macOS)
         status = .platformUnsupported
         #endif
     }
 
     func refresh() {
         #if canImport(HomeKit) && !os(macOS)
-        let homes = manager.homes
-        self.homes = homes.map { HomeSummary(name: $0.name, rooms: $0.rooms.count, accessories: $0.accessories.count) }
-        status = .available
-        output = homes.isEmpty ? "No homes available. HomeKit permission may still be pending." : "Found \(homes.count) home(s)."
+        guard let manager else {
+            let manager = HMHomeManager()
+            manager.delegate = self
+            self.manager = manager
+            output = "Waiting for HomeKit to load homes…"
+            return
+        }
+        apply(manager)
         #else
         output = "HomeKit is not available on this platform."
         #endif
     }
+
+    #if canImport(HomeKit) && !os(macOS)
+    private func apply(_ manager: HMHomeManager) {
+        let authorization = manager.authorizationStatus
+        guard authorization.contains(.authorized) else {
+            homes = []
+            if authorization.contains(.restricted) {
+                status = .permissionDenied
+                output = "HomeKit access is restricted on this device."
+            } else if authorization.contains(.determined) {
+                status = .permissionDenied
+                output = "HomeKit access was denied. Allow it in Settings › Privacy & Security › HomeKit."
+            } else {
+                status = .permissionRequired
+                output = "HomeKit access has not been decided yet."
+            }
+            return
+        }
+        homes = manager.homes.map { HomeSummary(name: $0.name, rooms: $0.rooms.count, accessories: $0.accessories.count) }
+        status = .available
+        output = homes.isEmpty ? "HomeKit access granted, but no homes are set up." : "Found \(homes.count) home(s)."
+    }
+    #endif
 }
 
 #if canImport(HomeKit) && !os(macOS)
 extension HomeExperimentService: HMHomeManagerDelegate {
-    func homeManagerDidUpdateHomes(_ manager: HMHomeManager) { refresh() }
-    func homeManager(_ manager: HMHomeManager, didEncounterError error: Error) { status = .unavailable; output = "HomeKit error: \(error.localizedDescription)" }
+    func homeManagerDidUpdateHomes(_ manager: HMHomeManager) { apply(manager) }
+    func homeManager(_ manager: HMHomeManager, didUpdate status: HMHomeManagerAuthorizationStatus) { apply(manager) }
 }
 #endif
 
