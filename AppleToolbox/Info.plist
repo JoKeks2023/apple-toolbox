@@ -4,6 +4,12 @@
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Joris Apple Toolbox uses your location to inspect live Core Location updates.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Joris Apple Toolbox uses Face ID for the LocalAuthentication and Keychain experiments.</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Joris Apple Toolbox requests Apple Music access for the MusicKit experiment.</string>
+	<key>NSNearbyInteractionUsageDescription</key>
+	<string>Joris Apple Toolbox measures distance and direction to a nearby device for the Nearby Interaction experiment.</string>
 	<key>NFCReaderUsageDescription</key>
 	<string>Joris Apple Toolbox reads nearby NFC tags as part of the NFC experiment.</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
@@ -23,6 +29,9 @@
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_apple-toolbox._tcp</string>
+		<string>_apple-toolbox._udp</string>
+		<string>_joris-nearby._tcp</string>
+		<string>_joris-nearby._udp</string>
 	</array>
 </dict>
 </plist>
