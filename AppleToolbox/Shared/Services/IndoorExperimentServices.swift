@@ -29,4 +29,9 @@ final class IndoorIMDFExperimentService: ObservableObject {
             output = "IMDF import error: \(error.localizedDescription)"
         }
     }
+
+    func reportImportFailure(_ error: Error) {
+        status = .unavailable
+        output = "File import error: \(error.localizedDescription)"
+    }
 }

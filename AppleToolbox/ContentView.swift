@@ -299,7 +299,7 @@ struct ExperimentDetailView: View {
         #if canImport(UniformTypeIdentifiers) && !os(tvOS)
         .fileImporter(isPresented: $showingIMDFImporter, allowedContentTypes: [.json], allowsMultipleSelection: false) { result in
             if case .success(let urls) = result, let url = urls.first { indoor.load(url: url) }
-            if case .failure(let error) = result { output = "File import error: \(error.localizedDescription)" }
+            if case .failure(let error) = result { indoor.reportImportFailure(error) }
         }
         #endif
     }
@@ -429,7 +429,7 @@ private struct MapResultsView: View {
     let results: [MapSearchResult]
 
     var body: some View {
-        Section("Map results ((results.count))") {
+        Section("Map results (\(results.count))") {
             if results.isEmpty {
                 Text("Search for a place to inspect real MKMapItem results.")
                     .font(.caption)
