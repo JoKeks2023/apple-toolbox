@@ -117,6 +117,11 @@
 		E9D38E7434784A75BE08415D /* ProvisioningInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74066D2DEC64C74C01FCD3E /* ProvisioningInspector.swift */; };
 		48E2AB940F81C4C8550E8E50 /* EntitlementExplorerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EDDEEE432E2F625D463427 /* EntitlementExplorerView.swift */; };
 		A9586D3C60E0535042A4B20B /* EntitlementExplorerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EDDEEE432E2F625D463427 /* EntitlementExplorerView.swift */; };
+		671C03356F094CE64874EF35 /* DeviceScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBEF3E2F76F441D32CFAD5F /* DeviceScanner.swift */; };
+		789D50E76E6784DDF015F6B8 /* DeviceScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBEF3E2F76F441D32CFAD5F /* DeviceScanner.swift */; };
+		014600BA1371D2D4E77485D1 /* DeviceScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBEF3E2F76F441D32CFAD5F /* DeviceScanner.swift */; };
+		EB97970FF0C458E04D92FD86 /* DeviceScannerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */; };
+		EA150673D2C12043831FF906 /* DeviceScannerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -234,6 +239,8 @@
 		4C52D871CE8EAB2A4083707C /* CapabilityRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CapabilityRegistry.swift; path = AppleToolbox/Shared/CapabilitySystem/CapabilityRegistry.swift; sourceTree = "<group>"; };
 		A74066D2DEC64C74C01FCD3E /* ProvisioningInspector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProvisioningInspector.swift; path = AppleToolbox/Shared/CapabilitySystem/ProvisioningInspector.swift; sourceTree = "<group>"; };
 		34EDDEEE432E2F625D463427 /* EntitlementExplorerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EntitlementExplorerView.swift; path = AppleToolbox/UI/EntitlementExplorerView.swift; sourceTree = "<group>"; };
+		AFBEF3E2F76F441D32CFAD5F /* DeviceScanner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeviceScanner.swift; path = AppleToolbox/Shared/CapabilitySystem/DeviceScanner.swift; sourceTree = "<group>"; };
+		A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeviceScannerRunView.swift; path = AppleToolbox/UI/Experiments/DeviceScannerRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -419,6 +426,8 @@
 				4C52D871CE8EAB2A4083707C /* CapabilityRegistry.swift */,
 				A74066D2DEC64C74C01FCD3E /* ProvisioningInspector.swift */,
 				34EDDEEE432E2F625D463427 /* EntitlementExplorerView.swift */,
+				AFBEF3E2F76F441D32CFAD5F /* DeviceScanner.swift */,
+				A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -746,6 +755,8 @@
 				1BE85F9C51D9253BFA54484E /* CapabilityRegistry.swift in Sources */,
 				7CA0DCEFEA85037B9795DEB1 /* ProvisioningInspector.swift in Sources */,
 				48E2AB940F81C4C8550E8E50 /* EntitlementExplorerView.swift in Sources */,
+				671C03356F094CE64874EF35 /* DeviceScanner.swift in Sources */,
+				EB97970FF0C458E04D92FD86 /* DeviceScannerRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -778,6 +789,7 @@
 				AEB87C3BDE6A7AF41CDADAF0 /* ExperimentAvailability.swift in Sources */,
 				1DE96BB224D3B366E227511C /* AudioSessionController.swift in Sources */,
 				F56554927651290A64DB4A23 /* CapabilityRegistry.swift in Sources */,
+				014600BA1371D2D4E77485D1 /* DeviceScanner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -844,6 +856,8 @@
 				615A8AFD47E495D7172F0101 /* CapabilityRegistry.swift in Sources */,
 				E9D38E7434784A75BE08415D /* ProvisioningInspector.swift in Sources */,
 				A9586D3C60E0535042A4B20B /* EntitlementExplorerView.swift in Sources */,
+				789D50E76E6784DDF015F6B8 /* DeviceScanner.swift in Sources */,
+				EA150673D2C12043831FF906 /* DeviceScannerRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
