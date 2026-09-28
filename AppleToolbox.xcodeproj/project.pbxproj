@@ -79,6 +79,7 @@
 		F118426398FB6D04E6035390 /* AIExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6AA785AF459607AEC827E /* AIExperimentServices.swift */; };
 		FC40B35B27A98F4CBFAB4BE1 /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
 		FCFC87520A08182724B83279 /* HealthNotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C041F896020A77B69B72580 /* HealthNotificationServices.swift */; };
+		7344B541ACE0C1C5B9640191 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26C2310F800CD115CE32E91B /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -606,6 +607,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7344B541ACE0C1C5B9640191 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
