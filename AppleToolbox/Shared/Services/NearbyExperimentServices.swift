@@ -26,6 +26,19 @@ import UIKit
 #endif
 #endif
 
+#if canImport(MultipeerConnectivity) && !os(watchOS) && !os(tvOS)
+/// Both peers advertise and browse. Only the peer with the smaller random identifier sends the
+/// invitation, so two devices never invite each other at the same time.
+nonisolated enum PeerInvitationPolicy {
+    static let identifierKey = "peer"
+
+    static func shouldInvite(localIdentifier: String, discoveryInfo: [String: String]?) -> Bool {
+        guard let remoteIdentifier = discoveryInfo?[identifierKey] else { return true } // Older builds without an identifier.
+        return localIdentifier < remoteIdentifier
+    }
+}
+#endif
+
 @MainActor
 final class NearbyExperimentService: NSObject, ObservableObject {
     @Published private(set) var output = "Nearby Interaction is ready."
@@ -37,6 +50,7 @@ final class NearbyExperimentService: NSObject, ObservableObject {
 
     #if canImport(MultipeerConnectivity) && os(iOS)
     private let peerID = MCPeerID(displayName: UIDevice.current.name)
+    nonisolated private let invitationIdentifier = UUID().uuidString
     private var transportSession: MCSession?
     private var advertiser: MCNearbyServiceAdvertiser?
     private var browser: MCNearbyServiceBrowser?
@@ -58,7 +72,7 @@ final class NearbyExperimentService: NSObject, ObservableObject {
         let transport = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         transport.delegate = self
         transportSession = transport
-        let advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: "joris-nearby")
+        let advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: [PeerInvitationPolicy.identifierKey: invitationIdentifier], serviceType: "joris-nearby")
         advertiser.delegate = self
         advertiser.startAdvertisingPeer()
         self.advertiser = advertiser
@@ -174,9 +188,14 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
     }
 
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        let invite = PeerInvitationPolicy.shouldInvite(localIdentifier: invitationIdentifier, discoveryInfo: info)
         Task { @MainActor [weak self] in
-            guard let transportSession = self?.transportSession else { return }
-            browser.invitePeer(peerID, to: transportSession, withContext: nil, timeout: 15)
+            guard let self, let transportSession else { return }
+            if invite {
+                browser.invitePeer(peerID, to: transportSession, withContext: nil, timeout: 15)
+            } else {
+                output = "Found \(peerID.displayName). Waiting for its invitation…"
+            }
         }
     }
 
@@ -200,6 +219,7 @@ final class MultipeerConnectivityExperimentService: NSObject, ObservableObject {
     @Published private(set) var discoveredPeers: [String] = []
 
     private let peerID: MCPeerID
+    nonisolated private let invitationIdentifier = UUID().uuidString
     private var session: MCSession?
     private var advertiser: MCNearbyServiceAdvertiser?
     private var browser: MCNearbyServiceBrowser?
@@ -220,7 +240,7 @@ final class MultipeerConnectivityExperimentService: NSObject, ObservableObject {
         session.delegate = self
         self.session = session
 
-        let advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: ["app": "apple-toolbox"], serviceType: "apple-toolbox")
+        let advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: ["app": "apple-toolbox", PeerInvitationPolicy.identifierKey: invitationIdentifier], serviceType: "apple-toolbox")
         advertiser.delegate = self
         advertiser.startAdvertisingPeer()
         self.advertiser = advertiser
@@ -292,12 +312,17 @@ extension MultipeerConnectivityExperimentService: MCSessionDelegate, MCNearbySer
     }
 
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        let invite = PeerInvitationPolicy.shouldInvite(localIdentifier: invitationIdentifier, discoveryInfo: info)
         Task { @MainActor [weak self] in
             guard let self, !discoveredPeers.contains(peerID.displayName) else { return }
             discoveredPeers.append(peerID.displayName)
             guard let session else { return }
-            browser.invitePeer(peerID, to: session, withContext: nil, timeout: 15)
-            output = "Found \(peerID.displayName). Sending connection invitation…"
+            if invite {
+                browser.invitePeer(peerID, to: session, withContext: nil, timeout: 15)
+                output = "Found \(peerID.displayName). Sending connection invitation…"
+            } else {
+                output = "Found \(peerID.displayName). Waiting for its invitation…"
+            }
         }
     }
 
