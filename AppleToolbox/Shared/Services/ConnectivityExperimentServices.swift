@@ -171,17 +171,34 @@ final class NFCExperimentService: NSObject, ObservableObject {
 
 #if canImport(CoreNFC) && os(iOS)
 extension NFCExperimentService: NFCNDEFReaderSessionDelegate {
-    func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
-        let records = messages.flatMap(\.records)
-        self.records = records.enumerated().map { index, record in
+    // Core NFC calls the delegate on its own serial queue; results hop to the main actor.
+    nonisolated func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
+        let records = messages.flatMap(\.records).enumerated().map { index, record in
             NFCRecordResult(id: index, format: record.typeNameFormat.rawValue, type: String(data: record.type, encoding: .utf8) ?? "Unknown", payloadBytes: record.payload.count)
         }
-        output = "Detected \(messages.count) NDEF message(s) with \(records.count) record(s)."
-        isScanning = false
+        let messageCount = messages.count
+        Task { @MainActor [weak self] in
+            self?.records = records
+            self?.output = "Detected \(messageCount) NDEF message(s) with \(records.count) record(s)."
+            self?.isScanning = false
+        }
     }
-    func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
-        output = "NFC session ended: \(error.localizedDescription)"
-        isScanning = false
+
+    nonisolated func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
+        let code = (error as? NFCReaderError)?.code
+        let message = error.localizedDescription
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            isScanning = false
+            switch code {
+            case .readerSessionInvalidationErrorFirstNDEFTagRead:
+                break // Expected after a successful read with invalidateAfterFirstRead.
+            case .readerSessionInvalidationErrorUserCanceled:
+                if records.isEmpty { output = "NFC scan cancelled." }
+            default:
+                output = "NFC session error: \(message)"
+            }
+        }
     }
 }
 #endif

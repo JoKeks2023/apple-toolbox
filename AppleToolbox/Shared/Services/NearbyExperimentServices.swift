@@ -128,10 +128,13 @@ extension NearbyExperimentService: NISessionDelegate {
 #endif
 
 #if canImport(MultipeerConnectivity) && os(iOS)
+// MultipeerConnectivity calls these delegates on private queues; all state changes hop to the main actor.
 extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate {
-    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        output = "Peer \(peerID.displayName): \(state.title)."
-        if state == .connected, let discoveryToken = self.session?.discoveryToken {
+    nonisolated func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            output = "Peer \(peerID.displayName): \(state.title)."
+            guard state == .connected, let discoveryToken = self.session?.discoveryToken else { return }
             do {
                 let archived = try NSKeyedArchiver.archivedData(withRootObject: discoveryToken, requiringSecureCoding: true)
                 try session.send(archived, toPeers: [peerID], with: .reliable)
@@ -141,48 +144,51 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
         }
     }
 
-    func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        do {
-            guard let token = try NSKeyedUnarchiver.unarchivedObject(ofClass: NIDiscoveryToken.self, from: data) else {
-                output = "Received peer data, but it was not a valid Nearby token."
-                return
+    nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                guard let token = try NSKeyedUnarchiver.unarchivedObject(ofClass: NIDiscoveryToken.self, from: data) else {
+                    output = "Received peer data, but it was not a valid Nearby token."
+                    return
+                }
+                self.session?.run(NINearbyPeerConfiguration(peerToken: token))
+                output = "Peer token received from \(peerID.displayName). Nearby ranging started."
+            } catch {
+                output = "Could not decode peer token: \(error.localizedDescription)"
             }
-            let configuration = NINearbyPeerConfiguration(peerToken: token)
-            self.session?.run(configuration)
-            output = "Peer token received from \(peerID.displayName). Nearby ranging started."
-        } catch {
-            output = "Could not decode peer token: \(error.localizedDescription)"
         }
     }
 
-    func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {}
-    func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {}
-    func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {}
+    nonisolated func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {}
+    nonisolated func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {}
+    nonisolated func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {}
 
-    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        invitationHandler(true, transportSession)
+    nonisolated func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        Task { @MainActor [weak self] in invitationHandler(true, self?.transportSession) }
     }
 
-    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
-        output = "Nearby advertising error: \(error.localizedDescription)"
+    nonisolated func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
+        let message = error.localizedDescription
+        Task { @MainActor [weak self] in self?.output = "Nearby advertising error: \(message)" }
     }
 
-    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        guard let transportSession else { return }
-        browser.invitePeer(peerID, to: transportSession, withContext: nil, timeout: 15)
+    nonisolated func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        Task { @MainActor [weak self] in
+            guard let transportSession = self?.transportSession else { return }
+            browser.invitePeer(peerID, to: transportSession, withContext: nil, timeout: 15)
+        }
     }
 
-    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        output = "Peer left discovery range: \(peerID.displayName)."
+    nonisolated func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        Task { @MainActor [weak self] in self?.output = "Peer left discovery range: \(peerID.displayName)." }
     }
 
-    func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
-        output = "Nearby browsing error: \(error.localizedDescription)"
+    nonisolated func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
+        let message = error.localizedDescription
+        Task { @MainActor [weak self] in self?.output = "Nearby browsing error: \(message)" }
     }
 }
-#endif
-
-#if canImport(MultipeerConnectivity) && os(iOS)
 #endif
 
 #if canImport(MultipeerConnectivity) && !os(watchOS) && !os(tvOS)

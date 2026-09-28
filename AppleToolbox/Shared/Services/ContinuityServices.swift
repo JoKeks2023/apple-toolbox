@@ -26,12 +26,18 @@ final class ContinuityExperimentService: NSObject, ObservableObject {
 
 #if canImport(WatchConnectivity) && !os(tvOS)
 extension ContinuityExperimentService: WCSessionDelegate {
-    func session(_ session: WCSession, activationDidCompleteWith state: WCSessionActivationState, error: Error?) {
-        output = error.map { "Activation error: \($0.localizedDescription)" } ?? "Session activated: \(state.rawValue) · reachable: \(session.isReachable)"
+    // WatchConnectivity calls the delegate on a background queue; UI state is updated on the main actor.
+    nonisolated func session(_ session: WCSession, activationDidCompleteWith state: WCSessionActivationState, error: Error?) {
+        let message = error.map { "Activation error: \($0.localizedDescription)" } ?? "Session activated: \(state.rawValue) · reachable: \(session.isReachable)"
+        Task { @MainActor [weak self] in self?.output = message }
     }
     #if os(iOS)
-    func sessionDidBecomeInactive(_ session: WCSession) { output = "Session became inactive." }
-    func sessionDidDeactivate(_ session: WCSession) { output = "Session deactivated." }
+    nonisolated func sessionDidBecomeInactive(_ session: WCSession) {
+        Task { @MainActor [weak self] in self?.output = "Session became inactive." }
+    }
+    nonisolated func sessionDidDeactivate(_ session: WCSession) {
+        Task { @MainActor [weak self] in self?.output = "Session deactivated." }
+    }
     #endif
 }
 #endif
