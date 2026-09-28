@@ -105,8 +105,8 @@ extension ExperimentDescriptor {
         "foundation-models": [
             .hardwareUnsupported: ExperimentExplanation(reason: "This device is not eligible for Apple Intelligence.", required: "An Apple Intelligence-capable device",
                                                         nextStep: "Run on a device that supports Apple Intelligence."),
-            .unavailable: ExperimentExplanation(reason: "Apple Intelligence is turned off or the on-device model is not ready yet.", required: "Apple Intelligence enabled with the model downloaded",
-                                                nextStep: "Turn on Apple Intelligence in Settings and wait for the model download to finish."),
+            .unavailable: ExperimentExplanation(reason: "Apple Intelligence is turned off (appleIntelligenceNotEnabled) or the model is still downloading (modelNotReady); the run section shows which.", required: "Apple Intelligence enabled with the model downloaded",
+                                                nextStep: "Turn on Apple Intelligence in Settings › Apple Intelligence & Siri and wait for the model download to finish."),
         ],
         "passkeys": [
             .entitlementRequired: ExperimentExplanation(reason: "Passkeys are bound to a relying-party domain, and no webcredentials: associated domain is provisioned for this app.", required: "Associated Domains entitlement with webcredentials:<domain> and an apple-app-site-association file on that domain listing this app",

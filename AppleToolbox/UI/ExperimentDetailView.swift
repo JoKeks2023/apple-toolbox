@@ -64,7 +64,7 @@ struct ExperimentRunView: View {
         case "shazamkit": StatusCheckRunView(experiment: experiment, title: "Check ShazamKit Session", check: ShazamExperimentService.statusText)
         case "sound-analysis": StatusCheckRunView(experiment: experiment, title: "Inspect Sound Analysis", check: AIAvailabilityExperimentService.soundAnalysisStatus)
         case "natural-language": NaturalLanguageRunView()
-        case "foundation-models": StatusCheckRunView(experiment: experiment, title: "Check Foundation Models Availability", check: FoundationModelsExperimentService.statusText)
+        case "foundation-models": FoundationModelsRunView()
         case "speech": SpeechRunView()
         case "core-ml": StatusCheckRunView(experiment: experiment, title: "Inspect Core ML Availability", check: AIAvailabilityExperimentService.coreMLStatus)
         case "translation": StatusCheckRunView(experiment: experiment, title: "Inspect Translation Availability", check: AIAvailabilityExperimentService.translationStatus)

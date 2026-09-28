@@ -145,6 +145,10 @@
 		DD5EBA3D71AA46D7E8B45EA8 /* WidgetKitExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83229E403CF1BAF05E43DF3C /* WidgetKitExperimentService.swift */; };
 		FA3B828667BCFC6B1208E884 /* WidgetKitExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83229E403CF1BAF05E43DF3C /* WidgetKitExperimentService.swift */; };
 		4F543AE27D9201F4C03CDD95 /* WidgetKitExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83229E403CF1BAF05E43DF3C /* WidgetKitExperimentService.swift */; };
+		AEFE09B9F7BB0FCD07E8AD24 /* FoundationModelsExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C43E8EDEB728C2587E10D9 /* FoundationModelsExperimentService.swift */; };
+		0CB41EF9F6916BA8B8EBE0DD /* FoundationModelsExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C43E8EDEB728C2587E10D9 /* FoundationModelsExperimentService.swift */; };
+		2285BD54F95825C09D9F42FE /* FoundationModelsRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F3545F3EC2E7A3F004911 /* FoundationModelsRunView.swift */; };
+		C2D9960EBD1F9B2C58EB24EA /* FoundationModelsRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F3545F3EC2E7A3F004911 /* FoundationModelsRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -275,6 +279,8 @@
 		6EDEBD9F7788C14604828260 /* ToolboxAppIntents.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxAppIntents.swift; path = AppleToolbox/Shared/Services/ToolboxAppIntents.swift; sourceTree = "<group>"; };
 		C85DF211AD3FD7739519E239 /* ToolboxWidgetStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxWidgetStore.swift; path = AppleToolbox/Shared/Services/ToolboxWidgetStore.swift; sourceTree = "<group>"; };
 		83229E403CF1BAF05E43DF3C /* WidgetKitExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WidgetKitExperimentService.swift; path = AppleToolbox/Shared/Services/WidgetKitExperimentService.swift; sourceTree = "<group>"; };
+		67C43E8EDEB728C2587E10D9 /* FoundationModelsExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsExperimentService.swift; path = AppleToolbox/Shared/Services/FoundationModelsExperimentService.swift; sourceTree = "<group>"; };
+		0A5F3545F3EC2E7A3F004911 /* FoundationModelsRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsRunView.swift; path = AppleToolbox/UI/Experiments/FoundationModelsRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -476,6 +482,8 @@
 				6EDEBD9F7788C14604828260 /* ToolboxAppIntents.swift */,
 				C85DF211AD3FD7739519E239 /* ToolboxWidgetStore.swift */,
 				83229E403CF1BAF05E43DF3C /* WidgetKitExperimentService.swift */,
+				67C43E8EDEB728C2587E10D9 /* FoundationModelsExperimentService.swift */,
+				0A5F3545F3EC2E7A3F004911 /* FoundationModelsRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -813,6 +821,8 @@
 				743D118603427E9CA2F9C1DF /* PasskeyExperimentService.swift in Sources */,
 				EF8BEDD841E7B9531F0833EB /* ToolboxAppIntents.swift in Sources */,
 				DD5EBA3D71AA46D7E8B45EA8 /* WidgetKitExperimentService.swift in Sources */,
+				AEFE09B9F7BB0FCD07E8AD24 /* FoundationModelsExperimentService.swift in Sources */,
+				2285BD54F95825C09D9F42FE /* FoundationModelsRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -928,6 +938,8 @@
 				86DF507F4CE8D231903A1301 /* PasskeyExperimentService.swift in Sources */,
 				F6FDB568203E84C34F6F4F84 /* ToolboxAppIntents.swift in Sources */,
 				FA3B828667BCFC6B1208E884 /* WidgetKitExperimentService.swift in Sources */,
+				0CB41EF9F6916BA8B8EBE0DD /* FoundationModelsExperimentService.swift in Sources */,
+				C2D9960EBD1F9B2C58EB24EA /* FoundationModelsRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

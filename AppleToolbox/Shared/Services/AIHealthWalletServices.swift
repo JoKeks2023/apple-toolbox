@@ -52,13 +52,3 @@ struct WalletExperimentService {
         #endif
     }
 }
-
-struct FoundationModelsExperimentService {
-    static func statusText() -> String {
-        #if canImport(FoundationModels)
-        return "Foundation Models framework is present. Model availability depends on device, OS, Apple Intelligence state, and region."
-        #else
-        return "Foundation Models is not present in this SDK/platform target."
-        #endif
-    }
-}
