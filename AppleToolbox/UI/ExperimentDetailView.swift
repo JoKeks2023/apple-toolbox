@@ -2,32 +2,29 @@ import SwiftUI
 
 struct ExperimentDetailView: View {
     let experiment: ExperimentDescriptor
-    /// Status reported by run views that observe live system state (for example location authorization).
-    @State private var liveStatus: ExperimentStatus?
+    /// Re-evaluates the status whenever a permission changes.
+    @ObservedObject private var permissions = PermissionCenter.shared
 
     var body: some View {
         List {
-            ExperimentHeroView(experiment: experiment, status: currentStatus)
+            ExperimentHeroView(experiment: experiment, status: experiment.currentStatus)
             if let useCase = ExperimentUseCaseCatalog.forExperimentID(experiment.id) {
                 UseCaseSection(useCase: useCase, experiment: experiment)
             }
             Section("Run") {
-                ExperimentRunView(experiment: experiment, liveStatus: $liveStatus)
+                ExperimentRunView(experiment: experiment)
             }
             RequirementsView(experiment: experiment)
             Section("Documentation") { Link(destination: experiment.documentationURL) { Label("Open Apple Developer Documentation", systemImage: "book.closed") } }
         }
         .navigationTitle(experiment.name)
     }
-
-    private var currentStatus: ExperimentStatus { liveStatus ?? experiment.currentStatus }
 }
 
 /// Routes an experiment to its run view. Each run view owns only the service it needs,
 /// so opening one experiment never starts another experiment's framework.
 struct ExperimentRunView: View {
     let experiment: ExperimentDescriptor
-    @Binding var liveStatus: ExperimentStatus?
 
     var body: some View {
         switch experiment.id {
@@ -38,8 +35,8 @@ struct ExperimentRunView: View {
         case "app-attest": StatusCheckRunView(experiment: experiment, title: "Check App Attest Boundary", check: IdentitySecurityExperimentService.appAttestStatus)
         case "passkeys": StatusCheckRunView(experiment: experiment, title: "Check Passkey Configuration", check: IdentitySecurityExperimentService.passkeyStatus)
         case "sign-in-with-apple": StatusCheckRunView(experiment: experiment, title: "Check Sign in with Apple", check: IdentitySecurityExperimentService.signInWithAppleStatus)
-        case "core-location": CoreLocationRunView(liveStatus: $liveStatus)
-        case "core-motion": CoreMotionRunView(liveStatus: $liveStatus)
+        case "core-location": CoreLocationRunView()
+        case "core-motion": CoreMotionRunView()
         case "core-nfc": CoreNFCRunView()
         case "core-bluetooth": CoreBluetoothRunView()
         case "multipeer-connectivity": MultipeerRunView()

@@ -89,6 +89,11 @@ final class HomeExperimentService: NSObject, ObservableObject {
     #if canImport(HomeKit) && !os(macOS)
     private func apply(_ manager: HMHomeManager) {
         let authorization = manager.authorizationStatus
+        let permission: PermissionState = authorization.contains(.authorized) ? .granted
+            : authorization.contains(.restricted) ? .restricted
+            : authorization.contains(.determined) ? .denied : .notDetermined
+        PermissionProbe.remember(permission, for: .homeKit)
+        PermissionCenter.shared.invalidate()
         guard authorization.contains(.authorized) else {
             homes = []
             if authorization.contains(.restricted) {

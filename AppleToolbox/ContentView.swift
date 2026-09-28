@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedCategory: ExperimentCategory?
     @State private var detailPath: [String] = []
+    @Environment(\.scenePhase) private var scenePhase
     private let experiments = ExperimentRegistry.all
 
     var body: some View {
@@ -38,6 +39,9 @@ struct ContentView: View {
         }
         .navigationSplitViewStyle(.balanced)
         .onChange(of: selectedCategory) { detailPath.removeAll() }
+        // Permissions can change in Settings while the app is in the background.
+        .task { await PermissionCenter.shared.refresh() }
+        .onChange(of: scenePhase) { if scenePhase == .active { Task { await PermissionCenter.shared.refresh() } } }
     }
 }
 
@@ -54,6 +58,7 @@ private struct WelcomeView: View {
 private struct CategoryView: View {
     let category: ExperimentCategory
     let experiments: [ExperimentDescriptor]
+    @ObservedObject private var permissions = PermissionCenter.shared
     var body: some View {
         List {
             Section { Text("Foundation experiments for \(category.rawValue.lowercased()).").foregroundStyle(.secondary) }

@@ -23,6 +23,7 @@ final class SpeechExperimentService: NSObject, ObservableObject {
         guard let recognizer, recognizer.isAvailable else { output = "Speech recognizer is not available on this device or network state."; return }
         SFSpeechRecognizer.requestAuthorization { [weak self] authorization in
             Task { @MainActor in
+                PermissionCenter.shared.invalidate()
                 guard authorization == .authorized else { self?.output = "Speech recognition permission was denied."; return }
                 await self?.startAuthorized(recognizer: recognizer)
             }
@@ -36,6 +37,7 @@ final class SpeechExperimentService: NSObject, ObservableObject {
     private func startAuthorized(recognizer: SFSpeechRecognizer) async {
         do {
             let granted = await AVAudioApplication.requestRecordPermission()
+            PermissionCenter.shared.invalidate()
             guard granted else { output = "Microphone permission was denied."; return }
             stop()
             let request = SFSpeechAudioBufferRecognitionRequest()

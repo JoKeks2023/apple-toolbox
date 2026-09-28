@@ -5,31 +5,23 @@ import MapKit
 
 struct CoreLocationRunView: View {
     @StateObject private var location = LocationExperimentService()
-    @Binding var liveStatus: ExperimentStatus?
 
     var body: some View {
-        Group {
-            HStack { Label("Authorization", systemImage: "location"); Spacer(); Text(location.authorization).foregroundStyle(.secondary) }
-            Button("Request Location Permission", action: location.requestPermission)
-            Button(location.isUpdating ? "Stop Live Updates" : "Start Live Updates") { location.isUpdating ? location.stop() : location.start() }.buttonStyle(.borderedProminent)
-            LocationReadingView(location: location)
-            OutputView(text: location.output, isError: location.output.localizedCaseInsensitiveContains("error") || location.output.localizedCaseInsensitiveContains("denied"))
-        }
-        .onChange(of: location.status, initial: true) { liveStatus = location.status }
+        HStack { Label("Authorization", systemImage: "location"); Spacer(); Text(location.authorization).foregroundStyle(.secondary) }
+        Button("Request Location Permission", action: location.requestPermission)
+        Button(location.isUpdating ? "Stop Live Updates" : "Start Live Updates") { location.isUpdating ? location.stop() : location.start() }.buttonStyle(.borderedProminent)
+        LocationReadingView(location: location)
+        OutputView(text: location.output, isError: location.output.localizedCaseInsensitiveContains("error") || location.output.localizedCaseInsensitiveContains("denied"))
     }
 }
 
 struct CoreMotionRunView: View {
     @StateObject private var motion = MotionExperimentService()
-    @Binding var liveStatus: ExperimentStatus?
 
     var body: some View {
-        Group {
-            Button(motion.isRunning ? "Stop Motion Updates" : "Start Motion Updates") { motion.isRunning ? motion.stop() : motion.start() }.buttonStyle(.borderedProminent)
-            MotionReadingView(motion: motion)
-            OutputView(text: motion.output, isError: motion.output.localizedCaseInsensitiveContains("not available") || motion.output.localizedCaseInsensitiveContains("error"))
-        }
-        .onChange(of: motion.status, initial: true) { liveStatus = motion.status }
+        Button(motion.isRunning ? "Stop Motion Updates" : "Start Motion Updates") { motion.isRunning ? motion.stop() : motion.start() }.buttonStyle(.borderedProminent)
+        MotionReadingView(motion: motion)
+        OutputView(text: motion.output, isError: motion.output.localizedCaseInsensitiveContains("not available") || motion.output.localizedCaseInsensitiveContains("error"))
     }
 }
 

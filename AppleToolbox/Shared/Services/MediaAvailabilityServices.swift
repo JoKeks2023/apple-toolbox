@@ -16,6 +16,7 @@ final class MusicExperimentService: ObservableObject {
         #if canImport(MusicKit)
         Task {
             let status = await MusicAuthorization.request()
+            PermissionCenter.shared.invalidate()
             output = switch status {
             case .authorized: "MusicKit authorized. Catalog and library requests may now be attempted."
             case .denied: "MusicKit authorization denied."

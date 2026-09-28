@@ -32,6 +32,7 @@ final class CameraVisionExperimentService: NSObject, ObservableObject {
             status = .permissionRequired
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
                 Task { @MainActor in
+                    PermissionCenter.shared.invalidate()
                     if granted { self?.start() } else { self?.status = .permissionDenied; self?.output = "Camera permission was denied in Settings." }
                 }
             }
@@ -114,6 +115,7 @@ final class AudioExperimentService: ObservableObject {
             status = .permissionRequired
             AVCaptureDevice.requestAccess(for: .audio) { [weak self] granted in
                 Task { @MainActor in
+                    PermissionCenter.shared.invalidate()
                     if granted { self?.start() } else { self?.status = .permissionDenied; self?.output = "Microphone permission was denied in Settings." }
                 }
             }

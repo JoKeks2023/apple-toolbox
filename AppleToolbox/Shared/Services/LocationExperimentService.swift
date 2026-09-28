@@ -106,6 +106,7 @@ final class LocationExperimentService: NSObject, ObservableObject {
 @MainActor extension LocationExperimentService: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         updateAuthorization(manager.authorizationStatus)
+        PermissionCenter.shared.invalidate()
         if manager.authorizationStatus == .denied { output = "Location permission was denied in Settings." }
     }
 

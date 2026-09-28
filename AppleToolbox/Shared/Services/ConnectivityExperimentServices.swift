@@ -116,6 +116,7 @@ final class BluetoothExperimentService: NSObject, ObservableObject {
 #if canImport(CoreBluetooth) && !os(tvOS)
 @MainActor extension BluetoothExperimentService: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        PermissionCenter.shared.invalidate()
         output = "Bluetooth state: \(central.state.displayName)"
         if central.state == .poweredOn, isScanning {
             central.scanForPeripherals(withServices: nil)

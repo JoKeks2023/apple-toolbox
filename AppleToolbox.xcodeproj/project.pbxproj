@@ -95,6 +95,12 @@
 		E80983EB79E949A11ED8F17F /* MediaAIRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB55B7EE2945DA9EBF5FADF /* MediaAIRunViews.swift */; };
 		81F70D80C7AC13BEC20035AD /* HomeMapsSystemRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE0DB0BAACE73016E1D5FAE /* HomeMapsSystemRunViews.swift */; };
 		C48A1E8881EDA07254C02349 /* HomeMapsSystemRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE0DB0BAACE73016E1D5FAE /* HomeMapsSystemRunViews.swift */; };
+		EE37FDA6D5B36B8CCAA71EE7 /* PermissionProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28F855C32B9F6EEA6191DDE /* PermissionProbe.swift */; };
+		98138E6C581A118691110784 /* PermissionProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28F855C32B9F6EEA6191DDE /* PermissionProbe.swift */; };
+		B8F3EE415DCE61879F8262D3 /* PermissionProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28F855C32B9F6EEA6191DDE /* PermissionProbe.swift */; };
+		0FC5345464E9588FF8FAD7CC /* ExperimentAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */; };
+		8CD2ECB854B382302D99E96A /* ExperimentAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */; };
+		AEB87C3BDE6A7AF41CDADAF0 /* ExperimentAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -203,6 +209,8 @@
 		C551ECF45F8702113D9A642F /* ConnectivityRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConnectivityRunViews.swift; path = AppleToolbox/UI/Experiments/ConnectivityRunViews.swift; sourceTree = "<group>"; };
 		5DB55B7EE2945DA9EBF5FADF /* MediaAIRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MediaAIRunViews.swift; path = AppleToolbox/UI/Experiments/MediaAIRunViews.swift; sourceTree = "<group>"; };
 		6AE0DB0BAACE73016E1D5FAE /* HomeMapsSystemRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeMapsSystemRunViews.swift; path = AppleToolbox/UI/Experiments/HomeMapsSystemRunViews.swift; sourceTree = "<group>"; };
+		B28F855C32B9F6EEA6191DDE /* PermissionProbe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PermissionProbe.swift; path = AppleToolbox/Shared/PermissionSystem/PermissionProbe.swift; sourceTree = "<group>"; };
+		051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentAvailability.swift; path = AppleToolbox/Shared/PermissionSystem/ExperimentAvailability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -379,6 +387,8 @@
 				C551ECF45F8702113D9A642F /* ConnectivityRunViews.swift */,
 				5DB55B7EE2945DA9EBF5FADF /* MediaAIRunViews.swift */,
 				6AE0DB0BAACE73016E1D5FAE /* HomeMapsSystemRunViews.swift */,
+				B28F855C32B9F6EEA6191DDE /* PermissionProbe.swift */,
+				051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -697,6 +707,8 @@
 				F65F7FD060CD7E93D57F08A5 /* ConnectivityRunViews.swift in Sources */,
 				3D1C845A0DE1E7E7DB29CCCD /* MediaAIRunViews.swift in Sources */,
 				81F70D80C7AC13BEC20035AD /* HomeMapsSystemRunViews.swift in Sources */,
+				EE37FDA6D5B36B8CCAA71EE7 /* PermissionProbe.swift in Sources */,
+				0FC5345464E9588FF8FAD7CC /* ExperimentAvailability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,6 +737,8 @@
 				73FBDEEFAC66E893605D15A2 /* IdentitySecurityServices.swift in Sources */,
 				68A696176658BE1A4C9DE591 /* CapabilityExplorerService.swift in Sources */,
 				0B3E573977E1BACB4B5F63EE /* WalletPassCreatorService.swift in Sources */,
+				B8F3EE415DCE61879F8262D3 /* PermissionProbe.swift in Sources */,
+				AEB87C3BDE6A7AF41CDADAF0 /* ExperimentAvailability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -782,6 +796,8 @@
 				E6E7C1B0E94785FC454369DF /* ConnectivityRunViews.swift in Sources */,
 				E80983EB79E949A11ED8F17F /* MediaAIRunViews.swift in Sources */,
 				C48A1E8881EDA07254C02349 /* HomeMapsSystemRunViews.swift in Sources */,
+				98138E6C581A118691110784 /* PermissionProbe.swift in Sources */,
+				8CD2ECB854B382302D99E96A /* ExperimentAvailability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

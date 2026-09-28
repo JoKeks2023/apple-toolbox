@@ -20,6 +20,8 @@ final class HealthAuthorizationExperimentService: ObservableObject {
         guard let stepCount = HKObjectType.quantityType(forIdentifier: .stepCount) else { output = "The step-count sample type is unavailable on this OS."; return }
         store.requestAuthorization(toShare: [], read: [stepCount]) { [weak self] success, error in
             Task { @MainActor in
+                if success { PermissionProbe.remember(.granted, for: .healthKit) }
+                PermissionCenter.shared.invalidate()
                 if let error { self?.output = "HealthKit authorization error: \(error.localizedDescription)" }
                 else { self?.output = success ? "HealthKit read authorization completed for step count. The user may still have denied individual data types." : "HealthKit authorization was not granted." }
             }
@@ -38,6 +40,7 @@ final class NotificationExperimentService: ObservableObject {
         #if canImport(UserNotifications)
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, error in
             Task { @MainActor in
+                await PermissionCenter.shared.refresh()
                 if let error { self?.output = "Notification authorization error: \(error.localizedDescription)" }
                 else { self?.output = granted ? "Notifications authorized." : "Notifications were denied or are restricted." }
             }
