@@ -98,5 +98,73 @@ def write_appicon():
         f.write("\n")
 
 
+def tv_layer(width, height, layer):
+    """tvOS parallax layers: gradient back layer and a transparent glyph front layer."""
+    if layer == "Back":
+        return gradient(max(width, height), BLUE, VIOLET).resize((width, height), Image.LANCZOS)
+    side = round(height * 0.9)
+    mark = glyph(side * SS, (255, 255, 255, 255), (255, 255, 255, 110), (58, 90, 230, 255))
+    mark = mark.resize((side, side), Image.LANCZOS)
+    canvas = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    canvas.alpha_composite(mark, ((width - side) // 2, (height - side) // 2))
+    return canvas
+
+
+def top_shelf(width, height):
+    base = gradient(max(width, height), BLUE, VIOLET).resize((width, height), Image.LANCZOS)
+    side = round(height * 0.8)
+    mark = glyph(side * 2, (255, 255, 255, 255), (255, 255, 255, 110), (58, 90, 230, 255)).resize((side, side), Image.LANCZOS)
+    base.alpha_composite(mark, (round(width * 0.08), (height - side) // 2))
+    return base
+
+
+def write_json(path, payload):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as f:
+        json.dump(payload, f, indent=2)
+        f.write("\n")
+
+
+def write_tv_brand_assets():
+    info = {"author": "xcode", "version": 1}
+    brand = os.path.join(ASSETS, "App Icon & Top Shelf Image.brandassets")
+    stacks = (("App Icon - App Store", 1280, 768, (1,)), ("App Icon", 400, 240, (1, 2)))
+    for name, width, height, scales in stacks:
+        stack = os.path.join(brand, f"{name}.imagestack")
+        write_json(os.path.join(stack, "Contents.json"),
+                   {"info": info, "layers": [{"filename": "Front.imagestacklayer"}, {"filename": "Back.imagestacklayer"}]})
+        for layer in ("Front", "Back"):
+            layer_dir = os.path.join(stack, f"{layer}.imagestacklayer")
+            write_json(os.path.join(layer_dir, "Contents.json"), {"info": info})
+            imageset = os.path.join(layer_dir, "Content.imageset")
+            images = []
+            for scale in scales:
+                file = f"{layer.lower()}@{scale}x.png"
+                os.makedirs(imageset, exist_ok=True)
+                tv_layer(width * scale, height * scale, layer).save(os.path.join(imageset, file))
+                images.append({"filename": file, "idiom": "tv", "scale": f"{scale}x"})
+            write_json(os.path.join(imageset, "Contents.json"), {"images": images, "info": info})
+    shelves = (("Top Shelf Image", "top-shelf-image", 1920, 720), ("Top Shelf Image Wide", "top-shelf-image-wide", 2320, 720))
+    for name, _, width, height in shelves:
+        imageset = os.path.join(brand, f"{name}.imageset")
+        os.makedirs(imageset, exist_ok=True)
+        images = []
+        for scale in (1, 2):
+            file = f"top-shelf@{scale}x.png"
+            top_shelf(width * scale, height * scale).convert("RGB").save(os.path.join(imageset, file))
+            images.append({"filename": file, "idiom": "tv", "scale": f"{scale}x"})
+        write_json(os.path.join(imageset, "Contents.json"), {"images": images, "info": info})
+    write_json(os.path.join(brand, "Contents.json"), {
+        "assets": [
+            {"filename": "App Icon - App Store.imagestack", "idiom": "tv", "role": "primary-app-icon", "size": "1280x768"},
+            {"filename": "App Icon.imagestack", "idiom": "tv", "role": "primary-app-icon", "size": "400x240"},
+            {"filename": "Top Shelf Image Wide.imageset", "idiom": "tv", "role": "top-shelf-image-wide", "size": "2320x720"},
+            {"filename": "Top Shelf Image.imageset", "idiom": "tv", "role": "top-shelf-image", "size": "1920x720"},
+        ],
+        "info": info,
+    })
+
+
 if __name__ == "__main__":
     write_appicon()
+    write_tv_brand_assets()

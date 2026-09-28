@@ -173,6 +173,7 @@
 				WatchApp/WatchApp.swift,
 				Widget/AppleToolboxWidget.swift,
 				Widget/Info.plist,
+				AppleToolbox-tvOS.entitlements,
 			);
 			target = 5B13F610303DA61D00AA8D3F /* AppleToolbox iOS */;
 		};
@@ -756,13 +757,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				GENERATE_INFOPLIST_FILE = NO;
+				CODE_SIGN_ENTITLEMENTS = AppleToolbox/AppleToolbox-tvOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9CA6D7T8N;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppleToolbox/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.appletoolbox.tvos;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.tvos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_VERSION = 5.0;
@@ -1120,13 +1127,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				GENERATE_INFOPLIST_FILE = NO;
+				CODE_SIGN_ENTITLEMENTS = AppleToolbox/AppleToolbox-tvOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9CA6D7T8N;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppleToolbox/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.appletoolbox.tvos;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.tvos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_VERSION = 5.0;
