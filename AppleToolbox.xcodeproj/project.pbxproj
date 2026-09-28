@@ -80,6 +80,7 @@
 		FC40B35B27A98F4CBFAB4BE1 /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
 		FCFC87520A08182724B83279 /* HealthNotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C041F896020A77B69B72580 /* HealthNotificationServices.swift */; };
 		7344B541ACE0C1C5B9640191 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26C2310F800CD115CE32E91B /* Assets.xcassets */; };
+		AF378B46B735EFE2034472E2 /* AppleToolbox watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7C1C9A39A25D48656AA850C5 /* AppleToolbox watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,13 @@
 			remoteGlobalIDString = 1EF6F48A1A97D0D6BE48BE6A;
 			remoteInfo = "AppleToolbox Widget";
 		};
+		0ADC7C1C2ADC5A35D2897AAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B13F609303DA61D00AA8D3F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 61001C144839CC8E0408EC65;
+			remoteInfo = "AppleToolbox watchOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -116,6 +124,17 @@
 				982DBF88B14E4318F6F8A632 /* AppleToolbox Widget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF2675C5F12ADEA1CD7980B1 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				AF378B46B735EFE2034472E2 /* AppleToolbox watchOS.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -421,11 +440,13 @@
 				5B13F60E303DA61D00AA8D3F /* Frameworks */,
 				5B13F60F303DA61D00AA8D3F /* Resources */,
 				18EFB5B1B522A7489F2A5B5E /* Embed Foundation Extensions */,
+				CF2675C5F12ADEA1CD7980B1 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				D418667C09282FC017F313FB /* PBXTargetDependency */,
+				C4397ABC3C27590391670CE3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5B13F613303DA61D00AA8D3F /* AppleToolbox */,
@@ -748,6 +769,12 @@
 			name = "AppleToolbox Widget";
 			target = 1EF6F48A1A97D0D6BE48BE6A /* AppleToolbox Widget */;
 			targetProxy = B4C014163BEAAA33BB8B3327 /* PBXContainerItemProxy */;
+		};
+		C4397ABC3C27590391670CE3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppleToolbox watchOS";
+			target = 61001C144839CC8E0408EC65 /* AppleToolbox watchOS */;
+			targetProxy = 0ADC7C1C2ADC5A35D2897AAD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1195,8 +1222,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.watchkitapp;
+				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.jorisconrad.AppleToolbox.ios;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1213,8 +1246,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.watchkitapp;
+				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.jorisconrad.AppleToolbox.ios;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;

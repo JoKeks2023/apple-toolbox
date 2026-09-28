@@ -100,7 +100,7 @@ struct ExperimentDetailView: View {
     @StateObject private var audio = AudioExperimentService()
     @StateObject private var maps = MapExperimentService()
     @StateObject private var home = HomeExperimentService()
-    @StateObject private var continuity = ContinuityExperimentService()
+    @ObservedObject private var continuity = ContinuityExperimentService.shared
     @StateObject private var ai = AIExperimentService()
     @StateObject private var nearby = NearbyExperimentService()
     @StateObject private var multipeer = MultipeerConnectivityExperimentService()
@@ -195,7 +195,15 @@ struct ExperimentDetailView: View {
                     Button("Inspect Matter Availability") { output = MatterExperimentService.statusText() }.buttonStyle(.borderedProminent)
                     OutputView(text: output == "No run yet." ? MatterExperimentService.statusText() : output, isError: false)
                 } else if experiment.id == "continuity" {
-                    Button("Activate WatchConnectivity", action: continuity.activate).buttonStyle(.borderedProminent)
+                    LabeledContent("Session", value: continuity.activation)
+                    LabeledContent("Paired Apple Watch", value: continuity.isPaired.map { $0 ? "Yes" : "No" } ?? "—")
+                    LabeledContent("Watch app installed", value: continuity.isCounterpartInstalled.map { $0 ? "Yes" : "No" } ?? "—")
+                    LabeledContent("Reachable", value: continuity.isReachable ? "Yes" : "No")
+                    if let lastMessage = continuity.lastMessage { LabeledContent("Last message", value: lastMessage) }
+                    HStack {
+                        Button("Activate WatchConnectivity", action: continuity.activate).buttonStyle(.borderedProminent)
+                        Button("Ping Apple Watch", action: continuity.ping).buttonStyle(.bordered)
+                    }
                     OutputView(text: continuity.output, isError: continuity.output.localizedCaseInsensitiveContains("error"))
                 } else if experiment.id == "app-intents" {
                     Button("Refresh App Intents Report") { output = "App Intent registered: ToolboxStatusIntent\nUse Siri or Shortcuts to discover it." }.buttonStyle(.borderedProminent)
