@@ -121,8 +121,16 @@ final class AudioExperimentService: ObservableObject {
             }
             return
         }
+        do { try AudioSessionController.activateForRecording() }
+        catch { output = "Audio session error: \(error.localizedDescription)"; status = .unavailable; return }
         let input = engine.inputNode
         let format = input.outputFormat(forBus: 0)
+        guard format.sampleRate > 0, format.channelCount > 0 else {
+            AudioSessionController.deactivate()
+            output = "No audio input is available right now."
+            status = .hardwareUnsupported
+            return
+        }
         channelCount = Int(format.channelCount)
         sampleRate = Int(format.sampleRate)
         input.installTap(onBus: 0, bufferSize: 1_024, format: format) { [weak self] buffer, _ in
@@ -140,7 +148,7 @@ final class AudioExperimentService: ObservableObject {
             }
         }
         do { try engine.start(); isRunning = true; status = .available }
-        catch { input.removeTap(onBus: 0); output = "Audio engine error: \(error.localizedDescription)"; status = .unavailable }
+        catch { input.removeTap(onBus: 0); AudioSessionController.deactivate(); output = "Audio engine error: \(error.localizedDescription)"; status = .unavailable }
         #else
         status = .platformUnsupported
         output = "Audio input is not available on this platform."
@@ -151,6 +159,7 @@ final class AudioExperimentService: ObservableObject {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
         engine.inputNode.removeTap(onBus: 0)
         engine.stop()
+        AudioSessionController.deactivate()
         #endif
         isRunning = false
         output = "Audio input stopped."

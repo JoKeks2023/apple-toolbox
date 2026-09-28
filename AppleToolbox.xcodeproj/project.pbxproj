@@ -107,6 +107,9 @@
 		C52B26A4F0554E00C5CADF4F /* ExperimentChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */; };
 		3BA5BA6EF4C41CFAC1A0196A /* ExperimentExplanations.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA487C367220700AA38DF75E /* ExperimentExplanations.swift */; };
 		4CF9352BF2A78380210004E7 /* ExperimentExplanations.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA487C367220700AA38DF75E /* ExperimentExplanations.swift */; };
+		27F950621B537EA5FF75B4C1 /* AudioSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F300024C0A4E6142F596E /* AudioSessionController.swift */; };
+		F76B75B0056C2F737C9FC026 /* AudioSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F300024C0A4E6142F596E /* AudioSessionController.swift */; };
+		1DE96BB224D3B366E227511C /* AudioSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F300024C0A4E6142F596E /* AudioSessionController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -220,6 +223,7 @@
 		797EBD875C12F1823388E1D7 /* ExperimentLifecycle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentLifecycle.swift; path = AppleToolbox/UI/ExperimentLifecycle.swift; sourceTree = "<group>"; };
 		DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentChecks.swift; path = AppleToolbox/Shared/Models/ExperimentChecks.swift; sourceTree = "<group>"; };
 		DA487C367220700AA38DF75E /* ExperimentExplanations.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentExplanations.swift; path = AppleToolbox/Shared/Models/ExperimentExplanations.swift; sourceTree = "<group>"; };
+		493F300024C0A4E6142F596E /* AudioSessionController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioSessionController.swift; path = AppleToolbox/Shared/Services/AudioSessionController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -401,6 +405,7 @@
 				797EBD875C12F1823388E1D7 /* ExperimentLifecycle.swift */,
 				DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */,
 				DA487C367220700AA38DF75E /* ExperimentExplanations.swift */,
+				493F300024C0A4E6142F596E /* AudioSessionController.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -724,6 +729,7 @@
 				7BC901D196ED18E0E30F3035 /* ExperimentLifecycle.swift in Sources */,
 				D6CF2953EBDBD4E22D501296 /* ExperimentChecks.swift in Sources */,
 				3BA5BA6EF4C41CFAC1A0196A /* ExperimentExplanations.swift in Sources */,
+				27F950621B537EA5FF75B4C1 /* AudioSessionController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -754,6 +760,7 @@
 				0B3E573977E1BACB4B5F63EE /* WalletPassCreatorService.swift in Sources */,
 				B8F3EE415DCE61879F8262D3 /* PermissionProbe.swift in Sources */,
 				AEB87C3BDE6A7AF41CDADAF0 /* ExperimentAvailability.swift in Sources */,
+				1DE96BB224D3B366E227511C /* AudioSessionController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -816,6 +823,7 @@
 				E5088B969FD2525DC5877C8B /* ExperimentLifecycle.swift in Sources */,
 				C52B26A4F0554E00C5CADF4F /* ExperimentChecks.swift in Sources */,
 				4CF9352BF2A78380210004E7 /* ExperimentExplanations.swift in Sources */,
+				F76B75B0056C2F737C9FC026 /* AudioSessionController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

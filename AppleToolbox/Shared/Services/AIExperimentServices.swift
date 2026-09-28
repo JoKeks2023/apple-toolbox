@@ -40,23 +40,33 @@ final class SpeechExperimentService: NSObject, ObservableObject {
             PermissionCenter.shared.invalidate()
             guard granted else { output = "Microphone permission was denied."; return }
             stop()
+            try AudioSessionController.activateForRecording()
             let request = SFSpeechAudioBufferRecognitionRequest()
             request.shouldReportPartialResults = true
             self.request = request
             let input = audioEngine.inputNode
             let format = input.outputFormat(forBus: 0)
+            guard format.sampleRate > 0, format.channelCount > 0 else {
+                AudioSessionController.deactivate()
+                output = "No audio input is available right now."
+                return
+            }
             input.installTap(onBus: 0, bufferSize: 1_024, format: format) { [weak request] buffer, _ in request?.append(buffer) }
             audioEngine.prepare()
             try audioEngine.start()
             task = recognizer.recognitionTask(with: request) { [weak self] result, error in
                 Task { @MainActor in
-                    if let result { self?.output = result.bestTranscription.formattedString }
-                    if let error { self?.output = "Speech recognition error: \(error.localizedDescription)"; self?.stop() }
+                    guard let self, self.isRunning else { return } // Ignore the cancellation that follows stop().
+                    if let result { self.output = result.bestTranscription.formattedString }
+                    if let error { self.output = "Speech recognition error: \(error.localizedDescription)"; self.stop() }
                 }
             }
             isRunning = true
             output = "Listening… speak into the microphone."
-        } catch { output = "Could not start speech recognition: \(error.localizedDescription)" }
+        } catch {
+            stop()
+            output = "Could not start speech recognition: \(error.localizedDescription)"
+        }
     }
     #endif
 
@@ -68,6 +78,7 @@ final class SpeechExperimentService: NSObject, ObservableObject {
         task?.cancel()
         request = nil
         task = nil
+        if isRunning { AudioSessionController.deactivate() }
         #endif
         isRunning = false
     }
