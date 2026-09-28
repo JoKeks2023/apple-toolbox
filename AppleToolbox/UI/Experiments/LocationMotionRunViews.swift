@@ -10,6 +10,7 @@ struct CoreLocationRunView: View {
         HStack { Label("Authorization", systemImage: "location"); Spacer(); Text(location.authorization).foregroundStyle(.secondary) }
         Button("Request Location Permission", action: location.requestPermission)
         Button(location.isUpdating ? "Stop Live Updates" : "Start Live Updates") { location.isUpdating ? location.stop() : location.start() }.buttonStyle(.borderedProminent)
+            .experimentSession(location)
         LocationReadingView(location: location)
         OutputView(text: location.output, isError: location.output.localizedCaseInsensitiveContains("error") || location.output.localizedCaseInsensitiveContains("denied"))
     }
@@ -20,6 +21,7 @@ struct CoreMotionRunView: View {
 
     var body: some View {
         Button(motion.isRunning ? "Stop Motion Updates" : "Start Motion Updates") { motion.isRunning ? motion.stop() : motion.start() }.buttonStyle(.borderedProminent)
+            .experimentSession(motion)
         MotionReadingView(motion: motion)
         OutputView(text: motion.output, isError: motion.output.localizedCaseInsensitiveContains("not available") || motion.output.localizedCaseInsensitiveContains("error"))
     }

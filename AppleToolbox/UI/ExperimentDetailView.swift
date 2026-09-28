@@ -4,20 +4,31 @@ struct ExperimentDetailView: View {
     let experiment: ExperimentDescriptor
     /// Re-evaluates the status whenever a permission changes.
     @ObservedObject private var permissions = PermissionCenter.shared
+    @StateObject private var lifecycle = ExperimentLifecycle()
+    /// Changing the identity recreates the run view with fresh services and state.
+    @State private var runID = UUID()
 
     var body: some View {
         List {
-            ExperimentHeroView(experiment: experiment, status: experiment.currentStatus)
+            let status = experiment.currentStatus
+            ExperimentHeroView(experiment: experiment, status: status)
+            ExperimentChecksSection(checks: experiment.checks(for: status))
             if let useCase = ExperimentUseCaseCatalog.forExperimentID(experiment.id) {
                 UseCaseSection(useCase: useCase, experiment: experiment)
             }
             Section("Run") {
-                ExperimentRunView(experiment: experiment)
+                ExperimentRunView(experiment: experiment).id(runID)
+                Button("Reset Experiment", systemImage: "arrow.counterclockwise") {
+                    lifecycle.reset()
+                    runID = UUID()
+                }
             }
             RequirementsView(experiment: experiment)
             Section("Documentation") { Link(destination: experiment.documentationURL) { Label("Open Apple Developer Documentation", systemImage: "book.closed") } }
         }
         .navigationTitle(experiment.name)
+        .environmentObject(lifecycle)
+        .onDisappear { lifecycle.stopAll() }
     }
 }
 
@@ -105,6 +116,43 @@ private struct ExperimentHeroView: View {
                 }
             }
             .padding(.vertical, 8)
+        }
+    }
+}
+
+private struct ExperimentChecksSection: View {
+    let checks: [ExperimentCheck]
+
+    var body: some View {
+        Section("Checks") {
+            ForEach(checks) { check in
+                HStack(alignment: .firstTextBaseline, spacing: 10) {
+                    Image(systemName: symbol(for: check.outcome))
+                        .foregroundStyle(color(for: check.outcome))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(check.title).font(.subheadline.weight(.semibold))
+                        Text(check.detail).font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
+    }
+
+    private func symbol(for outcome: ExperimentCheck.Outcome) -> String {
+        switch outcome {
+        case .passed: "checkmark.circle.fill"
+        case .pending: "clock.fill"
+        case .failed: "xmark.octagon.fill"
+        case .notApplicable: "minus.circle"
+        }
+    }
+
+    private func color(for outcome: ExperimentCheck.Outcome) -> Color {
+        switch outcome {
+        case .passed: .green
+        case .pending: .orange
+        case .failed: .red
+        case .notApplicable: .secondary
         }
     }
 }

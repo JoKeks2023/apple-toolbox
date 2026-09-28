@@ -46,11 +46,14 @@ struct ARKitRunView: View {
     @StateObject private var ar = ARExperimentService()
 
     var body: some View {
-        if ar.isRunning {
-            Button("Stop ARKit", action: ar.stop).buttonStyle(.borderedProminent)
-        } else {
-            Button("Start ARKit", action: ar.start).buttonStyle(.borderedProminent)
+        Group {
+            if ar.isRunning {
+                Button("Stop ARKit", action: ar.stop).buttonStyle(.borderedProminent)
+            } else {
+                Button("Start ARKit", action: ar.start).buttonStyle(.borderedProminent)
+            }
         }
+        .experimentSession(ar)
         OutputView(text: ar.output, isError: ar.output.localizedCaseInsensitiveContains("error") || ar.output.localizedCaseInsensitiveContains("not supported"))
     }
 }

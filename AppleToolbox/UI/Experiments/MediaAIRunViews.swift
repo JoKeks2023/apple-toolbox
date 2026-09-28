@@ -5,6 +5,7 @@ struct CameraVisionRunView: View {
 
     var body: some View {
         Button(media.isRunning ? "Stop Camera & Vision" : "Start Camera & Vision") { media.isRunning ? media.stop() : media.start() }.buttonStyle(.borderedProminent)
+            .experimentSession(media)
         VisionResultsView(results: media.detectedTexts)
         OutputView(text: media.output, isError: media.status != .available)
     }
@@ -15,6 +16,7 @@ struct AudioInputRunView: View {
 
     var body: some View {
         Button(audio.isRunning ? "Stop Audio Input" : "Start Audio Input") { audio.isRunning ? audio.stop() : audio.start() }.buttonStyle(.borderedProminent)
+            .experimentSession(audio)
         AudioMeterView(audio: audio)
         OutputView(text: audio.output, isError: audio.status != .available)
     }
@@ -43,8 +45,11 @@ struct SpeechRunView: View {
     @StateObject private var speech = SpeechExperimentService()
 
     var body: some View {
-        if speech.isRunning { Button("Stop Speech Recognition", action: speech.stop).buttonStyle(.borderedProminent) }
-        else { Button("Start Speech Recognition", action: speech.start).buttonStyle(.borderedProminent) }
+        Group {
+            if speech.isRunning { Button("Stop Speech Recognition", action: speech.stop).buttonStyle(.borderedProminent) }
+            else { Button("Start Speech Recognition", action: speech.start).buttonStyle(.borderedProminent) }
+        }
+        .experimentSession(speech)
         OutputView(text: speech.output, isError: speech.output.localizedCaseInsensitiveContains("error") || speech.output.localizedCaseInsensitiveContains("denied"))
     }
 }

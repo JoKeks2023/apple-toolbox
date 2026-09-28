@@ -101,6 +101,10 @@
 		0FC5345464E9588FF8FAD7CC /* ExperimentAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */; };
 		8CD2ECB854B382302D99E96A /* ExperimentAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */; };
 		AEB87C3BDE6A7AF41CDADAF0 /* ExperimentAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */; };
+		7BC901D196ED18E0E30F3035 /* ExperimentLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797EBD875C12F1823388E1D7 /* ExperimentLifecycle.swift */; };
+		E5088B969FD2525DC5877C8B /* ExperimentLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797EBD875C12F1823388E1D7 /* ExperimentLifecycle.swift */; };
+		D6CF2953EBDBD4E22D501296 /* ExperimentChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */; };
+		C52B26A4F0554E00C5CADF4F /* ExperimentChecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,6 +215,8 @@
 		6AE0DB0BAACE73016E1D5FAE /* HomeMapsSystemRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeMapsSystemRunViews.swift; path = AppleToolbox/UI/Experiments/HomeMapsSystemRunViews.swift; sourceTree = "<group>"; };
 		B28F855C32B9F6EEA6191DDE /* PermissionProbe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PermissionProbe.swift; path = AppleToolbox/Shared/PermissionSystem/PermissionProbe.swift; sourceTree = "<group>"; };
 		051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentAvailability.swift; path = AppleToolbox/Shared/PermissionSystem/ExperimentAvailability.swift; sourceTree = "<group>"; };
+		797EBD875C12F1823388E1D7 /* ExperimentLifecycle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentLifecycle.swift; path = AppleToolbox/UI/ExperimentLifecycle.swift; sourceTree = "<group>"; };
+		DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentChecks.swift; path = AppleToolbox/Shared/Models/ExperimentChecks.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -389,6 +395,8 @@
 				6AE0DB0BAACE73016E1D5FAE /* HomeMapsSystemRunViews.swift */,
 				B28F855C32B9F6EEA6191DDE /* PermissionProbe.swift */,
 				051339C8A313D2CEBA1465BF /* ExperimentAvailability.swift */,
+				797EBD875C12F1823388E1D7 /* ExperimentLifecycle.swift */,
+				DF4FA096C1DCD410E0C39B9F /* ExperimentChecks.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -709,6 +717,8 @@
 				81F70D80C7AC13BEC20035AD /* HomeMapsSystemRunViews.swift in Sources */,
 				EE37FDA6D5B36B8CCAA71EE7 /* PermissionProbe.swift in Sources */,
 				0FC5345464E9588FF8FAD7CC /* ExperimentAvailability.swift in Sources */,
+				7BC901D196ED18E0E30F3035 /* ExperimentLifecycle.swift in Sources */,
+				D6CF2953EBDBD4E22D501296 /* ExperimentChecks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,6 +808,8 @@
 				C48A1E8881EDA07254C02349 /* HomeMapsSystemRunViews.swift in Sources */,
 				98138E6C581A118691110784 /* PermissionProbe.swift in Sources */,
 				8CD2ECB854B382302D99E96A /* ExperimentAvailability.swift in Sources */,
+				E5088B969FD2525DC5877C8B /* ExperimentLifecycle.swift in Sources */,
+				C52B26A4F0554E00C5CADF4F /* ExperimentChecks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

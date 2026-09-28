@@ -8,6 +8,7 @@ struct CoreBluetoothRunView: View {
             Button(bluetooth.isScanning ? "Stop Bluetooth Scan" : "Start Bluetooth Scan") { bluetooth.isScanning ? bluetooth.stop() : bluetooth.start() }.buttonStyle(.borderedProminent)
             Button("Clear", action: bluetooth.clearResults).buttonStyle(.bordered)
         }
+        .experimentSession(bluetooth)
         BluetoothResultsView(peripherals: bluetooth.peripherals)
         OutputView(text: bluetooth.output, isError: bluetooth.output.localizedCaseInsensitiveContains("not available") || bluetooth.output.localizedCaseInsensitiveContains("unauthorized"))
     }
@@ -18,6 +19,7 @@ struct CoreNFCRunView: View {
 
     var body: some View {
         Button(nfc.isScanning ? "Scanning…" : "Scan NFC Tag", action: nfc.start).buttonStyle(.borderedProminent).disabled(nfc.isScanning)
+            .experimentSession(nfc)
         NFCRecordsView(records: nfc.records)
         OutputView(text: nfc.output, isError: nfc.output.localizedCaseInsensitiveContains("not available") || nfc.output.localizedCaseInsensitiveContains("error"))
     }
@@ -28,6 +30,7 @@ struct NetworkPathRunView: View {
 
     var body: some View {
         Button(network.isMonitoring ? "Stop Network Monitor" : "Start Network Monitor") { network.isMonitoring ? network.stop() : network.start() }.buttonStyle(.borderedProminent)
+            .experimentSession(network)
         NetworkInterfacesView(interfaces: network.interfaces)
         OutputView(text: network.output, isError: network.output.localizedCaseInsensitiveContains("not available"))
     }
@@ -54,11 +57,14 @@ struct NearbyInteractionRunView: View {
     @StateObject private var nearby = NearbyExperimentService()
 
     var body: some View {
-        if nearby.isRunning {
-            Button("Stop Nearby Interaction", action: nearby.stop).buttonStyle(.borderedProminent)
-        } else {
-            Button("Inspect Nearby Interaction", action: nearby.start).buttonStyle(.borderedProminent)
+        Group {
+            if nearby.isRunning {
+                Button("Stop Nearby Interaction", action: nearby.stop).buttonStyle(.borderedProminent)
+            } else {
+                Button("Inspect Nearby Interaction", action: nearby.start).buttonStyle(.borderedProminent)
+            }
         }
+        .experimentSession(nearby)
         OutputView(text: nearby.output, isError: nearby.output.localizedCaseInsensitiveContains("error") || nearby.output.localizedCaseInsensitiveContains("not supported"))
     }
 }
@@ -68,6 +74,8 @@ struct MultipeerRunView: View {
     @State private var message = "Hello from Apple Toolbox"
 
     var body: some View {
+        LabeledContent("Session", value: service.isRunning ? "Advertising and browsing" : "Stopped")
+            .experimentSession(service)
         if service.isRunning {
             LabeledContent("Connected peers", value: service.connectedPeers.isEmpty ? "None yet" : service.connectedPeers.joined(separator: ", "))
             if !service.discoveredPeers.isEmpty {
