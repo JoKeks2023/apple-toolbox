@@ -1,22 +1,34 @@
 import SwiftUI
 
+private enum SidebarItem: Hashable {
+    case category(ExperimentCategory)
+    case entitlements
+}
+
 struct ContentView: View {
-    @State private var selectedCategory: ExperimentCategory?
-    @State private var detailPath: [String] = []
+    @State private var selection: SidebarItem?
+    @State private var detailPath = NavigationPath()
     @Environment(\.scenePhase) private var scenePhase
     private let experiments = ExperimentRegistry.all
 
     var body: some View {
         NavigationSplitView {
-            List(selection: $selectedCategory) {
+            List(selection: $selection) {
                 Section("Explore") {
                     ForEach(ExperimentCategory.allCases) { category in
                         let count = experiments.filter { $0.category == category }.count
-                        NavigationLink(value: category) {
+                        NavigationLink(value: SidebarItem.category(category)) {
                             Label {
                                 HStack { Text(category.rawValue); Spacer(); if count > 0 { Text("\(count)").foregroundStyle(.secondary) } }
                             } icon: { Image(systemName: category.symbolName).foregroundStyle(.tint) }
                         }
+                    }
+                }
+                Section("Inspect") {
+                    NavigationLink(value: SidebarItem.entitlements) {
+                        Label {
+                            HStack { Text("Entitlements"); Spacer(); Text("\(CapabilityRegistry.all.count)").foregroundStyle(.secondary) }
+                        } icon: { Image(systemName: "checkmark.seal").foregroundStyle(.tint) }
                     }
                 }
             }
@@ -24,9 +36,14 @@ struct ContentView: View {
         } detail: {
             NavigationStack(path: $detailPath) {
                 Group {
-                    if let selectedCategory {
-                        CategoryView(category: selectedCategory, experiments: experiments.filter { $0.category == selectedCategory })
-                    } else { WelcomeView() }
+                    switch selection {
+                    case .category(let category):
+                        CategoryView(category: category, experiments: experiments.filter { $0.category == category })
+                    case .entitlements:
+                        EntitlementExplorerView()
+                    case nil:
+                        WelcomeView()
+                    }
                 }
                 .navigationDestination(for: String.self) { experimentID in
                     if let experiment = ExperimentRegistry.descriptor(for: experimentID) {
@@ -38,7 +55,7 @@ struct ContentView: View {
             }
         }
         .navigationSplitViewStyle(.balanced)
-        .onChange(of: selectedCategory) { detailPath.removeAll() }
+        .onChange(of: selection) { detailPath = NavigationPath() }
         // Permissions can change in Settings while the app is in the background.
         .task { await PermissionCenter.shared.refresh() }
         .onChange(of: scenePhase) { if scenePhase == .active { Task { await PermissionCenter.shared.refresh() } } }

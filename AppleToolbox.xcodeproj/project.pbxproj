@@ -113,6 +113,10 @@
 		1BE85F9C51D9253BFA54484E /* CapabilityRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C52D871CE8EAB2A4083707C /* CapabilityRegistry.swift */; };
 		615A8AFD47E495D7172F0101 /* CapabilityRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C52D871CE8EAB2A4083707C /* CapabilityRegistry.swift */; };
 		F56554927651290A64DB4A23 /* CapabilityRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C52D871CE8EAB2A4083707C /* CapabilityRegistry.swift */; };
+		7CA0DCEFEA85037B9795DEB1 /* ProvisioningInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74066D2DEC64C74C01FCD3E /* ProvisioningInspector.swift */; };
+		E9D38E7434784A75BE08415D /* ProvisioningInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74066D2DEC64C74C01FCD3E /* ProvisioningInspector.swift */; };
+		48E2AB940F81C4C8550E8E50 /* EntitlementExplorerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EDDEEE432E2F625D463427 /* EntitlementExplorerView.swift */; };
+		A9586D3C60E0535042A4B20B /* EntitlementExplorerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EDDEEE432E2F625D463427 /* EntitlementExplorerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -228,6 +232,8 @@
 		DA487C367220700AA38DF75E /* ExperimentExplanations.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentExplanations.swift; path = AppleToolbox/Shared/Models/ExperimentExplanations.swift; sourceTree = "<group>"; };
 		493F300024C0A4E6142F596E /* AudioSessionController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioSessionController.swift; path = AppleToolbox/Shared/Services/AudioSessionController.swift; sourceTree = "<group>"; };
 		4C52D871CE8EAB2A4083707C /* CapabilityRegistry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CapabilityRegistry.swift; path = AppleToolbox/Shared/CapabilitySystem/CapabilityRegistry.swift; sourceTree = "<group>"; };
+		A74066D2DEC64C74C01FCD3E /* ProvisioningInspector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProvisioningInspector.swift; path = AppleToolbox/Shared/CapabilitySystem/ProvisioningInspector.swift; sourceTree = "<group>"; };
+		34EDDEEE432E2F625D463427 /* EntitlementExplorerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EntitlementExplorerView.swift; path = AppleToolbox/UI/EntitlementExplorerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -411,6 +417,8 @@
 				DA487C367220700AA38DF75E /* ExperimentExplanations.swift */,
 				493F300024C0A4E6142F596E /* AudioSessionController.swift */,
 				4C52D871CE8EAB2A4083707C /* CapabilityRegistry.swift */,
+				A74066D2DEC64C74C01FCD3E /* ProvisioningInspector.swift */,
+				34EDDEEE432E2F625D463427 /* EntitlementExplorerView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -736,6 +744,8 @@
 				3BA5BA6EF4C41CFAC1A0196A /* ExperimentExplanations.swift in Sources */,
 				27F950621B537EA5FF75B4C1 /* AudioSessionController.swift in Sources */,
 				1BE85F9C51D9253BFA54484E /* CapabilityRegistry.swift in Sources */,
+				7CA0DCEFEA85037B9795DEB1 /* ProvisioningInspector.swift in Sources */,
+				48E2AB940F81C4C8550E8E50 /* EntitlementExplorerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -832,6 +842,8 @@
 				4CF9352BF2A78380210004E7 /* ExperimentExplanations.swift in Sources */,
 				F76B75B0056C2F737C9FC026 /* AudioSessionController.swift in Sources */,
 				615A8AFD47E495D7172F0101 /* CapabilityRegistry.swift in Sources */,
+				E9D38E7434784A75BE08415D /* ProvisioningInspector.swift in Sources */,
+				A9586D3C60E0535042A4B20B /* EntitlementExplorerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
