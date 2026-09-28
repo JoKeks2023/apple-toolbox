@@ -21,13 +21,19 @@ final class CameraVisionExperimentService: NSObject, ObservableObject {
     @Published private(set) var status: ExperimentStatus = .available
     @Published private(set) var detectedTexts: [VisionTextResult] = []
     #if canImport(AVFoundation) && (os(iOS) || os(macOS))
-    private let session = AVCaptureSession()
-    private let videoOutput = AVCaptureVideoDataOutput()
-    private let queue = DispatchQueue(label: "apple-toolbox.camera")
+    // All session configuration, start and stop run on the serial sessionQueue, as Apple recommends
+    // (startRunning blocks until the camera is running). The queue serializes access to these objects.
+    nonisolated(unsafe) private let session = AVCaptureSession()
+    nonisolated(unsafe) private let videoOutput = AVCaptureVideoDataOutput()
+    private let sessionQueue = DispatchQueue(label: "apple-toolbox.camera.session")
+    private let frameQueue = DispatchQueue(label: "apple-toolbox.camera.frames")
+    private var rotationCoordinator: AVCaptureDevice.RotationCoordinator?
+    private var rotationObservation: NSKeyValueObservation?
     #endif
 
     func start() {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
+        guard !isRunning else { return }
         guard AVCaptureDevice.authorizationStatus(for: .video) == .authorized else {
             status = .permissionRequired
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
@@ -39,20 +45,25 @@ final class CameraVisionExperimentService: NSObject, ObservableObject {
             return
         }
         guard let device = AVCaptureDevice.default(for: .video) else { status = .hardwareUnsupported; output = "No camera is available on this device."; return }
-        do {
-            session.beginConfiguration()
-            let input = try AVCaptureDeviceInput(device: device)
-            guard session.canAddInput(input), session.canAddOutput(videoOutput) else { throw ExperimentServiceError.unavailable("Camera session cannot accept the required input/output.") }
-            session.addInput(input)
-            videoOutput.setSampleBufferDelegate(self, queue: queue)
-            session.addOutput(videoOutput)
-            session.commitConfiguration()
-            session.startRunning()
-            isRunning = true
-            status = .available
-            detectedTexts.removeAll()
-            output = "Camera running. Vision will inspect incoming frames for text."
-        } catch { session.commitConfiguration(); output = "Camera error: \(error.localizedDescription)"; status = .unavailable }
+        isRunning = true
+        status = .available
+        detectedTexts.removeAll()
+        output = "Starting camera…"
+        followDeviceRotation(of: device)
+        nonisolated(unsafe) let captureDevice = device // Only used on sessionQueue from here on.
+        sessionQueue.async { [weak self] in
+            guard let self else { return }
+            let failure = configureAndStart(device: captureDevice)
+            Task { @MainActor in
+                if let failure {
+                    self.stop()
+                    self.output = "Camera error: \(failure)"
+                    self.status = .unavailable
+                } else {
+                    self.output = "Camera running. Vision will inspect incoming frames for text."
+                }
+            }
+        }
         #else
         status = .platformUnsupported
         output = "Camera capture is not available on this platform."
@@ -61,16 +72,67 @@ final class CameraVisionExperimentService: NSObject, ObservableObject {
 
     func stop() {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
-        session.stopRunning()
-        videoOutput.setSampleBufferDelegate(nil, queue: nil)
+        rotationObservation = nil
+        rotationCoordinator = nil
+        sessionQueue.async { [weak self] in
+            guard let self else { return }
+            session.stopRunning()
+            videoOutput.setSampleBufferDelegate(nil, queue: nil)
+            // Remove input and output so the next start can add them again.
+            session.beginConfiguration()
+            session.inputs.forEach(session.removeInput)
+            session.outputs.forEach(session.removeOutput)
+            session.commitConfiguration()
+        }
         #endif
         isRunning = false
         output = "Camera and Vision stopped."
     }
+
+    #if canImport(AVFoundation) && (os(iOS) || os(macOS))
+    /// Runs on sessionQueue; returns an error description or nil when the session is running.
+    nonisolated private func configureAndStart(device: AVCaptureDevice) -> String? {
+        session.beginConfiguration()
+        do {
+            let input = try AVCaptureDeviceInput(device: device)
+            guard session.canAddInput(input), session.canAddOutput(videoOutput) else {
+                session.commitConfiguration()
+                return "Camera session cannot accept the required input/output."
+            }
+            session.addInput(input)
+            videoOutput.setSampleBufferDelegate(self, queue: frameQueue)
+            session.addOutput(videoOutput)
+            session.commitConfiguration()
+        } catch {
+            session.commitConfiguration()
+            return error.localizedDescription
+        }
+        session.startRunning()
+        return nil
+    }
+
+    /// Rotates delivered frames so they are upright for Vision, following the device orientation.
+    private func followDeviceRotation(of device: AVCaptureDevice) {
+        let coordinator = AVCaptureDevice.RotationCoordinator(device: device, previewLayer: nil)
+        rotationCoordinator = coordinator
+        rotationObservation = coordinator.observe(\.videoRotationAngleForHorizonLevelCapture, options: [.initial, .new]) { [weak self] coordinator, _ in
+            let angle = coordinator.videoRotationAngleForHorizonLevelCapture
+            Task { @MainActor in self?.applyRotation(angle) }
+        }
+    }
+
+    private func applyRotation(_ angle: CGFloat) {
+        sessionQueue.async { [weak self] in
+            guard let connection = self?.videoOutput.connection(with: .video), connection.isVideoRotationAngleSupported(angle) else { return }
+            connection.videoRotationAngle = angle
+        }
+    }
+    #endif
 }
 
 #if canImport(AVFoundation) && (os(iOS) || os(macOS)) && canImport(Vision)
 extension CameraVisionExperimentService: AVCaptureVideoDataOutputSampleBufferDelegate {
+    // Runs on frameQueue. Vision works synchronously here, so late frames are dropped while a frame is analyzed.
     nonisolated func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         let request = VNRecognizeTextRequest { [weak self] request, error in
             let observations = (request.results as? [VNRecognizedTextObservation]) ?? []
@@ -90,7 +152,8 @@ extension CameraVisionExperimentService: AVCaptureVideoDataOutputSampleBufferDel
         request.recognitionLevel = VNRequestTextRecognitionLevel.fast
         request.usesLanguageCorrection = false
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-        try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .right).perform([request])
+        // Frames are already rotated upright through the connection's rotation angle.
+        try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .up).perform([request])
     }
 }
 #endif
