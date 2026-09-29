@@ -18,6 +18,49 @@ struct ShazamKitRunView: View {
         }
         ForEach(shazam.matches) { ShazamMatchView(item: $0) }
         OutputView(text: shazam.output, isError: [.unavailable, .permissionDenied, .hardwareUnsupported, .platformUnsupported].contains(shazam.status))
+        ShazamCustomCatalogSection(shazam: shazam)
+    }
+}
+
+/// SHSignatureGenerator from the microphone → SHCustomCatalog with metadata → SHSession(catalog:).
+private struct ShazamCustomCatalogSection: View {
+    @ObservedObject var shazam: ShazamExperimentService
+
+    var body: some View {
+        Section("Custom catalog · SHCustomCatalog") {
+            TextField("Reference title", text: $shazam.referenceTitle)
+            TextField("Reference artist (optional)", text: $shazam.referenceArtist)
+            Picker("Capture length", selection: $shazam.captureLength) {
+                ForEach(ShazamCaptureLength.allCases) { Text($0.label).tag($0) }
+            }
+            .pickerStyle(.menu)
+            .disabled(shazam.isCapturing)
+            if let mode = shazam.captureMode {
+                ProgressView(mode == .reference ? "Recording reference signature…" : "Recording query signature…", value: shazam.captureProgress)
+                Button("Cancel", systemImage: "xmark.circle", role: .cancel, action: shazam.cancelCapture)
+            } else {
+                HStack {
+                    Button("Record Reference", systemImage: "waveform.badge.plus", action: shazam.recordReference)
+                        .buttonStyle(.borderedProminent)
+                    Button("Match Against Catalog", systemImage: "waveform.badge.magnifyingglass", action: shazam.recordQuery)
+                        .buttonStyle(.bordered)
+                        .disabled(shazam.catalogEntries.isEmpty)
+                }
+                .disabled(shazam.isListening)
+            }
+            ForEach(shazam.catalogEntries) { entry in
+                LabeledContent(entry.title) {
+                    Text([entry.artist, entry.duration.formatted(.number.precision(.fractionLength(1))) + " s"].compactMap { $0 }.joined(separator: " · "))
+                }
+            }
+            #if !os(tvOS)
+            if let url = shazam.catalogFileURL {
+                ShareLink(item: url) { Label("Share .shazamcatalog", systemImage: "square.and.arrow.up") }
+            }
+            #endif
+            ForEach(shazam.catalogMatches) { ShazamMatchView(item: $0) }
+            OutputView(text: shazam.catalogOutput, isError: shazam.catalogIsError)
+        }
     }
 }
 

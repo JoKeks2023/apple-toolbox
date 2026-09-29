@@ -21,6 +21,7 @@ struct AudioAnalyzerRunView: View {
         EffectsChainSection(audio: audio)
         SpectrumSection(audio: audio)
         AudioMeterView(audio: audio)
+        AudioFileRecorderSection()
         AudioRouteSection(route: audio.route, extraDetails: audio.engineDetails, refresh: audio.refreshRoute)
         Section("Route and engine events") {
             AudioEventLogView(events: audio.events, emptyText: "Route changes, interruptions and engine reconfigurations appear here while the tone or microphone runs. Try connecting headphones.")
@@ -32,6 +33,44 @@ struct AudioAnalyzerRunView: View {
 }
 
 #if os(iOS) || os(macOS)
+/// AVAudioRecorder to a file, AVAudioPlayer playback, file inspection and sharing.
+private struct AudioFileRecorderSection: View {
+    @StateObject private var recorder = AudioFileRecorderService()
+
+    var body: some View {
+        Section("Record to file · AVAudioRecorder") {
+            Picker("File format", selection: $recorder.format) {
+                ForEach(AudioRecordingFormat.allCases) { Text($0.label).tag($0) }
+            }
+            .pickerStyle(.menu)
+            .disabled(recorder.isRecording)
+            HStack {
+                Button(recorder.isRecording ? "Stop Recording" : "Record", systemImage: recorder.isRecording ? "stop.circle" : "record.circle") {
+                    recorder.isRecording ? recorder.stopRecording() : recorder.startRecording()
+                }
+                .buttonStyle(.borderedProminent)
+                .experimentSession(recorder)
+                Button(recorder.isPlaying ? "Stop" : "Play", systemImage: recorder.isPlaying ? "stop.fill" : "play.fill") {
+                    recorder.isPlaying ? recorder.stopPlayback() : recorder.play()
+                }
+                .buttonStyle(.bordered)
+                .disabled(recorder.fileURL == nil || recorder.isRecording)
+                if let url = recorder.fileURL {
+                    ShareLink(item: url) { Label("Share", systemImage: "square.and.arrow.up") }
+                        .disabled(recorder.isRecording)
+                }
+            }
+            if recorder.isRecording || recorder.isPlaying {
+                TimelineView(.periodic(from: .now, by: 0.25)) { _ in
+                    LabeledContent(recorder.isRecording ? "Recorded" : "Position", value: recorder.elapsed.formatted(.number.precision(.fractionLength(1))) + " s")
+                }
+            }
+            ForEach(recorder.fileDetails) { LabeledContent($0.label, value: $0.value) }
+            OutputView(text: recorder.output, isError: recorder.isError)
+        }
+    }
+}
+
 private struct ToneControls: View {
     @ObservedObject var audio: AudioExperimentService
     private let presets: [Double] = [50, 100, 440, 1_000, 5_000, 10_000]
