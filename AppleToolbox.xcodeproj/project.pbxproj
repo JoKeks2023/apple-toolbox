@@ -136,6 +136,8 @@
 		22C1FA45046598DFFFFC7E36 /* SignInWithAppleExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7586888B76A67E0CBEB09816 /* SignInWithAppleExperimentService.swift */; };
 		E4ABEBA404DBB1EF36A92B15 /* SignInWithAppleExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7586888B76A67E0CBEB09816 /* SignInWithAppleExperimentService.swift */; };
 		2DD90CEF9D51F209B46BDF02 /* ProvisioningInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74066D2DEC64C74C01FCD3E /* ProvisioningInspector.swift */; };
+		743D118603427E9CA2F9C1DF /* PasskeyExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFBA96A2C9D3B80BB2F86F4 /* PasskeyExperimentService.swift */; };
+		86DF507F4CE8D231903A1301 /* PasskeyExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFBA96A2C9D3B80BB2F86F4 /* PasskeyExperimentService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -262,6 +264,7 @@
 		7F9BBC80985F365FCAE54BAB /* AppAttestExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppAttestExperimentService.swift; path = AppleToolbox/Shared/Services/AppAttestExperimentService.swift; sourceTree = "<group>"; };
 		EA3E6A0C1A8FC25C723A1E05 /* IdentityRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IdentityRunViews.swift; path = AppleToolbox/UI/Experiments/IdentityRunViews.swift; sourceTree = "<group>"; };
 		7586888B76A67E0CBEB09816 /* SignInWithAppleExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SignInWithAppleExperimentService.swift; path = AppleToolbox/Shared/Services/SignInWithAppleExperimentService.swift; sourceTree = "<group>"; };
+		2AFBA96A2C9D3B80BB2F86F4 /* PasskeyExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PasskeyExperimentService.swift; path = AppleToolbox/Shared/Services/PasskeyExperimentService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -458,6 +461,7 @@
 				7F9BBC80985F365FCAE54BAB /* AppAttestExperimentService.swift */,
 				EA3E6A0C1A8FC25C723A1E05 /* IdentityRunViews.swift */,
 				7586888B76A67E0CBEB09816 /* SignInWithAppleExperimentService.swift */,
+				2AFBA96A2C9D3B80BB2F86F4 /* PasskeyExperimentService.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -792,6 +796,7 @@
 				04FDB23F4C89E34144CBE95A /* AppAttestExperimentService.swift in Sources */,
 				42AD02522844D21219E09159 /* IdentityRunViews.swift in Sources */,
 				22C1FA45046598DFFFFC7E36 /* SignInWithAppleExperimentService.swift in Sources */,
+				743D118603427E9CA2F9C1DF /* PasskeyExperimentService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -902,6 +907,7 @@
 				083E92C5E44027026D40B7A1 /* AppAttestExperimentService.swift in Sources */,
 				5E00D312E59877F5708A5BA8 /* IdentityRunViews.swift in Sources */,
 				E4ABEBA404DBB1EF36A92B15 /* SignInWithAppleExperimentService.swift in Sources */,
+				86DF507F4CE8D231903A1301 /* PasskeyExperimentService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

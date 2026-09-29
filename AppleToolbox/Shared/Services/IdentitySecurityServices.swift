@@ -9,20 +9,18 @@ import Security
 import MachO
 #endif
 
-enum IdentitySecurityExperimentService {
-    static func passkeyStatus() -> String {
-        #if canImport(AuthenticationServices)
-        return "AuthenticationServices is available. Passkeys require a configured associated domain and relying-party server; this experiment does not fake a credential."
-        #else
-        return "AuthenticationServices is not available on this platform."
-        #endif
-    }
-}
-
 extension ExperimentAvailability {
     static func signInWithApple() -> ExperimentStatus {
         #if canImport(AuthenticationServices)
         IdentityEntitlements.signInWithApple.isPresent ? .available : .entitlementRequired
+        #else
+        .platformUnsupported
+        #endif
+    }
+
+    static func passkeys() -> ExperimentStatus {
+        #if canImport(AuthenticationServices) && !os(watchOS)
+        WebCredentialsConfiguration.current.isConfigured ? .available : .entitlementRequired
         #else
         .platformUnsupported
         #endif
@@ -52,6 +50,45 @@ enum IdentityEntitlements {
         case .notDeclared: "\(key): no provisioning profile is embedded, and this build's signed entitlements do not include it."
         case .unknown(let reason): "\(key): cannot be checked. \(reason)"
         }
+    }
+}
+
+/// The `webcredentials:` entries of the Associated Domains entitlement; passkeys only work for relying parties listed there.
+struct WebCredentialsConfiguration {
+    static let key = "com.apple.developer.associated-domains"
+
+    let state: ProvisioningState
+    /// Relying-party domains from `webcredentials:` entries, without a `?mode=` suffix.
+    let domains: [String]
+    /// The profile lists "*" (any associated domain) and the concrete entries, which only the code signature carries, are unreadable here.
+    let isWildcardOnly: Bool
+
+    var isConfigured: Bool { !domains.isEmpty || isWildcardOnly }
+
+    static var current: WebCredentialsConfiguration {
+        let state = IdentityEntitlements.state(ofCapability: "associated-domains")
+        var value: String? = switch state {
+        case .provisioned(let value), .declared(let value): value
+        default: nil
+        }
+        if value == "*", let signed = SignedEntitlements.value(for: key) { value = signed }
+        let domains = (value ?? "").components(separatedBy: ", ")
+            .filter { $0.hasPrefix("webcredentials:") }
+            .compactMap { $0.dropFirst("webcredentials:".count).split(separator: "?").first.map(String.init) }
+        return WebCredentialsConfiguration(state: state, domains: domains, isWildcardOnly: value == "*")
+    }
+
+    var summary: String {
+        if !domains.isEmpty {
+            return "\(Self.key): webcredentials for \(domains.joined(separator: ", ")) (\(state.title.lowercased())). Passkey requests for other relying parties are rejected."
+        }
+        if isWildcardOnly {
+            return "\(Self.key): the embedded profile allows any associated domain (*). The concrete webcredentials entries exist only in the code signature, which this platform does not let apps read, so the request result shows whether the relying party matches."
+        }
+        if state.isPresent {
+            return "\(Self.key): present, but without a webcredentials: entry, so the system rejects passkey requests."
+        }
+        return IdentityEntitlements.summary(of: state, key: Self.key) + " Without a webcredentials: entry the system rejects passkey requests."
     }
 }
 

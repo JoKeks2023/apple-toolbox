@@ -48,3 +48,35 @@ struct SignInWithAppleRunView: View {
             .font(.caption).foregroundStyle(.secondary)
     }
 }
+
+struct PasskeysRunView: View {
+    @StateObject private var passkeys: PasskeyExperimentService
+
+    init(experiment: ExperimentDescriptor) {
+        _passkeys = StateObject(wrappedValue: PasskeyExperimentService(initialOutput: ExperimentOutput.initialMessage(for: experiment.currentStatus)))
+    }
+
+    var body: some View {
+        OutputView(text: PasskeyExperimentService.configurationSummary, isError: false)
+        TextField("Relying-party identifier (domain)", text: $passkeys.relyingPartyID)
+            .autocorrectionDisabled()
+            #if os(iOS)
+            .textInputAutocapitalization(.never)
+            .keyboardType(.URL)
+            #endif
+        TextField("User name", text: $passkeys.userName)
+            .autocorrectionDisabled()
+            #if os(iOS)
+            .textInputAutocapitalization(.never)
+            #endif
+        HStack {
+            Button("Create Passkey", action: passkeys.register).buttonStyle(.borderedProminent)
+                .experimentSession(passkeys)
+            Button("Sign In with Passkey", action: passkeys.signIn).buttonStyle(.bordered)
+        }
+        .disabled(passkeys.isRunning)
+        OutputView(text: passkeys.output, isError: passkeys.isError)
+        Text("Challenges and the user ID are random bytes generated on this device. A real relying party issues the challenge on its server and verifies the returned attestation or signature.")
+            .font(.caption).foregroundStyle(.secondary)
+    }
+}

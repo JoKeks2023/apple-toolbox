@@ -109,8 +109,8 @@ extension ExperimentDescriptor {
                                                 nextStep: "Turn on Apple Intelligence in Settings and wait for the model download to finish."),
         ],
         "passkeys": [
-            .entitlementRequired: ExperimentExplanation(reason: "Passkeys are bound to a relying-party domain, and this app has no associated domain.", required: "Associated Domains entitlement with webcredentials:<domain> and an apple-app-site-association file on that domain",
-                                                        nextStep: "Add the Associated Domains capability for your relying party and host the association file."),
+            .entitlementRequired: ExperimentExplanation(reason: "Passkeys are bound to a relying-party domain, and no webcredentials: associated domain is provisioned for this app.", required: "Associated Domains entitlement with webcredentials:<domain> and an apple-app-site-association file on that domain listing this app",
+                                                        nextStep: "Add the Associated Domains capability for your relying party and host the association file. The requests below still run and show the system's rejection."),
         ],
         "sign-in-with-apple": [
             .entitlementRequired: ExperimentExplanation(reason: "Neither the embedded provisioning profile nor this build's readable signed entitlements include Sign in with Apple.", required: "com.apple.developer.applesignin = [Default], enabled on the App ID of a paid developer team",

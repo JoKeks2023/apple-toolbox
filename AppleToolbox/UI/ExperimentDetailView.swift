@@ -47,7 +47,7 @@ struct ExperimentRunView: View {
         case "keychain": KeychainRunView(experiment: experiment)
         case "secure-enclave": SecureEnclaveRunView(experiment: experiment)
         case "app-attest": AppAttestRunView(experiment: experiment)
-        case "passkeys": StatusCheckRunView(experiment: experiment, title: "Check Passkey Configuration", check: IdentitySecurityExperimentService.passkeyStatus)
+        case "passkeys": PasskeysRunView(experiment: experiment)
         case "sign-in-with-apple": SignInWithAppleRunView(experiment: experiment)
         case "core-location": CoreLocationRunView()
         case "core-motion": CoreMotionRunView()
