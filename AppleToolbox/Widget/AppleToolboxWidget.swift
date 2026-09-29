@@ -1,7 +1,7 @@
 import SwiftUI
 import WidgetKit
 
-private struct ToolboxWidgetEntry: TimelineEntry {
+private nonisolated struct ToolboxWidgetEntry: TimelineEntry {
     let date: Date
     let snapshot: ToolboxWidgetSnapshot?
     /// Whether the App Group container is provisioned; without it the app cannot share anything.
@@ -12,7 +12,8 @@ private struct ToolboxWidgetEntry: TimelineEntry {
     }
 }
 
-private struct ToolboxWidgetProvider: TimelineProvider {
+/// WidgetKit may call the synchronous provider requirements off the main thread, so the provider is nonisolated.
+private nonisolated struct ToolboxWidgetProvider: TimelineProvider {
     func placeholder(in context: Context) -> ToolboxWidgetEntry {
         ToolboxWidgetEntry(date: .now, snapshot: nil, isShared: true)
     }
