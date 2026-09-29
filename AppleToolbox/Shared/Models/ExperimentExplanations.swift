@@ -120,6 +120,10 @@ extension ExperimentDescriptor {
             .unavailable: ExperimentExplanation(reason: "No game controller is connected right now.", required: "A paired MFi, Xbox, PlayStation, or Switch controller (the Siri Remote counts on Apple TV)",
                                                 nextStep: "Pair the controller in Bluetooth settings, or put an MFi controller in pairing mode and start wireless discovery below."),
         ],
+        "widgetkit": [
+            .entitlementRequired: ExperimentExplanation(reason: "The App Group container is not provisioned, so the app cannot share data with its widget.", required: "com.apple.security.application-groups with group.com.jorisconrad.AppleToolbox for the app and the widget extension",
+                                                        nextStep: "Register the App Group for both App IDs in Signing & Capabilities and reinstall the app."),
+        ],
         "app-attest": [
             .hardwareUnsupported: ExperimentExplanation(reason: "DCAppAttestService reports that App Attest is not supported here (for example in the Simulator).", required: "A physical device with a Secure Enclave and an App ID registered with Apple",
                                                         nextStep: "Run the experiment on a real device; the DeviceCheck token can still be tried below."),

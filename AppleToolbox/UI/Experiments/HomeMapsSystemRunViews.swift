@@ -123,6 +123,29 @@ struct AppIntentsRunView: View {
     }
 }
 
+struct WidgetKitRunView: View {
+    @StateObject private var widgets = WidgetKitExperimentService()
+
+    var body: some View {
+        HStack {
+            Button(widgets.isLoading ? "Loading…" : "List Installed Widgets", action: widgets.refresh).buttonStyle(.borderedProminent).disabled(widgets.isLoading)
+            Button("Reload Timelines", action: widgets.reloadTimelines).buttonStyle(.bordered)
+        }
+        Section("Installed widgets (\(widgets.configurations.count))") {
+            if widgets.configurations.isEmpty {
+                Text("List the installed widgets to see each configuration's kind and family.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(widgets.configurations) { configuration in
+                    LabeledContent(configuration.kind, value: configuration.family)
+                }
+            }
+        }
+        OutputView(text: widgets.output, isError: widgets.isError)
+    }
+}
+
 private struct MapResultsView: View {
     let results: [MapSearchResult]
 

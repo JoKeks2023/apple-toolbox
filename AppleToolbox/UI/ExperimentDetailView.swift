@@ -31,6 +31,7 @@ struct ExperimentDetailView: View {
         }
         .navigationTitle(experiment.name)
         .environmentObject(lifecycle)
+        .onAppear { WidgetKitExperimentService.recordOpened(experiment) }
         .onDisappear { lifecycle.stopAll() }
     }
 }
@@ -78,7 +79,7 @@ struct ExperimentRunView: View {
         case "wallet-status": StatusCheckRunView(experiment: experiment, title: "Inspect Wallet Capability", check: WalletExperimentService.statusText)
         case "wallet-creator": WalletPassCreatorRunView()
         case "app-intents": AppIntentsRunView()
-        case "widgetkit": StatusCheckRunView(experiment: experiment, title: "Inspect Widget Extension") { "WidgetKit extension is included in the iOS app.\nAdd “Apple Toolbox” from the Home Screen widget gallery." }
+        case "widgetkit": WidgetKitRunView()
         case "capability-explorer": DeviceScannerRunView()
         case "game-controller": GameControllerRunView()
         default: OutputView(text: "No run view is registered for this experiment.", isError: true)
