@@ -33,6 +33,17 @@ extension ExperimentRegistry {
                 .platformUnsupported: ExperimentExplanation(reason: "Importing a model needs the system document picker, which Apple TV and Apple Watch do not offer; watchOS also cannot compile models on device.", required: "iOS, iPadOS or macOS",
                     nextStep: "Open the experiment on iPhone, iPad or Mac. On Apple TV the compute devices are still listed below."),
             ]),
+        ExperimentDescriptor(id: "create-ml", name: "Create ML", category: .ai,
+            description: "Train a text classifier or a tabular regressor on this device from an editable or imported CSV with the Create ML framework, compare training and validation metrics, then run the new model on your own input.", frameworks: ["CreateML", "TabularData"], supportedPlatforms: [.iOS, .iPadOS, .macOS], hardwareRequirements: [], osRequirements: ["iOS 15+ on a device · macOS 10.14+"], permissions: ["User-selected file access"], capabilities: ["On-device model training"], entitlements: [], documentationURL: URL(string: "https://developer.apple.com/documentation/createml")!, evaluate: ExperimentAvailability.createML,
+            useCase: ExperimentUseCase(id: "create-ml-train", title: "Train a model in seconds",
+                summary: "Label a few sentences or rows of numbers, train with MLTextClassifier or a Create ML regressor on device, and see how well it generalizes to the held-out validation rows.",
+                interaction: "Edit the sample CSV or import your own, choose the columns and algorithm, train, then type new input to get a prediction."),
+            explanations: [
+                .deviceOnly: ExperimentExplanation(reason: "CreateML.framework is part of the iOS device SDK but missing from the iOS Simulator SDK, so a Simulator build contains no Create ML code.", required: "A physical iPhone or iPad, or a Mac",
+                    nextStep: "Run Apple Toolbox on a device or on the Mac to train."),
+                .platformUnsupported: ExperimentExplanation(reason: "watchOS has no Create ML framework. On tvOS the text classifier is unavailable and there is no document picker or text editor for a dataset.", required: "iOS, iPadOS or macOS",
+                    nextStep: "Open the experiment on iPhone, iPad or Mac."),
+            ]),
         ExperimentDescriptor(id: "translation", name: "Translation", category: .ai,
             description: "Pick a language pair from the languages the system supports, check whether it is installed, supported or unsupported, and translate your own text with a real TranslationSession.", frameworks: ["Translation", "SwiftUI"], supportedPlatforms: [.iOS, .iPadOS, .macOS], hardwareRequirements: [], osRequirements: ["iOS 18+ · macOS 15+"], permissions: [], capabilities: ["On-device language assets", "Language download (network)"], entitlements: [], documentationURL: URL(string: "https://developer.apple.com/documentation/translation")!, evaluate: { [.iOS, .iPadOS, .macOS].contains(CurrentPlatform.value) ? .available : .platformUnsupported }),
     ]

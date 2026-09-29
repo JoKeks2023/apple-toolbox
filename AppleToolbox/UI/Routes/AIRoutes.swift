@@ -11,6 +11,7 @@ struct AIRunRoutes: View {
         case "speech": SpeechRunView()
         case "speech-analyzer": SpeechAnalyzerRunView()
         case "core-ml": CoreMLRunView()
+        case "create-ml": CreateMLRunView()
         case "translation": TranslationRunView()
         default: UnroutedExperimentView()
         }
