@@ -1,6 +1,7 @@
 import Testing
 import Foundation
 import AppIntents
+import CoreGraphics
 @testable import AppleToolbox
 
 struct MetalComputeCheckTests {
@@ -74,5 +75,43 @@ struct PlatformCategoryTests {
         for category in ExperimentCategory.allCases {
             #expect(ExperimentCategory.caseDisplayRepresentations[category] != nil, "\(category.rawValue)")
         }
+    }
+}
+
+struct IPadLabFormattingTests {
+
+    @Test func formatsPencilValues() {
+        #expect(PencilFormatting.degrees(.pi / 4) == "45°")
+        #expect(PencilFormatting.tilt(altitude: .pi / 2) == "90° altitude · 0° from vertical")
+        #expect(PencilFormatting.force(2, maximum: 4) == "2.00 of 4.00 (50 %)")
+        #expect(PencilFormatting.force(0, maximum: 0) == "Not reported for this touch")
+    }
+
+    @Test func listsModifiersInMenuOrder() {
+        #expect(KeyboardFormatting.modifiers(capsLock: false, shift: true, control: false, option: true, command: true) == "⌥ ⇧ ⌘")
+        #expect(KeyboardFormatting.modifiers(capsLock: true, shift: false, control: true, option: false, command: false) == "⌃ ⇪")
+        #expect(KeyboardFormatting.modifiers(capsLock: false, shift: false, control: false, option: false, command: false) == "None")
+    }
+
+    @Test func infersWindowLayout() {
+        let screen = CGSize(width: 1024, height: 1366)
+        #expect(WindowFormatting.layout(window: screen, screen: screen) == "Full screen")
+        #expect(WindowFormatting.layout(window: CGSize(width: 1366, height: 1024), screen: screen) == "Full screen")
+        #expect(WindowFormatting.layout(window: CGSize(width: 507, height: 1366), screen: screen) == "Full height, 50 % width (split or tiled)")
+        #expect(WindowFormatting.layout(window: CGSize(width: 800, height: 600), screen: CGSize(width: 1366, height: 1024))
+                == "Window at 59 % × 59 % of the screen (Stage Manager or windowed apps)")
+        #expect(WindowFormatting.layout(window: .zero, screen: screen) == "Unknown")
+        #expect(WindowFormatting.size(CGSize(width: 820.4, height: 1180)) == "820 × 1180 pt")
+    }
+
+    @Test func offersHoverEffectsOnIPad() {
+        #expect(PointerEffectOption.platformCases == [.automatic, .highlight, .lift, .disabled])
+    }
+
+    @MainActor @Test func registersTheIPadLabs() {
+        for id in ["apple-pencil", "pointer-keyboard", "windows-displays"] {
+            #expect(ExperimentRegistry.descriptor(for: id)?.category == .platform, "\(id)")
+        }
+        #expect(ExperimentRegistry.descriptor(for: "apple-pencil")?.supportedPlatforms == [.iPadOS])
     }
 }

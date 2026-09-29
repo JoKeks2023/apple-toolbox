@@ -18,5 +18,12 @@ struct AppleToolboxApp: App {
         #endif
     }
 
-    var body: some Scene { WindowGroup { ContentView() } }
+    var body: some Scene {
+        WindowGroup { ContentView() }
+        #if os(iOS)
+        // Second scene for the Windows & Displays experiment's openWindow(id:) test.
+        WindowGroup("Window Probe", id: WindowProbe.sceneID) { WindowProbeView() }
+            .commandsRemoved()
+        #endif
+    }
 }

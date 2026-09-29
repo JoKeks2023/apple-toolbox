@@ -8,6 +8,9 @@ struct PlatformRunRoutes: View {
         switch experiment.id {
         case "metal": MetalRunView()
         case "mac-hardware": MacHardwareRunView()
+        case "apple-pencil": ApplePencilRunView()
+        case "pointer-keyboard": PointerKeyboardRunView()
+        case "windows-displays": WindowsDisplaysRunView()
         default: UnroutedExperimentView()
         }
     }
