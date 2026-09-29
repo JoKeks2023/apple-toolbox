@@ -3,6 +3,8 @@ import SwiftUI
 struct GameControllerRunView: View {
     #if canImport(GameController) && !os(watchOS)
     @StateObject private var service = GameControllerExperimentService()
+    @State private var hapticPattern: ControllerHapticPattern = .tap
+    @State private var hapticLocality = "Default"
 
     var body: some View {
         Button(service.isMonitoring ? "Stop Monitoring" : "Start Monitoring") { service.isMonitoring ? service.stop() : service.start() }
@@ -21,6 +23,20 @@ struct GameControllerRunView: View {
             ForEach(service.controllers) { ControllerInfoRow(controller: $0) }
         }
         if let input = service.input { ControllerInputView(input: input) }
+        if !service.hapticLocalities.isEmpty {
+            Picker("Haptic pattern", selection: $hapticPattern) {
+                ForEach(ControllerHapticPattern.allCases) { Text($0.rawValue).tag($0) }
+            }
+            .pickerStyle(.menu)
+            Picker("Locality", selection: $hapticLocality) {
+                ForEach(service.hapticLocalities, id: \.self) { Text($0).tag($0) }
+            }
+            .pickerStyle(.menu)
+            Button(service.isPlayingHaptic ? "Playing…" : "Play Haptic on Controller") {
+                service.playHaptic(hapticPattern, locality: service.hapticLocalities.contains(hapticLocality) ? hapticLocality : service.hapticLocalities[0])
+            }
+            .disabled(service.isPlayingHaptic)
+        }
         OutputView(text: service.output, isError: false)
         #if os(tvOS)
         Text("The Siri Remote and controllers also move focus while you test. Menu or B leaves this screen and stops monitoring.")

@@ -16,6 +16,22 @@ struct ContentView: View {
     private let experiments = ExperimentRegistry.all
 
     var body: some View {
+        root
+            .toolboxActivityHandling()
+            // Permissions can change in Settings while the app is in the background.
+            .task { await PermissionCenter.shared.refresh() }
+            .onChange(of: scenePhase) { if scenePhase == .active { Task { await PermissionCenter.shared.refresh() } } }
+    }
+
+    @ViewBuilder private var root: some View {
+        #if os(tvOS)
+        TVHomeView()
+        #else
+        splitView
+        #endif
+    }
+
+    private var splitView: some View {
         NavigationSplitView {
             List(selection: $selection) {
                 Section("Tools") {
@@ -84,10 +100,6 @@ struct ContentView: View {
             navigator.request = nil
             open(request)
         }
-        .toolboxActivityHandling()
-        // Permissions can change in Settings while the app is in the background.
-        .task { await PermissionCenter.shared.refresh() }
-        .onChange(of: scenePhase) { if scenePhase == .active { Task { await PermissionCenter.shared.refresh() } } }
     }
 
     private func open(_ request: ToolboxNavigator.Request) {

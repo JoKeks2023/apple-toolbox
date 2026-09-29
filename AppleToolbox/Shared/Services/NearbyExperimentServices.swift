@@ -5,7 +5,7 @@ import Combine
 import NearbyInteraction
 #endif
 
-#if !canImport(MultipeerConnectivity) || os(watchOS) || os(tvOS)
+#if !canImport(MultipeerConnectivity) || os(watchOS)
 @MainActor
 final class MultipeerConnectivityExperimentService: ObservableObject {
     @Published private(set) var output = "MultipeerConnectivity is not supported on this platform."
@@ -19,14 +19,14 @@ final class MultipeerConnectivityExperimentService: ObservableObject {
 }
 #endif
 
-#if canImport(MultipeerConnectivity) && !os(watchOS) && !os(tvOS)
+#if canImport(MultipeerConnectivity) && !os(watchOS)
 import MultipeerConnectivity
 #if canImport(UIKit)
 import UIKit
 #endif
 #endif
 
-#if canImport(MultipeerConnectivity) && !os(watchOS) && !os(tvOS)
+#if canImport(MultipeerConnectivity) && !os(watchOS)
 /// Both peers advertise and browse. Only the peer with the smaller random identifier sends the
 /// invitation, so two devices never invite each other at the same time.
 nonisolated enum PeerInvitationPolicy {
@@ -600,7 +600,7 @@ nonisolated enum MultipeerPeerName {
     }
 }
 
-#if canImport(MultipeerConnectivity) && !os(watchOS) && !os(tvOS)
+#if canImport(MultipeerConnectivity) && !os(watchOS)
 @MainActor
 final class MultipeerConnectivityExperimentService: NSObject, ObservableObject {
     @Published private(set) var output = "Ready to discover nearby Apple Toolbox peers."
