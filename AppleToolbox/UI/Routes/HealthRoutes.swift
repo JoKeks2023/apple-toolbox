@@ -6,7 +6,7 @@ struct HealthRunRoutes: View {
 
     var body: some View {
         switch experiment.id {
-        case "healthkit-status": HealthKitRunView()
+        case "healthkit-status": HealthKitReaderRunView(experiment: experiment)
         default: UnroutedExperimentView()
         }
     }

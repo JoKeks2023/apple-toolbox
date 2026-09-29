@@ -339,6 +339,11 @@
 		60721A72B5822822F70088BF /* HomeKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082468F2A161F7880FFEBCDF /* HomeKitServices.swift */; };
 		A2BEBB310ACADE24D9A8E160 /* HomeRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */; };
 		E32A3B47C949B8EDDAD22968 /* HomeRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */; };
+		90DC4FA15A53BC9C6EF47773 /* HealthKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */; };
+		E13F6518A7D8CE79E9728906 /* HealthKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */; };
+		D60C7FFDCC3637CC2A24C016 /* HealthKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */; };
+		DA50FEFC27E81BDEF0827783 /* HealthRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469DACD79441802363A7C56 /* HealthRunViews.swift */; };
+		904B20C154C8E4321B8D38A8 /* HealthRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469DACD79441802363A7C56 /* HealthRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -553,6 +558,8 @@
 		3C8B6C6DC12A0634919A138E /* SpatialLinkRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpatialLinkRunView.swift; path = AppleToolbox/UI/Experiments/SpatialLinkRunView.swift; sourceTree = "<group>"; };
 		082468F2A161F7880FFEBCDF /* HomeKitServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeKitServices.swift; path = AppleToolbox/Shared/Services/HomeKitServices.swift; sourceTree = "<group>"; };
 		9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeRunViews.swift; path = AppleToolbox/UI/Experiments/HomeRunViews.swift; sourceTree = "<group>"; };
+		50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthKitServices.swift; path = AppleToolbox/Shared/Services/HealthKitServices.swift; sourceTree = "<group>"; };
+		1469DACD79441802363A7C56 /* HealthRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthRunViews.swift; path = AppleToolbox/UI/Experiments/HealthRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -838,6 +845,8 @@
 				3C8B6C6DC12A0634919A138E /* SpatialLinkRunView.swift */,
 				082468F2A161F7880FFEBCDF /* HomeKitServices.swift */,
 				9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */,
+				50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */,
+				1469DACD79441802363A7C56 /* HealthRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1259,6 +1268,8 @@
 				3822BD5982F50EC9694228A3 /* SpatialLinkRunView.swift in Sources */,
 				BF4B34718DBDBAD6E085DF72 /* HomeKitServices.swift in Sources */,
 				A2BEBB310ACADE24D9A8E160 /* HomeRunViews.swift in Sources */,
+				90DC4FA15A53BC9C6EF47773 /* HealthKitServices.swift in Sources */,
+				DA50FEFC27E81BDEF0827783 /* HealthRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1324,6 +1335,7 @@
 				972235B9DFDDE9EC9025BCDB /* BeaconRangingService.swift in Sources */,
 				5315246DCF29B6BE8C97A1E5 /* NetworkCapabilityServices.swift in Sources */,
 				60721A72B5822822F70088BF /* HomeKitServices.swift in Sources */,
+				D60C7FFDCC3637CC2A24C016 /* HealthKitServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1484,6 +1496,8 @@
 				F69D8FB5911B5C18C1B01C2D /* SpatialLinkRunView.swift in Sources */,
 				A324F4B94954D7E6F314BBAA /* HomeKitServices.swift in Sources */,
 				E32A3B47C949B8EDDAD22968 /* HomeRunViews.swift in Sources */,
+				E13F6518A7D8CE79E9728906 /* HealthKitServices.swift in Sources */,
+				904B20C154C8E4321B8D38A8 /* HealthRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

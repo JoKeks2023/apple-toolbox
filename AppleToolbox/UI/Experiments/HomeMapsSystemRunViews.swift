@@ -27,15 +27,6 @@ struct ARKitRunView: View {
     }
 }
 
-struct HealthKitRunView: View {
-    @StateObject private var health = HealthAuthorizationExperimentService()
-
-    var body: some View {
-        Button("Request HealthKit Read Authorization", action: health.requestReadAuthorization).buttonStyle(.borderedProminent)
-        OutputView(text: health.output, isError: health.output.localizedCaseInsensitiveContains("error") || health.output.localizedCaseInsensitiveContains("not available") || health.output.localizedCaseInsensitiveContains("denied"))
-    }
-}
-
 struct NotificationsRunView: View {
     @StateObject private var notifications = NotificationExperimentService()
 

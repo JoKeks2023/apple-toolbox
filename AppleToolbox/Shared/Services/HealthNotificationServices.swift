@@ -1,36 +1,9 @@
 import Foundation
 import Combine
 
-#if canImport(HealthKit) && !os(macOS) && !os(tvOS)
-import HealthKit
-#endif
-
 #if canImport(UserNotifications)
 import UserNotifications
 #endif
-
-@MainActor
-final class HealthAuthorizationExperimentService: ObservableObject {
-    @Published private(set) var output = "HealthKit authorization has not been requested."
-
-    func requestReadAuthorization() {
-        #if canImport(HealthKit) && !os(macOS) && !os(tvOS)
-        guard HKHealthStore.isHealthDataAvailable() else { output = "HealthKit is not available on this device."; return }
-        let store = HKHealthStore()
-        guard let stepCount = HKObjectType.quantityType(forIdentifier: .stepCount) else { output = "The step-count sample type is unavailable on this OS."; return }
-        store.requestAuthorization(toShare: [], read: [stepCount]) { @Sendable [weak self] success, error in
-            Task { @MainActor in
-                if success { PermissionProbe.remember(.granted, for: .healthKit) }
-                PermissionCenter.shared.invalidate()
-                if let error { self?.output = "HealthKit authorization error: \(error.localizedDescription)" }
-                else { self?.output = success ? "HealthKit read authorization completed for step count. The user may still have denied individual data types." : "HealthKit authorization was not granted." }
-            }
-        }
-        #else
-        output = "HealthKit authorization is not available on this platform."
-        #endif
-    }
-}
 
 @MainActor
 final class NotificationExperimentService: ObservableObject {

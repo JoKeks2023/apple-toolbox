@@ -49,7 +49,7 @@
 	<key>NSHomeKitUsageDescription</key>
 	<string>Joris Apple Toolbox shows your homes, accessories, scenes and automations in the Home Inspector, and reads, writes or runs them only when you choose to.</string>
 	<key>NSHealthShareUsageDescription</key>
-	<string>Joris Apple Toolbox reads step count only when you explicitly authorize the HealthKit experiment.</string>
+	<string>Joris Apple Toolbox reads the Health data you choose in the HealthKit Reader (activity, heart, sleep, workouts, respiratory, mobility and environmental data) and only shows it on this device.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Joris Apple Toolbox discovers nearby devices and local network services for the MultipeerConnectivity, Network Inspector and Spatial Link experiments, and runs the inspector's echo listener.</string>
 	<key>NSBonjourServices</key>
