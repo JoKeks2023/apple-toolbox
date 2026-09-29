@@ -21,12 +21,13 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-34C759" alt="MIT License"></a>
 </p>
 
-Apple Toolbox is a native lab app for iPhone, iPad, Mac, Apple Watch and Apple TV. It turns Apple's frameworks, sensors, radios and capabilities into **82 experiments** you can run on your own devices — from CryptoKit and the Secure Enclave to NFC, UWB, HomeKit, ARKit, Foundation Models and Live Activities.
+Apple Toolbox is a lab app **for developers** who want to see what their iPhone, iPad, Mac, Apple Watch and Apple TV can actually do — and what it would take to build it into their own app. It turns Apple's frameworks, sensors, radios and capabilities into **82 experiments** you can run on your own devices — from CryptoKit and the Secure Enclave to NFC, UWB, HomeKit, ARKit, Foundation Models and Live Activities.
 
 Every experiment calls the **real public API** on the device in your hand. Nothing is simulated, nothing is faked, and no entitlement is bypassed. When something doesn't work, the app tells you exactly why: missing hardware, a permission you declined, an entitlement Apple has to approve, or a platform that simply doesn't have the framework.
 
 ## Highlights
 
+- **How to implement it.** Every experiment shows the minimal Swift code for its core API, the Info.plist keys, the entitlements and the capabilities to enable, ready to copy. Every snippet typechecks against the SDK (`scripts/check-guide-snippets.py`).
 - **Real APIs, honest results.** Every run shows live output from Apple's frameworks, including the real errors.
 - **"Why doesn't this work?"** Each unavailable experiment explains the reason, what it needs and the next step — from "this iPhone has no LiDAR" to "this capability needs Apple's approval".
 - **Pre-run checks.** Platform, OS, hardware, permissions, entitlements and Apple programs are checked before you start, without ever triggering a permission prompt.
