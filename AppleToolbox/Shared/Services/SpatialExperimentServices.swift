@@ -104,7 +104,7 @@ final class RoomPlanExperimentService: ObservableObject {
         guard isSupported else { status = .hardwareUnsupported; output = "This device does not support RoomPlan room capture (LiDAR required)."; return }
         guard AVCaptureDevice.authorizationStatus(for: .video) == .authorized else {
             status = .permissionRequired
-            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+            AVCaptureDevice.requestAccess(for: .video) { @Sendable [weak self] granted in
                 Task { @MainActor in
                     PermissionCenter.shared.invalidate()
                     if granted { self?.startCapture() } else { self?.status = .permissionDenied; self?.output = "Camera permission was denied. RoomPlan needs the camera to scan the room." }

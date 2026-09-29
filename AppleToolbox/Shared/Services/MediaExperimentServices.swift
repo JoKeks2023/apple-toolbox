@@ -36,7 +36,7 @@ final class CameraVisionExperimentService: NSObject, ObservableObject {
         guard !isRunning else { return }
         guard AVCaptureDevice.authorizationStatus(for: .video) == .authorized else {
             status = .permissionRequired
-            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+            AVCaptureDevice.requestAccess(for: .video) { @Sendable [weak self] granted in
                 Task { @MainActor in
                     PermissionCenter.shared.invalidate()
                     if granted { self?.start() } else { self?.status = .permissionDenied; self?.output = "Camera permission was denied in Settings." }
@@ -115,7 +115,7 @@ final class CameraVisionExperimentService: NSObject, ObservableObject {
     private func followDeviceRotation(of device: AVCaptureDevice) {
         let coordinator = AVCaptureDevice.RotationCoordinator(device: device, previewLayer: nil)
         rotationCoordinator = coordinator
-        rotationObservation = coordinator.observe(\.videoRotationAngleForHorizonLevelCapture, options: [.initial, .new]) { [weak self] coordinator, _ in
+        rotationObservation = coordinator.observe(\.videoRotationAngleForHorizonLevelCapture, options: [.initial, .new]) { @Sendable [weak self] coordinator, _ in
             let angle = coordinator.videoRotationAngleForHorizonLevelCapture
             Task { @MainActor in self?.applyRotation(angle) }
         }
@@ -176,7 +176,7 @@ final class AudioExperimentService: ObservableObject {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
         guard AVCaptureDevice.authorizationStatus(for: .audio) == .authorized else {
             status = .permissionRequired
-            AVCaptureDevice.requestAccess(for: .audio) { [weak self] granted in
+            AVCaptureDevice.requestAccess(for: .audio) { @Sendable [weak self] granted in
                 Task { @MainActor in
                     PermissionCenter.shared.invalidate()
                     if granted { self?.start() } else { self?.status = .permissionDenied; self?.output = "Microphone permission was denied in Settings." }
@@ -196,7 +196,7 @@ final class AudioExperimentService: ObservableObject {
         }
         channelCount = Int(format.channelCount)
         sampleRate = Int(format.sampleRate)
-        input.installTap(onBus: 0, bufferSize: 1_024, format: format) { [weak self] buffer, _ in
+        input.installTap(onBus: 0, bufferSize: 1_024, format: format) { @Sendable [weak self] buffer, _ in
             guard let channel = buffer.floatChannelData?[0], buffer.frameLength > 0 else { return }
             var sum: Float = 0
             var peak: Float = 0

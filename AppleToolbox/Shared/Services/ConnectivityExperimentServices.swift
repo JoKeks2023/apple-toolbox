@@ -36,7 +36,7 @@ final class NetworkExperimentService: ObservableObject {
         isMonitoring = true
         let monitor = NWPathMonitor()
         self.monitor = monitor
-        monitor.pathUpdateHandler = { [weak self] path in
+        monitor.pathUpdateHandler = { @Sendable [weak self] path in
             Task { @MainActor in
                 let results = path.availableInterfaces.map { NetworkInterfaceResult(id: $0.name, name: $0.name, type: String(describing: $0.type)) }
                 self?.interfaces = results

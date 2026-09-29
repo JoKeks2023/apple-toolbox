@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 #if canImport(Translation) && (os(iOS) || os(macOS))
-import Translation
+@preconcurrency import Translation
 #endif
 
 struct TranslationLanguage: Identifiable, Hashable {
@@ -37,10 +37,17 @@ final class TranslationExperimentService: ObservableObject {
         #endif
     }
 
+    #if canImport(Translation) && (os(iOS) || os(macOS))
+    /// LanguageAvailability is not Sendable, so it is created and queried outside the main actor.
+    @concurrent nonisolated private static func supportedLanguages() async -> [Locale.Language] {
+        await LanguageAvailability().supportedLanguages
+    }
+    #endif
+
     func loadLanguages() async {
         #if canImport(Translation) && (os(iOS) || os(macOS))
         guard languages.isEmpty else { return }
-        let supported = await LanguageAvailability().supportedLanguages
+        let supported = await Self.supportedLanguages()
         languages = supported.map { language in
             TranslationLanguage(id: language.maximalIdentifier, name: Self.displayName(for: language), language: language)
         }.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
@@ -88,19 +95,39 @@ final class TranslationExperimentService: ObservableObject {
     }
 
     #if canImport(Translation) && (os(iOS) || os(macOS))
-    func translate(using session: TranslationSession) async {
+    struct Outcome: Sendable {
+        let text: String
+        let source: Locale.Language
+        let target: Locale.Language
+    }
+
+    /// TranslationSession is not Sendable, so it never leaves the translationTask closure; only the result
+    /// is handed to the main actor.
+    nonisolated static func translate(_ text: String, in session: TranslationSession) async throws -> Outcome {
+        let response = try await session.translate(text)
+        return Outcome(text: response.targetText, source: response.sourceLanguage, target: response.targetLanguage)
+    }
+
+    private var translationStarted = ContinuousClock.now
+
+    /// Returns the text to translate, or nil when there is nothing to do.
+    func beginTranslation() -> String? {
         let text = input.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !text.isEmpty else { return }
+        guard !text.isEmpty else { return nil }
         isTranslating = true
         translation = ""
         setOutput("Translating…", error: false)
-        let started = ContinuousClock.now
-        do {
-            let response = try await session.translate(text)
-            translation = response.targetText
-            let elapsed = (ContinuousClock.now - started).formatted(.units(allowed: [.seconds], fractionalPart: .show(length: 1)))
-            setOutput("Translated \(Self.displayName(for: response.sourceLanguage)) → \(Self.displayName(for: response.targetLanguage)) in \(elapsed) with a TranslationSession.", error: false)
-        } catch {
+        translationStarted = .now
+        return text
+    }
+
+    func finishTranslation(_ result: Result<Outcome, Error>) async {
+        switch result {
+        case .success(let outcome):
+            translation = outcome.text
+            let elapsed = (ContinuousClock.now - translationStarted).formatted(.units(allowed: [.seconds], fractionalPart: .show(length: 1)))
+            setOutput("Translated \(Self.displayName(for: outcome.source)) → \(Self.displayName(for: outcome.target)) in \(elapsed) with a TranslationSession.", error: false)
+        case .failure(let error):
             let localized = error as? LocalizedError
             let lines = ["Translation failed: \(localized?.errorDescription ?? error.localizedDescription)", localized?.failureReason]
             setOutput(lines.compactMap { $0 }.joined(separator: "\n"), error: true)

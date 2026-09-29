@@ -32,7 +32,7 @@ final class SoundAnalysisExperimentService: ObservableObject {
         guard !isRunning else { return }
         guard AVCaptureDevice.authorizationStatus(for: .audio) == .authorized else {
             status = .permissionRequired
-            AVCaptureDevice.requestAccess(for: .audio) { [weak self] granted in
+            AVCaptureDevice.requestAccess(for: .audio) { @Sendable [weak self] granted in
                 Task { @MainActor in
                     PermissionCenter.shared.invalidate()
                     if granted { self?.start() } else { self?.status = .permissionDenied; self?.output = "Microphone permission was denied in Settings." }

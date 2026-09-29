@@ -18,7 +18,7 @@ final class HealthAuthorizationExperimentService: ObservableObject {
         guard HKHealthStore.isHealthDataAvailable() else { output = "HealthKit is not available on this device."; return }
         let store = HKHealthStore()
         guard let stepCount = HKObjectType.quantityType(forIdentifier: .stepCount) else { output = "The step-count sample type is unavailable on this OS."; return }
-        store.requestAuthorization(toShare: [], read: [stepCount]) { [weak self] success, error in
+        store.requestAuthorization(toShare: [], read: [stepCount]) { @Sendable [weak self] success, error in
             Task { @MainActor in
                 if success { PermissionProbe.remember(.granted, for: .healthKit) }
                 PermissionCenter.shared.invalidate()
@@ -38,7 +38,7 @@ final class NotificationExperimentService: ObservableObject {
 
     func requestAuthorization() {
         #if canImport(UserNotifications)
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, error in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { @Sendable [weak self] granted, error in
             Task { @MainActor in
                 await PermissionCenter.shared.refresh()
                 if let error { self?.output = "Notification authorization error: \(error.localizedDescription)" }
@@ -58,7 +58,7 @@ final class NotificationExperimentService: ObservableObject {
         content.sound = .default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: "apple-toolbox-test", content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request) { [weak self] error in
+        UNUserNotificationCenter.current().add(request) { @Sendable [weak self] error in
             Task { @MainActor in self?.output = error.map { "Scheduling error: \($0.localizedDescription)" } ?? "Test notification scheduled for about one second from now." }
         }
         #else

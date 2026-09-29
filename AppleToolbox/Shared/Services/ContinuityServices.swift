@@ -66,14 +66,14 @@ final class ContinuityExperimentService: NSObject, ObservableObject {
         }
         let sent = Date()
         output = "Ping sent to the \(counterpartName)…"
-        session.sendMessage(["kind": "ping", "from": Self.deviceName], replyHandler: { [weak self] reply in
+        session.sendMessage(["kind": "ping", "from": Self.deviceName], replyHandler: { @Sendable [weak self] reply in
             let from = reply["from"] as? String ?? "counterpart"
             let milliseconds = Int(Date().timeIntervalSince(sent) * 1000)
             Task { @MainActor in
                 self?.lastMessage = "Pong from \(from)"
                 self?.output = "Round trip to \(from): \(milliseconds) ms"
             }
-        }, errorHandler: { [weak self] error in
+        }, errorHandler: { @Sendable [weak self] error in
             let message = error.localizedDescription
             Task { @MainActor in self?.output = "Ping error: \(message)" }
         })

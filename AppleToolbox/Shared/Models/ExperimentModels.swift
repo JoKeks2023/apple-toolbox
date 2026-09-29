@@ -83,7 +83,7 @@ struct ExperimentDescriptor: Identifiable {
     let capabilities: [String]
     let entitlements: [String]
     let documentationURL: URL
-    let evaluate: () -> ExperimentStatus
+    let evaluate: @MainActor () -> ExperimentStatus
 
     var currentStatus: ExperimentStatus {
         supportedPlatforms.contains(CurrentPlatform.value) ? evaluate() : .platformUnsupported

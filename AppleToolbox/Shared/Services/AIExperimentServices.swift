@@ -21,11 +21,13 @@ final class SpeechExperimentService: NSObject, ObservableObject {
     func start() {
         #if canImport(Speech) && canImport(AVFoundation) && !os(watchOS) && !os(tvOS)
         guard let recognizer, recognizer.isAvailable else { output = "Speech recognizer is not available on this device or network state."; return }
-        SFSpeechRecognizer.requestAuthorization { [weak self] authorization in
+        SFSpeechRecognizer.requestAuthorization { @Sendable [weak self] authorization in
             Task { @MainActor in
                 PermissionCenter.shared.invalidate()
-                guard authorization == .authorized else { self?.output = "Speech recognition permission was denied."; return }
-                await self?.startAuthorized(recognizer: recognizer)
+                guard let self else { return }
+                guard authorization == .authorized else { self.output = "Speech recognition permission was denied."; return }
+                guard let recognizer = self.recognizer else { return }
+                await self.startAuthorized(recognizer: recognizer)
             }
         }
         #else
@@ -51,7 +53,8 @@ final class SpeechExperimentService: NSObject, ObservableObject {
                 output = "No audio input is available right now."
                 return
             }
-            input.installTap(onBus: 0, bufferSize: 1_024, format: format) { [weak request] buffer, _ in request?.append(buffer) }
+            nonisolated(unsafe) let tapRequest = request // append(_:) is designed to be called from the audio tap.
+            input.installTap(onBus: 0, bufferSize: 1_024, format: format) { @Sendable buffer, _ in tapRequest.append(buffer) }
             audioEngine.prepare()
             try audioEngine.start()
             task = recognizer.recognitionTask(with: request) { [weak self] result, error in

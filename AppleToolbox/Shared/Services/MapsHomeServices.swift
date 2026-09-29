@@ -35,7 +35,7 @@ final class MapExperimentService: ObservableObject {
         isSearching = true
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query
-        MKLocalSearch(request: request).start { [weak self] response, error in
+        MKLocalSearch(request: request).start { @Sendable [weak self] response, error in
             Task { @MainActor in
                 self?.isSearching = false
                 if let error { self?.output = "MapKit error: \(error.localizedDescription)"; return }

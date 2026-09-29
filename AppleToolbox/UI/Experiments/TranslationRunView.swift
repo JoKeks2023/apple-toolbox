@@ -1,6 +1,6 @@
 import SwiftUI
 #if canImport(Translation) && (os(iOS) || os(macOS))
-import Translation
+@preconcurrency import Translation
 #endif
 
 struct TranslationRunView: View {
@@ -22,7 +22,11 @@ struct TranslationRunView: View {
                 .buttonStyle(.borderedProminent)
                 .disabled(translator.isTranslating || translator.languages.isEmpty || translator.input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 #if canImport(Translation) && (os(iOS) || os(macOS))
-                .translationTask(translator.configuration) { session in await translator.translate(using: session) }
+                .translationTask(translator.configuration) { session in
+                    guard let text = translator.beginTranslation() else { return }
+                    do { await translator.finishTranslation(.success(try await TranslationExperimentService.translate(text, in: session))) }
+                    catch { await translator.finishTranslation(.failure(error)) }
+                }
                 #endif
             if !translator.translation.isEmpty {
                 Section("Translation") { Text(translator.translation) }

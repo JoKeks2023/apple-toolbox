@@ -145,6 +145,9 @@ extension NearbyExperimentService: NISessionDelegate {
 // MultipeerConnectivity calls these delegates on private queues; all state changes hop to the main actor.
 extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate {
     nonisolated func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        // MCPeerID and MCSession are immutable, thread-safe Objective-C objects that MultipeerConnectivity shares across queues.
+        nonisolated(unsafe) let peerID = peerID
+        nonisolated(unsafe) let session = session
         Task { @MainActor [weak self] in
             guard let self else { return }
             output = "Peer \(peerID.displayName): \(state.title)."
@@ -159,6 +162,7 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
     }
 
     nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        let peerName = peerID.displayName
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
@@ -167,7 +171,7 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
                     return
                 }
                 self.session?.run(NINearbyPeerConfiguration(peerToken: token))
-                output = "Peer token received from \(peerID.displayName). Nearby ranging started."
+                output = "Peer token received from \(peerName). Nearby ranging started."
             } catch {
                 output = "Could not decode peer token: \(error.localizedDescription)"
             }
@@ -179,6 +183,7 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
     nonisolated func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {}
 
     nonisolated func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        nonisolated(unsafe) let invitationHandler = invitationHandler // Called once, on the main actor.
         Task { @MainActor [weak self] in invitationHandler(true, self?.transportSession) }
     }
 
@@ -189,6 +194,7 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
 
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         let invite = PeerInvitationPolicy.shouldInvite(localIdentifier: invitationIdentifier, discoveryInfo: info)
+        nonisolated(unsafe) let browser = browser, peerID = peerID // Thread-safe MultipeerConnectivity objects.
         Task { @MainActor [weak self] in
             guard let self, let transportSession else { return }
             if invite {
@@ -200,7 +206,8 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
     }
 
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        Task { @MainActor [weak self] in self?.output = "Peer left discovery range: \(peerID.displayName)." }
+        let peerName = peerID.displayName
+        Task { @MainActor [weak self] in self?.output = "Peer left discovery range: \(peerName)." }
     }
 
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
@@ -288,15 +295,18 @@ final class MultipeerConnectivityExperimentService: NSObject, ObservableObject {
 
 extension MultipeerConnectivityExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate {
     nonisolated func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        let peerName = peerID.displayName
+        let connected = session.connectedPeers.map(\.displayName)
         Task { @MainActor [weak self] in
-            self?.connectedPeers = session.connectedPeers.map(\.displayName)
-            self?.output = "Peer \(peerID.displayName): \(state.title).\nConnected peers: \(session.connectedPeers.count)"
+            self?.connectedPeers = connected
+            self?.output = "Peer \(peerName): \(state.title).\nConnected peers: \(connected.count)"
         }
     }
 
     nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         let message = String(decoding: data, as: UTF8.self)
-        Task { @MainActor [weak self] in self?.output = "Received from \(peerID.displayName):\n\(message)" }
+        let peerName = peerID.displayName
+        Task { @MainActor [weak self] in self?.output = "Received from \(peerName):\n\(message)" }
     }
 
     nonisolated func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {}
@@ -304,15 +314,18 @@ extension MultipeerConnectivityExperimentService: MCSessionDelegate, MCNearbySer
     nonisolated func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {}
 
     nonisolated func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        nonisolated(unsafe) let invitationHandler = invitationHandler // Called once, on the main actor.
         Task { @MainActor [weak self] in invitationHandler(true, self?.session) }
     }
 
     nonisolated func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
-        Task { @MainActor [weak self] in self?.output = "Could not advertise: \(error.localizedDescription)" }
+        let message = error.localizedDescription
+        Task { @MainActor [weak self] in self?.output = "Could not advertise: \(message)" }
     }
 
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         let invite = PeerInvitationPolicy.shouldInvite(localIdentifier: invitationIdentifier, discoveryInfo: info)
+        nonisolated(unsafe) let browser = browser, peerID = peerID // Thread-safe MultipeerConnectivity objects.
         Task { @MainActor [weak self] in
             guard let self, !discoveredPeers.contains(peerID.displayName) else { return }
             discoveredPeers.append(peerID.displayName)
@@ -327,14 +340,16 @@ extension MultipeerConnectivityExperimentService: MCSessionDelegate, MCNearbySer
     }
 
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        let peerName = peerID.displayName
         Task { @MainActor [weak self] in
-            self?.discoveredPeers.removeAll { $0 == peerID.displayName }
-            self?.output = "Peer left discovery: \(peerID.displayName)."
+            self?.discoveredPeers.removeAll { $0 == peerName }
+            self?.output = "Peer left discovery: \(peerName)."
         }
     }
 
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
-        Task { @MainActor [weak self] in self?.output = "Could not browse for peers: \(error.localizedDescription)" }
+        let message = error.localizedDescription
+        Task { @MainActor [weak self] in self?.output = "Could not browse for peers: \(message)" }
     }
 }
 
