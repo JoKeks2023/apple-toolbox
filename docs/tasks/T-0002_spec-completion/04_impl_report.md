@@ -52,7 +52,7 @@ One commit per issue on `main` (#40 and #60 share the Maps-lab commit, as the is
 
 ## Result
 
-- 71 experiments in 18 categories (was 39 in 14), 56 catalogued capabilities, 8 promoted tools, 7 targets plus 2 test targets.
+- 78 experiments in 18 categories (was 39 in 14; 71 descriptors plus 7 Wallet credentials built from a catalog), 56 catalogued capabilities, 8 promoted tools, 7 targets plus 2 test targets.
 - New targets: iOS notification content extension, watchOS widget extension (complications); the iOS widget extension gained an interactive widget, Control Center controls and a Live Activity.
 - New issue found during integration and fixed: #83 (widget timeline provider isolation).
 

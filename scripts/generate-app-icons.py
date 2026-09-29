@@ -165,6 +165,19 @@ def write_tv_brand_assets():
     })
 
 
+def write_readme_icon():
+    """Rounded app icon for the README header (docs/assets/app-icon.png)."""
+    size, radius = 256, 57
+    icon = render(size, "light")
+    mask = Image.new("L", (size * SS, size * SS), 0)
+    ImageDraw.Draw(mask).rounded_rectangle([0, 0, size * SS - 1, size * SS - 1], radius=radius * SS, fill=255)
+    icon.putalpha(mask.resize((size, size), Image.LANCZOS))
+    folder = os.path.join(ROOT, "docs", "assets")
+    os.makedirs(folder, exist_ok=True)
+    icon.save(os.path.join(folder, "app-icon.png"))
+
+
 if __name__ == "__main__":
     write_appicon()
     write_tv_brand_assets()
+    write_readme_icon()
