@@ -143,10 +143,14 @@ final class DiagnosticsExperimentService: NSObject, ObservableObject {
 
     // MARK: MetricKit
 
+    /// True while this service is an MXMetricManager subscriber.
+    @Published private(set) var isSubscribedToMetrics = false
+
     func subscribeToMetrics() {
         #if canImport(MetricKit) && (os(iOS) || os(macOS))
         let manager = MXMetricManager.shared
         manager.add(self)
+        isSubscribedToMetrics = true
         metricKitState = "Subscribed. MetricKit delivers payloads at most once a day."
         let past = manager.pastPayloads.map(Self.summary) + manager.pastDiagnosticPayloads.map(Self.summary)
         metricPayloads = past
@@ -154,6 +158,15 @@ final class DiagnosticsExperimentService: NSObject, ObservableObject {
         #else
         metricKitState = "MetricKit is not available on this platform."
         #endif
+    }
+
+    /// Removes the MetricKit subscriber so payloads stop arriving after the experiment is left.
+    func stop() {
+        #if canImport(MetricKit) && (os(iOS) || os(macOS))
+        MXMetricManager.shared.remove(self)
+        #endif
+        isSubscribedToMetrics = false
+        metricKitState = "Not subscribed"
     }
 
     #if canImport(MetricKit) && (os(iOS) || os(macOS))
@@ -184,3 +197,7 @@ extension DiagnosticsExperimentService: MXMetricManagerSubscriber {
     }
 }
 #endif
+
+extension DiagnosticsExperimentService: StoppableExperiment {
+    var isActive: Bool { isSubscribedToMetrics }
+}

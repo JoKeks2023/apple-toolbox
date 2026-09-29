@@ -363,7 +363,77 @@ nonisolated enum CreateMLDataset {
 
 // MARK: - Training (Create ML is in the macOS and iOS device SDKs, not in the iOS Simulator SDK)
 
+/// Lets the main actor stop a training run: it cancels the run's `MLJob` where Create ML offers one, and keeps a
+/// trainer without one from saving its model once the run is stopped.
+nonisolated final class CreateMLTrainingHandle: @unchecked Sendable {
+    private let lock = NSLock()
+    private var cancelled = false
+    private var onCancel: (() -> Void)?
+
+    var isCancelled: Bool { lock.withLock { cancelled } }
+
+    func cancel() {
+        let action = lock.withLock { () -> (() -> Void)? in
+            cancelled = true
+            defer { onCancel = nil }
+            return onCancel
+        }
+        action?()
+    }
+
+    func checkNotCancelled() throws {
+        if isCancelled { throw CancellationError() }
+    }
+
+    /// Runs `action` on cancel(), or at once when the run was already cancelled.
+    fileprivate func attach(_ action: @escaping () -> Void) {
+        let runNow = lock.withLock { () -> Bool in
+            if cancelled { return true }
+            onCancel = action
+            return false
+        }
+        if runNow { action() }
+    }
+}
+
 #if canImport(CreateML) && (os(iOS) || os(macOS))
+/// Resumes a continuation once, whichever of the job's result or a cancel arrives first.
+nonisolated private final class CreateMLResumeOnce<Model: Sendable>: @unchecked Sendable {
+    private let lock = NSLock()
+    private var continuation: CheckedContinuation<Model, any Error>?
+
+    init(_ continuation: CheckedContinuation<Model, any Error>) { self.continuation = continuation }
+
+    func resume(returning model: Model) { take()?.resume(returning: model) }
+    func resume(throwing error: any Error) { take()?.resume(throwing: error) }
+
+    private func take() -> CheckedContinuation<Model, any Error>? {
+        lock.withLock {
+            defer { continuation = nil }
+            return continuation
+        }
+    }
+}
+
+nonisolated extension CreateMLTrainingHandle {
+    /// Waits for a Create ML job; cancel() cancels the job and ends the wait at once.
+    func run<Model: Sendable>(_ job: MLJob<Model>) async throws -> Model {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Model, any Error>) in
+            let once = CreateMLResumeOnce(continuation)
+            let subscription = job.result.sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion { once.resume(throwing: error) } else { once.resume(throwing: CancellationError()) }
+                },
+                receiveValue: { once.resume(returning: $0) })
+            attach {
+                job.cancel()
+                subscription.cancel()
+                once.resume(throwing: CancellationError())
+            }
+        }
+    }
+}
+
 /// The members every Create ML tabular regressor shares.
 nonisolated protocol CreateMLRegressorModel: Sendable {
     var trainingMetrics: MLRegressorMetrics { get }
@@ -381,7 +451,7 @@ nonisolated extension MLDecisionTreeRegressor: CreateMLRegressorModel {}
 /// trained models, which Create ML declares `@unchecked Sendable`.
 nonisolated enum CreateMLTrainer {
     static func trainTextClassifier(csv: String, textColumn: String, labelColumn: String, algorithm: CreateMLTextAlgorithm,
-                                    validation: CreateMLValidationOption) throws -> (MLTextClassifier, CreateMLTrainingReport) {
+                                    validation: CreateMLValidationOption, handle: CreateMLTrainingHandle) throws -> (MLTextClassifier, CreateMLTrainingReport) {
         let frame = try CreateMLDataset.frame(csv, types: [textColumn: .string, labelColumn: .string])
         let started = ContinuousClock.now
         let parameters = MLTextClassifier.ModelParameters(validation: textValidation(validation), algorithm: textAlgorithm(algorithm))
@@ -392,6 +462,7 @@ nonisolated enum CreateMLTrainer {
         let perLabel = validationMetrics.isValid ? validationMetrics : training
         var notes = ["Per-label metrics use the \(validationMetrics.isValid ? "validation" : "training") set."]
         if !validationMetrics.isValid { notes.append("Validation metrics: \(validationMetrics.error?.localizedDescription ?? "not computed").") }
+        try handle.checkNotCancelled()
         let saved = save(.textClassifier, algorithm: algorithm.rawValue) { try classifier.write(to: $0, metadata: $1) }
         let report = CreateMLTrainingReport(
             task: .textClassifier, algorithm: algorithm.rawValue, rows: frame.rows.count, seconds: elapsed,
@@ -409,29 +480,30 @@ nonisolated enum CreateMLTrainer {
     }
 
     static func trainRegressor(csv: String, target: String, algorithm: CreateMLRegressorAlgorithm,
-                               validation: CreateMLValidationOption) throws -> (any CreateMLRegressorModel, CreateMLTrainingReport) {
+                               validation: CreateMLValidationOption, handle: CreateMLTrainingHandle) async throws -> (any CreateMLRegressorModel, CreateMLTrainingReport) {
         let frame = try CreateMLDataset.frame(csv, types: [target: .double])
         let features = frame.columns.map(\.name).filter { $0 != target }
         let started = ContinuousClock.now
         let regressor: any CreateMLRegressorModel = switch algorithm {
         case .linear:
-            try MLLinearRegressor(trainingData: frame, targetColumn: target, featureColumns: features,
-                                  parameters: .init(validation: regressorValidation(validation, MLLinearRegressor.ModelParameters.ValidationData.self)))
+            try await handle.run(MLLinearRegressor.train(trainingData: frame, targetColumn: target, featureColumns: features,
+                                  parameters: .init(validation: regressorValidation(validation, MLLinearRegressor.ModelParameters.ValidationData.self))))
         case .boostedTree:
-            try MLBoostedTreeRegressor(trainingData: frame, targetColumn: target, featureColumns: features,
-                                       parameters: .init(validation: regressorValidation(validation, MLBoostedTreeRegressor.ModelParameters.ValidationData.self)))
+            try await handle.run(MLBoostedTreeRegressor.train(trainingData: frame, targetColumn: target, featureColumns: features,
+                                       parameters: .init(validation: regressorValidation(validation, MLBoostedTreeRegressor.ModelParameters.ValidationData.self))))
         case .randomForest:
-            try MLRandomForestRegressor(trainingData: frame, targetColumn: target, featureColumns: features,
-                                        parameters: .init(validation: regressorValidation(validation, MLRandomForestRegressor.ModelParameters.ValidationData.self)))
+            try await handle.run(MLRandomForestRegressor.train(trainingData: frame, targetColumn: target, featureColumns: features,
+                                        parameters: .init(validation: regressorValidation(validation, MLRandomForestRegressor.ModelParameters.ValidationData.self))))
         case .decisionTree:
-            try MLDecisionTreeRegressor(trainingData: frame, targetColumn: target, featureColumns: features,
-                                        parameters: .init(validation: regressorValidation(validation, MLDecisionTreeRegressor.ModelParameters.ValidationData.self)))
+            try await handle.run(MLDecisionTreeRegressor.train(trainingData: frame, targetColumn: target, featureColumns: features,
+                                        parameters: .init(validation: regressorValidation(validation, MLDecisionTreeRegressor.ModelParameters.ValidationData.self))))
         }
         let elapsed = elapsedSeconds(since: started)
         let training = regressor.trainingMetrics
         let validationMetrics = regressor.validationMetrics
         var notes = ["Features: \(features.joined(separator: ", ")) → \(target)."]
         if !validationMetrics.isValid { notes.append("Validation metrics: \(validationMetrics.error?.localizedDescription ?? "not computed").") }
+        try handle.checkNotCancelled()
         let saved = save(.tabularRegressor, algorithm: algorithm.rawValue) { try regressor.write(to: $0, metadata: $1) }
         let report = CreateMLTrainingReport(
             task: .tabularRegressor, algorithm: algorithm.rawValue, rows: frame.rows.count, seconds: elapsed,
@@ -448,23 +520,26 @@ nonisolated enum CreateMLTrainer {
         return (regressor, report)
     }
 
-    static func trainImageClassifier(filesByLabel: [String: [URL]], validation: CreateMLValidationOption) throws -> (MLImageClassifier, CreateMLTrainingReport) {
+    static func trainImageClassifier(filesByLabel: [String: [URL]], validation: CreateMLValidationOption, handle: CreateMLTrainingHandle) throws -> (MLImageClassifier, CreateMLTrainingReport) {
         let started = ContinuousClock.now
         let parameters = MLImageClassifier.ModelParameters(validation: imageValidation(validation), augmentation: [])
         let classifier = try MLImageClassifier(trainingData: .filesByLabel(filesByLabel), parameters: parameters)
         let algorithm = "\(classifier.modelParameters.algorithm)"
+        try handle.checkNotCancelled()
         let saved = save(.imageClassifier, algorithm: algorithm) { try classifier.write(to: $0, metadata: $1) }
         let report = classifierReport(task: .imageClassifier, algorithm: algorithm, filesByLabel: filesByLabel, seconds: elapsedSeconds(since: started),
                                       training: classifier.trainingMetrics, validation: classifier.validationMetrics, saved: saved)
         return (classifier, report)
     }
 
-    static func trainSoundClassifier(filesByLabel: [String: [URL]], validation: CreateMLValidationOption) throws -> (MLSoundClassifier, CreateMLTrainingReport) {
+    static func trainSoundClassifier(filesByLabel: [String: [URL]], validation: CreateMLValidationOption,
+                                     handle: CreateMLTrainingHandle) async throws -> (MLSoundClassifier, CreateMLTrainingReport) {
         let started = ContinuousClock.now
         var parameters = MLSoundClassifier.ModelParameters()
         parameters.validation = soundValidation(validation)
-        let classifier = try MLSoundClassifier(trainingData: .filesByLabel(filesByLabel), parameters: parameters)
+        let classifier = try await handle.run(MLSoundClassifier.train(trainingData: .filesByLabel(filesByLabel), parameters: parameters))
         let algorithm = "\(classifier.modelParameters.algorithm)"
+        try handle.checkNotCancelled()
         let saved = save(.soundClassifier, algorithm: algorithm) { try classifier.write(to: $0, metadata: $1) }
         let report = classifierReport(task: .soundClassifier, algorithm: algorithm, filesByLabel: filesByLabel, seconds: elapsedSeconds(since: started),
                                       training: classifier.trainingMetrics, validation: classifier.validationMetrics, saved: saved)
@@ -672,6 +747,13 @@ final class CreateMLExperimentService: ObservableObject {
     @Published private(set) var isError = !CreateMLExperimentService.isSupported
     /// Increments per training run so a stopped run's late result is ignored.
     private var generation = 0
+    /// The running training's handle and task, so stop() can cancel it.
+    private var trainingRun: (handle: CreateMLTrainingHandle, task: CreateMLTask)?
+    /// Whether stop() cancels the running trainer (an `MLJob`) or only discards its result.
+    var canCancelTraining: Bool { trainingRun.map { Self.trainsAsJob($0.task) } ?? false }
+
+    /// Create ML offers a cancellable `MLJob` for tabular regressors and sound classifiers, not for text or image classifiers.
+    nonisolated static func trainsAsJob(_ task: CreateMLTask) -> Bool { task == .tabularRegressor || task == .soundClassifier }
     /// The feature columns and kinds the current regressor was trained with.
     private var trainedFeatures: [CreateMLColumnInfo] = []
     #if canImport(CreateML) && (os(iOS) || os(macOS))
@@ -837,6 +919,8 @@ final class CreateMLExperimentService: ObservableObject {
         let textColumn = textColumn, labelColumn = labelColumn, target = targetColumn
         let columns = dataset?.columns ?? []
         let files = samples.filesByLabel
+        let handle = CreateMLTrainingHandle()
+        trainingRun = (handle, task)
         isTraining = true
         report = nil
         predictions = []
@@ -847,7 +931,7 @@ final class CreateMLExperimentService: ObservableObject {
         Task { [weak self] in
             switch task {
             case .textClassifier:
-                let result = await Self.detached { try CreateMLTrainer.trainTextClassifier(csv: csv, textColumn: textColumn, labelColumn: labelColumn, algorithm: textAlgorithm, validation: validation) }
+                let result = await Self.detached { try CreateMLTrainer.trainTextClassifier(csv: csv, textColumn: textColumn, labelColumn: labelColumn, algorithm: textAlgorithm, validation: validation, handle: handle) }
                 guard let self, self.generation == run else { return }
                 switch result {
                 case .success(let (classifier, report)):
@@ -857,7 +941,7 @@ final class CreateMLExperimentService: ObservableObject {
                 case .failure(let error): self.failTraining(error)
                 }
             case .tabularRegressor:
-                let result = await Self.detached { try CreateMLTrainer.trainRegressor(csv: csv, target: target, algorithm: regressorAlgorithm, validation: validation) }
+                let result = await Self.detachedAsync { try await CreateMLTrainer.trainRegressor(csv: csv, target: target, algorithm: regressorAlgorithm, validation: validation, handle: handle) }
                 guard let self, self.generation == run else { return }
                 switch result {
                 case .success(let (regressor, report)):
@@ -869,7 +953,7 @@ final class CreateMLExperimentService: ObservableObject {
                 case .failure(let error): self.failTraining(error)
                 }
             case .imageClassifier:
-                let result = await Self.detached { try CreateMLTrainer.trainImageClassifier(filesByLabel: files, validation: validation) }
+                let result = await Self.detached { try CreateMLTrainer.trainImageClassifier(filesByLabel: files, validation: validation, handle: handle) }
                 guard let self, self.generation == run else { return }
                 switch result {
                 case .success(let (classifier, report)):
@@ -879,7 +963,7 @@ final class CreateMLExperimentService: ObservableObject {
                 case .failure(let error): self.failTraining(error)
                 }
             case .soundClassifier:
-                let result = await Self.detached { try CreateMLTrainer.trainSoundClassifier(filesByLabel: files, validation: validation) }
+                let result = await Self.detachedAsync { try await CreateMLTrainer.trainSoundClassifier(filesByLabel: files, validation: validation, handle: handle) }
                 guard let self, self.generation == run else { return }
                 switch result {
                 case .success(let (classifier, report)):
@@ -893,12 +977,20 @@ final class CreateMLExperimentService: ObservableObject {
         #endif
     }
 
-    /// Create ML's trainers cannot be interrupted; a stopped run keeps computing in the background and its result is discarded.
+    /// Cancels the run's `MLJob` where Create ML has one; the text and image trainers cannot be interrupted, so their
+    /// current step finishes in the background and the result is neither saved nor shown.
     func stop() {
         guard isTraining else { return }
+        let run = trainingRun
         generation += 1
+        trainingRun = nil
         isTraining = false
-        setOutput("Stopped waiting. Create ML cannot interrupt a running trainer, so it finishes in the background and its result is discarded.", error: false)
+        run?.handle.cancel()
+        if let run, Self.trainsAsJob(run.task) {
+            setOutput("Stopped: the Create ML training job was cancelled and nothing was saved.", error: false)
+        } else {
+            setOutput("Stopped. Create ML cannot interrupt the \(run?.task.rawValue.lowercased() ?? "running") trainer, so its current step finishes in the background; the model is neither saved nor shown.", error: false)
+        }
     }
 
     // MARK: Prediction
@@ -999,6 +1091,7 @@ final class CreateMLExperimentService: ObservableObject {
 
     private func finishTraining(_ report: CreateMLTrainingReport) {
         self.report = report
+        trainingRun = nil
         isTraining = false
         let headline = report.metrics.first.map { "\($0.title): training \($0.training), validation \($0.validation)" } ?? ""
         let saved = report.modelURL.map { " Saved as \($0.lastPathComponent) for export and for the Core ML experiment." } ?? ""
@@ -1006,6 +1099,7 @@ final class CreateMLExperimentService: ObservableObject {
     }
 
     private func failTraining(_ error: Error) {
+        trainingRun = nil
         isTraining = false
         setOutput("Create ML training failed: \(error.localizedDescription)", error: true)
     }
@@ -1052,6 +1146,10 @@ final class CreateMLExperimentService: ObservableObject {
     /// Runs Create ML work off the main actor and hands back only Sendable values.
     @concurrent nonisolated private static func detached<T: Sendable>(_ body: @Sendable () throws -> T) async -> Result<T, Error> {
         Result { try body() }
+    }
+
+    @concurrent nonisolated private static func detachedAsync<T: Sendable>(_ body: @Sendable () async throws -> T) async -> Result<T, Error> {
+        do { return .success(try await body()) } catch { return .failure(error) }
     }
 
     /// Copies user-picked files into the samples folder (the originals are only readable while security-scoped access lasts).

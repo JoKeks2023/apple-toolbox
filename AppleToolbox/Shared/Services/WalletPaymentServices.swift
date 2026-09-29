@@ -278,33 +278,41 @@ final class ApplePayService: NSObject, ObservableObject {
 
 #if canImport(PassKit) && !os(watchOS) && !os(tvOS)
 extension ApplePayService: PKPaymentAuthorizationControllerDelegate {
-    func paymentAuthorizationController(_ controller: PKPaymentAuthorizationController, didAuthorizePayment payment: PKPayment,
-                                        handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+    // PassKit does not promise the main thread for these callbacks: they answer PassKit directly and hop to the main
+    // queue (FIFO, so the authorization is reported before the finish callback reads it) only for state.
+    nonisolated func paymentAuthorizationController(_ controller: PKPaymentAuthorizationController, didAuthorizePayment payment: PKPayment,
+                                                    handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
         // There is no payment processor behind the placeholder merchant: the token is neither sent anywhere nor charged.
         let method = payment.token.paymentMethod
         let error = NSError(domain: PKPaymentErrorDomain, code: PKPaymentError.unknownError.rawValue,
                             userInfo: [NSLocalizedDescriptionKey: "Apple Toolbox has no payment processor. Nothing was charged."])
         completion(PKPaymentAuthorizationResult(status: .failure, errors: [error]))
-        report("The person authorized the sheet. Payment method: \(method.displayName ?? "—") · network \(method.network?.rawValue ?? "—") · \(Self.typeName(method.type)).\nToken: \(payment.token.paymentData.count) bytes of encrypted payment data for a processor. It was discarded and the payment declined, because no processor exists here.")
+        let message = "The person authorized the sheet. Payment method: \(method.displayName ?? "—") · network \(method.network?.rawValue ?? "—") · \(Self.typeName(method.type)).\nToken: \(payment.token.paymentData.count) bytes of encrypted payment data for a processor. It was discarded and the payment declined, because no processor exists here."
+        DispatchQueue.main.async { self.report(message) }
     }
 
-    func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
-        controller.dismiss(completion: nil)
-        self.controller = nil
-        isPresenting = false
-        if !output.hasPrefix("The person authorized") {
-            report("The payment sheet closed without an authorization. Without a registered Merchant ID and payment processing certificate the sheet cannot complete a payment.")
+    nonisolated func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
+        DispatchQueue.main.async {
+            self.controller?.dismiss(completion: nil)
+            self.controller = nil
+            self.isPresenting = false
+            if !self.output.hasPrefix("The person authorized") {
+                self.report("The payment sheet closed without an authorization. Without a registered Merchant ID and payment processing certificate the sheet cannot complete a payment.")
+            }
         }
     }
 
     #if os(macOS)
     /// Required on macOS: the window the payment sheet attaches to.
-    func presentationWindow(for controller: PKPaymentAuthorizationController) -> NSWindow? {
-        NSApplication.shared.keyWindow ?? NSApplication.shared.windows.first
+    nonisolated func presentationWindow(for controller: PKPaymentAuthorizationController) -> NSWindow? {
+        guard Thread.isMainThread else { return nil }
+        nonisolated(unsafe) var window: NSWindow?
+        MainActor.assumeIsolated { window = NSApplication.shared.keyWindow ?? NSApplication.shared.windows.first }
+        return window
     }
     #endif
 
-    private static func typeName(_ type: PKPaymentMethodType) -> String {
+    nonisolated private static func typeName(_ type: PKPaymentMethodType) -> String {
         switch type {
         case .debit: "debit"
         case .credit: "credit"

@@ -70,6 +70,7 @@ struct DiagnosticsRunView: View {
                 LabeledContent(row.0) { Text(row.1).multilineTextAlignment(.trailing) }
             }
         }
+        .experimentSession(diagnostics)
         Section("Unified log (Console)") {
             Picker("Entry level", selection: $level) {
                 ForEach(DiagnosticLogLevel.allCases) { Text($0.rawValue).tag($0) }

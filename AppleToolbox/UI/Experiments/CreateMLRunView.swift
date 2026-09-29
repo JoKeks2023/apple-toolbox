@@ -55,11 +55,17 @@ private struct CreateMLTrainingForm: View {
             datasetSection
         }
         if createML.isTraining {
-            HStack {
-                ProgressView()
-                Text("Training on device…").foregroundStyle(.secondary)
-                Spacer()
-                Button("Stop Waiting", systemImage: "stop.fill", action: createML.stop)
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    ProgressView()
+                    Text("Training on device…").foregroundStyle(.secondary)
+                    Spacer()
+                    Button(createML.canCancelTraining ? "Stop Training" : "Stop Waiting", systemImage: "stop.fill", action: createML.stop)
+                }
+                if !createML.canCancelTraining {
+                    Text("Create ML cannot interrupt this trainer: stopping discards the model, but the current step finishes in the background.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
             }
             .experimentSession(createML)
         } else {

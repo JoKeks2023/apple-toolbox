@@ -281,14 +281,19 @@ nonisolated enum HomeInspectorFormat {
         if !characteristic.validValues.isEmpty {
             return .choice(characteristic.validValues.map { choice($0, names: names, units: characteristic.units) })
         }
-        guard let minimum = characteristic.minimum, let maximum = characteristic.maximum, maximum > minimum else {
+        guard let minimum = characteristic.minimum, let maximum = characteristic.maximum, minimum.isFinite, maximum.isFinite,
+              maximum > minimum, (maximum - minimum).isFinite else {
             if format.isInteger, !names.isEmpty { return .choice(names) }
             return .unsupported("The metadata has no minimum and maximum, so there is no safe range to offer.")
         }
-        let step = characteristic.step.flatMap { $0 > 0 ? $0 : nil } ?? (format.isInteger ? 1 : (maximum - minimum) / 100)
-        let count = Int(((maximum - minimum) / step).rounded()) + 1
-        if format.isInteger, count <= 12 {
-            return .choice((0..<count).map { choice(Int((minimum + Double($0) * step).rounded()), names: names, units: characteristic.units) })
+        let step = characteristic.step.flatMap { $0 > 0 && $0.isFinite ? $0 : nil } ?? (format.isInteger ? 1 : (maximum - minimum) / 100)
+        // Accessory metadata is untrusted: only finite spans and values that fit an Int become choices, so nothing traps.
+        let span = ((maximum - minimum) / step).rounded()
+        guard span.isFinite, span >= 0 else { return .unsupported("The metadata's step does not divide its range into usable values.") }
+        if format.isInteger, span < 12 {
+            return .choice((0...Int(span)).compactMap { index in
+                Int(exactly: (minimum + Double(index) * step).rounded()).map { choice($0, names: names, units: characteristic.units) }
+            })
         }
         if allowsSlider { return .slider(minimum: minimum, maximum: maximum, step: step) }
         var seen = Set<Double>()
@@ -296,7 +301,7 @@ nonisolated enum HomeInspectorFormat {
             let raw = minimum + (maximum - minimum) * Double(index) / 10
             return min(maximum, minimum + ((raw - minimum) / step).rounded() * step)
         }.filter { seen.insert($0).inserted }
-        if format.isInteger { return .choice(levels.map { choice(Int($0.rounded()), names: names, units: characteristic.units) }) }
+        if format.isInteger { return .choice(levels.compactMap { Int(exactly: $0.rounded()).map { choice($0, names: names, units: characteristic.units) } }) }
         return .levels(levels)
     }
 

@@ -45,6 +45,7 @@ struct CoreMLRunView: View {
         Text("tvOS has no document picker, so a model cannot be imported here.")
             .font(.caption)
             .foregroundStyle(.secondary)
+            .experimentSession(coreML)
         #else
         Button(coreML.isLoading ? "Loading Model…" : "Import Model", systemImage: "square.and.arrow.down") { showingImporter = true }
             .buttonStyle(.bordered)

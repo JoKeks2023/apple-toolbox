@@ -180,9 +180,8 @@ final class LiveActivityExperimentService: ObservableObject {
     func end() {
         #if canImport(ActivityKit) && os(iOS)
         guard let id = currentID else { return }
-        stopSampling()
-        currentID = nil
         let final = makeState(sample: sample, total: totalSamples, phase: .finished)
+        finishRun()
         let policy = dismissal.policy(endingAt: Date())
         let dismissalTitle = dismissal.title
         Task {
@@ -201,8 +200,7 @@ final class LiveActivityExperimentService: ObservableObject {
     /// Ends every activity of this app, including ones left over from an earlier launch.
     func endAll() {
         #if canImport(ActivityKit) && os(iOS)
-        stopSampling()
-        currentID = nil
+        finishRun()
         Task {
             let running = Activity<ToolboxActivityAttributes>.activities
             let count = running.count
@@ -219,8 +217,7 @@ final class LiveActivityExperimentService: ObservableObject {
         #if canImport(ActivityKit) && os(iOS)
         guard let id = currentID else { return }
         guard let activity = Self.activity(withID: id) else {
-            stopSampling()
-            currentID = nil
+            finishRun()
             show("The activity \(id) was ended or dismissed outside the app.", isError: false)
             refresh()
             return
@@ -228,8 +225,7 @@ final class LiveActivityExperimentService: ObservableObject {
         sample += 1
         if sample >= totalSamples {
             let final = makeState(sample: totalSamples, total: totalSamples, phase: .finished)
-            stopSampling()
-            currentID = nil
+            finishRun()
             await activity.end(ActivityContent(state: final, staleDate: nil), dismissalPolicy: dismissal.policy(endingAt: Date()))
             show("Run finished after \(totalSamples) samples; the activity was ended with its final reading.", isError: false)
         } else {
@@ -259,6 +255,15 @@ final class LiveActivityExperimentService: ObservableObject {
         samplingTask = nil
     }
 
+    /// Ends the app's side of a run: no more samples and no battery monitoring (makeState turns it on).
+    private func finishRun() {
+        stopSampling()
+        currentID = nil
+        #if canImport(ActivityKit) && os(iOS)
+        UIDevice.current.isBatteryMonitoringEnabled = false
+        #endif
+    }
+
     #if canImport(ActivityKit) && os(iOS)
     /// Looked up outside the main actor so the non-Sendable activity stays in its own region and can be
     /// handed to ActivityKit's update and end calls.
@@ -273,7 +278,12 @@ final class LiveActivityExperimentService: ObservableObject {
             for await state in updates {
                 guard let self else { return }
                 self.stateLog.insert("\(Date().formatted(date: .omitted, time: .standard))  \(LiveActivityErrors.title(state))", at: 0)
-                if state == .dismissed || state == .ended { self.refresh() }
+                if state == .dismissed || state == .ended {
+                    self.refresh()
+                    // The activity is over: stop observing it (a cancelled task was already replaced, so leave stateTask alone).
+                    if !Task.isCancelled { self.stateTask = nil }
+                    return
+                }
             }
         }
     }
@@ -296,17 +306,15 @@ final class LiveActivityExperimentService: ObservableObject {
     }
     #endif
 
-    var isActive: Bool { currentID != nil || samplingTask != nil }
+    var isActive: Bool { currentID != nil || samplingTask != nil || stateTask != nil }
 
-    /// Leaving the experiment ends the run it started; the ended activity follows the chosen dismissal policy.
+    /// Leaving the experiment ends the run it started (the ended activity follows the chosen dismissal policy), stops
+    /// observing its state and turns battery monitoring off.
     func stop() {
-        stopSampling()
         end()
+        finishRun()
         stateTask?.cancel()
         stateTask = nil
-        #if canImport(ActivityKit) && os(iOS)
-        UIDevice.current.isBatteryMonitoringEnabled = false
-        #endif
     }
 
     private func show(_ text: String, isError: Bool) {

@@ -73,6 +73,7 @@ private struct NearbyWatchSection: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
+        .experimentSession(responder)
     }
 }
 #endif

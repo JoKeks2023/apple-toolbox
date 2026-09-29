@@ -159,5 +159,7 @@ struct MiFareCommandTests {
         #expect(ISO15693BlockRange.clamp(start: 24, count: 8, totalBlocks: 28) == 24...27)
         #expect(ISO15693BlockRange.clamp(start: 30, count: 4, totalBlocks: 28) == nil)
         #expect(ISO15693BlockRange.clamp(start: 2, count: 4, totalBlocks: -1) == 2...5)
+        #expect(ISO15693BlockRange.clamp(start: 300, count: 4, totalBlocks: -1) == nil)
+        #expect(ISO15693BlockRange.clamp(start: 250, count: .max, totalBlocks: -1) == 250...255)
     }
 }

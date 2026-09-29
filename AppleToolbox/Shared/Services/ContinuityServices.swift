@@ -395,7 +395,15 @@ extension ContinuityExperimentService: WCSessionDelegate {
     }
 
     nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
-        Task { @MainActor [weak self] in self?.refresh(from: WCSession.default) }
+        Task { @MainActor [weak self] in
+            self?.refresh(from: WCSession.default)
+            #if os(iOS) && canImport(NearbyInteraction)
+            // Without a reachable watch the ranging peer is gone; end the iPhone's session instead of ranging on.
+            if !WCSession.default.isReachable, WatchNearbyResponder.shared.isRanging {
+                WatchNearbyResponder.shared.stop(reason: "The watch is no longer reachable, so ranging stopped.")
+            }
+            #endif
+        }
     }
 
     nonisolated func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {

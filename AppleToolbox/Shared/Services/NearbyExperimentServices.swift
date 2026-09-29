@@ -499,6 +499,11 @@ final class WatchNearbyResponder: NSObject, ObservableObject {
     }
 }
 
+extension WatchNearbyResponder: StoppableExperiment {
+    var isActive: Bool { isRanging }
+    func stop() { stop(reason: "Ended because the experiment was left.") }
+}
+
 extension WatchNearbyResponder: NISessionDelegate {
     func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
         guard let object = nearbyObjects.first else { return }
@@ -510,8 +515,7 @@ extension WatchNearbyResponder: NISessionDelegate {
         switch reason {
         case .peerEnded: stop(reason: "The watch ended its Nearby Interaction session.")
         case .timeout:
-            state = "No UWB measurements from the watch for a while (out of range or covered). Ranging restarts."
-            if let watchToken { session.run(NINearbyPeerConfiguration(peerToken: watchToken)) }
+            stop(reason: "No UWB measurements from the watch for a while (out of range or covered), so ranging stopped. Start again on the watch.")
         @unknown default: state = "The watch was removed from the session."
         }
     }

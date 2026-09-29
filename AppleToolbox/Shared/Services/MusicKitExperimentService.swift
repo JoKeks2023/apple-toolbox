@@ -86,6 +86,10 @@ final class MusicExperimentService: ObservableObject {
     @Published private(set) var queueCount = 0
 
     private var playerCancellables: Set<AnyCancellable> = []
+    /// Running player commands (play, queue, skip), cancelled by stop().
+    private var performTasks: [UUID: Task<Void, Never>] = [:]
+    /// Playing, observing the player (state sink and the one-second poll), or running a player command.
+    var isActive: Bool { isPlayerActive || !playerCancellables.isEmpty || !performTasks.isEmpty }
 
     init() {
         #if canImport(MusicKit)
@@ -312,6 +316,8 @@ final class MusicExperimentService: ObservableObject {
         #if canImport(MusicKit) && !os(watchOS)
         ApplicationMusicPlayer.shared.stop()
         #endif
+        performTasks.values.forEach { $0.cancel() }
+        performTasks.removeAll()
         playerCancellables.removeAll()
         isPlayerActive = false
         refreshPlayer()
@@ -319,12 +325,16 @@ final class MusicExperimentService: ObservableObject {
 
     #if canImport(MusicKit) && !os(watchOS)
     private func perform(_ action: String, catalog: Bool, _ operation: @escaping () async throws -> Void) {
-        Task {
+        let id = UUID()
+        performTasks[id] = Task {
+            defer { performTasks[id] = nil }
             do {
                 try await operation()
+                guard !Task.isCancelled else { return }
                 isError = false
                 output = "ApplicationMusicPlayer: \(action) succeeded."
             } catch {
+                guard !Task.isCancelled else { return }
                 var context = "ApplicationMusicPlayer · \(action)"
                 if catalog, canPlayCatalogContent == false {
                     context += "\nThis Apple Account has no active Apple Music subscription (canPlayCatalogContent is false), so catalog items cannot be played in full. Downloaded or purchased library items can still play."

@@ -3,9 +3,7 @@ import SwiftUI
 import MusicKit
 #endif
 
-extension MusicExperimentService: StoppableExperiment {
-    var isActive: Bool { isPlayerActive }
-}
+extension MusicExperimentService: StoppableExperiment {}
 
 struct MusicKitRunView: View {
     @StateObject private var music = MusicExperimentService()

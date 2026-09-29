@@ -171,8 +171,9 @@ nonisolated struct NFCReadOptions: Equatable, Sendable {
 nonisolated enum ISO15693BlockRange {
     /// Clamps a requested range to what the tag reports; `totalBlocks` < 0 means the tag did not report its size.
     static func clamp(start: Int, count: Int, totalBlocks: Int) -> ClosedRange<Int>? {
-        guard start >= 0, count > 0 else { return nil }
-        let upper = start + count - 1
+        // Block numbers are one byte, so a start past 255 has no range (and would trap in start...255).
+        guard start >= 0, start <= 255, count > 0 else { return nil }
+        let upper = start + min(count, 256) - 1
         guard totalBlocks > 0 else { return start...min(upper, 255) }
         guard start < totalBlocks else { return nil }
         return start...min(upper, totalBlocks - 1, 255)
