@@ -1,0 +1,32 @@
+name: Experiment idea
+description: Suggest an Apple API, capability or tool to add
+labels: [enhancement]
+body:
+  - type: input
+    id: api
+    attributes:
+      label: Framework or API
+      placeholder: e.g. CoreNFC NFCTagReaderSession
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What should the experiment show or let you do?
+    validations:
+      required: true
+  - type: checkboxes
+    id: platforms
+    attributes:
+      label: Platforms
+      options:
+        - label: iPhone
+        - label: iPad
+        - label: Mac
+        - label: Apple Watch
+        - label: Apple TV
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Requirements and boundaries
+      description: Hardware, permissions, entitlements or Apple programs it needs, if you know them.

@@ -1,0 +1,38 @@
+name: Bug report
+description: Something doesn't work or behaves differently on a real device
+labels: [bug]
+body:
+  - type: input
+    id: experiment
+    attributes:
+      label: Experiment
+      description: Which experiment or tool (as shown in the app)?
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options: [iPhone, iPad, Mac, Apple Watch, Apple TV, Simulator]
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and OS version
+      placeholder: e.g. iPhone 16 Pro, iOS 26.5
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and actual result
+      description: Include the live output or error text if there is one.
+    validations:
+      required: true
