@@ -299,6 +299,12 @@
 		AF83F73C1BE842DB05E28B61 /* BluetoothRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72FDFA15E8BB255D4C5EB42 /* BluetoothRunViews.swift */; };
 		42CD80601449C6382834C3B1 /* BluetoothPeripheralModeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DF9A6D178FA4EEC6189A00 /* BluetoothPeripheralModeService.swift */; };
 		39950A916729329BDFF522A1 /* BluetoothPeripheralModeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DF9A6D178FA4EEC6189A00 /* BluetoothPeripheralModeService.swift */; };
+		F8D7DE4828F086A845423BE4 /* BluetoothGATTSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F53ADD0F52307235F6AF59 /* BluetoothGATTSupport.swift */; };
+		17FED75882521DE9ACD0B664 /* AccessoryExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BEE748DC74998A9ADB39ED /* AccessoryExperimentServices.swift */; };
+		67429D0CC1B230EFCB03BB52 /* AccessoryExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BEE748DC74998A9ADB39ED /* AccessoryExperimentServices.swift */; };
+		EAE43697E862C4B7A0B3F851 /* AccessoryExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BEE748DC74998A9ADB39ED /* AccessoryExperimentServices.swift */; };
+		C9689D565EDC8D06867D6990 /* AccessoryRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8527103931F3DF7A1C0EB046 /* AccessoryRunViews.swift */; };
+		9D61FDF0217A924952660BB1 /* AccessoryRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8527103931F3DF7A1C0EB046 /* AccessoryRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -495,6 +501,8 @@
 		16962BE40CDD940A482462B1 /* BluetoothExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BluetoothExperimentServices.swift; path = AppleToolbox/Shared/Services/BluetoothExperimentServices.swift; sourceTree = "<group>"; };
 		B72FDFA15E8BB255D4C5EB42 /* BluetoothRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BluetoothRunViews.swift; path = AppleToolbox/UI/Experiments/BluetoothRunViews.swift; sourceTree = "<group>"; };
 		A6DF9A6D178FA4EEC6189A00 /* BluetoothPeripheralModeService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BluetoothPeripheralModeService.swift; path = AppleToolbox/Shared/Services/BluetoothPeripheralModeService.swift; sourceTree = "<group>"; };
+		92BEE748DC74998A9ADB39ED /* AccessoryExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AccessoryExperimentServices.swift; path = AppleToolbox/Shared/Services/AccessoryExperimentServices.swift; sourceTree = "<group>"; };
+		8527103931F3DF7A1C0EB046 /* AccessoryRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AccessoryRunViews.swift; path = AppleToolbox/UI/Experiments/AccessoryRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -762,6 +770,8 @@
 				16962BE40CDD940A482462B1 /* BluetoothExperimentServices.swift */,
 				B72FDFA15E8BB255D4C5EB42 /* BluetoothRunViews.swift */,
 				A6DF9A6D178FA4EEC6189A00 /* BluetoothPeripheralModeService.swift */,
+				92BEE748DC74998A9ADB39ED /* AccessoryExperimentServices.swift */,
+				8527103931F3DF7A1C0EB046 /* AccessoryRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1165,6 +1175,8 @@
 				6B5EDF77FB6D2D0645BE1938 /* BluetoothExperimentServices.swift in Sources */,
 				92BA1EDF4FE08FB7CFDB6D36 /* BluetoothRunViews.swift in Sources */,
 				42CD80601449C6382834C3B1 /* BluetoothPeripheralModeService.swift in Sources */,
+				17FED75882521DE9ACD0B664 /* AccessoryExperimentServices.swift in Sources */,
+				C9689D565EDC8D06867D6990 /* AccessoryRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1226,6 +1238,8 @@
 				3B8E09A97490A34B1516809F /* NFCCardEmulationService.swift in Sources */,
 				BF921231766EAA7C374724A0 /* WalletPaymentServices.swift in Sources */,
 				CD3EBAD9A9DC51B04FC347D0 /* AdvancedWalletServices.swift in Sources */,
+				F8D7DE4828F086A845423BE4 /* BluetoothGATTSupport.swift in Sources */,
+				EAE43697E862C4B7A0B3F851 /* AccessoryExperimentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1368,6 +1382,8 @@
 				D31036A6E114B52EDA93C883 /* BluetoothExperimentServices.swift in Sources */,
 				AF83F73C1BE842DB05E28B61 /* BluetoothRunViews.swift in Sources */,
 				39950A916729329BDFF522A1 /* BluetoothPeripheralModeService.swift in Sources */,
+				67429D0CC1B230EFCB03BB52 /* AccessoryExperimentServices.swift in Sources */,
+				9D61FDF0217A924952660BB1 /* AccessoryRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
