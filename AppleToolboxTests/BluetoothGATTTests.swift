@@ -77,3 +77,53 @@ struct GATTNamesTests {
         #expect(GATTNames.name(for: "FFFF") == nil)
     }
 }
+
+struct ToolboxGATTProfileTests {
+
+    @Test func readsFromAnOffset() {
+        let value = Data("Toolbox".utf8)
+        #expect(ToolboxGATTProfile.readResponse(for: value, offset: 0) == .success(value))
+        #expect(ToolboxGATTProfile.readResponse(for: value, offset: 4) == .success(Data("box".utf8)))
+        #expect(ToolboxGATTProfile.readResponse(for: value, offset: 7) == .success(Data()))
+        #expect(ToolboxGATTProfile.readResponse(for: value, offset: 8) == .failure(.invalidOffset))
+    }
+
+    @Test func aWriteAtOffsetZeroReplacesTheValue() {
+        #expect(ToolboxGATTProfile.applyWrites([(offset: 0, value: Data("new".utf8))], to: Data("older value".utf8)) == .success(Data("new".utf8)))
+    }
+
+    @Test func assemblesALongWrite() {
+        let chunks = [(offset: 0, value: Data(repeating: 0xAA, count: 18)), (offset: 18, value: Data(repeating: 0xBB, count: 18)), (offset: 36, value: Data([0xCC]))]
+        #expect(ToolboxGATTProfile.applyWrites(chunks, to: Data()) == .success(Data(repeating: 0xAA, count: 18) + Data(repeating: 0xBB, count: 18) + Data([0xCC])))
+    }
+
+    @Test func rejectsInvalidWrites() {
+        #expect(ToolboxGATTProfile.applyWrites([(offset: 5, value: Data([1]))], to: Data([0, 1])) == .failure(.invalidOffset))
+        #expect(ToolboxGATTProfile.applyWrites([(offset: 0, value: Data(count: 513))], to: Data()) == .failure(.invalidAttributeValueLength))
+        #expect(ToolboxGATTProfile.applyWrites([(offset: 0, value: Data(count: 512))], to: Data()) == .success(Data(count: 512)))
+    }
+
+    @Test func buildsNotificationPayloads() {
+        #expect(ToolboxGATTProfile.notificationPayload(source: .counter, counter: 7, text: "", limit: 20) == .success(Data("Counter 7".utf8)))
+        #expect(ToolboxGATTProfile.notificationPayload(source: .text, counter: 0, text: "Hi", limit: 20) == .success(Data("Hi".utf8)))
+        #expect(ToolboxGATTProfile.notificationPayload(source: .text, counter: 0, text: "", limit: 20) == .failure(.empty))
+        #expect(ToolboxGATTProfile.notificationPayload(source: .text, counter: 0, text: String(repeating: "x", count: 21), limit: 20) == .failure(.tooLong(length: 21, limit: 20)))
+    }
+
+    @Test func advertisedNameFitsTheScanResponse() {
+        // Name AD structure (length + type byte + name) within the 10 of 28 foreground bytes the 128-bit UUID leaves.
+        #expect(Data(ToolboxGATTProfile.localName.utf8).count + 2 <= 10)
+    }
+
+    @Test func explorerNamesTheToolboxProfile() {
+        #expect(GATTNames.name(for: ToolboxGATTProfile.serviceUUID) == "Apple Toolbox Service")
+        #expect(GATTNames.name(for: ToolboxGATTProfile.infoUUID.lowercased()) == "Apple Toolbox Info")
+        #expect(GATTNames.name(for: ToolboxGATTProfile.inboxUUID) == "Apple Toolbox Inbox")
+        #expect(GATTNames.name(for: ToolboxGATTProfile.feedUUID) == "Apple Toolbox Feed")
+    }
+
+    @Test func infoTextNamesPlatformAndCounts() {
+        #expect(ToolboxGATTProfile.infoText(platform: "iOS", osVersion: "26.5", counter: 3, subscribers: 1) == "Apple Toolbox on iOS 26.5 · feed counter 3 · 1 subscriber")
+        #expect(ToolboxGATTProfile.infoText(platform: "macOS", osVersion: "26.5", counter: 0, subscribers: 2).hasSuffix("2 subscribers"))
+    }
+}

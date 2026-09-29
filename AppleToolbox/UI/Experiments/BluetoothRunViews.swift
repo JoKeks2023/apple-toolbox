@@ -268,6 +268,77 @@ private struct BluetoothResultsView: View {
     }
 }
 
+struct BluetoothPeripheralModeRunView: View {
+    @StateObject private var peripheral = BluetoothPeripheralModeService()
+    @Environment(\.scenePhase) private var scenePhase
+
+    var body: some View {
+        Group {
+            if peripheral.isRunning {
+                Button("Stop Advertising", systemImage: "stop.circle", action: peripheral.stop)
+            } else {
+                Button("Start Advertising", systemImage: "dot.radiowaves.left.and.right", action: peripheral.start)
+            }
+        }
+        .buttonStyle(.borderedProminent)
+        .experimentSession(peripheral)
+        .onChange(of: scenePhase) { _, phase in peripheral.noteScenePhase(isBackground: phase == .background) }
+        LabeledContent("Bluetooth", value: peripheral.managerState)
+        LabeledContent("Advertising", value: peripheral.isAdvertising ? "“\(ToolboxGATTProfile.localName)” + service UUID" : "No")
+        LabeledContent("Subscribed centrals", value: "\(peripheral.subscribers.count)")
+        if let limit = peripheral.notificationLimit {
+            LabeledContent("Max notification size", value: "\(limit) B")
+        }
+        LabeledContent("Feed counter", value: "\(peripheral.counter)")
+        LabeledContent("Last write to Inbox") {
+            Text(GATTFormatting.summary(peripheral.lastWrite)).font(.caption.monospaced()).multilineTextAlignment(.trailing)
+        }
+        Section("Send a notification on Feed") {
+            Picker("Payload", selection: $peripheral.source) {
+                ForEach(ToolboxGATTProfile.NotificationSource.allCases) { Text($0.rawValue).tag($0) }
+            }
+            .pickerStyle(.menu)
+            if peripheral.source == .text {
+                TextField("Notification text", text: $peripheral.customText)
+            }
+            Button("Send Notification", systemImage: "bell", action: peripheral.sendNotification)
+                .buttonStyle(.bordered)
+                .disabled(!peripheral.isAdvertising)
+            Toggle("Send every second while subscribed", isOn: Binding(get: { peripheral.isAutoSending }, set: { peripheral.setAutoSend($0) }))
+                .disabled(!peripheral.isRunning)
+        }
+        ToolboxProfileSection()
+        if !peripheral.log.isEmpty {
+            GATTLogSection(entries: peripheral.log, clear: peripheral.clearLog)
+        }
+        Section("Background limits") {
+            Text("While Apple Toolbox is in the foreground it advertises the local name and the service UUID. This build declares no bluetooth-peripheral background mode, so iOS suspends the app in the background and advertising stops. Apps that declare the mode keep advertising, but iOS drops the local name and moves service UUIDs into an overflow area that only iOS devices explicitly scanning for that UUID can see, at a reduced advertising rate.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        OutputView(text: peripheral.output, isError: peripheral.output.localizedCaseInsensitiveContains("could not") || peripheral.output.localizedCaseInsensitiveContains("not available") || peripheral.output.localizedCaseInsensitiveContains("unauthorized"))
+    }
+}
+
+private struct ToolboxProfileSection: View {
+    var body: some View {
+        Section("Published GATT profile") {
+            LabeledContent("Service") { Text(ToolboxGATTProfile.serviceUUID).font(.caption.monospaced()) }
+            row("Info", uuid: ToolboxGATTProfile.infoUUID, properties: "Read", detail: "Device summary, generated for every read request")
+            row("Inbox", uuid: ToolboxGATTProfile.inboxUUID, properties: "Write · Write without response", detail: "Stores up to 512 B; shown above as Last write")
+            row("Feed", uuid: ToolboxGATTProfile.feedUUID, properties: "Notify · Read", detail: "Counter or your text, sent to subscribed centrals")
+        }
+    }
+
+    private func row(_ name: String, uuid: String, properties: String, detail: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(name).font(.subheadline.weight(.semibold))
+            Text(uuid).font(.caption2.monospaced()).foregroundStyle(.secondary)
+            Text("\(properties) · \(detail)").font(.caption).foregroundStyle(.secondary)
+        }
+    }
+}
+
 /// Collapsible group; tvOS has no DisclosureGroup, so it shows the content expanded there.
 struct GATTDisclosure<Content: View, Header: View>: View {
     @ViewBuilder let content: () -> Content
@@ -284,3 +355,6 @@ struct GATTDisclosure<Content: View, Header: View>: View {
         #endif
     }
 }
+
+// Declared here rather than in ExperimentLifecycle.swift so the Bluetooth experiments stay in their own files.
+extension BluetoothPeripheralModeService: StoppableExperiment { var isActive: Bool { isRunning } }

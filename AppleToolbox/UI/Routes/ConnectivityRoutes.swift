@@ -7,6 +7,7 @@ struct ConnectivityRunRoutes: View {
     var body: some View {
         switch experiment.id {
         case "core-bluetooth": CoreBluetoothRunView()
+        case "bluetooth-peripheral": BluetoothPeripheralModeRunView()
         case "multipeer-connectivity": MultipeerRunView()
         case "continuity": WatchConnectivityRunView()
         case "nearby-interaction": NearbyInteractionRunView()

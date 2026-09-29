@@ -37,7 +37,7 @@
 		<string>FE00</string>
 	</array>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Joris Apple Toolbox scans nearby Bluetooth LE peripherals as part of the Bluetooth experiment.</string>
+	<string>Joris Apple Toolbox uses Bluetooth to scan for, connect to and advertise to nearby Bluetooth LE devices in the Bluetooth experiments.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Joris Apple Toolbox uses the camera for the Camera and Vision, ARKit and RoomPlan experiments.</string>
 	<key>NSMicrophoneUsageDescription</key>

@@ -136,6 +136,7 @@ enum GATTNames {
         "1826": "Fitness Machine",
         "7905F431-B5CE-4E99-A40F-4B1E122D00D0": "Apple Notification Center Service",
         "89D3502B-0F36-433A-8EF4-C502AD55F8DC": "Apple Media Service",
+        ToolboxGATTProfile.serviceUUID: "Apple Toolbox Service",
         // Characteristics
         "2A00": "Device Name", "2A01": "Appearance", "2A04": "Peripheral Preferred Connection Parameters",
         "2A05": "Service Changed", "2A06": "Alert Level", "2A07": "Tx Power Level", "2A19": "Battery Level",
@@ -146,11 +147,88 @@ enum GATTNames {
         "2A4B": "Report Map", "2A4D": "Report", "2A50": "PnP ID", "2A5B": "CSC Measurement",
         "2A63": "Cycling Power Measurement", "2A6D": "Pressure", "2A6E": "Temperature", "2A6F": "Humidity",
         "2AA6": "Central Address Resolution",
+        ToolboxGATTProfile.infoUUID: "Apple Toolbox Info", ToolboxGATTProfile.inboxUUID: "Apple Toolbox Inbox",
+        ToolboxGATTProfile.feedUUID: "Apple Toolbox Feed",
         // Descriptors
         "2900": "Characteristic Extended Properties", "2901": "Characteristic User Description",
         "2902": "Client Characteristic Configuration", "2903": "Server Characteristic Configuration",
         "2904": "Characteristic Presentation Format", "2905": "Characteristic Aggregate Format", "2908": "Report Reference",
     ]
+}
+
+/// The custom GATT profile Apple Toolbox publishes in Bluetooth Peripheral Mode. The GATT explorer and the
+/// AccessorySetupKit picker on a second device recognise the same UUIDs.
+enum ToolboxGATTProfile {
+    /// Advertised local name, kept short: in the foreground iOS advertises 28 bytes of data, the 128-bit
+    /// service UUID takes 18 of them, and a longer name would be truncated.
+    static let localName = "Toolbox"
+    static let serviceUUID = "D6417001-D406-4671-BE24-908130E6DD24"
+    static let infoUUID = "D6417002-D406-4671-BE24-908130E6DD24"
+    static let inboxUUID = "D6417003-D406-4671-BE24-908130E6DD24"
+    static let feedUUID = "D6417004-D406-4671-BE24-908130E6DD24"
+    /// ATT limits an attribute value to 512 bytes.
+    static let maximumValueLength = 512
+
+    enum NotificationSource: String, CaseIterable, Identifiable, Sendable {
+        case counter = "Counter"
+        case text = "Custom text"
+        var id: String { rawValue }
+    }
+
+    enum ATTFailure: Error, Equatable, LocalizedError {
+        case invalidOffset
+        case invalidAttributeValueLength
+
+        var errorDescription: String? {
+            switch self {
+            case .invalidOffset: "The write offset lies beyond the current value."
+            case .invalidAttributeValueLength: "The value would exceed the 512-byte ATT limit."
+            }
+        }
+    }
+
+    enum PayloadError: Error, Equatable, LocalizedError {
+        case empty
+        case tooLong(length: Int, limit: Int)
+
+        var errorDescription: String? {
+            switch self {
+            case .empty: "Enter some text to send."
+            case let .tooLong(length, limit): "The payload is \(length) B, but a subscribed central accepts at most \(limit) B per notification."
+            }
+        }
+    }
+
+    /// Answer to a read (or read blob) request at `offset`.
+    static func readResponse(for value: Data, offset: Int) -> Result<Data, ATTFailure> {
+        guard offset >= 0, offset <= value.count else { return .failure(.invalidOffset) }
+        return .success(Data(value.dropFirst(offset)))
+    }
+
+    /// Applies a batch of write requests (a long write arrives as several offsets) to `current`; all apply or none.
+    static func applyWrites(_ writes: [(offset: Int, value: Data)], to current: Data) -> Result<Data, ATTFailure> {
+        var result = current
+        for write in writes {
+            guard write.offset >= 0, write.offset <= result.count else { return .failure(.invalidOffset) }
+            guard write.offset + write.value.count <= maximumValueLength else { return .failure(.invalidAttributeValueLength) }
+            result = Data(result.prefix(write.offset)) + write.value
+        }
+        return .success(result)
+    }
+
+    static func notificationPayload(source: NotificationSource, counter: Int, text: String, limit: Int) -> Result<Data, PayloadError> {
+        let data = switch source {
+        case .counter: Data("Counter \(counter)".utf8)
+        case .text: Data(text.utf8)
+        }
+        guard !data.isEmpty else { return .failure(.empty) }
+        guard data.count <= limit else { return .failure(.tooLong(length: data.count, limit: limit)) }
+        return .success(data)
+    }
+
+    static func infoText(platform: String, osVersion: String, counter: Int, subscribers: Int) -> String {
+        "Apple Toolbox on \(platform) \(osVersion) · feed counter \(counter) · \(subscribers) subscriber\(subscribers == 1 ? "" : "s")"
+    }
 }
 
 #if canImport(CoreBluetooth) && !os(tvOS)
