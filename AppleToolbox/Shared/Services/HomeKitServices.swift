@@ -5,6 +5,9 @@ import Combine
 import HomeKit
 import CoreLocation
 #endif
+#if canImport(Matter) && os(iOS)
+import Matter
+#endif
 
 // MARK: Snapshot types
 
@@ -1006,50 +1009,188 @@ extension HomeInspectorService: StoppableExperiment {
 }
 #endif
 
-// MARK: Matter accessory setup
+// MARK: Accessory setup with or without a setup payload
 
-/// Starts Apple Home's own accessory setup UI, which commissions Matter accessories into a home. The app needs the
-/// HomeKit entitlement but no home-data authorization. No setup payload is passed, so the
-/// com.apple.developer.matter.allow-setup-payload entitlement is not required.
+/// How the accessory setup request is built.
+nonisolated enum AccessorySetupMode: String, CaseIterable, Identifiable, Sendable {
+    case systemFlow = "Apple Home scans the code"
+    case matterPayload = "Matter setup payload"
+    case homeKitURL = "HomeKit setup URL"
+    var id: String { rawValue }
+
+    /// The entitlement Apple requires when the request carries this payload.
+    var requiredEntitlement: String? {
+        switch self {
+        case .systemFlow: nil
+        case .matterPayload: "com.apple.developer.matter.allow-setup-payload"
+        case .homeKitURL: "com.apple.developer.homekit.allow-setup-payload"
+        }
+    }
+}
+
+/// Recognizes the setup code formats printed on accessories.
+nonisolated enum AccessorySetupPayloadKind: Equatable, Sendable {
+    /// Matter QR code content, e.g. `MT:Y.K9042C00KA0648G00`.
+    case matterQRCode(String)
+    /// Matter manual pairing code (11 or 21 digits), dashes and spaces removed.
+    case matterManualCode(String)
+    /// HomeKit setup URL from the accessory's QR code, e.g. `X-HM://0023ISYWY1ABCD`.
+    case homeKitURL(String)
+
+    static func classify(_ raw: String) -> AccessorySetupPayloadKind? {
+        let text = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        if text.uppercased().hasPrefix("MT:"), text.count > 3 { return .matterQRCode(text) }
+        if text.uppercased().hasPrefix("X-HM://"), text.count > 7 { return .homeKitURL(text) }
+        let digits = text.filter { $0 != "-" && $0 != " " }
+        if !digits.isEmpty, digits.allSatisfy(\.isASCII), digits.allSatisfy(\.isNumber), [11, 21].contains(digits.count) {
+            return .matterManualCode(digits)
+        }
+        return nil
+    }
+
+    var isMatter: Bool {
+        if case .homeKitURL = self { return false }
+        return true
+    }
+
+    var payloadString: String {
+        switch self {
+        case .matterQRCode(let value), .matterManualCode(let value), .homeKitURL(let value): value
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .matterQRCode: "Matter QR code"
+        case .matterManualCode: "Matter manual pairing code"
+        case .homeKitURL: "HomeKit setup URL"
+        }
+    }
+}
+
+/// Starts Apple Home's own accessory setup UI (HMAccessorySetupManager), which commissions Matter and HomeKit
+/// accessories into a home. Without a payload Apple Home scans the code itself and no extra entitlement is needed; a
+/// request that carries a payload needs com.apple.developer.matter.allow-setup-payload (Matter) or
+/// com.apple.developer.homekit.allow-setup-payload (HomeKit URL).
 @MainActor
 final class MatterSetupExperimentService: ObservableObject {
-    @Published private(set) var output = "Starts Apple Home's setup flow to add a Matter accessory to one of your homes."
+    @Published private(set) var output = "Starts Apple Home's setup flow to add a Matter or HomeKit accessory to one of your homes."
     @Published private(set) var isRunning = false
     @Published private(set) var isError = false
     @Published private(set) var homeIdentifier: String?
     @Published private(set) var accessoryIdentifiers: [String] = []
+    @Published private(set) var payloadDetails: [(String, String)] = []
     #if canImport(HomeKit) && os(iOS)
     private var manager: HMAccessorySetupManager?
     #endif
 
-    func startSetup() {
+    /// Parses the payload for the selected mode without starting setup.
+    func inspect(mode: AccessorySetupMode, payload: String) {
+        payloadDetails = []
+        guard mode != .systemFlow else { return }
+        guard let kind = AccessorySetupPayloadKind.classify(payload) else { return }
+        var details = [("Format", kind.title)]
+        #if canImport(Matter) && os(iOS)
+        if kind.isMatter, let parsed = MTRSetupPayload(payload: kind.payloadString) {
+            details.append(("Vendor ID", "\(parsed.vendorID) (0x\(String(parsed.vendorID.intValue, radix: 16, uppercase: true)))"))
+            details.append(("Product ID", "\(parsed.productID) (0x\(String(parsed.productID.intValue, radix: 16, uppercase: true)))"))
+            details.append(("Discriminator", "\(parsed.discriminator)\(parsed.hasShortDiscriminator ? " (short, high 4 bits)" : "")"))
+            details.append(("Commissioning flow", Self.flowName(parsed.commissioningFlow)))
+        }
+        #endif
+        payloadDetails = details
+    }
+
+    func startSetup(mode: AccessorySetupMode = .systemFlow, payload: String = "") {
         #if canImport(HomeKit) && os(iOS)
+        let request = HMAccessorySetupRequest()
+        isError = false
+        homeIdentifier = nil
+        accessoryIdentifiers = []
+        var prefix = ""
+        if mode != .systemFlow {
+            guard let kind = AccessorySetupPayloadKind.classify(payload) else {
+                isError = true
+                output = "This is not a setup code Apple Toolbox recognizes. Enter a Matter QR payload (MT:…), an 11- or 21-digit Matter manual pairing code, or a HomeKit setup URL (X-HM://…)."
+                return
+            }
+            switch (mode, kind.isMatter) {
+            case (.matterPayload, true):
+                #if canImport(Matter)
+                guard let parsed = MTRSetupPayload(payload: kind.payloadString) else {
+                    isError = true
+                    output = "MTRSetupPayload(payload:) rejected the \(kind.title.lowercased()): the checksum or encoding is invalid."
+                    return
+                }
+                request.matterPayload = parsed
+                #endif
+            case (.homeKitURL, false):
+                guard let url = URL(string: kind.payloadString), let parsed = HMAccessorySetupPayload(url: url) else {
+                    isError = true
+                    output = "HMAccessorySetupPayload(url:) returned nil: HomeKit could not parse this setup URL."
+                    return
+                }
+                request.payload = parsed
+            default:
+                isError = true
+                output = "The code is a \(kind.title) but the mode is \"\(mode.rawValue)\". Pick the matching mode."
+                return
+            }
+            if let key = mode.requiredEntitlement { prefix = Self.entitlementLine(key) + "\n" }
+        }
         let manager = HMAccessorySetupManager()
         self.manager = manager
         isRunning = true
-        isError = false
-        output = "Apple Home setup is open. Scan the accessory's setup code and follow the system steps."
+        output = prefix + (mode == .systemFlow
+            ? "Apple Home setup is open. Scan the accessory's setup code and follow the system steps."
+            : "Apple Home setup is open with the payload attached; it skips the scan step.")
         Task {
             defer { isRunning = false; self.manager = nil }
             do {
-                let result = try await manager.performAccessorySetup(using: HMAccessorySetupRequest())
+                let result = try await manager.performAccessorySetup(using: request)
                 let home = result.homeUniqueIdentifier.uuidString
                 homeIdentifier = home
                 accessoryIdentifiers = result.accessoryUniqueIdentifiers.map(\.uuidString)
-                output = "Setup finished: \(accessoryIdentifiers.count) accessory(ies) added to home \(home).\nHome Inspector lists them with their services once HomeKit access is granted."
+                output = prefix + "Setup finished: \(accessoryIdentifiers.count) accessory(ies) added to home \(home).\nHome Inspector lists them with their services once HomeKit access is granted."
             } catch let error as HMError where error.code == .operationCancelled {
                 isError = true
-                output = "Setup was cancelled before an accessory was added."
+                output = prefix + "Setup was cancelled before an accessory was added."
+            } catch let error as HMError where error.code == .missingEntitlement {
+                isError = true
+                output = prefix + "HomeKit refused the request: missing entitlement (HMError.missingEntitlement, code 80). A request with a setup payload needs \(mode.requiredEntitlement ?? "an extra entitlement") in the app's signature. Use \"\(AccessorySetupMode.systemFlow.rawValue)\" to let Apple Home scan the code instead."
             } catch {
                 let nsError = error as NSError
                 isError = true
-                output = "Setup failed: \(error.localizedDescription)\n\(nsError.domain) code \(nsError.code)"
+                output = prefix + "Setup failed: \(error.localizedDescription)\n\(nsError.domain) code \(nsError.code)"
             }
         }
         #else
         output = "Apple Home accessory setup (HMAccessorySetupManager) is not available on this platform."
         #endif
     }
+
+    private static func entitlementLine(_ key: String) -> String {
+        switch ProvisioningInspector.load() {
+        case .found(let profile):
+            profile.entitlements[key] == nil
+                ? "Embedded profile does not list \(key); HomeKit will likely refuse the payload."
+                : "Embedded profile lists \(key)."
+        case .missing, .unreadable:
+            "No readable embedded provisioning profile, so \(key) cannot be confirmed."
+        }
+    }
+
+    #if canImport(Matter) && os(iOS)
+    private static func flowName(_ flow: MTRCommissioningFlow) -> String {
+        switch flow {
+        case .standard: "Standard"
+        case .userActionRequired: "User action required"
+        case .custom: "Custom"
+        case .invalid: "Invalid"
+        @unknown default: "Unknown (\(flow.rawValue))"
+        }
+    }
+    #endif
 }
 
 extension ExperimentAvailability {
@@ -1062,4 +1203,111 @@ extension ExperimentAvailability {
         return .platformUnsupported
         #endif
     }
+
+    /// HMAccessoryBrowser exists on iPhone and iPad only and needs HomeKit access.
+    static func homeAccessoryBrowser() -> ExperimentStatus {
+        #if canImport(HomeKit) && os(iOS)
+        return homeKit()
+        #else
+        return .platformUnsupported
+        #endif
+    }
 }
+
+// MARK: Unpaired accessory discovery
+
+nonisolated struct DiscoveredAccessoryInfo: Identifiable, Equatable, Sendable {
+    let id: UUID
+    let name: String
+    let category: String
+    let manufacturer: String?
+    let model: String?
+    let isBridged: Bool
+    let firstSeen: Date
+}
+
+/// Searches for HomeKit accessories that are not yet paired (in pairing mode, nearby over Bluetooth LE or on the same
+/// Wi-Fi) with HMAccessoryBrowser. HomeKit calls the browser delegate on the main queue.
+@MainActor
+final class HomeAccessoryBrowserService: NSObject, ObservableObject {
+    @Published private(set) var accessories: [DiscoveredAccessoryInfo] = []
+    @Published private(set) var isSearching = false
+    @Published private(set) var output = "Put an unpaired HomeKit accessory into pairing mode, then start the search."
+    @Published private(set) var isError = false
+    #if canImport(HomeKit) && os(iOS)
+    private var browser: HMAccessoryBrowser?
+    private var homeManager: HMHomeManager?
+    #endif
+
+    func start() {
+        #if canImport(HomeKit) && os(iOS)
+        // HMHomeManager asks for HomeKit access; without it the browser reports nothing.
+        if homeManager == nil {
+            let manager = HMHomeManager()
+            manager.delegate = self
+            homeManager = manager
+        }
+        let browser = HMAccessoryBrowser()
+        browser.delegate = self
+        self.browser = browser
+        accessories = []
+        isError = false
+        isSearching = true
+        browser.startSearchingForNewAccessories()
+        output = "Searching (HMAccessoryBrowser.startSearchingForNewAccessories). Only accessories that are not paired to any home appear; Matter-only accessories are commissioned through Accessory Setup instead."
+        #else
+        isError = true
+        output = "HMAccessoryBrowser is available on iPhone and iPad only."
+        #endif
+    }
+
+    func stop() {
+        #if canImport(HomeKit) && os(iOS)
+        guard let browser else { return }
+        browser.stopSearchingForNewAccessories()
+        browser.delegate = nil
+        self.browser = nil
+        #endif
+        guard isSearching else { return }
+        isSearching = false
+        output = accessories.isEmpty
+            ? "Search stopped. No unpaired accessory answered: none was in pairing mode nearby, or HomeKit access is not granted."
+            : "Search stopped with \(accessories.count) unpaired accessory(ies)."
+    }
+
+    #if canImport(HomeKit) && os(iOS)
+    fileprivate func add(_ accessory: HMAccessory) {
+        let info = DiscoveredAccessoryInfo(id: accessory.uniqueIdentifier, name: accessory.name, category: accessory.category.localizedDescription,
+                                           manufacturer: accessory.manufacturer, model: accessory.model, isBridged: accessory.isBridged, firstSeen: Date())
+        accessories.removeAll { $0.id == info.id }
+        accessories.append(info)
+        output = "Found \(info.name) (\(info.category))."
+    }
+
+    fileprivate func remove(_ accessory: HMAccessory) {
+        accessories.removeAll { $0.id == accessory.uniqueIdentifier }
+        output = "\(accessory.name) is no longer advertising (paired elsewhere or left pairing mode)."
+    }
+
+    fileprivate func authorizationChanged(_ status: HMHomeManagerAuthorizationStatus) {
+        PermissionCenter.shared.invalidate()
+        guard status.contains(.determined), !status.contains(.authorized) else { return }
+        isError = true
+        output = "HomeKit access is denied, so HMAccessoryBrowser returns no accessories. Allow it in Settings › Privacy & Security › HomeKit."
+    }
+    #endif
+}
+
+#if canImport(HomeKit) && os(iOS)
+extension HomeAccessoryBrowserService: HMAccessoryBrowserDelegate, HMHomeManagerDelegate {
+    func accessoryBrowser(_ browser: HMAccessoryBrowser, didFindNewAccessory accessory: HMAccessory) { add(accessory) }
+    func accessoryBrowser(_ browser: HMAccessoryBrowser, didRemoveNewAccessory accessory: HMAccessory) { remove(accessory) }
+    func homeManager(_ manager: HMHomeManager, didUpdate status: HMHomeManagerAuthorizationStatus) { authorizationChanged(status) }
+}
+#endif
+
+#if !os(watchOS)
+extension HomeAccessoryBrowserService: StoppableExperiment {
+    var isActive: Bool { isSearching }
+}
+#endif

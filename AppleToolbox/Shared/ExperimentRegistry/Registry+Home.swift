@@ -17,12 +17,23 @@ extension ExperimentRegistry {
                     nextStep: "Open Apple Toolbox on an iPhone, iPad or Apple TV."),
             ]),
         ExperimentDescriptor(id: "matter-status", name: "Matter Accessory Setup", category: .home,
-            description: "Start Apple Home's accessory setup flow to commission a Matter accessory into a home, then inspect the returned home and accessory identifiers or the real error.", frameworks: ["HomeKit"], supportedPlatforms: [.iOS, .iPadOS], hardwareRequirements: ["Matter accessory with its setup code"], osRequirements: ["iOS 15.4+ · iPadOS 15.4+"], permissions: [], capabilities: ["HomeKit", "Matter"], entitlements: ["com.apple.developer.homekit"], documentationURL: URL(string: "https://developer.apple.com/documentation/homekit/hmaccessorysetupmanager")!, evaluate: ExperimentAvailability.matterSetup,
+            description: "Start Apple Home's accessory setup flow (HMAccessorySetupManager) to commission a Matter or HomeKit accessory into a home, either letting Apple Home scan the code or passing a scanned or entered setup payload (MTRSetupPayload / HMAccessorySetupPayload), then inspect the returned identifiers or the real error.", frameworks: ["HomeKit"], supportedPlatforms: [.iOS, .iPadOS], hardwareRequirements: ["Matter accessory with its setup code"], osRequirements: ["iOS 15.4+ · iPadOS 15.4+"], permissions: [], capabilities: ["HomeKit", "Matter"], entitlements: ["com.apple.developer.homekit"], documentationURL: URL(string: "https://developer.apple.com/documentation/homekit/hmaccessorysetupmanager")!, evaluate: ExperimentAvailability.matterSetup,
             explanations: [
                 .platformUnsupported: ExperimentExplanation(reason: "Apple Toolbox starts Apple Home's accessory setup only on iPhone and iPad; watchOS and tvOS have no setup API.", required: "iOS or iPadOS 15.4+ with Apple Home",
                     nextStep: "Open Apple Toolbox on an iPhone or iPad."),
                 .unavailable: ExperimentExplanation(reason: "The system reports that accessory setup is not supported on this device (HMAccessorySetupManager.isSupported is false).", required: "An iPhone or iPad that supports Apple Home accessory setup",
                     nextStep: "Run the experiment on a physical iPhone or iPad with Apple Home set up."),
+            ]),
+        ExperimentDescriptor(id: "homekit-accessory-browser", name: "Unpaired Accessory Discovery", category: .home,
+            description: "Search for HomeKit accessories that are in pairing mode and not yet added to any home with HMAccessoryBrowser, and watch them appear and disappear live.",
+            frameworks: ["HomeKit"], supportedPlatforms: [.iOS, .iPadOS], hardwareRequirements: ["An unpaired HomeKit accessory in pairing mode (Bluetooth LE nearby or on the same Wi-Fi), or the HomeKit Accessory Simulator"],
+            osRequirements: ["iOS 8+ · iPadOS 8+"], permissions: ["HomeKit access"], capabilities: ["HomeKit"], entitlements: ["com.apple.developer.homekit"],
+            documentationURL: URL(string: "https://developer.apple.com/documentation/homekit/hmaccessorybrowser")!, evaluate: ExperimentAvailability.homeAccessoryBrowser,
+            explanations: [
+                .permissionDenied: ExperimentExplanation(reason: "HomeKit access was denied, so HMAccessoryBrowser reports no accessories.", required: "HomeKit access for Apple Toolbox",
+                    nextStep: "Allow it in Settings › Privacy & Security › HomeKit."),
+                .platformUnsupported: ExperimentExplanation(reason: "HMAccessoryBrowser is iOS/iPadOS-only; macOS, tvOS and watchOS have no accessory browser.", required: "iPhone or iPad",
+                    nextStep: "Open Apple Toolbox on an iPhone or iPad."),
             ]),
     ]
 }

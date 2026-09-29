@@ -1,4 +1,8 @@
 import SwiftUI
+#if os(iOS) && canImport(VisionKit)
+import VisionKit
+import Vision
+#endif
 
 private enum HomeInspectorPane: String, CaseIterable, Identifiable {
     case accessories = "Accessories", scenes = "Scenes", automations = "Automations"
@@ -351,9 +355,43 @@ private struct HomeWriteControlView: View {
 
 struct MatterSetupRunView: View {
     @StateObject private var matter = MatterSetupExperimentService()
+    @State private var mode: AccessorySetupMode = .systemFlow
+    @State private var payload = ""
+    @State private var isScanning = false
 
     var body: some View {
-        Button(matter.isRunning ? "Setup in Progress…" : "Add Accessory to Apple Home", action: matter.startSetup).buttonStyle(.borderedProminent).disabled(matter.isRunning)
+        Picker("Setup", selection: $mode) {
+            ForEach(AccessorySetupMode.allCases) { Text($0.rawValue).tag($0) }
+        }
+        if mode != .systemFlow {
+            TextField(mode == .matterPayload ? "MT:… or 11/21-digit pairing code" : "X-HM://…", text: $payload)
+                .font(.body.monospaced())
+                .autocorrectionDisabled()
+                #if os(iOS)
+                .textInputAutocapitalization(.characters)
+                #endif
+            #if os(iOS)
+            if SetupCodeScannerView.isAvailable {
+                Button(isScanning ? "Cancel Scan" : "Scan QR Code", systemImage: "qrcode.viewfinder") { isScanning.toggle() }
+                if isScanning {
+                    SetupCodeScannerView { code in
+                        payload = code
+                        isScanning = false
+                    }
+                    .frame(height: 260)
+                }
+            }
+            #endif
+            ForEach(matter.payloadDetails, id: \.0) { item in
+                LabeledContent(item.0) { Text(item.1).font(.caption.monospaced()) }
+            }
+            if let key = mode.requiredEntitlement {
+                LabeledContent("Needs") { Text(key).font(.caption.monospaced()) }
+            }
+        }
+        Button(matter.isRunning ? "Setup in Progress…" : "Add Accessory to Apple Home") { matter.startSetup(mode: mode, payload: payload) }
+            .buttonStyle(.borderedProminent)
+            .disabled(matter.isRunning || (mode != .systemFlow && payload.isEmpty))
         if let home = matter.homeIdentifier {
             LabeledContent("Home") { Text(home).font(.caption.monospaced()) }
             ForEach(matter.accessoryIdentifiers, id: \.self) { accessory in
@@ -361,5 +399,69 @@ struct MatterSetupRunView: View {
             }
         }
         OutputView(text: matter.output, isError: matter.isError)
+            .onChange(of: payload) { matter.inspect(mode: mode, payload: payload) }
+            .onChange(of: mode) { matter.inspect(mode: mode, payload: payload) }
     }
 }
+
+struct HomeAccessoryBrowserRunView: View {
+    @StateObject private var browser = HomeAccessoryBrowserService()
+
+    var body: some View {
+        Button(browser.isSearching ? "Stop Search" : "Search for Unpaired Accessories") {
+            browser.isSearching ? browser.stop() : browser.start()
+        }
+        .buttonStyle(.borderedProminent)
+        .experimentSession(browser)
+        if browser.isSearching {
+            ProgressView("Listening for accessories in pairing mode…").font(.caption)
+        }
+        ForEach(browser.accessories) { accessory in
+            VStack(alignment: .leading, spacing: 2) {
+                Text(accessory.name).font(.headline)
+                Text("\(accessory.category)\(accessory.isBridged ? " · bridged" : "")").font(.caption).foregroundStyle(.secondary)
+                let detail = [accessory.manufacturer, accessory.model].compactMap(\.self).joined(separator: " · ")
+                if !detail.isEmpty { Text(detail).font(.caption).foregroundStyle(.secondary) }
+                Text(accessory.id.uuidString).font(.caption2.monospaced()).foregroundStyle(.secondary)
+            }
+        }
+        OutputView(text: browser.output, isError: browser.isError)
+    }
+}
+
+#if os(iOS) && canImport(VisionKit)
+/// Live camera QR scanner (VisionKit DataScannerViewController) that returns the first QR payload it reads.
+struct SetupCodeScannerView: UIViewControllerRepresentable {
+    let onCode: (String) -> Void
+
+    static var isAvailable: Bool { DataScannerViewController.isSupported && DataScannerViewController.isAvailable }
+
+    func makeUIViewController(context: Context) -> DataScannerViewController {
+        let scanner = DataScannerViewController(recognizedDataTypes: [.barcode(symbologies: [.qr])], qualityLevel: .accurate,
+                                                isHighlightingEnabled: true)
+        scanner.delegate = context.coordinator
+        try? scanner.startScanning()
+        return scanner
+    }
+
+    func updateUIViewController(_ scanner: DataScannerViewController, context: Context) {}
+
+    static func dismantleUIViewController(_ scanner: DataScannerViewController, coordinator: Coordinator) { scanner.stopScanning() }
+
+    func makeCoordinator() -> Coordinator { Coordinator(onCode: onCode) }
+
+    final class Coordinator: NSObject, DataScannerViewControllerDelegate {
+        let onCode: (String) -> Void
+        init(onCode: @escaping (String) -> Void) { self.onCode = onCode }
+
+        func dataScanner(_ dataScanner: DataScannerViewController, didAdd addedItems: [RecognizedItem], allItems: [RecognizedItem]) {
+            for case .barcode(let barcode) in addedItems {
+                guard let value = barcode.payloadStringValue else { continue }
+                dataScanner.stopScanning()
+                onCode(value)
+                return
+            }
+        }
+    }
+}
+#endif

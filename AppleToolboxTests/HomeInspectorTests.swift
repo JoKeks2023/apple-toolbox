@@ -107,3 +107,34 @@ struct HomeCharacteristicCatalogTests {
     }
 }
 #endif
+
+struct AccessorySetupPayloadTests {
+
+    @Test func recognizesMatterQRCode() {
+        #expect(AccessorySetupPayloadKind.classify(" MT:Y.K9042C00KA0648G00 ") == .matterQRCode("MT:Y.K9042C00KA0648G00"))
+    }
+
+    @Test func normalizesManualPairingCodes() {
+        #expect(AccessorySetupPayloadKind.classify("3497-011-2332") == .matterManualCode("34970112332"))
+        #expect(AccessorySetupPayloadKind.classify("749701123365521327694") == .matterManualCode("749701123365521327694"))
+        #expect(AccessorySetupPayloadKind.classify("1234-5678") == nil)
+    }
+
+    @Test func recognizesHomeKitSetupURL() {
+        let kind = AccessorySetupPayloadKind.classify("X-HM://0023ISYWY1ABCD")
+        #expect(kind == .homeKitURL("X-HM://0023ISYWY1ABCD"))
+        #expect(kind?.isMatter == false)
+    }
+
+    @Test func rejectsOtherText() {
+        #expect(AccessorySetupPayloadKind.classify("") == nil)
+        #expect(AccessorySetupPayloadKind.classify("MT:") == nil)
+        #expect(AccessorySetupPayloadKind.classify("https://example.com") == nil)
+    }
+
+    @Test func payloadModesNameTheirEntitlement() {
+        #expect(AccessorySetupMode.systemFlow.requiredEntitlement == nil)
+        #expect(AccessorySetupMode.matterPayload.requiredEntitlement == "com.apple.developer.matter.allow-setup-payload")
+        #expect(AccessorySetupMode.homeKitURL.requiredEntitlement == "com.apple.developer.homekit.allow-setup-payload")
+    }
+}

@@ -8,6 +8,7 @@ struct HomeRunRoutes: View {
         switch experiment.id {
         case "homekit-discovery": HomeInspectorRunView(experiment: experiment)
         case "matter-status": MatterSetupRunView()
+        case "homekit-accessory-browser": HomeAccessoryBrowserRunView()
         default: UnroutedExperimentView()
         }
     }
