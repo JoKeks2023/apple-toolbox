@@ -20,16 +20,6 @@ struct MusicKitRunView: View {
     }
 }
 
-struct NaturalLanguageRunView: View {
-    @StateObject private var ai = AIExperimentService()
-
-    var body: some View {
-        TextField("Text to analyze", text: $ai.input, axis: .vertical)
-        Button("Analyze Text", action: ai.analyze).buttonStyle(.borderedProminent).disabled(ai.input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-        OutputView(text: ai.output, isError: false)
-    }
-}
-
 struct SpeechRunView: View {
     @StateObject private var speech = SpeechExperimentService()
 

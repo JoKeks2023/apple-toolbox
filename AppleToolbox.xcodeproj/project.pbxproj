@@ -374,6 +374,10 @@
 		1DDCB5D8168B0E06E710BA3A /* ToolboxInteractiveWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A68EE1F33C4604C3A3E14E7 /* ToolboxInteractiveWidget.swift */; };
 		02A224D70700BDDC0CDA5A85 /* ToolboxControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077B02A6F8A1FD8354E92379 /* ToolboxControls.swift */; };
 		CD11E1B628F7B13C083086BA /* ToolboxWidgetIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981645C806854E2AB22F9E54 /* ToolboxWidgetIntents.swift */; };
+		BC8B2B154ED965BE3EE3D1DE /* NaturalLanguageExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D9CDB110CD15DF999D4BAF /* NaturalLanguageExperimentService.swift */; };
+		431A2A092E619BEE7BAAE020 /* NaturalLanguageExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D9CDB110CD15DF999D4BAF /* NaturalLanguageExperimentService.swift */; };
+		96CF0861626DF40F629F1492 /* NaturalLanguageRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE583746A6C90B542D91FB6 /* NaturalLanguageRunView.swift */; };
+		935341EA322BD9FFCD327563 /* NaturalLanguageRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE583746A6C90B542D91FB6 /* NaturalLanguageRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -616,6 +620,8 @@
 		2A68EE1F33C4604C3A3E14E7 /* ToolboxInteractiveWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxInteractiveWidget.swift; path = AppleToolbox/Widget/ToolboxInteractiveWidget.swift; sourceTree = "<group>"; };
 		077B02A6F8A1FD8354E92379 /* ToolboxControls.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxControls.swift; path = AppleToolbox/Widget/ToolboxControls.swift; sourceTree = "<group>"; };
 		981645C806854E2AB22F9E54 /* ToolboxWidgetIntents.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxWidgetIntents.swift; path = AppleToolbox/Shared/Services/ToolboxWidgetIntents.swift; sourceTree = "<group>"; };
+		78D9CDB110CD15DF999D4BAF /* NaturalLanguageExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NaturalLanguageExperimentService.swift; path = AppleToolbox/Shared/Services/NaturalLanguageExperimentService.swift; sourceTree = "<group>"; };
+		3FE583746A6C90B542D91FB6 /* NaturalLanguageRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NaturalLanguageRunView.swift; path = AppleToolbox/UI/Experiments/NaturalLanguageRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -932,6 +938,8 @@
 				2A68EE1F33C4604C3A3E14E7 /* ToolboxInteractiveWidget.swift */,
 				077B02A6F8A1FD8354E92379 /* ToolboxControls.swift */,
 				981645C806854E2AB22F9E54 /* ToolboxWidgetIntents.swift */,
+				78D9CDB110CD15DF999D4BAF /* NaturalLanguageExperimentService.swift */,
+				3FE583746A6C90B542D91FB6 /* NaturalLanguageRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1393,6 +1401,8 @@
 				36B7239AD18F4B23140A8AD2 /* LiveActivityServices.swift in Sources */,
 				9E061971B2765899837F1B6A /* LiveActivitiesRunView.swift in Sources */,
 				8364B2B4CA16977709362E7F /* WidgetKitRunView.swift in Sources */,
+				BC8B2B154ED965BE3EE3D1DE /* NaturalLanguageExperimentService.swift in Sources */,
+				96CF0861626DF40F629F1492 /* NaturalLanguageRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1632,6 +1642,8 @@
 				B7D84FB4B0FA1903F156166F /* LiveActivityServices.swift in Sources */,
 				CFB522FA64C7B427991865F1 /* LiveActivitiesRunView.swift in Sources */,
 				3D4C1F6F4C98DE02BF385413 /* WidgetKitRunView.swift in Sources */,
+				431A2A092E619BEE7BAAE020 /* NaturalLanguageExperimentService.swift in Sources */,
+				935341EA322BD9FFCD327563 /* NaturalLanguageRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
