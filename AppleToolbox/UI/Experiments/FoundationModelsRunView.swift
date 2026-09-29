@@ -10,6 +10,7 @@ struct FoundationModelsRunView: View {
             }
             Button("Refresh Availability", systemImage: "arrow.clockwise", action: model.refreshAvailability)
         }
+        if !model.execution.isEmpty { AIExecutionSection(facts: model.execution) }
         TextField("Prompt", text: $model.prompt, axis: .vertical)
         Group {
             if model.isGenerating {

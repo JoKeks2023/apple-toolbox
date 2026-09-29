@@ -38,6 +38,8 @@ nonisolated struct ToolboxExperimentIdea {
 final class FoundationModelsExperimentService: ObservableObject {
     @Published var prompt = "In two sentences: what can an app do with an on-device language model?"
     @Published private(set) var facts: [ModelFact] = []
+    /// Per feature: on device, requires iOS 27, or would need internet and Private Cloud Compute.
+    @Published private(set) var execution: [AIExecutionFact] = []
     @Published private(set) var isModelAvailable = false
     @Published private(set) var response = ""
     @Published private(set) var idea: GeneratedExperimentIdea?
@@ -57,11 +59,14 @@ final class FoundationModelsExperimentService: ObservableObject {
         facts = [
             ModelFact(title: "Availability", value: state),
             ModelFact(title: "Reason", value: reason),
-            ModelFact(title: "Execution", value: "On device (SystemLanguageModel.default)"),
             ModelFact(title: "Current locale", value: model.supportsLocale() ? "\(locale) · supported" : "\(locale) · not supported"),
             ModelFact(title: "Supported languages", value: "\(model.supportedLanguages.count)"),
             ModelFact(title: "Context size", value: "\(model.contextSize) tokens"),
         ]
+        var imageInput: Bool?
+        if #available(iOS 27.0, macOS 27.0, *) { imageInput = model.capabilities.contains(.vision) }
+        execution = AIExecutionFacts.foundationModels(imageInput: imageInput, visionToolsInSDK: FoundationModelsImageService.visionToolsInSDK,
+                                                      pccProvisioned: ProvisioningInspector.load().profile?.entitlements[AIExecutionFacts.pccEntitlement] != nil)
         if !isGenerating { setOutput(isModelAvailable ? "The on-device model is ready. Ask a question or generate a structured result." : "The model cannot run right now: \(reason)", error: !isModelAvailable) }
         #else
         isModelAvailable = false

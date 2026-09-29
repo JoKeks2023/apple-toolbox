@@ -9,6 +9,8 @@ struct AIRunRoutes: View {
         case "natural-language": NaturalLanguageRunView()
         case "foundation-models": FoundationModelsRunView()
         case "foundation-models-tools": FoundationModelsConversationView()
+        case "foundation-models-image": FoundationModelsImageRunView()
+        case "core-ai": CoreAIRunView()
         case "speech": SpeechRunView()
         case "speech-analyzer": SpeechAnalyzerRunView()
         case "core-ml": CoreMLRunView()

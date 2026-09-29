@@ -483,6 +483,17 @@
 		C5AE5EFFF461039A51F68A28 /* AppleToolbox Packet Tunnel.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7C34834915D76F23B23FB279 /* AppleToolbox Packet Tunnel.appex */; };
 		047CA5F1D0B0E32579A6F629 /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C29D39ECCC307A4467BDDC9 /* PacketTunnelProvider.swift */; };
 		AFBB64C1658AEBEA6E872670 /* PacketTunnelShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6089A500A8A0A5EB8D4A803C /* PacketTunnelShared.swift */; };
+		295645D9CCF855F20C1C885D /* AIAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A5157EC3000A520B137D62 /* AIAvailability.swift */; };
+		B904B6CBF9219C97C58A3EAB /* AIAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A5157EC3000A520B137D62 /* AIAvailability.swift */; };
+		A930600DD122A251958F6B47 /* AIAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A5157EC3000A520B137D62 /* AIAvailability.swift */; };
+		B552BED2AC1787891F351FCE /* FoundationModelsImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26924E9EDCB7697F6DDF94F /* FoundationModelsImageService.swift */; };
+		1F31A079BB9F078F88A4A041 /* FoundationModelsImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26924E9EDCB7697F6DDF94F /* FoundationModelsImageService.swift */; };
+		C1F80E9B4D0676C04BA603EE /* CoreAIExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE22D1D293D24C4EEABC3361 /* CoreAIExperimentService.swift */; };
+		C76071AF7B77FF06A2EB0A09 /* CoreAIExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE22D1D293D24C4EEABC3361 /* CoreAIExperimentService.swift */; };
+		DDF72435F44ACB3D8A895E54 /* FoundationModelsImageRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CF81111DFE3AE7CD8EFEAB /* FoundationModelsImageRunView.swift */; };
+		D9BF17D504A354F447A79C3E /* FoundationModelsImageRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CF81111DFE3AE7CD8EFEAB /* FoundationModelsImageRunView.swift */; };
+		56C5F0DFEBA53D7014EA91A8 /* CoreAIRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6918C7E5678D9290A822A6D8 /* CoreAIRunView.swift */; };
+		2C9C6496D0BCB4482A34E1CF /* CoreAIRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6918C7E5678D9290A822A6D8 /* CoreAIRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -818,6 +829,11 @@
 		7C34834915D76F23B23FB279 /* AppleToolbox Packet Tunnel.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "AppleToolbox Packet Tunnel.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C29D39ECCC307A4467BDDC9 /* PacketTunnelProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PacketTunnelProvider.swift; path = AppleToolbox/PacketTunnel/PacketTunnelProvider.swift; sourceTree = "<group>"; };
 		6089A500A8A0A5EB8D4A803C /* PacketTunnelShared.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PacketTunnelShared.swift; path = AppleToolbox/Shared/Services/PacketTunnelShared.swift; sourceTree = "<group>"; };
+		D6A5157EC3000A520B137D62 /* AIAvailability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AIAvailability.swift; path = AppleToolbox/Shared/Services/AIAvailability.swift; sourceTree = "<group>"; };
+		D26924E9EDCB7697F6DDF94F /* FoundationModelsImageService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsImageService.swift; path = AppleToolbox/Shared/Services/FoundationModelsImageService.swift; sourceTree = "<group>"; };
+		FE22D1D293D24C4EEABC3361 /* CoreAIExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoreAIExperimentService.swift; path = AppleToolbox/Shared/Services/CoreAIExperimentService.swift; sourceTree = "<group>"; };
+		30CF81111DFE3AE7CD8EFEAB /* FoundationModelsImageRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsImageRunView.swift; path = AppleToolbox/UI/Experiments/FoundationModelsImageRunView.swift; sourceTree = "<group>"; };
+		6918C7E5678D9290A822A6D8 /* CoreAIRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoreAIRunView.swift; path = AppleToolbox/UI/Experiments/CoreAIRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -1229,6 +1245,11 @@
 				A64B0C446C59A1CA55BC8948 /* CredentialProviderVault.swift */,
 				3C29D39ECCC307A4467BDDC9 /* PacketTunnelProvider.swift */,
 				6089A500A8A0A5EB8D4A803C /* PacketTunnelShared.swift */,
+				D6A5157EC3000A520B137D62 /* AIAvailability.swift */,
+				D26924E9EDCB7697F6DDF94F /* FoundationModelsImageService.swift */,
+				FE22D1D293D24C4EEABC3361 /* CoreAIExperimentService.swift */,
+				30CF81111DFE3AE7CD8EFEAB /* FoundationModelsImageRunView.swift */,
+				6918C7E5678D9290A822A6D8 /* CoreAIRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1834,6 +1855,11 @@
 				305ED3510925CE568263029B /* NotificationServicePayload.swift in Sources */,
 				E8BF7455CBDD630368DC7051 /* EmbeddedAppExtensions.swift in Sources */,
 				A646E239C7F1AD0303810406 /* CredentialProviderVault.swift in Sources */,
+				295645D9CCF855F20C1C885D /* AIAvailability.swift in Sources */,
+				B552BED2AC1787891F351FCE /* FoundationModelsImageService.swift in Sources */,
+				C1F80E9B4D0676C04BA603EE /* CoreAIExperimentService.swift in Sources */,
+				DDF72435F44ACB3D8A895E54 /* FoundationModelsImageRunView.swift in Sources */,
+				56C5F0DFEBA53D7014EA91A8 /* CoreAIRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1925,6 +1951,7 @@
 				6F18675911B15B1F296EDE58 /* WatchSecurityRunViews.swift in Sources */,
 				339D16E10057AD91E486160D /* WatchConnectivityRunViews.swift in Sources */,
 				60ADF40874822C988C9ACD14 /* WatchDataRunViews.swift in Sources */,
+				A930600DD122A251958F6B47 /* AIAvailability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2131,6 +2158,11 @@
 				E38E3958D97D78CED3B06FFC /* NotificationServicePayload.swift in Sources */,
 				3E68557B6BE8030E8639554B /* EmbeddedAppExtensions.swift in Sources */,
 				34DC751E2BA48315308F9A40 /* CredentialProviderVault.swift in Sources */,
+				B904B6CBF9219C97C58A3EAB /* AIAvailability.swift in Sources */,
+				1F31A079BB9F078F88A4A041 /* FoundationModelsImageService.swift in Sources */,
+				C76071AF7B77FF06A2EB0A09 /* CoreAIExperimentService.swift in Sources */,
+				D9BF17D504A354F447A79C3E /* FoundationModelsImageRunView.swift in Sources */,
+				2C9C6496D0BCB4482A34E1CF /* CoreAIRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
