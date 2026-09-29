@@ -9,6 +9,8 @@ extension ExperimentRegistry {
             explanations: [
                 .hardwareUnsupported: ExperimentExplanation(reason: "This device is not eligible for Apple Intelligence.", required: "An Apple Intelligence-capable device",
                     nextStep: "Run on a device that supports Apple Intelligence."),
+                .regionRestricted: ExperimentExplanation(reason: "SystemLanguageModel.supportsLocale(Locale.current) is false: Apple Intelligence does not support the device's current language and region combination.", required: "A language and region supported by Apple Intelligence",
+                    nextStep: "Change the device language or region (Settings › General › Language & Region) to a supported one, or check Apple's Apple Intelligence availability list."),
                 .unavailable: ExperimentExplanation(reason: "Apple Intelligence is turned off (appleIntelligenceNotEnabled) or the model is still downloading (modelNotReady); the run section shows which.", required: "Apple Intelligence enabled with the model downloaded",
                     nextStep: "Turn on Apple Intelligence in Settings › Apple Intelligence & Siri and wait for the model download to finish."),
             ]),
@@ -20,6 +22,8 @@ extension ExperimentRegistry {
             explanations: [
                 .hardwareUnsupported: ExperimentExplanation(reason: "This device is not eligible for Apple Intelligence.", required: "An Apple Intelligence-capable device",
                     nextStep: "Run on a device that supports Apple Intelligence."),
+                .regionRestricted: ExperimentExplanation(reason: "SystemLanguageModel.supportsLocale(Locale.current) is false: Apple Intelligence does not support the device's current language and region combination.", required: "A language and region supported by Apple Intelligence",
+                    nextStep: "Change the device language or region (Settings › General › Language & Region) to a supported one, or check Apple's Apple Intelligence availability list."),
                 .unavailable: ExperimentExplanation(reason: "Apple Intelligence is turned off (appleIntelligenceNotEnabled) or the model is still downloading (modelNotReady).", required: "Apple Intelligence enabled with the model downloaded",
                     nextStep: "Turn on Apple Intelligence in Settings › Apple Intelligence & Siri and wait for the model download to finish."),
                 .platformUnsupported: ExperimentExplanation(reason: "The FoundationModels module can be imported on tvOS and watchOS, but LanguageModelSession and SystemLanguageModel are unavailable there.", required: "iOS, iPadOS or macOS 26.4+",
@@ -33,6 +37,8 @@ extension ExperimentRegistry {
             explanations: [
                 .osUnsupported: ExperimentExplanation(reason: "Image prompts use Attachment and Transcript.ImageAttachment, and the Vision tools come from _Vision_FoundationModels; all are new in iOS 27 and macOS 27.", required: "iOS 27 or macOS 27 with Apple Intelligence",
                     nextStep: "Update to iOS 27 / macOS 27. Text prompts still work in the Foundation Models experiment."),
+                .regionRestricted: ExperimentExplanation(reason: "SystemLanguageModel.supportsLocale(Locale.current) is false: Apple Intelligence does not support the device's current language and region combination.", required: "A language and region supported by Apple Intelligence",
+                    nextStep: "Change the device language or region (Settings › General › Language & Region) to a supported one."),
                 .hardwareUnsupported: ExperimentExplanation(reason: "This device is not eligible for Apple Intelligence.", required: "An Apple Intelligence-capable device",
                     nextStep: "Run on a device that supports Apple Intelligence."),
                 .unavailable: ExperimentExplanation(reason: "Apple Intelligence is off, the model is still downloading, or SystemLanguageModel.default.capabilities does not contain .vision; the run section shows which.", required: "Apple Intelligence enabled with a vision-capable model",

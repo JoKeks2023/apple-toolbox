@@ -151,7 +151,9 @@ enum ExperimentAvailability {
     static func foundationModels() -> ExperimentStatus {
         #if canImport(FoundationModels) && (os(iOS) || os(macOS))
         switch SystemLanguageModel.default.availability {
-        case .available: return .available
+        case .available:
+            return AppleIntelligenceRegionMapping.status(modelStatus: .available,
+                                                         supportsCurrentLocale: SystemLanguageModel.default.supportsLocale(Locale.current))
         case .unavailable(.deviceNotEligible): return .hardwareUnsupported
         case .unavailable: return .unavailable
         }

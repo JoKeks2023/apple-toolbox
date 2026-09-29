@@ -122,6 +122,8 @@ extension ExperimentAvailability {
         #if canImport(ProximityReader) && os(iOS)
         if credential.checksPaymentCardReader, !PaymentCardReader.isSupported { return .hardwareUnsupported }
         #endif
+        if credential.checksPaymentCardReader,
+           !RegionRestrictedFeature.tapToPay.isSupported(inRegion: RegionRestrictedFeature.currentRegion) { return .regionRestricted }
         return credential.capabilityIDs.contains { IdentityEntitlements.state(ofCapability: $0).isPresent } ? .available : .appleProgramRequired
     }
 }
@@ -188,6 +190,9 @@ final class AdvancedWalletService: ObservableObject {
         if credential?.checksPaymentCardReader == true {
             let supported = PaymentCardReader.isSupported
             checks.append(AdvancedWalletCheck(id: "tap-to-pay-device", title: "PaymentCardReader.isSupported", value: supported ? "true (iPhone XS or later)" : "false: this device model cannot run Tap to Pay on iPhone", passed: supported))
+            let region = RegionRestrictedFeature.currentRegion
+            let inRegion = RegionRestrictedFeature.tapToPay.isSupported(inRegion: region)
+            checks.append(AdvancedWalletCheck(id: "tap-to-pay-region", title: "Device region", value: RegionRestrictedFeature.regionDescription(region) + (inRegion ? " · Tap to Pay on iPhone is offered here" : " · not on Apple's Tap to Pay on iPhone country list"), passed: inRegion))
         }
         #endif
         self.checks = checks

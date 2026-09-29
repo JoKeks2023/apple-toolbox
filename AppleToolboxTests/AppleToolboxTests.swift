@@ -4,7 +4,7 @@ import Foundation
 
 private let unavailableStatuses: [ExperimentStatus] = [
     .permissionRequired, .permissionDenied, .entitlementRequired, .approvalRequired, .hardwareUnsupported, .osUnsupported,
-    .platformUnsupported, .regionRestricted, .appleProgramRequired, .developmentOnly, .deviceOnly, .simulatorOnly, .unavailable,
+    .platformUnsupported, .regionRestricted, .appleProgramRequired, .deviceOnly, .unavailable,
 ]
 
 @MainActor

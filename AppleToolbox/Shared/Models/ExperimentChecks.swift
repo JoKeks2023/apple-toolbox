@@ -65,7 +65,7 @@ extension ExperimentDescriptor {
         }
 
         if status == .regionRestricted {
-            checks.append(ExperimentCheck(id: "region", title: "Region", detail: "Not available in the current region", outcome: .failed))
+            checks.append(ExperimentCheck(id: "region", title: "Region", detail: "Not available in the device region: " + RegionRestrictedFeature.regionDescription(RegionRestrictedFeature.currentRegion), outcome: .failed))
         }
         return checks
     }

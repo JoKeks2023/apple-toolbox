@@ -56,7 +56,9 @@ enum SupportedPlatform: String, CaseIterable, Identifiable {
 enum ExperimentStatus: Hashable {
     case available, permissionRequired, permissionDenied, entitlementRequired, approvalRequired
     case hardwareUnsupported, osUnsupported, platformUnsupported, regionRestricted
-    case appleProgramRequired, developmentOnly, deviceOnly, simulatorOnly, unavailable
+    case appleProgramRequired, deviceOnly, unavailable
+    // No "Development Only" or "Simulator Only" status (SPEC §6): no experiment uses a public API that works only in
+    // development-signed builds (APNs sandbox vs. production is an environment, not a limit) or only in the Simulator.
 
     var title: String {
         switch self {
@@ -70,9 +72,7 @@ enum ExperimentStatus: Hashable {
         case .platformUnsupported: "Platform Unsupported"
         case .regionRestricted: "Region Restricted"
         case .appleProgramRequired: "Apple Program Required"
-        case .developmentOnly: "Development Only"
         case .deviceOnly: "Device Only"
-        case .simulatorOnly: "Simulator Only"
         case .unavailable: "Unavailable"
         }
     }

@@ -498,6 +498,9 @@
 		D75BE35410D2EE881AFC0C64 /* NotificationServicePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B301021DC4DC184EFFD089E /* NotificationServicePayload.swift */; };
 		6F3FE7CA653F5E838D986489 /* AudioFileRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A603B37B531F799216B58E92 /* AudioFileRecorderService.swift */; };
 		ED67F8E2A46FAE09A9C39825 /* AudioFileRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A603B37B531F799216B58E92 /* AudioFileRecorderService.swift */; };
+		6058E8E10C0014928F479EDB /* RegionAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */; };
+		D2E77A0604C7416E4BEC5882 /* RegionAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */; };
+		15EFDB452347B645052D8330 /* RegionAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -839,6 +842,7 @@
 		30CF81111DFE3AE7CD8EFEAB /* FoundationModelsImageRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsImageRunView.swift; path = AppleToolbox/UI/Experiments/FoundationModelsImageRunView.swift; sourceTree = "<group>"; };
 		6918C7E5678D9290A822A6D8 /* CoreAIRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoreAIRunView.swift; path = AppleToolbox/UI/Experiments/CoreAIRunView.swift; sourceTree = "<group>"; };
 		A603B37B531F799216B58E92 /* AudioFileRecorderService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioFileRecorderService.swift; path = AppleToolbox/Shared/Services/AudioFileRecorderService.swift; sourceTree = "<group>"; };
+		321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RegionAvailability.swift; path = AppleToolbox/Shared/Services/RegionAvailability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -1256,6 +1260,7 @@
 				30CF81111DFE3AE7CD8EFEAB /* FoundationModelsImageRunView.swift */,
 				6918C7E5678D9290A822A6D8 /* CoreAIRunView.swift */,
 				A603B37B531F799216B58E92 /* AudioFileRecorderService.swift */,
+				321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1867,6 +1872,7 @@
 				DDF72435F44ACB3D8A895E54 /* FoundationModelsImageRunView.swift in Sources */,
 				56C5F0DFEBA53D7014EA91A8 /* CoreAIRunView.swift in Sources */,
 				6F3FE7CA653F5E838D986489 /* AudioFileRecorderService.swift in Sources */,
+				6058E8E10C0014928F479EDB /* RegionAvailability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1961,6 +1967,7 @@
 				A930600DD122A251958F6B47 /* AIAvailability.swift in Sources */,
 				75C5DF5AB8DFC7A4BF153C4E /* EmbeddedAppExtensions.swift in Sources */,
 				D75BE35410D2EE881AFC0C64 /* NotificationServicePayload.swift in Sources */,
+				15EFDB452347B645052D8330 /* RegionAvailability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2173,6 +2180,7 @@
 				D9BF17D504A354F447A79C3E /* FoundationModelsImageRunView.swift in Sources */,
 				2C9C6496D0BCB4482A34E1CF /* CoreAIRunView.swift in Sources */,
 				ED67F8E2A46FAE09A9C39825 /* AudioFileRecorderService.swift in Sources */,
+				D2E77A0604C7416E4BEC5882 /* RegionAvailability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

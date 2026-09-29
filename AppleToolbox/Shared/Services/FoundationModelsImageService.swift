@@ -177,6 +177,7 @@ final class FoundationModelsImageService: ObservableObject {
         case .osUnsupported: "Requires iOS 27 or macOS 27: image prompts use Transcript.ImageAttachment and Attachment, which this OS version (\(ProcessInfo.processInfo.operatingSystemVersionString)) does not have."
         case .platformUnsupported: "SystemLanguageModel is only available on iOS, iPadOS and macOS."
         case .hardwareUnsupported: "This device is not eligible for Apple Intelligence (deviceNotEligible)."
+        case .regionRestricted: "Apple Intelligence does not support the current language and region (\(Locale.current.identifier)): SystemLanguageModel.supportsLocale returned false."
         default: "The on-device model cannot take image prompts right now: Apple Intelligence is off, the model is still downloading, or it reports no .vision capability (see the facts above)."
         }
     }

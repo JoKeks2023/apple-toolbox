@@ -47,6 +47,8 @@ private extension AdvancedCredential {
         if checksPaymentCardReader {
             explanations[.hardwareUnsupported] = ExperimentExplanation(reason: "PaymentCardReader.isSupported is false: this iPhone model cannot run Tap to Pay on iPhone.", required: "iPhone XS or later",
                                                                        nextStep: "Use a supported iPhone; Tap to Pay does not run on iPad or in the Simulator.")
+            explanations[.regionRestricted] = ExperimentExplanation(reason: "The device region is not on Apple's Tap to Pay on iPhone country list. Availability is decided by the merchant's country and payment service provider; the device region is the closest signal the app can read.", required: "A merchant and payment service provider in a Tap to Pay on iPhone country",
+                                                                    nextStep: "Check Apple's Tap to Pay on iPhone availability page for your country and provider.")
         }
         return ExperimentDescriptor(id: id, name: name, category: .wallet,
             description: summary + " Shown with its Apple program requirements; this app cannot issue it.", frameworks: frameworks, supportedPlatforms: [.iOS],

@@ -23,6 +23,8 @@ extension ExperimentRegistry {
             explanations: [
                 .approvalRequired: ExperimentExplanation(reason: "The HCE entitlement is not provisioned for this app. Apple grants it on request for contactless transactions in the European Economic Area, and CardSession() terminates apps that lack it, so the toolbox does not create a session.", required: "com.apple.developer.nfc.hce plus select-identifier-prefixes covering the demo AID, approved for this App ID; an NFC iPhone with iOS 17.4+ and an Apple Account in the EEA",
                     nextStep: "Apply on Apple's HCE page for contactless transactions in the EEA, enable the capability on the App ID and add both keys to the app's entitlements. The eligibility checks below still run."),
+                .regionRestricted: ExperimentExplanation(reason: "The device region (Settings › General › Language & Region) is outside the European Economic Area. Apple offers host card emulation for contactless transactions in the EEA; CardSession.isEligible checks the Apple Account region and is the final answer.", required: "Device region and Apple Account in the EEA (EU member states, Iceland, Liechtenstein, Norway)",
+                    nextStep: "Use a device and Apple Account set to an EEA country. The run section still shows CardSession.isSupported and isEligible."),
                 .hardwareUnsupported: ExperimentExplanation(reason: "This device has no NFC reader available to apps, or CardSession.isSupported is false for this model.", required: "An NFC-capable iPhone that supports card emulation (iOS 17.4+)",
                     nextStep: "Run the experiment on a supported iPhone."),
             ],

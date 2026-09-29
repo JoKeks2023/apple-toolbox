@@ -41,15 +41,9 @@ extension ExperimentDescriptor {
         case .appleProgramRequired:
             ExperimentExplanation(reason: "The feature is part of an Apple program the team is not enrolled in.", required: entitlementList,
                                   nextStep: "Apply for the Apple program that grants this capability.")
-        case .developmentOnly:
-            ExperimentExplanation(reason: "The API only works in development builds.", required: "A development-signed build",
-                                  nextStep: "Run a debug build from Xcode.")
         case .deviceOnly:
             ExperimentExplanation(reason: "The Simulator cannot provide this feature.", required: "A physical device",
                                   nextStep: "Run the app on a real device.")
-        case .simulatorOnly:
-            ExperimentExplanation(reason: "The feature is only available in the Simulator.", required: "The Simulator",
-                                  nextStep: "Run the app in the Simulator.")
         case .unavailable:
             ExperimentExplanation(reason: "The system reports the feature as currently unavailable.", required: hardware,
                                   nextStep: "Check the device settings and try again later.")

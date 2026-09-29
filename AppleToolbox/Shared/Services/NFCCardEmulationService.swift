@@ -7,10 +7,12 @@ import CoreNFC
 
 extension ExperimentAvailability {
     /// Host card emulation needs an NFC iPhone, a device model that supports CardSession and Apple's HCE entitlement.
-    /// Regional eligibility (`CardSession.isEligible`) is asynchronous and shown by the run view.
+    /// The device region outside the EEA reports Region Restricted; the authoritative regional eligibility
+    /// (`CardSession.isEligible`, by Apple Account region) is asynchronous and shown by the run view.
     static func nfcCardEmulation() -> ExperimentStatus {
         #if canImport(CoreNFC) && os(iOS)
         guard NFCReaderSession.readingAvailable else { return .hardwareUnsupported }
+        guard RegionRestrictedFeature.hostCardEmulation.isSupported(inRegion: RegionRestrictedFeature.currentRegion) else { return .regionRestricted }
         guard NFCCardEmulationService.hceEntitlement.isPresent else { return .approvalRequired }
         return CardSession.isSupported ? .available : .hardwareUnsupported
         #else
@@ -76,6 +78,7 @@ final class NFCCardEmulationService: ObservableObject {
             Check(id: "reader", title: "NFC hardware", value: reading ? "NFCReaderSession.readingAvailable = true" : "No NFC reader available to apps", passed: reading),
             Check(id: "supported", title: "CardSession.isSupported", value: supported ? "true" : "false", passed: supported),
             Check(id: "eligible", title: "CardSession.isEligible", value: eligible.map { $0 ? "true" : "false (region, Apple Account or settings)" } ?? "Not queried: device not supported", passed: eligible),
+            Check(id: "region", title: "Device region", value: RegionRestrictedFeature.regionDescription(RegionRestrictedFeature.currentRegion) + (RegionRestrictedFeature.hostCardEmulation.isSupported(inRegion: RegionRestrictedFeature.currentRegion) ? " · in the EEA" : " · outside the EEA, where Apple offers HCE"), passed: RegionRestrictedFeature.hostCardEmulation.isSupported(inRegion: RegionRestrictedFeature.currentRegion)),
             Check(id: "entitlement", title: Self.entitlementKey, value: IdentityEntitlements.summary(of: entitlement, key: "HCE entitlement"), passed: entitlement.isPresent),
             Check(id: "prefixes", title: "Select identifier prefixes", value: prefixes ?? "Not provisioned; the system only forwards SELECTs for listed AIDs", passed: prefixes != nil),
         ]
