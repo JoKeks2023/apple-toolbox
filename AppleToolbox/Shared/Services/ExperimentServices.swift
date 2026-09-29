@@ -5,9 +5,6 @@ import CryptoKit
 #if canImport(LocalAuthentication)
 import LocalAuthentication
 #endif
-#if canImport(Security)
-import Security
-#endif
 
 enum ExperimentServiceError: LocalizedError {
     case unavailable(String)
@@ -101,65 +98,4 @@ struct CryptoService {
     }
 
     static func run(message: String = defaultMessage) -> String { "\(hash(message: message))\n\n\(signAndVerify(message: message))" }
-}
-
-struct KeychainService {
-    private static let account = "com.jorisconrad.appletoolbox.demo"
-    static func save(value: String = "Keychain test · \(ISO8601DateFormatter().string(from: Date()))") -> String {
-        #if canImport(Security)
-        let value = Data(value.utf8)
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrAccount as String: account]
-        SecItemDelete(query as CFDictionary)
-        var add = query
-        add[kSecValueData as String] = value
-        let saveStatus = SecItemAdd(add as CFDictionary, nil)
-        return "Save: \(statusMessage(saveStatus))\nAccount: \(account)\nValue: \(String(data: value, encoding: .utf8) ?? "<binary>")"
-        #else
-        return "Keychain is not available on this platform."
-        #endif
-    }
-
-    static func read() -> String {
-        #if canImport(Security)
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrAccount as String: account, kSecReturnData as String: true]
-        var result: CFTypeRef?
-        let readStatus = SecItemCopyMatching(query as CFDictionary, &result)
-        let readValue = (result as? Data).flatMap { String(data: $0, encoding: .utf8) } ?? "<no value>"
-        return "Read: \(statusMessage(readStatus))\nValue: \(readValue)"
-        #else
-        return "Keychain is not available on this platform."
-        #endif
-    }
-
-    static func delete() -> String {
-        #if canImport(Security)
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrAccount as String: account]
-        return "Delete: \(statusMessage(SecItemDelete(query as CFDictionary)))"
-        #else
-        return "Keychain is not available on this platform."
-        #endif
-    }
-
-    #if canImport(Security)
-    private static func statusMessage(_ status: OSStatus) -> String {
-        status == errSecSuccess ? "Success" : "OSStatus \(status)"
-    }
-    #endif
-
-    static func run(value: String = "Keychain test") -> String { "\(save(value: value))\n\(read())\n\(delete())" }
-}
-
-struct SecureEnclaveService {
-    static func run(message: String = "Secure Enclave test") throws -> String {
-        #if canImport(CryptoKit)
-        guard SecureEnclave.isAvailable else { throw ExperimentServiceError.unavailable("This device or simulator does not provide a Secure Enclave.") }
-        let key = try SecureEnclave.P256.Signing.PrivateKey()
-        let data = Data(message.utf8)
-        let signature = try key.signature(for: data)
-        let verified = key.publicKey.isValidSignature(signature, for: data)
-        return "Message: \(message)\nNon-exportable key created\nPublic key: \(key.publicKey.rawRepresentation.base64EncodedString())\nSignature verified: \(verified)"
-        #else
-        throw ExperimentServiceError.unavailable("CryptoKit is not available on this platform.")
-        #endif
-    }
 }

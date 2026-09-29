@@ -161,6 +161,8 @@
 		C72C0929AA38B4A4111761A4 /* CoreMLExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B399AF36DD2DBC94357999EB /* CoreMLExperimentService.swift */; };
 		C0D8478351E98CF44B878B77 /* CoreMLRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A4B811E651C528D15ED979 /* CoreMLRunView.swift */; };
 		19ED01DD4247C79666261765 /* CoreMLRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A4B811E651C528D15ED979 /* CoreMLRunView.swift */; };
+		1210675432719EAC472083CE /* SecureStorageServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D20BC5F9B0F34C9FE0D0677 /* SecureStorageServices.swift */; };
+		B00F77C58B2576A8826F664A /* SecureStorageServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D20BC5F9B0F34C9FE0D0677 /* SecureStorageServices.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -299,6 +301,7 @@
 		FD27F86185035C2B50D5C974 /* SoundAnalysisRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SoundAnalysisRunView.swift; path = AppleToolbox/UI/Experiments/SoundAnalysisRunView.swift; sourceTree = "<group>"; };
 		B399AF36DD2DBC94357999EB /* CoreMLExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoreMLExperimentService.swift; path = AppleToolbox/Shared/Services/CoreMLExperimentService.swift; sourceTree = "<group>"; };
 		D7A4B811E651C528D15ED979 /* CoreMLRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoreMLRunView.swift; path = AppleToolbox/UI/Experiments/CoreMLRunView.swift; sourceTree = "<group>"; };
+		0D20BC5F9B0F34C9FE0D0677 /* SecureStorageServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureStorageServices.swift; path = AppleToolbox/Shared/Services/SecureStorageServices.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -508,6 +511,7 @@
 				FD27F86185035C2B50D5C974 /* SoundAnalysisRunView.swift */,
 				B399AF36DD2DBC94357999EB /* CoreMLExperimentService.swift */,
 				D7A4B811E651C528D15ED979 /* CoreMLRunView.swift */,
+				0D20BC5F9B0F34C9FE0D0677 /* SecureStorageServices.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -853,6 +857,7 @@
 				FA06BB08B325D217CEC740B8 /* SoundAnalysisRunView.swift in Sources */,
 				BA863FFDD313AA303D8B81DA /* CoreMLExperimentService.swift in Sources */,
 				C0D8478351E98CF44B878B77 /* CoreMLRunView.swift in Sources */,
+				1210675432719EAC472083CE /* SecureStorageServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -976,6 +981,7 @@
 				2EB473BDDB7DC3B0CB155956 /* SoundAnalysisRunView.swift in Sources */,
 				C72C0929AA38B4A4111761A4 /* CoreMLExperimentService.swift in Sources */,
 				19ED01DD4247C79666261765 /* CoreMLRunView.swift in Sources */,
+				B00F77C58B2576A8826F664A /* SecureStorageServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

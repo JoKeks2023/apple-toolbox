@@ -47,7 +47,9 @@ struct CryptoKitRunView: View {
 
 struct KeychainRunView: View {
     @State private var value = "A secret I chose to store"
+    @State private var protection = KeychainProtection.userPresence
     @State private var output: String
+    @State private var isAuthenticating = false
 
     init(experiment: ExperimentDescriptor) {
         _output = State(initialValue: ExperimentOutput.initialMessage(for: experiment.currentStatus))
@@ -61,13 +63,36 @@ struct KeychainRunView: View {
             Button("Delete", action: { output = KeychainService.delete() })
         }
         .buttonStyle(.borderedProminent)
-        OutputView(text: output, isError: output.localizedCaseInsensitiveContains("failed") || output.localizedCaseInsensitiveContains("not available"))
+        Picker("Protected item", selection: $protection) {
+            ForEach(KeychainProtection.allCases) { Text($0.title).tag($0) }
+        }
+        Button("Save Protected Item") { output = KeychainService.saveProtected(value: value, protection: protection) }
+        Button("Read with Face ID / Touch ID / Passcode", action: readProtected)
+            .disabled(isAuthenticating)
+        Button("Delete Protected Item") { output = KeychainService.deleteProtected() }
+        OutputView(text: output, isError: Self.isFailure(output))
+    }
+
+    private func readProtected() {
+        isAuthenticating = true
+        output = "Waiting for authentication…"
+        Task {
+            output = await KeychainService.readProtected()
+            isAuthenticating = false
+        }
+    }
+
+    private static func isFailure(_ text: String) -> Bool {
+        ["failed", "not available", "errSec", "OSStatus"].contains { text.contains($0) } && !text.contains("errSecSuccess")
     }
 }
 
 struct SecureEnclaveRunView: View {
     @State private var message = "Hello from Joris Apple Toolbox"
+    @State private var requireUserPresence = false
+    @State private var storedKey = "—"
     @State private var output: String
+    @State private var isSigning = false
 
     init(experiment: ExperimentDescriptor) {
         _output = State(initialValue: ExperimentOutput.initialMessage(for: experiment.currentStatus))
@@ -75,11 +100,30 @@ struct SecureEnclaveRunView: View {
 
     var body: some View {
         TextField("Message to sign", text: $message)
-        Button("Create key and sign message") {
+        Button("Sign with a One-Time Key") {
             do { output = try SecureEnclaveService.run(message: message) }
             catch { output = "Error: \(error.localizedDescription)" }
         }
         .buttonStyle(.borderedProminent)
-        OutputView(text: output, isError: output.localizedCaseInsensitiveContains("error") || output.localizedCaseInsensitiveContains("not available"))
+        LabeledContent("Persistent key") { Text(storedKey).multilineTextAlignment(.trailing) }
+            .onAppear { storedKey = SecureEnclaveService.storedKeySummary() }
+        Toggle("Require user presence for a new key", isOn: $requireUserPresence)
+        Button("Sign with Persistent Key", action: signWithPersistentKey)
+            .disabled(isSigning)
+        Button("Delete Persistent Key", role: .destructive) {
+            output = SecureEnclaveService.deletePersistentKey()
+            storedKey = SecureEnclaveService.storedKeySummary()
+        }
+        OutputView(text: output, isError: output.localizedCaseInsensitiveContains("error") || output.localizedCaseInsensitiveContains("not available") || output.localizedCaseInsensitiveContains("failed"))
+    }
+
+    private func signWithPersistentKey() {
+        isSigning = true
+        output = "Loading or creating the Secure Enclave key…"
+        Task {
+            output = await SecureEnclaveService.signWithPersistentKey(message: message, requireUserPresence: requireUserPresence)
+            storedKey = SecureEnclaveService.storedKeySummary()
+            isSigning = false
+        }
     }
 }

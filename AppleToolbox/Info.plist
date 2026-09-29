@@ -14,7 +14,7 @@
 	<key>NSMotionUsageDescription</key>
 	<string>Joris Apple Toolbox reads steps, distance, floors and barometric altitude for the Core Motion experiment.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Joris Apple Toolbox uses Face ID for the LocalAuthentication and Keychain experiments.</string>
+	<string>Joris Apple Toolbox uses Face ID for the LocalAuthentication, Keychain and Secure Enclave experiments.</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Joris Apple Toolbox requests Apple Music access for the MusicKit experiment.</string>
 	<key>NSNearbyInteractionUsageDescription</key>

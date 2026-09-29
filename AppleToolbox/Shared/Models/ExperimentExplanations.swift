@@ -71,7 +71,7 @@ extension ExperimentDescriptor {
                                                         nextStep: "Run on a device with a passcode; in the Simulator enroll Face ID via Features › Face ID."),
         ],
         "secure-enclave": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "This device or simulator does not provide a Secure Enclave.", required: "A device with a Secure Enclave (iPhone 5s or later, Apple silicon or T2 Mac, Apple Watch)",
+            .hardwareUnsupported: ExperimentExplanation(reason: "This device or simulator does not provide a Secure Enclave, so keys can be neither created nor restored.", required: "A device with a Secure Enclave (iPhone 5s or later, Apple silicon or T2 Mac, Apple Watch)",
                                                         nextStep: "Run the experiment on a physical device."),
         ],
         "core-location": [
