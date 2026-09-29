@@ -13,6 +13,8 @@ protocol StoppableExperiment: AnyObject {
 @MainActor
 final class ExperimentLifecycle: ObservableObject {
     private var sessions: [ObjectIdentifier: () -> Void] = [:]
+    /// True while a run view shows a full-screen cover: the detail view then disappears without the user leaving.
+    var isCoverPresented = false
 
     func register(_ service: some StoppableExperiment) {
         sessions[ObjectIdentifier(service)] = { [weak service] in
@@ -37,6 +39,28 @@ extension View {
         modifier(ExperimentSessionRegistration(service: service))
     }
 }
+
+#if !os(macOS)
+extension View {
+    /// Use instead of `fullScreenCover` inside a run view. Presenting a cover takes the detail view off screen, and its
+    /// `onDisappear` would otherwise stop the session the cover belongs to.
+    func experimentFullScreenCover<Cover: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Cover) -> some View {
+        modifier(ExperimentFullScreenCover(isPresented: isPresented, cover: content))
+    }
+}
+
+private struct ExperimentFullScreenCover<Cover: View>: ViewModifier {
+    @Binding var isPresented: Bool
+    let cover: () -> Cover
+    @EnvironmentObject private var lifecycle: ExperimentLifecycle
+
+    func body(content: Content) -> some View {
+        content
+            .onChange(of: isPresented, initial: true) { _, presented in lifecycle.isCoverPresented = presented }
+            .fullScreenCover(isPresented: $isPresented, content: cover)
+    }
+}
+#endif
 
 private struct ExperimentSessionRegistration<Service: StoppableExperiment>: ViewModifier {
     let service: Service

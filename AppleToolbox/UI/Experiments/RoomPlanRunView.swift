@@ -9,7 +9,7 @@ struct RoomPlanRunView: View {
             .disabled(!room.isSupported || room.isActive)
             .experimentSession(room)
             #if canImport(RoomPlan) && os(iOS)
-            .fullScreenCover(isPresented: Binding(get: { room.isPresentingCapture }, set: { if !$0 { room.cancelCapture() } })) {
+            .experimentFullScreenCover(isPresented: Binding(get: { room.isPresentingCapture }, set: { if !$0 { room.cancelCapture() } })) {
                 RoomCaptureScreen(room: room)
             }
             #endif

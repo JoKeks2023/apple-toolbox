@@ -31,7 +31,7 @@ struct ExperimentDetailView: View {
         .navigationTitle(experiment.name)
         .environmentObject(lifecycle)
         .onAppear { WidgetKitExperimentService.recordOpened(experiment) }
-        .onDisappear { lifecycle.stopAll() }
+        .onDisappear { if !lifecycle.isCoverPresented { lifecycle.stopAll() } }
         .experimentActivity(experiment)
     }
 }

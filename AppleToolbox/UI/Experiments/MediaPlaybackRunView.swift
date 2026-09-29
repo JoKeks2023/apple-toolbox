@@ -35,7 +35,7 @@ struct MediaPlaybackRunView: View {
         if media.isActive {
             #if os(tvOS)
             Button("Watch Full Screen", systemImage: "tv") { isShowingPlayer = true }
-                .fullScreenCover(isPresented: $isShowingPlayer) {
+                .experimentFullScreenCover(isPresented: $isShowingPlayer) {
                     PlayerSurface(player: media.player).ignoresSafeArea()
                 }
             #else
