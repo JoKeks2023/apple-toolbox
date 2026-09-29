@@ -71,6 +71,7 @@ struct ContentView: View {
             navigator.request = nil
             open(request)
         }
+        .toolboxActivityHandling()
         // Permissions can change in Settings while the app is in the background.
         .task { await PermissionCenter.shared.refresh() }
         .onChange(of: scenePhase) { if scenePhase == .active { Task { await PermissionCenter.shared.refresh() } } }

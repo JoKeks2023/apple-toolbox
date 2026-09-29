@@ -7,6 +7,7 @@ struct SystemRunRoutes: View {
     var body: some View {
         switch experiment.id {
         case "app-intents": AppIntentsRunView()
+        case "spotlight-siri": SpotlightSiriRunView()
         case "widgetkit": WidgetKitRunView()
         case "notifications": NotificationsRunView()
         case "live-activities": LiveActivitiesRunView()

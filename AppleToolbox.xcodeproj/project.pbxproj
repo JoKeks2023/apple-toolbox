@@ -392,6 +392,15 @@
 		9BE370077080258EF2FA05D5 /* FoundationModelsConversationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6FF5796465EB5A5A804231 /* FoundationModelsConversationService.swift */; };
 		15029C1D6533F4F47D4A448A /* FoundationModelsConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F8E1172050A00A69E329C1 /* FoundationModelsConversationView.swift */; };
 		2C1680A7979D3E08CB28B839 /* FoundationModelsConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F8E1172050A00A69E329C1 /* FoundationModelsConversationView.swift */; };
+		AD48779F5BCD67D6771C4B91 /* SpotlightSiriServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DFE584D3ECB35F9A65785A /* SpotlightSiriServices.swift */; };
+		026BE3DF0DD453893FD769FE /* SpotlightSiriServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DFE584D3ECB35F9A65785A /* SpotlightSiriServices.swift */; };
+		ABFBB966EC9E7C8BD6537A52 /* SpotlightSiriServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DFE584D3ECB35F9A65785A /* SpotlightSiriServices.swift */; };
+		BE298D663E1DCD61ADD2578C /* ToolboxActivityLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682FB13E4C2E5FF50CE10E63 /* ToolboxActivityLog.swift */; };
+		7F326A7C7C0BE75D0C3D51D1 /* ToolboxActivityLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682FB13E4C2E5FF50CE10E63 /* ToolboxActivityLog.swift */; };
+		CD00F7F9B5ED1A617CE62478 /* ToolboxActivityHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8CA2929E893322BAC1DE31 /* ToolboxActivityHandling.swift */; };
+		D76D2BC8EB617E73538E563E /* ToolboxActivityHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8CA2929E893322BAC1DE31 /* ToolboxActivityHandling.swift */; };
+		4A1F60739E8FE19E15A96343 /* SpotlightSiriRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7ADA84633E8639A2484BD /* SpotlightSiriRunView.swift */; };
+		7367B6E7CF56AA61520555B7 /* SpotlightSiriRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7ADA84633E8639A2484BD /* SpotlightSiriRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -642,6 +651,10 @@
 		3BE7377B131EECAB7B646829 /* CreateMLRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateMLRunView.swift; path = AppleToolbox/UI/Experiments/CreateMLRunView.swift; sourceTree = "<group>"; };
 		2C6FF5796465EB5A5A804231 /* FoundationModelsConversationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsConversationService.swift; path = AppleToolbox/Shared/Services/FoundationModelsConversationService.swift; sourceTree = "<group>"; };
 		F6F8E1172050A00A69E329C1 /* FoundationModelsConversationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsConversationView.swift; path = AppleToolbox/UI/Experiments/FoundationModelsConversationView.swift; sourceTree = "<group>"; };
+		61DFE584D3ECB35F9A65785A /* SpotlightSiriServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpotlightSiriServices.swift; path = AppleToolbox/Shared/Services/SpotlightSiriServices.swift; sourceTree = "<group>"; };
+		682FB13E4C2E5FF50CE10E63 /* ToolboxActivityLog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxActivityLog.swift; path = AppleToolbox/Shared/Services/ToolboxActivityLog.swift; sourceTree = "<group>"; };
+		5F8CA2929E893322BAC1DE31 /* ToolboxActivityHandling.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxActivityHandling.swift; path = AppleToolbox/UI/ToolboxActivityHandling.swift; sourceTree = "<group>"; };
+		83D7ADA84633E8639A2484BD /* SpotlightSiriRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpotlightSiriRunView.swift; path = AppleToolbox/UI/Experiments/SpotlightSiriRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -966,6 +979,10 @@
 				3BE7377B131EECAB7B646829 /* CreateMLRunView.swift */,
 				2C6FF5796465EB5A5A804231 /* FoundationModelsConversationService.swift */,
 				F6F8E1172050A00A69E329C1 /* FoundationModelsConversationView.swift */,
+				61DFE584D3ECB35F9A65785A /* SpotlightSiriServices.swift */,
+				682FB13E4C2E5FF50CE10E63 /* ToolboxActivityLog.swift */,
+				5F8CA2929E893322BAC1DE31 /* ToolboxActivityHandling.swift */,
+				83D7ADA84633E8639A2484BD /* SpotlightSiriRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1435,6 +1452,10 @@
 				E3882E73A1E0F2C26A286B20 /* CreateMLRunView.swift in Sources */,
 				97083AC7817B690A08F88E67 /* FoundationModelsConversationService.swift in Sources */,
 				15029C1D6533F4F47D4A448A /* FoundationModelsConversationView.swift in Sources */,
+				AD48779F5BCD67D6771C4B91 /* SpotlightSiriServices.swift in Sources */,
+				BE298D663E1DCD61ADD2578C /* ToolboxActivityLog.swift in Sources */,
+				CD00F7F9B5ED1A617CE62478 /* ToolboxActivityHandling.swift in Sources */,
+				4A1F60739E8FE19E15A96343 /* SpotlightSiriRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1503,6 +1524,7 @@
 				3586B16529E6C8B22ED506A5 /* LiveActivityServices.swift in Sources */,
 				023060AD41FB51B9DC07E5E7 /* SpeechAnalyzerExperimentService.swift in Sources */,
 				7430171C4DF60404B938D33D /* CreateMLExperimentService.swift in Sources */,
+				ABFBB966EC9E7C8BD6537A52 /* SpotlightSiriServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1684,6 +1706,10 @@
 				A231C0454C7D5E6A94BFDFBC /* CreateMLRunView.swift in Sources */,
 				9BE370077080258EF2FA05D5 /* FoundationModelsConversationService.swift in Sources */,
 				2C1680A7979D3E08CB28B839 /* FoundationModelsConversationView.swift in Sources */,
+				026BE3DF0DD453893FD769FE /* SpotlightSiriServices.swift in Sources */,
+				7F326A7C7C0BE75D0C3D51D1 /* ToolboxActivityLog.swift in Sources */,
+				D76D2BC8EB617E73538E563E /* ToolboxActivityHandling.swift in Sources */,
+				7367B6E7CF56AA61520555B7 /* SpotlightSiriRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

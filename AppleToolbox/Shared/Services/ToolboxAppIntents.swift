@@ -98,13 +98,22 @@ struct ExperimentEntity: AppEntity {
     let id: String
     let name: String
     let categoryName: String
+    /// Spotlight metadata; `attributeSet` (SpotlightSiriServices.swift) indexes them on iOS and macOS.
+    let summary: String
+    let frameworks: [String]
+    let symbolName: String
 
-    var displayRepresentation: DisplayRepresentation { DisplayRepresentation(title: "\(name)", subtitle: "\(categoryName)") }
+    var displayRepresentation: DisplayRepresentation {
+        DisplayRepresentation(title: "\(name)", subtitle: "\(categoryName)", image: .init(systemName: symbolName))
+    }
 
     @MainActor init(_ experiment: ExperimentDescriptor) {
         id = experiment.id
         name = experiment.name
         categoryName = experiment.category.rawValue
+        summary = experiment.description
+        frameworks = experiment.frameworks
+        symbolName = experiment.category.symbolName
     }
 }
 
@@ -144,22 +153,23 @@ struct OpenCategoryIntent: AppIntent {
     }
 }
 
-struct OpenExperimentIntent: AppIntent {
+/// An `OpenIntent`, so Spotlight can open an indexed `ExperimentEntity` result with it and Siri can learn from its donations.
+struct OpenExperimentIntent: OpenIntent {
     static let title: LocalizedStringResource = "Open Experiment"
     static let description = IntentDescription("Opens one experiment in Apple Toolbox and reports its current status.")
     static let supportedModes: IntentModes = .foreground
 
     @Parameter(title: "Experiment")
-    var experiment: ExperimentEntity
+    var target: ExperimentEntity
 
-    static var parameterSummary: some ParameterSummary { Summary("Open \(\.$experiment)") }
+    static var parameterSummary: some ParameterSummary { Summary("Open \(\.$target)") }
 
     init() {}
-    init(experiment: ExperimentEntity) { self.experiment = experiment }
+    init(experiment: ExperimentEntity) { self.target = experiment }
 
     @MainActor func perform() async throws -> some IntentResult & ReturnsValue<String> {
-        guard let descriptor = ExperimentRegistry.descriptor(for: experiment.id) else {
-            throw ExperimentServiceError.unavailable("No experiment with the identifier \(experiment.id) exists.")
+        guard let descriptor = ExperimentRegistry.descriptor(for: target.id) else {
+            throw ExperimentServiceError.unavailable("No experiment with the identifier \(target.id) exists.")
         }
         ToolboxNavigator.shared.request = .experiment(descriptor.id)
         return .result(value: "Opened \(descriptor.name): \(descriptor.currentStatus.title).")
