@@ -67,7 +67,7 @@ struct ExperimentRunView: View {
         case "foundation-models": FoundationModelsRunView()
         case "speech": SpeechRunView()
         case "core-ml": StatusCheckRunView(experiment: experiment, title: "Inspect Core ML Availability", check: AIAvailabilityExperimentService.coreMLStatus)
-        case "translation": StatusCheckRunView(experiment: experiment, title: "Inspect Translation Availability", check: AIAvailabilityExperimentService.translationStatus)
+        case "translation": TranslationRunView()
         case "mapkit-search": MapKitSearchRunView()
         case "indoor-imdf": IndoorIMDFRunView()
         case "homekit-discovery": HomeKitRunView()

@@ -149,6 +149,10 @@
 		0CB41EF9F6916BA8B8EBE0DD /* FoundationModelsExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C43E8EDEB728C2587E10D9 /* FoundationModelsExperimentService.swift */; };
 		2285BD54F95825C09D9F42FE /* FoundationModelsRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F3545F3EC2E7A3F004911 /* FoundationModelsRunView.swift */; };
 		C2D9960EBD1F9B2C58EB24EA /* FoundationModelsRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F3545F3EC2E7A3F004911 /* FoundationModelsRunView.swift */; };
+		3EE84E035DEA6980F8CCC682 /* TranslationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C59C4A64C812ED3F1566FAA /* TranslationExperimentService.swift */; };
+		95B490EE4A74EB6720CB39E0 /* TranslationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C59C4A64C812ED3F1566FAA /* TranslationExperimentService.swift */; };
+		4F70786B0D3F281714CFF57B /* TranslationRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7209859E7280C19057CDFF07 /* TranslationRunView.swift */; };
+		117CB580B44B1488A6C4DB2D /* TranslationRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7209859E7280C19057CDFF07 /* TranslationRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -281,6 +285,8 @@
 		83229E403CF1BAF05E43DF3C /* WidgetKitExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WidgetKitExperimentService.swift; path = AppleToolbox/Shared/Services/WidgetKitExperimentService.swift; sourceTree = "<group>"; };
 		67C43E8EDEB728C2587E10D9 /* FoundationModelsExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsExperimentService.swift; path = AppleToolbox/Shared/Services/FoundationModelsExperimentService.swift; sourceTree = "<group>"; };
 		0A5F3545F3EC2E7A3F004911 /* FoundationModelsRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsRunView.swift; path = AppleToolbox/UI/Experiments/FoundationModelsRunView.swift; sourceTree = "<group>"; };
+		6C59C4A64C812ED3F1566FAA /* TranslationExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TranslationExperimentService.swift; path = AppleToolbox/Shared/Services/TranslationExperimentService.swift; sourceTree = "<group>"; };
+		7209859E7280C19057CDFF07 /* TranslationRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TranslationRunView.swift; path = AppleToolbox/UI/Experiments/TranslationRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -484,6 +490,8 @@
 				83229E403CF1BAF05E43DF3C /* WidgetKitExperimentService.swift */,
 				67C43E8EDEB728C2587E10D9 /* FoundationModelsExperimentService.swift */,
 				0A5F3545F3EC2E7A3F004911 /* FoundationModelsRunView.swift */,
+				6C59C4A64C812ED3F1566FAA /* TranslationExperimentService.swift */,
+				7209859E7280C19057CDFF07 /* TranslationRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -823,6 +831,8 @@
 				DD5EBA3D71AA46D7E8B45EA8 /* WidgetKitExperimentService.swift in Sources */,
 				AEFE09B9F7BB0FCD07E8AD24 /* FoundationModelsExperimentService.swift in Sources */,
 				2285BD54F95825C09D9F42FE /* FoundationModelsRunView.swift in Sources */,
+				3EE84E035DEA6980F8CCC682 /* TranslationExperimentService.swift in Sources */,
+				4F70786B0D3F281714CFF57B /* TranslationRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -940,6 +950,8 @@
 				FA3B828667BCFC6B1208E884 /* WidgetKitExperimentService.swift in Sources */,
 				0CB41EF9F6916BA8B8EBE0DD /* FoundationModelsExperimentService.swift in Sources */,
 				C2D9960EBD1F9B2C58EB24EA /* FoundationModelsRunView.swift in Sources */,
+				95B490EE4A74EB6720CB39E0 /* TranslationExperimentService.swift in Sources */,
+				117CB580B44B1488A6C4DB2D /* TranslationRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
