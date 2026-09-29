@@ -448,6 +448,8 @@
 		37E8999898E66B6BDAA683E3 /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
 		F7F4B43FF873E836A519C018 /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
 		2E0675F31F95701E98445A41 /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
+		8F01947230A5AF6E15B350AC /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 9CAA3C4BAB401B38E77978F4 /* AppIcon.icon */; };
+		87D9564D26ECA5B2A6CA8EFB /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 9CAA3C4BAB401B38E77978F4 /* AppIcon.icon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -743,6 +745,7 @@
 		EC7B12C6D2F54B96688718D9 /* AppleToolboxWatchWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleToolboxWatchWidget.swift; path = AppleToolbox/WatchWidget/AppleToolboxWatchWidget.swift; sourceTree = "<group>"; };
 		D906B9CADD3C34A4E50C0F6D /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Signing.xcconfig; path = Config/Signing.xcconfig; sourceTree = "<group>"; };
 		6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxIdentifiers.swift; path = AppleToolbox/Shared/Models/ToolboxIdentifiers.swift; sourceTree = "<group>"; };
+		9CAA3C4BAB401B38E77978F4 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; name = AppIcon.icon; path = AppleToolbox/AppIcon.icon; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -927,6 +930,7 @@
 				1458ECAADB2AE125DF845A13 /* Shared Sources */,
 				59A0C059D1CBDDE4615E7D92 /* Watch App */,
 				26C2310F800CD115CE32E91B /* Assets.xcassets */,
+				9CAA3C4BAB401B38E77978F4 /* AppIcon.icon */,
 				A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */,
 				7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */,
 				D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */,
@@ -1390,6 +1394,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DDA60F5B33B0D35FBB7A2512 /* Assets.xcassets in Resources */,
+				8F01947230A5AF6E15B350AC /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1427,6 +1432,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7344B541ACE0C1C5B9640191 /* Assets.xcassets in Resources */,
+				87D9564D26ECA5B2A6CA8EFB /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

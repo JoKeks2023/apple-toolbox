@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="docs/assets/app-icon.png" width="128" height="128" alt="Apple Toolbox app icon">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/app-icon-dark.png">
+    <img src="docs/assets/app-icon.png" width="128" height="128" alt="Apple Toolbox app icon">
+  </picture>
 </p>
 
 <h1 align="center">Apple Toolbox</h1>
