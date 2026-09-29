@@ -272,6 +272,14 @@
 		02ABC003A3185355863CF6DB /* CredentialProviderExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0D74DD5DE749AD390A76CE /* CredentialProviderExperimentService.swift */; };
 		699E46AF4FF0CAB01F1745B7 /* CredentialRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB91830272F1BE88B8E7D9B1 /* CredentialRunViews.swift */; };
 		9C0B09D44FB1270B23FE6191 /* CredentialRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB91830272F1BE88B8E7D9B1 /* CredentialRunViews.swift */; };
+		331B765286A8D154ABA26D57 /* NFCProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA8E0EB971C3E1C875423C /* NFCProtocols.swift */; };
+		C16D21D6E5DE4A93CE04F6B5 /* NFCProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA8E0EB971C3E1C875423C /* NFCProtocols.swift */; };
+		BBBA693C389E9D0AE1AFA287 /* NFCProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCA8E0EB971C3E1C875423C /* NFCProtocols.swift */; };
+		9C036E685E3BAD3358B5DBBE /* NFCServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C879137E5F59428A25DDF8 /* NFCServices.swift */; };
+		F765AC1A71E7294FB5CE2013 /* NFCServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C879137E5F59428A25DDF8 /* NFCServices.swift */; };
+		A4FAE2166052B2BD24BAA8B5 /* NFCServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C879137E5F59428A25DDF8 /* NFCServices.swift */; };
+		269A9634221738AD32132150 /* NFCRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BC2D8423371FBA4FE69A1A /* NFCRunViews.swift */; };
+		DB7B32A0BF548678745ECF32 /* NFCRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BC2D8423371FBA4FE69A1A /* NFCRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -457,6 +465,9 @@
 		38EED652489B33E4F3FEB0D4 /* KeychainSharingExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeychainSharingExperimentService.swift; path = AppleToolbox/Shared/Services/KeychainSharingExperimentService.swift; sourceTree = "<group>"; };
 		7F0D74DD5DE749AD390A76CE /* CredentialProviderExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CredentialProviderExperimentService.swift; path = AppleToolbox/Shared/Services/CredentialProviderExperimentService.swift; sourceTree = "<group>"; };
 		CB91830272F1BE88B8E7D9B1 /* CredentialRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CredentialRunViews.swift; path = AppleToolbox/UI/Experiments/CredentialRunViews.swift; sourceTree = "<group>"; };
+		1BCA8E0EB971C3E1C875423C /* NFCProtocols.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCProtocols.swift; path = AppleToolbox/Shared/Services/NFCProtocols.swift; sourceTree = "<group>"; };
+		14C879137E5F59428A25DDF8 /* NFCServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCServices.swift; path = AppleToolbox/Shared/Services/NFCServices.swift; sourceTree = "<group>"; };
+		31BC2D8423371FBA4FE69A1A /* NFCRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCRunViews.swift; path = AppleToolbox/UI/Experiments/NFCRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -713,6 +724,9 @@
 				38EED652489B33E4F3FEB0D4 /* KeychainSharingExperimentService.swift */,
 				7F0D74DD5DE749AD390A76CE /* CredentialProviderExperimentService.swift */,
 				CB91830272F1BE88B8E7D9B1 /* CredentialRunViews.swift */,
+				1BCA8E0EB971C3E1C875423C /* NFCProtocols.swift */,
+				14C879137E5F59428A25DDF8 /* NFCServices.swift */,
+				31BC2D8423371FBA4FE69A1A /* NFCRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1105,6 +1119,9 @@
 				CE3299285CD22174A5BC4E12 /* KeychainSharingExperimentService.swift in Sources */,
 				9068EC39398B3D1BDC9D8115 /* CredentialProviderExperimentService.swift in Sources */,
 				699E46AF4FF0CAB01F1745B7 /* CredentialRunViews.swift in Sources */,
+				331B765286A8D154ABA26D57 /* NFCProtocols.swift in Sources */,
+				9C036E685E3BAD3358B5DBBE /* NFCServices.swift in Sources */,
+				269A9634221738AD32132150 /* NFCRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1161,6 +1178,8 @@
 				B301041275C90FCC57124E2F /* Registry+Spatial.swift in Sources */,
 				99F31A8B503B328C5B2DF8E7 /* Registry+System.swift in Sources */,
 				8C69A71A1DAE3AA9A85C297E /* Registry+Wallet.swift in Sources */,
+				BBBA693C389E9D0AE1AFA287 /* NFCProtocols.swift in Sources */,
+				A4FAE2166052B2BD24BAA8B5 /* NFCServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1292,6 +1311,9 @@
 				7E21C7D6AFD069FFEFB579B4 /* KeychainSharingExperimentService.swift in Sources */,
 				02ABC003A3185355863CF6DB /* CredentialProviderExperimentService.swift in Sources */,
 				9C0B09D44FB1270B23FE6191 /* CredentialRunViews.swift in Sources */,
+				C16D21D6E5DE4A93CE04F6B5 /* NFCProtocols.swift in Sources */,
+				F765AC1A71E7294FB5CE2013 /* NFCServices.swift in Sources */,
+				DB7B32A0BF548678745ECF32 /* NFCRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

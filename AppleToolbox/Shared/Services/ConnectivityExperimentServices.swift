@@ -9,10 +9,6 @@ import Network
 import CoreBluetooth
 #endif
 
-#if canImport(CoreNFC) && os(iOS)
-import CoreNFC
-#endif
-
 struct NetworkInterfaceResult: Identifiable, Equatable {
     let id: String
     let name: String
@@ -148,76 +144,3 @@ private extension CBManagerState {
     }
 }
 #endif
-
-@MainActor
-final class NFCExperimentService: NSObject, ObservableObject {
-    @Published private(set) var output = "NFC tag reading is ready."
-    @Published private(set) var isScanning = false
-    @Published private(set) var records: [NFCRecordResult] = []
-    #if canImport(CoreNFC) && os(iOS)
-    private var session: NFCNDEFReaderSession?
-    #endif
-
-    func start() {
-        #if canImport(CoreNFC) && os(iOS)
-        guard NFCNDEFReaderSession.readingAvailable else { output = "NFC reading is not available on this device."; return }
-        records.removeAll()
-        let session = NFCNDEFReaderSession(delegate: self, queue: nil, invalidateAfterFirstRead: true)
-        session.alertMessage = "Hold your iPhone near an NFC tag."
-        self.session = session
-        isScanning = true
-        session.begin()
-        #else
-        output = "Core NFC is only available for NFC-capable iOS devices."
-        #endif
-    }
-
-    func stop() {
-        #if canImport(CoreNFC) && os(iOS)
-        session?.invalidate()
-        session = nil
-        #endif
-        isScanning = false
-    }
-}
-
-#if canImport(CoreNFC) && os(iOS)
-extension NFCExperimentService: NFCNDEFReaderSessionDelegate {
-    // Core NFC calls the delegate on its own serial queue; results hop to the main actor.
-    nonisolated func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
-        let records = messages.flatMap(\.records).enumerated().map { index, record in
-            NFCRecordResult(id: index, format: record.typeNameFormat.rawValue, type: String(data: record.type, encoding: .utf8) ?? "Unknown", payloadBytes: record.payload.count)
-        }
-        let messageCount = messages.count
-        Task { @MainActor [weak self] in
-            self?.records = records
-            self?.output = "Detected \(messageCount) NDEF message(s) with \(records.count) record(s)."
-            self?.isScanning = false
-        }
-    }
-
-    nonisolated func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
-        let code = (error as? NFCReaderError)?.code
-        let message = error.localizedDescription
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            isScanning = false
-            switch code {
-            case .readerSessionInvalidationErrorFirstNDEFTagRead:
-                break // Expected after a successful read with invalidateAfterFirstRead.
-            case .readerSessionInvalidationErrorUserCanceled:
-                if records.isEmpty { output = "NFC scan cancelled." }
-            default:
-                output = "NFC session error: \(message)"
-            }
-        }
-    }
-}
-#endif
-
-struct NFCRecordResult: Identifiable, Equatable {
-    let id: Int
-    let format: UInt8
-    let type: String
-    let payloadBytes: Int
-}

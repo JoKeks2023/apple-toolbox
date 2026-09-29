@@ -7,6 +7,7 @@ struct NFCRunRoutes: View {
     var body: some View {
         switch experiment.id {
         case "core-nfc": CoreNFCRunView()
+        case "nfc-inspector": NFCInspectorRunView()
         default: UnroutedExperimentView()
         }
     }

@@ -54,6 +54,7 @@ extension MotionExperimentService: StoppableExperiment { var isActive: Bool { is
 extension NetworkExperimentService: StoppableExperiment { var isActive: Bool { isMonitoring } }
 extension BluetoothExperimentService: StoppableExperiment { var isActive: Bool { isScanning } }
 extension NFCExperimentService: StoppableExperiment { var isActive: Bool { isScanning } }
+extension NFCInspectorService: StoppableExperiment {}
 extension NearbyExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension MultipeerConnectivityExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension CameraVisionExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }

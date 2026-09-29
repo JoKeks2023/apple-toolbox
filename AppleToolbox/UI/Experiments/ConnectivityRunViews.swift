@@ -14,17 +14,6 @@ struct CoreBluetoothRunView: View {
     }
 }
 
-struct CoreNFCRunView: View {
-    @StateObject private var nfc = NFCExperimentService()
-
-    var body: some View {
-        Button(nfc.isScanning ? "Scanning…" : "Scan NFC Tag", action: nfc.start).buttonStyle(.borderedProminent).disabled(nfc.isScanning)
-            .experimentSession(nfc)
-        NFCRecordsView(records: nfc.records)
-        OutputView(text: nfc.output, isError: nfc.output.localizedCaseInsensitiveContains("not available") || nfc.output.localizedCaseInsensitiveContains("error"))
-    }
-}
-
 struct NetworkPathRunView: View {
     @StateObject private var network = NetworkExperimentService()
 
@@ -156,30 +145,6 @@ private struct NetworkInterfacesView: View {
                         }
                     } icon: {
                         Image(systemName: interface.type.localizedCaseInsensitiveContains("wifi") ? "wifi" : "network")
-                    }
-                }
-            }
-        }
-    }
-}
-
-private struct NFCRecordsView: View {
-    let records: [NFCRecordResult]
-
-    var body: some View {
-        Section("NDEF records (\(records.count))") {
-            if records.isEmpty {
-                Text("Scan a physical NFC tag to inspect its records.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            } else {
-                ForEach(records) { record in
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(record.type)
-                            .font(.headline)
-                        Text("Format \(record.format) · Payload \(record.payloadBytes) bytes")
-                            .font(.caption.monospaced())
-                            .foregroundStyle(.secondary)
                     }
                 }
             }

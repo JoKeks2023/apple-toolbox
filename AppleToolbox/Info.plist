@@ -20,7 +20,22 @@
 	<key>NSNearbyInteractionUsageDescription</key>
 	<string>Joris Apple Toolbox measures distance and direction to a nearby device for the Nearby Interaction experiment.</string>
 	<key>NFCReaderUsageDescription</key>
-	<string>Joris Apple Toolbox reads nearby NFC tags as part of the NFC experiment.</string>
+	<string>Joris Apple Toolbox reads nearby NFC tags, and writes a tag only when you choose to, for the NFC experiments.</string>
+	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
+	<array>
+		<string>D2760000850101</string>
+		<string>A0000002471001</string>
+		<string>A0000006472F0001</string>
+		<string>A000000308000010000100</string>
+		<string>D27600012401</string>
+	</array>
+	<key>com.apple.developer.nfc.readersession.felica.systemcodes</key>
+	<array>
+		<string>12FC</string>
+		<string>88B4</string>
+		<string>0003</string>
+		<string>FE00</string>
+	</array>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Joris Apple Toolbox scans nearby Bluetooth LE peripherals as part of the Bluetooth experiment.</string>
 	<key>NSCameraUsageDescription</key>
