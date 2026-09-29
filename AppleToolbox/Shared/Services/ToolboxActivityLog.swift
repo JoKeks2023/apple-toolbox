@@ -1,13 +1,15 @@
 import Foundation
 import Combine
 
-/// System entry points the app handled in this session (Spotlight results, Siri donations), newest first.
+/// System entry points the app handled in this session (Spotlight results, Siri donations, Handoff, SharePlay), newest first.
 /// The system reports these only as callbacks, so the run views show the app's own record of them.
 @MainActor
 final class ToolboxActivityLog: ObservableObject {
     enum Channel: String, Sendable {
         case spotlight = "Spotlight"
         case siri = "Siri"
+        case handoff = "Handoff"
+        case sharePlay = "SharePlay"
     }
 
     struct Entry: Identifiable {

@@ -401,6 +401,10 @@
 		D76D2BC8EB617E73538E563E /* ToolboxActivityHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8CA2929E893322BAC1DE31 /* ToolboxActivityHandling.swift */; };
 		4A1F60739E8FE19E15A96343 /* SpotlightSiriRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7ADA84633E8639A2484BD /* SpotlightSiriRunView.swift */; };
 		7367B6E7CF56AA61520555B7 /* SpotlightSiriRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D7ADA84633E8639A2484BD /* SpotlightSiriRunView.swift */; };
+		6675B7CD7DD07EE06B7E9073 /* ContinuityLabServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F8046960D319450F28330 /* ContinuityLabServices.swift */; };
+		1BB8DAC3552C226BC956DF2C /* ContinuityLabServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027F8046960D319450F28330 /* ContinuityLabServices.swift */; };
+		CAD0A145762DC2B34F6D2A90 /* ContinuityLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F255CBF1C45008679A430732 /* ContinuityLabRunView.swift */; };
+		BBC6E4EFADAD6EF6C9AFC190 /* ContinuityLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F255CBF1C45008679A430732 /* ContinuityLabRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -655,6 +659,8 @@
 		682FB13E4C2E5FF50CE10E63 /* ToolboxActivityLog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxActivityLog.swift; path = AppleToolbox/Shared/Services/ToolboxActivityLog.swift; sourceTree = "<group>"; };
 		5F8CA2929E893322BAC1DE31 /* ToolboxActivityHandling.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxActivityHandling.swift; path = AppleToolbox/UI/ToolboxActivityHandling.swift; sourceTree = "<group>"; };
 		83D7ADA84633E8639A2484BD /* SpotlightSiriRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpotlightSiriRunView.swift; path = AppleToolbox/UI/Experiments/SpotlightSiriRunView.swift; sourceTree = "<group>"; };
+		027F8046960D319450F28330 /* ContinuityLabServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContinuityLabServices.swift; path = AppleToolbox/Shared/Services/ContinuityLabServices.swift; sourceTree = "<group>"; };
+		F255CBF1C45008679A430732 /* ContinuityLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContinuityLabRunView.swift; path = AppleToolbox/UI/Experiments/ContinuityLabRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -983,6 +989,8 @@
 				682FB13E4C2E5FF50CE10E63 /* ToolboxActivityLog.swift */,
 				5F8CA2929E893322BAC1DE31 /* ToolboxActivityHandling.swift */,
 				83D7ADA84633E8639A2484BD /* SpotlightSiriRunView.swift */,
+				027F8046960D319450F28330 /* ContinuityLabServices.swift */,
+				F255CBF1C45008679A430732 /* ContinuityLabRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1456,6 +1464,8 @@
 				BE298D663E1DCD61ADD2578C /* ToolboxActivityLog.swift in Sources */,
 				CD00F7F9B5ED1A617CE62478 /* ToolboxActivityHandling.swift in Sources */,
 				4A1F60739E8FE19E15A96343 /* SpotlightSiriRunView.swift in Sources */,
+				6675B7CD7DD07EE06B7E9073 /* ContinuityLabServices.swift in Sources */,
+				CAD0A145762DC2B34F6D2A90 /* ContinuityLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1710,6 +1720,8 @@
 				7F326A7C7C0BE75D0C3D51D1 /* ToolboxActivityLog.swift in Sources */,
 				D76D2BC8EB617E73538E563E /* ToolboxActivityHandling.swift in Sources */,
 				7367B6E7CF56AA61520555B7 /* SpotlightSiriRunView.swift in Sources */,
+				1BB8DAC3552C226BC956DF2C /* ContinuityLabServices.swift in Sources */,
+				BBC6E4EFADAD6EF6C9AFC190 /* ContinuityLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

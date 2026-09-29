@@ -54,6 +54,10 @@
 	<string>Joris Apple Toolbox reads the Health data you choose in the HealthKit Reader (activity, heart, sleep, workouts, respiratory, mobility and environmental data) and only shows it on this device.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Joris Apple Toolbox discovers nearby devices and local network services for the MultipeerConnectivity, Network Inspector and Spatial Link experiments, and runs the inspector's echo listener.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>com.jorisconrad.AppleToolbox.experiment</string>
+	</array>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_apple-toolbox._tcp</string>

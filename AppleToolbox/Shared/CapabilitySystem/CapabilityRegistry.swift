@@ -171,7 +171,7 @@ enum CapabilityRegistry {
             requirement: "Enable Game Center and configure leaderboards or achievements in App Store Connect. The player must be signed in to Game Center.", documentation: "gamekit"),
         CapabilityDescriptor(id: "in-app-purchase", name: "In-App Purchase", keys: [], source: .appIDOnly, kind: .developerCapability, platforms: every, framework: "StoreKit",
             requirement: "No entitlement key: In-App Purchase is an App ID setting. Configure products in App Store Connect and accept the Paid Apps agreement.", documentation: "storekit/in-app-purchase"),
-        CapabilityDescriptor(id: "group-activities", name: "Group Activities (SharePlay)", keys: ["com.apple.developer.group-session"], kind: .developerCapability, platforms: mobile + [.macOS, .tvOS], framework: "GroupActivities",
+        CapabilityDescriptor(id: "group-activities", name: "Group Activities (SharePlay)", keys: ["com.apple.developer.group-session"], kind: .developerCapability, platforms: mobile + [.macOS, .tvOS], framework: "GroupActivities", experiment: "ecosystem-continuity",
             requirement: "Enable Group Activities to start shared SharePlay sessions over FaceTime or Messages.", documentation: "xcode/configuring-group-activities"),
         CapabilityDescriptor(id: "push-to-talk", name: "Push to Talk", keys: ["com.apple.developer.push-to-talk"], kind: .developerCapability, platforms: mobile, framework: "PushToTalk",
             requirement: "Enable Push to Talk plus the push-to-talk background mode; audio transport is provided by your own service.", documentation: "pushtotalk"),

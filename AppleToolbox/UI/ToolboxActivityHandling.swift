@@ -4,13 +4,14 @@ import CoreSpotlight
 #endif
 
 extension View {
-    /// App-wide system entry points: keeps the Spotlight index current and opens tapped Spotlight results
-    /// through `ToolboxNavigator`.
+    /// App-wide system entry points: keeps the Spotlight index current, and opens tapped Spotlight results,
+    /// Handoffs from other devices and experiments shared over SharePlay through `ToolboxNavigator`.
     func toolboxActivityHandling() -> some View {
         modifier(ToolboxActivityHandling())
     }
 
-    /// Per-experiment system integration: donates the Open Experiment intent when the experiment opens.
+    /// Per-experiment system integration: donates the Open Experiment intent when the experiment opens,
+    /// advertises it for Handoff, and shares it with a joined SharePlay session.
     func experimentActivity(_ experiment: ExperimentDescriptor) -> some View {
         modifier(ExperimentActivity(experiment: experiment))
     }
@@ -23,6 +24,12 @@ private struct ToolboxActivityHandling: ViewModifier {
             .task { await ExperimentSpotlightIndex.synchronizeOnLaunch() }
             .onContinueUserActivity(CSSearchableItemActionType, perform: ExperimentSpotlightIndex.continueFromSpotlight)
         #endif
+        #if os(iOS) || os(macOS)
+            .onContinueUserActivity(ExperimentHandoff.activityType, perform: ExperimentHandoff.continueActivity)
+        #endif
+        #if canImport(GroupActivities) && (os(iOS) || os(macOS))
+            .task { await SharePlayCoordinator.shared.observeSessions() }
+        #endif
     }
 }
 
@@ -31,6 +38,14 @@ private struct ExperimentActivity: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .task(id: experiment.id) { await IntentDonationLog.shared.donateOpen(experiment) }
+            .task(id: experiment.id) {
+                #if canImport(GroupActivities) && (os(iOS) || os(macOS))
+                SharePlayCoordinator.shared.experimentOpened(experiment.id)
+                #endif
+                await IntentDonationLog.shared.donateOpen(experiment)
+            }
+        #if os(iOS) || os(macOS)
+            .userActivity(ExperimentHandoff.activityType) { ExperimentHandoff.configure($0, for: experiment) }
+        #endif
     }
 }

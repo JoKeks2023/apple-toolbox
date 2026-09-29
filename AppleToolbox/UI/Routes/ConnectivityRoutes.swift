@@ -13,6 +13,7 @@ struct ConnectivityRunRoutes: View {
         case "bluetooth-midi": BluetoothMIDIRunView()
         case "multipeer-connectivity": MultipeerRunView()
         case "continuity": WatchConnectivityRunView()
+        case "ecosystem-continuity": ContinuityLabRunView()
         case "nearby-interaction": NearbyInteractionRunView()
         case "spatial-link": SpatialLinkRunView()
         default: UnroutedExperimentView()
