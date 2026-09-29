@@ -8,6 +8,7 @@ struct NFCRunRoutes: View {
         switch experiment.id {
         case "core-nfc": CoreNFCRunView()
         case "nfc-inspector": NFCInspectorRunView()
+        case "nfc-card-emulation": NFCCardEmulationRunView()
         default: UnroutedExperimentView()
         }
     }

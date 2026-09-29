@@ -211,7 +211,7 @@ enum CapabilityRegistry {
             requirement: "Request the entitlement with Apple's request form; the person must consent before the app can read financial data.", documentation: entitlement("com.apple.developer.financekit")),
 
         CapabilityDescriptor(id: "nfc-hce", name: "NFC Host Card Emulation", keys: ["com.apple.developer.nfc.hce"], kind: .specialEntitlement, access: .appleApproval, platforms: phone, framework: "CoreNFC",
-            region: "European Economic Area", hardware: "NFC-capable iPhone.", experiment: "core-nfc",
+            region: "European Economic Area", hardware: "NFC-capable iPhone.", experiment: "nfc-card-emulation",
             requirement: "Apply to Apple for the HCE entitlement and list the supported application identifier prefixes. Check CardSession.isSupported and isEligible at runtime.", documentation: entitlement("com.apple.developer.nfc.hce")),
         CapabilityDescriptor(id: "sensorkit", name: "SensorKit", keys: ["com.apple.developer.sensorkit.reader.allow"], kind: .specialEntitlement, access: .appleApproval, platforms: mobile + [.watchOS], framework: "SensorKit",
             requirement: "Only for research: Apple must approve the research study before it grants reader access to sensor data.", documentation: entitlement("com.apple.developer.sensorkit.reader.allow")),

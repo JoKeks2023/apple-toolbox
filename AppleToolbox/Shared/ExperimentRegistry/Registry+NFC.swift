@@ -17,5 +17,15 @@ extension ExperimentRegistry {
                     nextStep: "Run the inspector on an NFC-capable iPhone. ISO 7816 cards are only reported for AIDs listed in Info.plist, FeliCa cards only for listed system codes."),
             ],
             applePrograms: ["Apple Developer Program: NFC Tag Reading is not available to free Personal Teams"]),
+        ExperimentDescriptor(id: "nfc-card-emulation", name: "NFC Card Emulation", category: .nfc,
+            description: "Check CardSession support and eligibility, hold a presentment intent, and emulate an ISO 7816 card that answers a reader's SELECT for a demo AID, with every session lifecycle event and APDU logged.", frameworks: ["CoreNFC"], supportedPlatforms: [.iOS], hardwareRequirements: ["NFC-capable iPhone that supports card emulation"], osRequirements: ["iOS 17.4+"], permissions: ["Card emulation consent on the first session"], capabilities: ["Host Card Emulation (HCE), approved by Apple"], entitlements: ["com.apple.developer.nfc.hce", "com.apple.developer.nfc.hce.iso7816.select-identifier-prefixes"], documentationURL: URL(string: "https://developer.apple.com/documentation/corenfc/cardsession")!, evaluate: ExperimentAvailability.nfcCardEmulation,
+            useCase: ExperimentUseCase(id: "hce-demo-card", title: "Emulate a card", summary: "See what an approved HCE app goes through: support and eligibility checks, the presentment intent, and APDUs from a real reader.", interaction: "Run the checks; when eligible, start a card session and hold the iPhone to an ISO 7816 reader that selects the demo AID. Each event and APDU exchange is logged."),
+            explanations: [
+                .approvalRequired: ExperimentExplanation(reason: "The HCE entitlement is not provisioned for this app. Apple grants it on request for contactless transactions in the European Economic Area, and CardSession() terminates apps that lack it, so the toolbox does not create a session.", required: "com.apple.developer.nfc.hce plus select-identifier-prefixes covering the demo AID, approved for this App ID; an NFC iPhone with iOS 17.4+ and an Apple Account in the EEA",
+                    nextStep: "Apply on Apple's HCE page for contactless transactions in the EEA, enable the capability on the App ID and add both keys to the app's entitlements. The eligibility checks below still run."),
+                .hardwareUnsupported: ExperimentExplanation(reason: "This device has no NFC reader available to apps, or CardSession.isSupported is false for this model.", required: "An NFC-capable iPhone that supports card emulation (iOS 17.4+)",
+                    nextStep: "Run the experiment on a supported iPhone."),
+            ],
+            applePrograms: ["Host Card Emulation entitlement: Apple approval for contactless transactions in the European Economic Area"]),
     ]
 }

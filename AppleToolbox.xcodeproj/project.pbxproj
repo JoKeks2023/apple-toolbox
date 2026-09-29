@@ -280,6 +280,9 @@
 		A4FAE2166052B2BD24BAA8B5 /* NFCServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C879137E5F59428A25DDF8 /* NFCServices.swift */; };
 		269A9634221738AD32132150 /* NFCRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BC2D8423371FBA4FE69A1A /* NFCRunViews.swift */; };
 		DB7B32A0BF548678745ECF32 /* NFCRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BC2D8423371FBA4FE69A1A /* NFCRunViews.swift */; };
+		BBC84843EEFF90019351E351 /* NFCCardEmulationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E24B1DB8BDDE4F55B62ACFC /* NFCCardEmulationService.swift */; };
+		B793C799629853AE2E2159EB /* NFCCardEmulationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E24B1DB8BDDE4F55B62ACFC /* NFCCardEmulationService.swift */; };
+		3B8E09A97490A34B1516809F /* NFCCardEmulationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E24B1DB8BDDE4F55B62ACFC /* NFCCardEmulationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -468,6 +471,7 @@
 		1BCA8E0EB971C3E1C875423C /* NFCProtocols.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCProtocols.swift; path = AppleToolbox/Shared/Services/NFCProtocols.swift; sourceTree = "<group>"; };
 		14C879137E5F59428A25DDF8 /* NFCServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCServices.swift; path = AppleToolbox/Shared/Services/NFCServices.swift; sourceTree = "<group>"; };
 		31BC2D8423371FBA4FE69A1A /* NFCRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCRunViews.swift; path = AppleToolbox/UI/Experiments/NFCRunViews.swift; sourceTree = "<group>"; };
+		8E24B1DB8BDDE4F55B62ACFC /* NFCCardEmulationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCCardEmulationService.swift; path = AppleToolbox/Shared/Services/NFCCardEmulationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -727,6 +731,7 @@
 				1BCA8E0EB971C3E1C875423C /* NFCProtocols.swift */,
 				14C879137E5F59428A25DDF8 /* NFCServices.swift */,
 				31BC2D8423371FBA4FE69A1A /* NFCRunViews.swift */,
+				8E24B1DB8BDDE4F55B62ACFC /* NFCCardEmulationService.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1122,6 +1127,7 @@
 				331B765286A8D154ABA26D57 /* NFCProtocols.swift in Sources */,
 				9C036E685E3BAD3358B5DBBE /* NFCServices.swift in Sources */,
 				269A9634221738AD32132150 /* NFCRunViews.swift in Sources */,
+				BBC84843EEFF90019351E351 /* NFCCardEmulationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1180,6 +1186,7 @@
 				8C69A71A1DAE3AA9A85C297E /* Registry+Wallet.swift in Sources */,
 				BBBA693C389E9D0AE1AFA287 /* NFCProtocols.swift in Sources */,
 				A4FAE2166052B2BD24BAA8B5 /* NFCServices.swift in Sources */,
+				3B8E09A97490A34B1516809F /* NFCCardEmulationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1314,6 +1321,7 @@
 				C16D21D6E5DE4A93CE04F6B5 /* NFCProtocols.swift in Sources */,
 				F765AC1A71E7294FB5CE2013 /* NFCServices.swift in Sources */,
 				DB7B32A0BF548678745ECF32 /* NFCRunViews.swift in Sources */,
+				B793C799629853AE2E2159EB /* NFCCardEmulationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

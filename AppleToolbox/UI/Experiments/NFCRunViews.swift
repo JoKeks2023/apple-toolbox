@@ -122,6 +122,59 @@ struct NFCInspectorRunView: View {
     }
 }
 
+struct NFCCardEmulationRunView: View {
+    @StateObject private var card = NFCCardEmulationService()
+
+    var body: some View {
+        Section("Eligibility") {
+            ForEach(card.checks) { check in
+                LabeledContent {
+                    Text(check.value).font(.caption).multilineTextAlignment(.trailing)
+                } label: {
+                    Label(check.title, systemImage: check.passed == true ? "checkmark.circle.fill" : check.passed == false ? "xmark.octagon.fill" : "minus.circle")
+                }
+            }
+            Button("Re-check Eligibility", systemImage: "arrow.clockwise") {
+                Task { await card.refreshChecks() }
+            }
+        }
+        .task { await card.refreshChecks() }
+        Picker("Start emulation", selection: $card.startMode) {
+            ForEach(NFCCardEmulationService.StartMode.allCases) { Text($0.rawValue).tag($0) }
+        }
+        LabeledContent("Demo AID") {
+            Text(CardEmulationDemo.aidHex).font(.caption.monospaced())
+        }
+        HStack {
+            Button(card.isRunning ? "Session running…" : "Start Card Session", systemImage: "wave.3.left", action: card.start)
+                .buttonStyle(.borderedProminent)
+                .disabled(!card.canStart || card.isRunning)
+            if card.isRunning {
+                Button("Stop", action: card.stop).buttonStyle(.bordered)
+            }
+        }
+        .experimentSession(card)
+        LabeledContent("Presentment intent", value: card.presentment)
+        HStack {
+            Button("Acquire Presentment Intent", action: card.acquirePresentmentIntent)
+                .disabled(!card.canStart)
+            Button("Release", action: card.releasePresentmentIntent)
+        }
+        .buttonStyle(.bordered)
+        OutputView(text: card.output, isError: card.isError)
+        Section("Session events (\(card.events.count))") {
+            if card.events.isEmpty {
+                Text("sessionStarted, readerDetected, each received APDU with the demo response, readerDeselected and sessionInvalidated appear here, newest first. The demo card only answers SELECT \(CardEmulationDemo.aidHex).")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(Array(card.events.enumerated()), id: \.offset) { _, event in
+                    Text(event).font(.caption.monospaced())
+                }
+            }
+        }
+    }
+}
 private struct NFCInspectedTagView: View {
     let tag: NFCInspectedTag
 

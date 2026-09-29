@@ -93,4 +93,35 @@ struct NFCProtocolTests {
         NFCInspectorHistory.save([], to: defaults)
         #expect(NFCInspectorHistory.load(from: defaults).isEmpty)
     }
+
+    @Test func commandAPDUCases() throws {
+        let case1 = try #require(ISO7816CommandAPDU(Data([0x00, 0xB0, 0x00, 0x00])))
+        #expect(case1.data.isEmpty && case1.expectedLength == nil)
+        let case2 = try #require(ISO7816CommandAPDU(Data([0x00, 0xB0, 0x00, 0x00, 0x00])))
+        #expect(case2.expectedLength == 256)
+        let aid = Data([0xF0, 0x41, 0x54, 0x42, 0x44, 0x45, 0x4D, 0x4F])
+        let case3 = try #require(ISO7816CommandAPDU(Data([0x00, 0xA4, 0x04, 0x00, 0x08]) + aid))
+        #expect(case3.data == aid && case3.expectedLength == nil && case3.isSelectByName)
+        let case4 = try #require(ISO7816CommandAPDU(ISO7816Command.selectByName(aid)))
+        #expect(case4.data == aid && case4.expectedLength == 256)
+        let extendedLe = try #require(ISO7816CommandAPDU(Data([0x00, 0xB0, 0x00, 0x00, 0x00, 0x01, 0x00])))
+        #expect(extendedLe.expectedLength == 256)
+        let extended = try #require(ISO7816CommandAPDU(Data([0x00, 0xD6, 0x00, 0x00, 0x00, 0x00, 0x02, 0xAA, 0xBB, 0x00, 0x00])))
+        #expect(extended.data == Data([0xAA, 0xBB]) && extended.expectedLength == 65536)
+        #expect(ISO7816CommandAPDU(Data([0x00, 0xA4, 0x04])) == nil)
+        #expect(ISO7816CommandAPDU(Data([0x00, 0xA4, 0x04, 0x00, 0x05, 0x01])) == nil)
+    }
+
+    @Test func demoCardAnswersOnlyItsOwnSelect() throws {
+        let aid = try #require(NFCHex.data(CardEmulationDemo.aidHex))
+        #expect((5...16).contains(aid.count))
+        #expect(CardEmulationDemo.aidHex.hasPrefix("F"), "proprietary, unregistered AID category")
+        let selected = CardEmulationDemo.response(to: ISO7816Command.selectByName(aid))
+        #expect(selected.response == CardEmulationDemo.greeting + Data([0x90, 0x00]))
+        #expect(selected.note.contains("9000"))
+        let otherAID = CardEmulationDemo.response(to: ISO7816Command.selectByName(Data([0xA0, 0x00, 0x00, 0x02, 0x47, 0x10, 0x01])))
+        #expect(otherAID.response == Data([0x6A, 0x82]))
+        #expect(CardEmulationDemo.response(to: Data([0x00, 0xB0, 0x00, 0x00, 0x00])).response == Data([0x6D, 0x00]))
+        #expect(CardEmulationDemo.response(to: Data([0x00])).response == Data([0x67, 0x00]))
+    }
 }

@@ -74,6 +74,81 @@ nonisolated enum ISO7816Command {
     }
 }
 
+/// A parsed ISO/IEC 7816-4 command APDU in short or extended length encoding.
+nonisolated struct ISO7816CommandAPDU: Equatable, Sendable {
+    let cla: UInt8
+    let ins: UInt8
+    let p1: UInt8
+    let p2: UInt8
+    let data: Data
+    /// Ne, the maximum response length the reader expects; nil when the command has no Le field.
+    let expectedLength: Int?
+
+    /// Parses the four APDU cases (no data/no Le, Le only, data only, data and Le); nil when the lengths do not add up.
+    init?(_ bytes: Data) {
+        let bytes = [UInt8](bytes)
+        guard bytes.count >= 4 else { return nil }
+        cla = bytes[0]
+        ins = bytes[1]
+        p1 = bytes[2]
+        p2 = bytes[3]
+        let body = Array(bytes.dropFirst(4))
+        if body.isEmpty {
+            data = Data()
+            expectedLength = nil
+        } else if body.count == 1 {
+            data = Data()
+            expectedLength = body[0] == 0 ? 256 : Int(body[0])
+        } else if body[0] != 0 {
+            let lc = Int(body[0])
+            guard body.count == 1 + lc || body.count == 2 + lc else { return nil }
+            data = Data(body[1...lc])
+            expectedLength = body.count == 2 + lc ? (body[1 + lc] == 0 ? 256 : Int(body[1 + lc])) : nil
+        } else {
+            guard body.count >= 3 else { return nil }
+            let length = Int(body[1]) << 8 | Int(body[2])
+            if body.count == 3 {
+                data = Data()
+                expectedLength = length == 0 ? 65536 : length
+            } else {
+                guard length > 0, body.count == 3 + length || body.count == 5 + length else { return nil }
+                data = Data(body[3..<3 + length])
+                if body.count == 5 + length {
+                    let le = Int(body[3 + length]) << 8 | Int(body[4 + length])
+                    expectedLength = le == 0 ? 65536 : le
+                } else {
+                    expectedLength = nil
+                }
+            }
+        }
+    }
+
+    /// SELECT by DF name, the command a reader uses to pick an application by AID.
+    var isSelectByName: Bool { ins == 0xA4 && p1 == 0x04 }
+}
+
+/// The stateless demo card behind the card emulation experiment. It is not a credential: it only answers SELECT for its
+/// own proprietary AID with a fixed greeting.
+nonisolated enum CardEmulationDemo {
+    /// Proprietary AID (category F, not registered with ISO): F0 followed by ASCII "ATBDEMO".
+    static let aidHex = "F041544244454D4F"
+    static let greeting = Data("APPLE TOOLBOX DEMO".utf8)
+
+    static func response(to command: Data) -> (response: Data, note: String) {
+        guard let apdu = ISO7816CommandAPDU(command) else { return reply(Data(), 0x67, 0x00, "Malformed command APDU") }
+        guard apdu.isSelectByName else { return reply(Data(), 0x6D, 0x00, "INS \(String(format: "%02X", apdu.ins)) is not implemented by the demo card") }
+        guard apdu.data == NFCHex.data(aidHex) else {
+            return reply(Data(), 0x6A, 0x82, "SELECT \(NFCHex.string(apdu.data, separator: "")) is not the demo AID")
+        }
+        return reply(greeting, 0x90, 0x00, "SELECT demo AID, answered with “APPLE TOOLBOX DEMO”")
+    }
+
+    private static func reply(_ payload: Data, _ sw1: UInt8, _ sw2: UInt8, _ context: String) -> (response: Data, note: String) {
+        let status = ISO7816StatusWord(sw1: sw1, sw2: sw2)
+        return (payload + Data([sw1, sw2]), "\(context) → \(status.hex) \(status.meaning)")
+    }
+}
+
 /// Info.plist keys that Core NFC reads before it selects applications or polls FeliCa system codes.
 nonisolated enum NFCInfoPlist {
     static let iso7816SelectIdentifiersKey = "com.apple.developer.nfc.readersession.iso7816.select-identifiers"
