@@ -11,18 +11,6 @@ struct MapKitSearchRunView: View {
     }
 }
 
-struct NotificationsRunView: View {
-    @StateObject private var notifications = NotificationExperimentService()
-
-    var body: some View {
-        HStack {
-            Button("Request Notification Authorization", action: notifications.requestAuthorization).buttonStyle(.borderedProminent)
-            Button("Schedule Test Notification", action: notifications.scheduleTestNotification).buttonStyle(.bordered)
-        }
-        OutputView(text: notifications.output, isError: notifications.output.localizedCaseInsensitiveContains("error") || notifications.output.localizedCaseInsensitiveContains("denied"))
-    }
-}
-
 struct WalletPassCreatorRunView: View {
     @StateObject private var walletCreator = WalletPassCreatorService()
 

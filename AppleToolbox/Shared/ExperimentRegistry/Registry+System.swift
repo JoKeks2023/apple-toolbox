@@ -11,6 +11,15 @@ extension ExperimentRegistry {
                     nextStep: "Register the App Group for both App IDs in Signing & Capabilities and reinstall the app."),
             ]),
         ExperimentDescriptor(id: "notifications", name: "UserNotifications", category: .system,
-            description: "Request notification authorization and schedule one real local test notification.", frameworks: ["UserNotifications"], supportedPlatforms: [.iOS, .iPadOS, .macOS, .watchOS, .tvOS], hardwareRequirements: [], osRequirements: ["iOS 10+ · macOS 10.14+ · watchOS 3+ · tvOS 10+"], permissions: ["Notification authorization"], capabilities: ["Alerts, sounds, badges"], entitlements: [], documentationURL: URL(string: "https://developer.apple.com/documentation/usernotifications")!, evaluate: ExperimentAvailability.notifications),
+            description: "Schedule real local notifications with categories and actions (text input, authentication-required, destructive), interruption levels, a runtime-rendered image attachment, threads and badges; log every delegate callback, draw one category with a notification content extension, register for APNs and probe the time-sensitive, critical-alert and communication boundaries.", frameworks: ["UserNotifications", "UserNotificationsUI", "Intents", "UIKit"], supportedPlatforms: [.iOS, .iPadOS, .macOS, .watchOS, .tvOS], hardwareRequirements: [], osRequirements: ["iOS 15+ · macOS 12+ · watchOS 8+ · tvOS 15+ (tvOS: badge only)"], permissions: ["Notification authorization"], capabilities: ["Alerts, sounds, badges", "Notification categories and actions", "Notification content extension (iOS)", "Push Notifications", "Time Sensitive Notifications"], entitlements: ["aps-environment", "com.apple.developer.usernotifications.time-sensitive"], documentationURL: URL(string: "https://developer.apple.com/documentation/usernotifications")!, evaluate: ExperimentAvailability.notifications,
+            useCase: ExperimentUseCase(id: "notifications-lab", title: "Build, deliver and answer a notification",
+                summary: "Compose a notification with a category, interruption level, thread and a freshly rendered image, then act on it from the Lock Screen or Notification Center.",
+                interaction: "Request authorization, schedule with a delay, leave the app and use Reply, Mark Verified, Open or Delete. The delegate log shows every response, even when the app was closed."),
+            explanations: [
+                .permissionRequired: ExperimentExplanation(reason: "Notification authorization has not been requested yet, or its state has not been read in this session.", required: "Notification authorization (alert, sound, badge) or provisional authorization",
+                    nextStep: "Tap Request Authorization below; provisional authorization delivers quietly without a prompt."),
+                .permissionDenied: ExperimentExplanation(reason: "Notifications are turned off for Apple Toolbox.", required: "Notification authorization for Apple Toolbox",
+                    nextStep: "Allow notifications for Apple Toolbox in Settings › Notifications, then re-read the settings."),
+            ]),
     ]
 }

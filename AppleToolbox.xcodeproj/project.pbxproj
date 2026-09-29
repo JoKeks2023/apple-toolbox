@@ -48,7 +48,6 @@
 		8C61E5E3F42FE1E43DB3FE6F /* ExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16267023E26A916BA5DC5D26 /* ExperimentServices.swift */; };
 		8D9D9A3A56C4A4590D09AB8B /* CapabilityExplorerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30846DAAA11AF56E4F480E57 /* CapabilityExplorerService.swift */; };
 		8DD9C5B838BB612227F681DF /* MotionExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2879F1D49212E98DB2D386 /* MotionExperimentService.swift */; };
-		8EC214171F1DEC0594DF6882 /* HealthNotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C041F896020A77B69B72580 /* HealthNotificationServices.swift */; };
 		91CC11B62E3D1BEA03C44E33 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
 		91E83B85C98E0E41373D53D1 /* MediaAvailabilityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */; };
 		980C2D665DD1DE7D7EEDE068 /* WalletPassCreatorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED66FED6768B2835466E441 /* WalletPassCreatorService.swift */; };
@@ -62,7 +61,6 @@
 		B34FC4792DE8CC4C2BA80188 /* NearbyExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA737256039EE77698DB285C /* NearbyExperimentServices.swift */; };
 		BAD186DD3906B29BC30A39F4 /* MapsHomeServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81AEA9A9C0AC03477B076D4 /* MapsHomeServices.swift */; };
 		C06E0D233CB35A8B959B5923 /* ExperimentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7B0A6A0517FE7E238BD925 /* ExperimentRegistry.swift */; };
-		C08C990114221453FB6071CD /* HealthNotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C041F896020A77B69B72580 /* HealthNotificationServices.swift */; };
 		C459A48F1A3C153AA387968E /* CapabilityInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56858954E5E0944457C887E7 /* CapabilityInspector.swift */; };
 		C514AEDB5778C761216787A8 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */; };
 		C87BA9EBE5EFFA7E1D9CCAF7 /* LocationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD687BE384F8DCADBE6832B4 /* LocationExperimentService.swift */; };
@@ -75,7 +73,6 @@
 		E395E65F9B94FCEE553C1DCA /* MediaAvailabilityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */; };
 		F118426398FB6D04E6035390 /* AIExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6AA785AF459607AEC827E /* AIExperimentServices.swift */; };
 		FC40B35B27A98F4CBFAB4BE1 /* AIHealthWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C7C68C7DB227D9B4A1536 /* AIHealthWalletServices.swift */; };
-		FCFC87520A08182724B83279 /* HealthNotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C041F896020A77B69B72580 /* HealthNotificationServices.swift */; };
 		7344B541ACE0C1C5B9640191 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26C2310F800CD115CE32E91B /* Assets.xcassets */; };
 		AF378B46B735EFE2034472E2 /* AppleToolbox watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7C1C9A39A25D48656AA850C5 /* AppleToolbox watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		801E4823A9EAF6BDEC73A2B8 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = A395619DDA2EDDAFDB34F869 /* Components.swift */; };
@@ -334,28 +331,37 @@
 		FE78E57D2C83B8C168F997B8 /* SpatialLinkServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5635DB0551FD85E581141B13 /* SpatialLinkServices.swift */; };
 		3822BD5982F50EC9694228A3 /* SpatialLinkRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B6C6DC12A0634919A138E /* SpatialLinkRunView.swift */; };
 		F69D8FB5911B5C18C1B01C2D /* SpatialLinkRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B6C6DC12A0634919A138E /* SpatialLinkRunView.swift */; };
-		BF4B34718DBDBAD6E085DF72 /* HomeKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082468F2A161F7880FFEBCDF /* HomeKitServices.swift */; };
-		A324F4B94954D7E6F314BBAA /* HomeKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082468F2A161F7880FFEBCDF /* HomeKitServices.swift */; };
-		60721A72B5822822F70088BF /* HomeKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082468F2A161F7880FFEBCDF /* HomeKitServices.swift */; };
-		A2BEBB310ACADE24D9A8E160 /* HomeRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */; };
-		E32A3B47C949B8EDDAD22968 /* HomeRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */; };
-		90DC4FA15A53BC9C6EF47773 /* HealthKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */; };
-		E13F6518A7D8CE79E9728906 /* HealthKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */; };
-		D60C7FFDCC3637CC2A24C016 /* HealthKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */; };
-		DA50FEFC27E81BDEF0827783 /* HealthRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469DACD79441802363A7C56 /* HealthRunViews.swift */; };
-		904B20C154C8E4321B8D38A8 /* HealthRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469DACD79441802363A7C56 /* HealthRunViews.swift */; };
-		CD8D3A4EA5A818862A1498BF /* CameraLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273C5380A7608600BAAB798E /* CameraLabService.swift */; };
-		88AEC658E10176073543FEE6 /* CameraLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273C5380A7608600BAAB798E /* CameraLabService.swift */; };
-		68485B07EEFE34CED7B2CB3C /* CameraLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */; };
-		8055348A9658F4D82184A5A1 /* CameraLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */; };
-		8D4F07A03F5597E083D4C32B /* VisionLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2BE4B38195F31A280013F /* VisionLabService.swift */; };
-		D763452C9E2E045724BE7EB2 /* VisionLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2BE4B38195F31A280013F /* VisionLabService.swift */; };
-		B98034C63B5A07CF61FAA43C /* VisionLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */; };
-		3489EB818B1EE3D5100EDA59 /* VisionLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */; };
-		6B9639029B3BB820D6B9E078 /* ARLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04843891CCAB8300DDACE44E /* ARLabService.swift */; };
-		A651D0E1D43C60400294E5D5 /* ARLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04843891CCAB8300DDACE44E /* ARLabService.swift */; };
-		7D001CE888154410C6C25502 /* ARLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084AC6A80AD47491B8DD5A71 /* ARLabRunView.swift */; };
-		16E25B3971EF5F4790C540DB /* ARLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084AC6A80AD47491B8DD5A71 /* ARLabRunView.swift */; };
+		7D84C396F94CF5A2BC528FF3 /* NotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AB10948F7BEFAFF9FA237 /* NotificationServices.swift */; };
+		AAE2BF3B540F61B0186A1D3D /* NotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AB10948F7BEFAFF9FA237 /* NotificationServices.swift */; };
+		92FC0CA2E6F2DC4AF9170369 /* ToolboxNotificationCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387591E75DAFDA8CB8FA72E /* ToolboxNotificationCatalog.swift */; };
+		F4CB58626503075B3B0A4D2A /* ToolboxNotificationCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387591E75DAFDA8CB8FA72E /* ToolboxNotificationCatalog.swift */; };
+		0FB318EC279F68C96389C2CA /* NotificationsRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8D992BDD0DF9B8C23CB4FF /* NotificationsRunView.swift */; };
+		AFB28A1B40A10335B2E8181D /* NotificationsRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8D992BDD0DF9B8C23CB4FF /* NotificationsRunView.swift */; };
+		FD40CA9E2993FED1A7794FE7 /* AppleToolbox Notification Content.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D5C87DF57516155A427747DB /* AppleToolbox Notification Content.appex */; };
+		70C32C87FA4F3FAE07977E5D /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB759D2C3F3B22EE339A922 /* NotificationViewController.swift */; };
+		DD3BCE18688AB1B3819A3AD2 /* ToolboxNotificationCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387591E75DAFDA8CB8FA72E /* ToolboxNotificationCatalog.swift */; };
+		9D50320F7351B2179622E775 /* HomeKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0B3A957289EA81909484E7 /* HomeKitServices.swift */; };
+		C2F878F2DBA3FABCC47B47B5 /* HomeKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0B3A957289EA81909484E7 /* HomeKitServices.swift */; };
+		BF53A2410EC256A4EA9B6D18 /* HomeKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0B3A957289EA81909484E7 /* HomeKitServices.swift */; };
+		0EA20543A92F20C573C9F24B /* HomeRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005E3B161A6508F8085AE926 /* HomeRunViews.swift */; };
+		F901152D91E73D05FAA9D828 /* HomeRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005E3B161A6508F8085AE926 /* HomeRunViews.swift */; };
+		A245A9E8B1C120AA6923FDA2 /* HealthKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90AF2F6C88C0ED011C74CB9 /* HealthKitServices.swift */; };
+		E85F2B27F637E0DB1912B90C /* HealthKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90AF2F6C88C0ED011C74CB9 /* HealthKitServices.swift */; };
+		6D82054F9F427AF326077EAC /* HealthKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90AF2F6C88C0ED011C74CB9 /* HealthKitServices.swift */; };
+		3D67BB3A930431F5466D62D0 /* HealthRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BA2CCE82B03C5820146293 /* HealthRunViews.swift */; };
+		9FA99594820A0422CC9F8539 /* HealthRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BA2CCE82B03C5820146293 /* HealthRunViews.swift */; };
+		DB76B2F658D2EE451A870202 /* CameraLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4185672F774E0098E44309 /* CameraLabService.swift */; };
+		E3DB62B94AB4F3316AA6D01A /* CameraLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4185672F774E0098E44309 /* CameraLabService.swift */; };
+		6FF397A2B62A34AE76C838F0 /* CameraLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E806C2C169F369B66CB45B67 /* CameraLabRunView.swift */; };
+		F9EEAE1B95C7884C7D8FC0FA /* CameraLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E806C2C169F369B66CB45B67 /* CameraLabRunView.swift */; };
+		4C0BD1670B8DBBD27EA923E1 /* VisionLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD7101561A2E0F8403DCDEB /* VisionLabService.swift */; };
+		F64D7B310456C0F48CC0C756 /* VisionLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD7101561A2E0F8403DCDEB /* VisionLabService.swift */; };
+		9262C550CE6C6C59FE12A5B6 /* VisionLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0CBE67475899D61D708D66 /* VisionLabRunView.swift */; };
+		ABA7E7AC50741448F1EB49AD /* VisionLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0CBE67475899D61D708D66 /* VisionLabRunView.swift */; };
+		01AEDE678E0ABE58B6AB955D /* ARLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8092EA6C057338D2B8CF06 /* ARLabService.swift */; };
+		25BFE75A1855E577AD18532E /* ARLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8092EA6C057338D2B8CF06 /* ARLabService.swift */; };
+		5AF8F84967C1A5044891159D /* ARLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FB12B4971DD4DCB14BFE0F /* ARLabRunView.swift */; };
+		E22FC390966E80F8890AC197 /* ARLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FB12B4971DD4DCB14BFE0F /* ARLabRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -387,6 +393,13 @@
 			remoteGlobalIDString = 61001C144839CC8E0408EC65;
 			remoteInfo = "AppleToolbox watchOS";
 		};
+		53F64E1804594B02C2D59764 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B13F609303DA61D00AA8D3F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0FFE048137AF8C900B4E3D72;
+			remoteInfo = "AppleToolbox Notification Content";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -397,6 +410,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				982DBF88B14E4318F6F8A632 /* AppleToolbox Widget.appex in Embed Foundation Extensions */,
+				FD40CA9E2993FED1A7794FE7 /* AppleToolbox Notification Content.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,7 +445,6 @@
 		5B13F611303DA61D00AA8D3F /* AppleToolbox iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B13F622303DA62000AA8D3F /* AppleToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B13F62C303DA62000AA8D3F /* AppleToolboxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleToolboxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5C041F896020A77B69B72580 /* HealthNotificationServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthNotificationServices.swift; path = AppleToolbox/Shared/Services/HealthNotificationServices.swift; sourceTree = "<group>"; };
 		72488DD19EEE0B1FB51ECCF0 /* ExperimentModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExperimentModels.swift; path = AppleToolbox/Shared/Models/ExperimentModels.swift; sourceTree = "<group>"; };
 		7429EFF41326B59E8B526EF5 /* ContinuityServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContinuityServices.swift; path = AppleToolbox/Shared/Services/ContinuityServices.swift; sourceTree = "<group>"; };
 		7C1C9A39A25D48656AA850C5 /* AppleToolbox watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleToolbox watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -568,16 +581,21 @@
 		6F5756851E4980E36BA5EED6 /* NearbyInteractionRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NearbyInteractionRunView.swift; path = AppleToolbox/UI/Experiments/NearbyInteractionRunView.swift; sourceTree = "<group>"; };
 		5635DB0551FD85E581141B13 /* SpatialLinkServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpatialLinkServices.swift; path = AppleToolbox/Shared/Services/SpatialLinkServices.swift; sourceTree = "<group>"; };
 		3C8B6C6DC12A0634919A138E /* SpatialLinkRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpatialLinkRunView.swift; path = AppleToolbox/UI/Experiments/SpatialLinkRunView.swift; sourceTree = "<group>"; };
-		082468F2A161F7880FFEBCDF /* HomeKitServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeKitServices.swift; path = AppleToolbox/Shared/Services/HomeKitServices.swift; sourceTree = "<group>"; };
-		9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeRunViews.swift; path = AppleToolbox/UI/Experiments/HomeRunViews.swift; sourceTree = "<group>"; };
-		50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthKitServices.swift; path = AppleToolbox/Shared/Services/HealthKitServices.swift; sourceTree = "<group>"; };
-		1469DACD79441802363A7C56 /* HealthRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthRunViews.swift; path = AppleToolbox/UI/Experiments/HealthRunViews.swift; sourceTree = "<group>"; };
-		273C5380A7608600BAAB798E /* CameraLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraLabService.swift; path = AppleToolbox/Shared/Services/CameraLabService.swift; sourceTree = "<group>"; };
-		8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraLabRunView.swift; path = AppleToolbox/UI/Experiments/CameraLabRunView.swift; sourceTree = "<group>"; };
-		EFE2BE4B38195F31A280013F /* VisionLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VisionLabService.swift; path = AppleToolbox/Shared/Services/VisionLabService.swift; sourceTree = "<group>"; };
-		B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VisionLabRunView.swift; path = AppleToolbox/UI/Experiments/VisionLabRunView.swift; sourceTree = "<group>"; };
-		04843891CCAB8300DDACE44E /* ARLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ARLabService.swift; path = AppleToolbox/Shared/Services/ARLabService.swift; sourceTree = "<group>"; };
-		084AC6A80AD47491B8DD5A71 /* ARLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ARLabRunView.swift; path = AppleToolbox/UI/Experiments/ARLabRunView.swift; sourceTree = "<group>"; };
+		431AB10948F7BEFAFF9FA237 /* NotificationServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NotificationServices.swift; path = AppleToolbox/Shared/Services/NotificationServices.swift; sourceTree = "<group>"; };
+		C387591E75DAFDA8CB8FA72E /* ToolboxNotificationCatalog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxNotificationCatalog.swift; path = AppleToolbox/Shared/Services/ToolboxNotificationCatalog.swift; sourceTree = "<group>"; };
+		1F8D992BDD0DF9B8C23CB4FF /* NotificationsRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NotificationsRunView.swift; path = AppleToolbox/UI/Experiments/NotificationsRunView.swift; sourceTree = "<group>"; };
+		D5C87DF57516155A427747DB /* AppleToolbox Notification Content.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "AppleToolbox Notification Content.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CB759D2C3F3B22EE339A922 /* NotificationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NotificationViewController.swift; path = AppleToolbox/NotificationContent/NotificationViewController.swift; sourceTree = "<group>"; };
+		7E0B3A957289EA81909484E7 /* HomeKitServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeKitServices.swift; path = AppleToolbox/Shared/Services/HomeKitServices.swift; sourceTree = "<group>"; };
+		005E3B161A6508F8085AE926 /* HomeRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeRunViews.swift; path = AppleToolbox/UI/Experiments/HomeRunViews.swift; sourceTree = "<group>"; };
+		F90AF2F6C88C0ED011C74CB9 /* HealthKitServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthKitServices.swift; path = AppleToolbox/Shared/Services/HealthKitServices.swift; sourceTree = "<group>"; };
+		66BA2CCE82B03C5820146293 /* HealthRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthRunViews.swift; path = AppleToolbox/UI/Experiments/HealthRunViews.swift; sourceTree = "<group>"; };
+		4B4185672F774E0098E44309 /* CameraLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraLabService.swift; path = AppleToolbox/Shared/Services/CameraLabService.swift; sourceTree = "<group>"; };
+		E806C2C169F369B66CB45B67 /* CameraLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraLabRunView.swift; path = AppleToolbox/UI/Experiments/CameraLabRunView.swift; sourceTree = "<group>"; };
+		3AD7101561A2E0F8403DCDEB /* VisionLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VisionLabService.swift; path = AppleToolbox/Shared/Services/VisionLabService.swift; sourceTree = "<group>"; };
+		FF0CBE67475899D61D708D66 /* VisionLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VisionLabRunView.swift; path = AppleToolbox/UI/Experiments/VisionLabRunView.swift; sourceTree = "<group>"; };
+		1D8092EA6C057338D2B8CF06 /* ARLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ARLabService.swift; path = AppleToolbox/Shared/Services/ARLabService.swift; sourceTree = "<group>"; };
+		85FB12B4971DD4DCB14BFE0F /* ARLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ARLabRunView.swift; path = AppleToolbox/UI/Experiments/ARLabRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -592,6 +610,8 @@
 				WatchApp/WatchLabServices.swift,
 				WatchApp/WatchLabViews.swift,
 				Widget/AppleToolboxWidget.entitlements,
+				NotificationContent/NotificationViewController.swift,
+				NotificationContent/Info.plist,
 			);
 			target = 5B13F610303DA61D00AA8D3F /* AppleToolbox iOS */;
 		};
@@ -676,6 +696,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		06423300054BB06859D7F049 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -745,7 +772,6 @@
 				37EB0157A5B7AB3F867DC86F /* SpatialExperimentServices.swift */,
 				49F6AA785AF459607AEC827E /* AIExperimentServices.swift */,
 				AF2E50DBDCFE742217C63585 /* MediaAvailabilityServices.swift */,
-				5C041F896020A77B69B72580 /* HealthNotificationServices.swift */,
 				AFCDEE58AB23A44A8DAA3D49 /* IdentitySecurityServices.swift */,
 				30846DAAA11AF56E4F480E57 /* CapabilityExplorerService.swift */,
 				8ED66FED6768B2835466E441 /* WalletPassCreatorService.swift */,
@@ -861,16 +887,20 @@
 				6F5756851E4980E36BA5EED6 /* NearbyInteractionRunView.swift */,
 				5635DB0551FD85E581141B13 /* SpatialLinkServices.swift */,
 				3C8B6C6DC12A0634919A138E /* SpatialLinkRunView.swift */,
-				082468F2A161F7880FFEBCDF /* HomeKitServices.swift */,
-				9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */,
-				50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */,
-				1469DACD79441802363A7C56 /* HealthRunViews.swift */,
-				273C5380A7608600BAAB798E /* CameraLabService.swift */,
-				8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */,
-				EFE2BE4B38195F31A280013F /* VisionLabService.swift */,
-				B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */,
-				04843891CCAB8300DDACE44E /* ARLabService.swift */,
-				084AC6A80AD47491B8DD5A71 /* ARLabRunView.swift */,
+				431AB10948F7BEFAFF9FA237 /* NotificationServices.swift */,
+				C387591E75DAFDA8CB8FA72E /* ToolboxNotificationCatalog.swift */,
+				1F8D992BDD0DF9B8C23CB4FF /* NotificationsRunView.swift */,
+				2CB759D2C3F3B22EE339A922 /* NotificationViewController.swift */,
+				7E0B3A957289EA81909484E7 /* HomeKitServices.swift */,
+				005E3B161A6508F8085AE926 /* HomeRunViews.swift */,
+				F90AF2F6C88C0ED011C74CB9 /* HealthKitServices.swift */,
+				66BA2CCE82B03C5820146293 /* HealthRunViews.swift */,
+				4B4185672F774E0098E44309 /* CameraLabService.swift */,
+				E806C2C169F369B66CB45B67 /* CameraLabRunView.swift */,
+				3AD7101561A2E0F8403DCDEB /* VisionLabService.swift */,
+				FF0CBE67475899D61D708D66 /* VisionLabRunView.swift */,
+				1D8092EA6C057338D2B8CF06 /* ARLabService.swift */,
+				85FB12B4971DD4DCB14BFE0F /* ARLabRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -884,6 +914,7 @@
 				7C1C9A39A25D48656AA850C5 /* AppleToolbox watchOS.app */,
 				D355699843CD5D90FEB47FD3 /* AppleToolbox Widget.appex */,
 				CAB66606A13A18D68C0C2BB1 /* AppleToolbox tvOS.app */,
+				D5C87DF57516155A427747DB /* AppleToolbox Notification Content.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -967,6 +998,7 @@
 			dependencies = (
 				D418667C09282FC017F313FB /* PBXTargetDependency */,
 				C4397ABC3C27590391670CE3 /* PBXTargetDependency */,
+				581B82B4A4062510D5809983 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5B13F613303DA61D00AA8D3F /* AppleToolbox */,
@@ -1052,6 +1084,23 @@
 			productReference = CAB66606A13A18D68C0C2BB1 /* AppleToolbox tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		0FFE048137AF8C900B4E3D72 /* AppleToolbox Notification Content */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F6DEA5609E01CAB150C4D752 /* Build configuration list for PBXNativeTarget "AppleToolbox Notification Content" */;
+			buildPhases = (
+				7D28D98D40C9629A4303903E /* Sources */,
+				06423300054BB06859D7F049 /* Frameworks */,
+				5D4B05350AAD0DA41BCD1472 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppleToolbox Notification Content";
+			productName = "AppleToolbox Notification Content";
+			productReference = D5C87DF57516155A427747DB /* AppleToolbox Notification Content.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1096,6 +1145,7 @@
 				61001C144839CC8E0408EC65 /* AppleToolbox watchOS */,
 				1EF6F48A1A97D0D6BE48BE6A /* AppleToolbox Widget */,
 				86533D77F49993E6AF3CA4A2 /* AppleToolbox tvOS */,
+				0FFE048137AF8C900B4E3D72 /* AppleToolbox Notification Content */,
 			);
 		};
 /* End PBXProject section */
@@ -1153,6 +1203,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5D4B05350AAD0DA41BCD1472 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1177,7 +1234,6 @@
 				6401109C53B0CE02031BCFE1 /* SpatialExperimentServices.swift in Sources */,
 				F118426398FB6D04E6035390 /* AIExperimentServices.swift in Sources */,
 				E395E65F9B94FCEE553C1DCA /* MediaAvailabilityServices.swift in Sources */,
-				8EC214171F1DEC0594DF6882 /* HealthNotificationServices.swift in Sources */,
 				31186D7D3B032512CD8E91E0 /* IdentitySecurityServices.swift in Sources */,
 				796B54C80880B59011C01911 /* CapabilityExplorerService.swift in Sources */,
 				980C2D665DD1DE7D7EEDE068 /* WalletPassCreatorService.swift in Sources */,
@@ -1290,16 +1346,19 @@
 				73824327E7B970C69592CF6C /* NearbyInteractionRunView.swift in Sources */,
 				AB0A6B1C9CDB5F8FF52509CC /* SpatialLinkServices.swift in Sources */,
 				3822BD5982F50EC9694228A3 /* SpatialLinkRunView.swift in Sources */,
-				BF4B34718DBDBAD6E085DF72 /* HomeKitServices.swift in Sources */,
-				A2BEBB310ACADE24D9A8E160 /* HomeRunViews.swift in Sources */,
-				90DC4FA15A53BC9C6EF47773 /* HealthKitServices.swift in Sources */,
-				DA50FEFC27E81BDEF0827783 /* HealthRunViews.swift in Sources */,
-				CD8D3A4EA5A818862A1498BF /* CameraLabService.swift in Sources */,
-				68485B07EEFE34CED7B2CB3C /* CameraLabRunView.swift in Sources */,
-				8D4F07A03F5597E083D4C32B /* VisionLabService.swift in Sources */,
-				B98034C63B5A07CF61FAA43C /* VisionLabRunView.swift in Sources */,
-				6B9639029B3BB820D6B9E078 /* ARLabService.swift in Sources */,
-				7D001CE888154410C6C25502 /* ARLabRunView.swift in Sources */,
+				7D84C396F94CF5A2BC528FF3 /* NotificationServices.swift in Sources */,
+				92FC0CA2E6F2DC4AF9170369 /* ToolboxNotificationCatalog.swift in Sources */,
+				0FB318EC279F68C96389C2CA /* NotificationsRunView.swift in Sources */,
+				9D50320F7351B2179622E775 /* HomeKitServices.swift in Sources */,
+				0EA20543A92F20C573C9F24B /* HomeRunViews.swift in Sources */,
+				A245A9E8B1C120AA6923FDA2 /* HealthKitServices.swift in Sources */,
+				3D67BB3A930431F5466D62D0 /* HealthRunViews.swift in Sources */,
+				DB76B2F658D2EE451A870202 /* CameraLabService.swift in Sources */,
+				6FF397A2B62A34AE76C838F0 /* CameraLabRunView.swift in Sources */,
+				4C0BD1670B8DBBD27EA923E1 /* VisionLabService.swift in Sources */,
+				9262C550CE6C6C59FE12A5B6 /* VisionLabRunView.swift in Sources */,
+				01AEDE678E0ABE58B6AB955D /* ARLabService.swift in Sources */,
+				5AF8F84967C1A5044891159D /* ARLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1323,7 +1382,6 @@
 				1C12C846CEC25637F2274637 /* SpatialExperimentServices.swift in Sources */,
 				AC9EDD2733A299C7EC70F94A /* AIExperimentServices.swift in Sources */,
 				ADF9091B6F51DFF8D8D3B85F /* MediaAvailabilityServices.swift in Sources */,
-				C08C990114221453FB6071CD /* HealthNotificationServices.swift in Sources */,
 				73FBDEEFAC66E893605D15A2 /* IdentitySecurityServices.swift in Sources */,
 				68A696176658BE1A4C9DE591 /* CapabilityExplorerService.swift in Sources */,
 				0B3E573977E1BACB4B5F63EE /* WalletPassCreatorService.swift in Sources */,
@@ -1364,8 +1422,8 @@
 				EAE43697E862C4B7A0B3F851 /* AccessoryExperimentServices.swift in Sources */,
 				972235B9DFDDE9EC9025BCDB /* BeaconRangingService.swift in Sources */,
 				5315246DCF29B6BE8C97A1E5 /* NetworkCapabilityServices.swift in Sources */,
-				60721A72B5822822F70088BF /* HomeKitServices.swift in Sources */,
-				D60C7FFDCC3637CC2A24C016 /* HealthKitServices.swift in Sources */,
+				BF53A2410EC256A4EA9B6D18 /* HomeKitServices.swift in Sources */,
+				6D82054F9F427AF326077EAC /* HealthKitServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1404,7 +1462,6 @@
 				8D9D9A3A56C4A4590D09AB8B /* CapabilityExplorerService.swift in Sources */,
 				4E15096A7C01D024F2255DB0 /* ContinuityServices.swift in Sources */,
 				4F0B646F2A736A282A5C50AE /* ExperimentServices.swift in Sources */,
-				FCFC87520A08182724B83279 /* HealthNotificationServices.swift in Sources */,
 				4E814B42D767E3170AB26FD2 /* IdentitySecurityServices.swift in Sources */,
 				5025692FF271E78BD5582A5F /* IndoorExperimentServices.swift in Sources */,
 				C87BA9EBE5EFFA7E1D9CCAF7 /* LocationExperimentService.swift in Sources */,
@@ -1524,16 +1581,19 @@
 				04308AAD78735F95893A39D2 /* NearbyInteractionRunView.swift in Sources */,
 				FE78E57D2C83B8C168F997B8 /* SpatialLinkServices.swift in Sources */,
 				F69D8FB5911B5C18C1B01C2D /* SpatialLinkRunView.swift in Sources */,
-				A324F4B94954D7E6F314BBAA /* HomeKitServices.swift in Sources */,
-				E32A3B47C949B8EDDAD22968 /* HomeRunViews.swift in Sources */,
-				E13F6518A7D8CE79E9728906 /* HealthKitServices.swift in Sources */,
-				904B20C154C8E4321B8D38A8 /* HealthRunViews.swift in Sources */,
-				88AEC658E10176073543FEE6 /* CameraLabService.swift in Sources */,
-				8055348A9658F4D82184A5A1 /* CameraLabRunView.swift in Sources */,
-				D763452C9E2E045724BE7EB2 /* VisionLabService.swift in Sources */,
-				3489EB818B1EE3D5100EDA59 /* VisionLabRunView.swift in Sources */,
-				A651D0E1D43C60400294E5D5 /* ARLabService.swift in Sources */,
-				16E25B3971EF5F4790C540DB /* ARLabRunView.swift in Sources */,
+				AAE2BF3B540F61B0186A1D3D /* NotificationServices.swift in Sources */,
+				F4CB58626503075B3B0A4D2A /* ToolboxNotificationCatalog.swift in Sources */,
+				AFB28A1B40A10335B2E8181D /* NotificationsRunView.swift in Sources */,
+				C2F878F2DBA3FABCC47B47B5 /* HomeKitServices.swift in Sources */,
+				F901152D91E73D05FAA9D828 /* HomeRunViews.swift in Sources */,
+				E85F2B27F637E0DB1912B90C /* HealthKitServices.swift in Sources */,
+				9FA99594820A0422CC9F8539 /* HealthRunViews.swift in Sources */,
+				E3DB62B94AB4F3316AA6D01A /* CameraLabService.swift in Sources */,
+				F9EEAE1B95C7884C7D8FC0FA /* CameraLabRunView.swift in Sources */,
+				F64D7B310456C0F48CC0C756 /* VisionLabService.swift in Sources */,
+				ABA7E7AC50741448F1EB49AD /* VisionLabRunView.swift in Sources */,
+				25BFE75A1855E577AD18532E /* ARLabService.swift in Sources */,
+				E22FC390966E80F8890AC197 /* ARLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1543,6 +1603,15 @@
 			files = (
 				4367F062F15F2162043DF56A /* AppleToolboxWidget.swift in Sources */,
 				BB15BCCB5158340130955C1F /* ToolboxWidgetStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7D28D98D40C9629A4303903E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				70C32C87FA4F3FAE07977E5D /* NotificationViewController.swift in Sources */,
+				DD3BCE18688AB1B3819A3AD2 /* ToolboxNotificationCatalog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1570,6 +1639,12 @@
 			name = "AppleToolbox watchOS";
 			target = 61001C144839CC8E0408EC65 /* AppleToolbox watchOS */;
 			targetProxy = 0ADC7C1C2ADC5A35D2897AAD /* PBXContainerItemProxy */;
+		};
+		581B82B4A4062510D5809983 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppleToolbox Notification Content";
+			target = 0FFE048137AF8C900B4E3D72 /* AppleToolbox Notification Content */;
+			targetProxy = 53F64E1804594B02C2D59764 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2095,6 +2170,53 @@
 			};
 			name = Debug;
 		};
+		396D8616A2FC0C43373F2CEC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9CA6D7T8N;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AppleToolbox/NotificationContent/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jorisconrad.AppleToolbox.ios.notification-content";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		66C2BC3FF4FEC9EBBF93027B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9CA6D7T8N;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AppleToolbox/NotificationContent/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jorisconrad.AppleToolbox.ios.notification-content";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2166,6 +2288,15 @@
 			buildConfigurations = (
 				18912C214A975D6DB7E51898 /* Release */,
 				6FB6144597370EAD153D0B1E /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F6DEA5609E01CAB150C4D752 /* Build configuration list for PBXNativeTarget "AppleToolbox Notification Content" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				396D8616A2FC0C43373F2CEC /* Release */,
+				66C2BC3FF4FEC9EBBF93027B /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
