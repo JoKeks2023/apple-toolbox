@@ -32,8 +32,56 @@ struct OutputView: View {
             RoundedRectangle(cornerRadius: 14)
                 .stroke((isError ? Color.red : Color.secondary).opacity(0.18), lineWidth: 1)
         }
+        .tvFocusableRow()
     }
 }
+
+extension View {
+    /// On tvOS the Siri Remote only moves focus, and a list scrolls only to focusable views, so read-only rows
+    /// (output, facts, checks) are made focusable there to stay reachable. Does nothing on other platforms.
+    func tvFocusableRow() -> some View {
+        #if os(tvOS)
+        modifier(TVFocusableRow())
+        #else
+        self
+        #endif
+    }
+
+    /// Makes every `LabeledContent` row below this view focusable on tvOS (see `tvFocusableRow()`), so run views
+    /// don't need to mark each fact row. Only use it where labeled content holds text, not controls.
+    func tvFocusableLabeledContent() -> some View {
+        #if os(tvOS)
+        labeledContentStyle(TVFocusableLabeledContentStyle())
+        #else
+        self
+        #endif
+    }
+}
+
+#if os(tvOS)
+private struct TVFocusableRow: ViewModifier {
+    @FocusState private var isFocused: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .focusable()
+            .focused($isFocused)
+            .background {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.primary.opacity(isFocused ? 0.12 : 0))
+                    .padding(-8)
+            }
+            .animation(.easeOut(duration: 0.15), value: isFocused)
+    }
+}
+
+/// Keeps the list's own labeled-content layout and only adds focusability.
+private struct TVFocusableLabeledContentStyle: LabeledContentStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        LabeledContent(configuration).tvFocusableRow()
+    }
+}
+#endif
 
 struct StatusBadge: View {
     let status: ExperimentStatus

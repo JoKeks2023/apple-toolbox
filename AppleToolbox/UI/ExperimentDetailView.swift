@@ -27,6 +27,7 @@ struct ExperimentDetailView: View {
             RequirementsView(experiment: experiment)
             Section("Documentation") { Link(destination: experiment.documentationURL) { Label("Open Apple Developer Documentation", systemImage: "book.closed") } }
         }
+        .tvFocusableLabeledContent()
         .navigationTitle(experiment.name)
         .environmentObject(lifecycle)
         .onAppear { WidgetKitExperimentService.recordOpened(experiment) }
@@ -101,6 +102,7 @@ private struct ExperimentHeroView: View {
                 }
             }
             .padding(.vertical, 8)
+            .tvFocusableRow()
         }
     }
 }
@@ -146,6 +148,7 @@ private struct ExperimentChecksSection: View {
                         Text(check.detail).font(.caption).foregroundStyle(.secondary)
                     }
                 }
+                .tvFocusableRow()
             }
         }
     }
@@ -209,6 +212,7 @@ private struct UseCaseSection: View {
             }
             .padding(14)
             .background(.tint.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
+            .tvFocusableRow()
         }
     }
 }

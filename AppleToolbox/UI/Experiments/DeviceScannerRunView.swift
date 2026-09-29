@@ -57,9 +57,7 @@ private struct CapabilitySectionView: View {
             }
         }
         .padding(.vertical, 6)
-        #if os(tvOS)
-        .focusable()
-        #endif
+        .tvFocusableRow()
     }
 }
 
