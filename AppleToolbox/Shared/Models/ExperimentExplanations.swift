@@ -106,6 +106,12 @@ extension ExperimentDescriptor {
             .hardwareUnsupported: ExperimentExplanation(reason: "This device does not provide LiDAR.", required: "A LiDAR-capable iPhone Pro or iPad Pro",
                                                         nextStep: "Run the experiment on a LiDAR device."),
         ],
+        "shazamkit": [
+            .hardwareUnsupported: ExperimentExplanation(reason: "No microphone input is available, so ShazamKit has no audio to match.", required: "A built-in or connected microphone",
+                                                        nextStep: "Connect a microphone or run the experiment on iPhone, iPad or a Mac with a microphone."),
+            .platformUnsupported: ExperimentExplanation(reason: "This experiment records from the device microphone, which Apple Toolbox only uses on iPhone, iPad and Mac.", required: "iOS, iPadOS or macOS",
+                                                        nextStep: "Open Apple Toolbox on iPhone, iPad or Mac."),
+        ],
         "healthkit-status": [
             .hardwareUnsupported: ExperimentExplanation(reason: "Health data is not available on this device.", required: "iPhone, Apple Watch or an iPad with the Health app",
                                                         nextStep: "Run the experiment on iPhone or Apple Watch."),

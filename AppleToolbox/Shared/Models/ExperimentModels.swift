@@ -136,6 +136,7 @@ enum ExperimentUseCaseCatalog {
         case "core-motion": ExperimentUseCase(id: "motion-meter", title: "Move the device", summary: "Turn your iPhone or Apple Watch into a live motion meter, compass, step counter, and barometer.", interaction: "Start motion updates and tilt the device to watch attitude and the magnetic field, then start the pedometer or altimeter and walk or take the stairs.")
         case "multipeer-connectivity": multipeerConnectivity
         case "game-controller": ExperimentUseCase(id: "controller-input-monitor", title: "Test a game controller", summary: "See which controllers the system reports and watch every button, trigger, and stick as you use it.", interaction: "Start monitoring, turn on or pair a controller (or use the Siri Remote on Apple TV), then press buttons and move the sticks.")
+        case "shazamkit": ExperimentUseCase(id: "shazam-identify", title: "Identify a song", summary: "Let ShazamKit listen through the microphone and match what is playing against the Shazam catalog.", interaction: "Play music nearby, start listening, and inspect the matched title, artist, genres and links, or the real no-match or error result.")
         default: ExperimentUseCase(
             id: "inspect-\(id)",
             title: "Try the real API",

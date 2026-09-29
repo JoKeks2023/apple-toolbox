@@ -61,7 +61,7 @@ struct ExperimentRunView: View {
         case "camera-vision": CameraVisionRunView()
         case "audio-input": AudioInputRunView()
         case "musickit": MusicKitRunView()
-        case "shazamkit": StatusCheckRunView(experiment: experiment, title: "Check ShazamKit Session", check: ShazamExperimentService.statusText)
+        case "shazamkit": ShazamKitRunView()
         case "sound-analysis": SoundAnalysisRunView()
         case "natural-language": NaturalLanguageRunView()
         case "foundation-models": FoundationModelsRunView()

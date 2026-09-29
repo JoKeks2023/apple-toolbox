@@ -60,3 +60,4 @@ extension CameraVisionExperimentService: StoppableExperiment { var isActive: Boo
 extension AudioExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension SpeechExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension ARExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
+extension ShazamExperimentService: StoppableExperiment { var isActive: Bool { isListening } }
