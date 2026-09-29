@@ -120,6 +120,10 @@ struct WatchLinkView: View {
                 Button("Activate Session", action: link.activate)
             }
             Text(link.output).font(.caption2).foregroundStyle(.secondary)
+            if link.iPhoneNeedsUnlock == true {
+                WatchOutput(text: "Unlock the iPhone once after its restart; until then the watch cannot reach it.", isError: true)
+            }
+            WatchTransfersView(link: link)
             Section {
                 LabeledContent("Runs independently", value: WatchAppIndependence.isIndependent ? "Yes" : "No")
             } footer: {
@@ -127,9 +131,49 @@ struct WatchLinkView: View {
             }
         }
         .navigationTitle("iPhone Link")
+        .onAppear(perform: link.refreshTransfers)
         // The complication shows the last message exchanged with the iPhone.
         .onChange(of: link.lastMessage) { _, message in
             if let message { WatchComplicationUpdater.recordPing(message) }
+        }
+    }
+}
+
+/// Application context, user info and file transfers from the watch side.
+private struct WatchTransfersView: View {
+    @ObservedObject var link: ContinuityExperimentService
+
+    var body: some View {
+        Section("Application context") {
+            Button("Update Context", systemImage: "arrow.triangle.2.circlepath", action: link.updateContext)
+            WatchFactRow(title: "Sent", text: link.sentContext)
+            WatchFactRow(title: "Received", text: link.receivedContext)
+        }
+        Section {
+            Button("Transfer User Info", systemImage: "tray.and.arrow.up", action: link.sendUserInfo)
+            Button("Transfer File", systemImage: "doc.badge.arrow.up", action: link.sendFile)
+            ForEach(link.outstandingUserInfo + link.outstandingFiles) { WatchFactRow(title: $0.title, text: $0.detail) }
+            if !(link.outstandingUserInfo.isEmpty && link.outstandingFiles.isEmpty) {
+                Button("Cancel Outstanding", role: .destructive, action: link.cancelOutstanding)
+            }
+        } header: {
+            Text("Queued transfers · \(link.outstandingUserInfo.count + link.outstandingFiles.count)")
+        } footer: {
+            Text("Queued transfers are delivered even while the iPhone app is not running; didFinish confirms delivery in the log below.")
+        }
+        Section("Received from iPhone") {
+            if link.receivedUserInfo.isEmpty && link.receivedFile == nil { WatchOutput(text: "Nothing received yet.") }
+            ForEach(link.receivedUserInfo) { WatchFactRow(title: $0.title, text: $0.detail) }
+            if let file = link.receivedFile {
+                WatchFactRow(title: "File · \(file.byteCount) bytes", text: file.name)
+                WatchFactRow(title: "Metadata", text: file.metadata)
+                WatchOutput(text: file.preview)
+            }
+        }
+        if !link.transferLog.isEmpty {
+            Section("Log") {
+                ForEach(link.transferLog.prefix(8)) { WatchFactRow(title: $0.title, text: $0.detail) }
+            }
         }
     }
 }
