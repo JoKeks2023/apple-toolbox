@@ -7,6 +7,8 @@ struct LocationRunRoutes: View {
     var body: some View {
         switch experiment.id {
         case "core-location": CoreLocationRunView()
+        case "ibeacon-ranging": BeaconRangingRunView()
+        case "location-dashboard": LocationDashboardRunView()
         default: UnroutedExperimentView()
         }
     }

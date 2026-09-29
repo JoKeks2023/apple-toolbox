@@ -305,6 +305,15 @@
 		EAE43697E862C4B7A0B3F851 /* AccessoryExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BEE748DC74998A9ADB39ED /* AccessoryExperimentServices.swift */; };
 		C9689D565EDC8D06867D6990 /* AccessoryRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8527103931F3DF7A1C0EB046 /* AccessoryRunViews.swift */; };
 		9D61FDF0217A924952660BB1 /* AccessoryRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8527103931F3DF7A1C0EB046 /* AccessoryRunViews.swift */; };
+		D5B15125D806B1BD9E359F56 /* BeaconRangingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F184B3AEC8881321E97B00 /* BeaconRangingService.swift */; };
+		318118E81FD09AEA349EDF55 /* BeaconRangingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F184B3AEC8881321E97B00 /* BeaconRangingService.swift */; };
+		972235B9DFDDE9EC9025BCDB /* BeaconRangingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F184B3AEC8881321E97B00 /* BeaconRangingService.swift */; };
+		9F8C65DEE5B4D8145A581EA1 /* LocationDashboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66011D97BD76329B25840DE /* LocationDashboardService.swift */; };
+		FEACC7AE0BB8B74BB001B7A8 /* LocationDashboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66011D97BD76329B25840DE /* LocationDashboardService.swift */; };
+		EAB85C681D1A2843A363130F /* BeaconRangingRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE20785D94E9BFBB1776D2DA /* BeaconRangingRunView.swift */; };
+		3F7E2E629B260C8BD0D66463 /* BeaconRangingRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE20785D94E9BFBB1776D2DA /* BeaconRangingRunView.swift */; };
+		6807C1F4873C5D420D84F685 /* LocationDashboardRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32104EC74AD75F1BDB1FDDA /* LocationDashboardRunView.swift */; };
+		45776623B54689AC2DEB5140 /* LocationDashboardRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32104EC74AD75F1BDB1FDDA /* LocationDashboardRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -503,6 +512,10 @@
 		A6DF9A6D178FA4EEC6189A00 /* BluetoothPeripheralModeService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BluetoothPeripheralModeService.swift; path = AppleToolbox/Shared/Services/BluetoothPeripheralModeService.swift; sourceTree = "<group>"; };
 		92BEE748DC74998A9ADB39ED /* AccessoryExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AccessoryExperimentServices.swift; path = AppleToolbox/Shared/Services/AccessoryExperimentServices.swift; sourceTree = "<group>"; };
 		8527103931F3DF7A1C0EB046 /* AccessoryRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AccessoryRunViews.swift; path = AppleToolbox/UI/Experiments/AccessoryRunViews.swift; sourceTree = "<group>"; };
+		10F184B3AEC8881321E97B00 /* BeaconRangingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeaconRangingService.swift; path = AppleToolbox/Shared/Services/BeaconRangingService.swift; sourceTree = "<group>"; };
+		F66011D97BD76329B25840DE /* LocationDashboardService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationDashboardService.swift; path = AppleToolbox/Shared/Services/LocationDashboardService.swift; sourceTree = "<group>"; };
+		AE20785D94E9BFBB1776D2DA /* BeaconRangingRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeaconRangingRunView.swift; path = AppleToolbox/UI/Experiments/BeaconRangingRunView.swift; sourceTree = "<group>"; };
+		C32104EC74AD75F1BDB1FDDA /* LocationDashboardRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationDashboardRunView.swift; path = AppleToolbox/UI/Experiments/LocationDashboardRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -772,6 +785,10 @@
 				A6DF9A6D178FA4EEC6189A00 /* BluetoothPeripheralModeService.swift */,
 				92BEE748DC74998A9ADB39ED /* AccessoryExperimentServices.swift */,
 				8527103931F3DF7A1C0EB046 /* AccessoryRunViews.swift */,
+				10F184B3AEC8881321E97B00 /* BeaconRangingService.swift */,
+				F66011D97BD76329B25840DE /* LocationDashboardService.swift */,
+				AE20785D94E9BFBB1776D2DA /* BeaconRangingRunView.swift */,
+				C32104EC74AD75F1BDB1FDDA /* LocationDashboardRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1177,6 +1194,10 @@
 				42CD80601449C6382834C3B1 /* BluetoothPeripheralModeService.swift in Sources */,
 				17FED75882521DE9ACD0B664 /* AccessoryExperimentServices.swift in Sources */,
 				C9689D565EDC8D06867D6990 /* AccessoryRunViews.swift in Sources */,
+				D5B15125D806B1BD9E359F56 /* BeaconRangingService.swift in Sources */,
+				9F8C65DEE5B4D8145A581EA1 /* LocationDashboardService.swift in Sources */,
+				EAB85C681D1A2843A363130F /* BeaconRangingRunView.swift in Sources */,
+				6807C1F4873C5D420D84F685 /* LocationDashboardRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1240,6 +1261,7 @@
 				CD3EBAD9A9DC51B04FC347D0 /* AdvancedWalletServices.swift in Sources */,
 				F8D7DE4828F086A845423BE4 /* BluetoothGATTSupport.swift in Sources */,
 				EAE43697E862C4B7A0B3F851 /* AccessoryExperimentServices.swift in Sources */,
+				972235B9DFDDE9EC9025BCDB /* BeaconRangingService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1384,6 +1406,10 @@
 				39950A916729329BDFF522A1 /* BluetoothPeripheralModeService.swift in Sources */,
 				67429D0CC1B230EFCB03BB52 /* AccessoryExperimentServices.swift in Sources */,
 				9D61FDF0217A924952660BB1 /* AccessoryRunViews.swift in Sources */,
+				318118E81FD09AEA349EDF55 /* BeaconRangingService.swift in Sources */,
+				FEACC7AE0BB8B74BB001B7A8 /* LocationDashboardService.swift in Sources */,
+				3F7E2E629B260C8BD0D66463 /* BeaconRangingRunView.swift in Sources */,
+				45776623B54689AC2DEB5140 /* LocationDashboardRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
