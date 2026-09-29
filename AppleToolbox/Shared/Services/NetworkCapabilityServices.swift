@@ -663,7 +663,7 @@ final class WiFiCapabilityService: NSObject, ObservableObject {
             } else if let managers, !managers.isEmpty {
                 result = "\(managers.count) tunnel configuration(s): " + managers.map { $0.localizedDescription ?? "Unnamed" }.joined(separator: ", ")
             } else {
-                result = "No tunnel provider configurations. A packet tunnel, app proxy, content filter or DNS proxy needs its own Network Extension target, which Apple Toolbox does not ship."
+                result = "No tunnel provider configurations. The Mac app ships no Network Extension; Apple Toolbox's packet tunnel provider is part of the iOS app."
             }
             Task { @MainActor in self?.capabilityProbeFinished(id: id, result: result) }
         }
@@ -672,10 +672,11 @@ final class WiFiCapabilityService: NSObject, ObservableObject {
         #endif
     }
 
-    /// Multipath is an iOS/iPadOS capability; tvOS has none of these configuration APIs.
+    /// Multipath is an iOS/iPadOS capability; tvOS has none of these configuration APIs. On iOS, Personal VPN and the
+    /// packet tunnel have their own sections with the full configuration flow instead of a read-only probe.
     private static func isProbeSupported(_ probe: NetworkCapabilityBoundary.Probe) -> Bool {
         #if os(iOS)
-        return true
+        return probe == .multicast || probe == .multipath
         #elseif os(macOS)
         return probe != .multipath
         #else
@@ -683,14 +684,28 @@ final class WiFiCapabilityService: NSObject, ObservableObject {
         #endif
     }
 
+    private static var personalVPNBoundary: String {
+        #if os(iOS)
+        "NEVPNManager configures the built-in IKEv2/IPsec client. The Personal VPN section below saves a configuration from the form (iOS asks once) and connects; without a real IKEv2 server the attempt fails and the system's disconnect error is shown."
+        #else
+        "NEVPNManager configures the built-in IKEv2/IPsec client. On the Mac the experiment only reads the preferences; the configuration flow is part of the iOS app."
+        #endif
+    }
+
+    private static var networkExtensionBoundary: String {
+        #if os(iOS)
+        "Apple Toolbox ships a packet tunnel provider (AppleToolbox Packet Tunnel, packet-tunnel-provider). The Packet tunnel section below installs its configuration, starts it and reads its counters. App proxies, content filters and DNS proxies would each need their own extension."
+        #else
+        "Packet tunnels, app proxies, content filters and DNS proxies run in separate Network Extension targets. Apple Toolbox's packet tunnel ships only in the iOS app, so here it can only list configurations."
+        #endif
+    }
+
     private static func makeBoundaries() -> [NetworkCapabilityBoundary] {
         let rows: [(id: String, probe: NetworkCapabilityBoundary.Probe?, probeTitle: String?, boundary: String)] = [
             ("multicast-networking", .multicast, "Join a multicast group",
              "Sending or receiving multicast and broadcast (NWConnectionGroup, BSD sockets) on iOS and iPadOS needs this managed entitlement. Apple grants it on request; the button joins 239.255.77.77:47777 and shows the system's real answer. macOS does not gate multicast behind an entitlement."),
-            ("personal-vpn", .personalVPN, "Load VPN preferences",
-             "NEVPNManager configures the built-in IKEv2/IPsec client. Loading preferences is harmless; saving a configuration shows a system alert and needs a real VPN server, so the experiment stops at reading."),
-            ("network-extensions", .tunnelProviders, "Load tunnel providers",
-             "Packet tunnels, app proxies, content filters and DNS proxies run in separate Network Extension targets with their own entitlement values. Apple Toolbox ships no such extension, so it can only list configurations."),
+            ("personal-vpn", .personalVPN, "Load VPN preferences", personalVPNBoundary),
+            ("network-extensions", .tunnelProviders, "Load tunnel providers", networkExtensionBoundary),
             ("multipath", .multipath, "Open a handover connection",
              "Multipath TCP is requested per connection with NWParameters.multipathServiceType (handover, interactive, aggregate). Aggregate mode only works with Apple's internal servers; the result of the negotiation is not exposed."),
             ("5g-network-slicing", nil, nil,

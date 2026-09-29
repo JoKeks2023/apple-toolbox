@@ -2,8 +2,9 @@ import SwiftUI
 
 extension WiFiCapabilityService: StoppableExperiment {}
 
-/// Wi-Fi and network capabilities (spec §11–12): current network, hotspot configuration, local network probe
-/// and the entitlement boundaries of Multicast, Personal VPN, Network Extensions, Multipath and 5G slicing.
+/// Wi-Fi and network capabilities (spec §11–12): current network, hotspot configuration, local network probe,
+/// the entitlement boundaries of Multicast, Personal VPN, Network Extensions, Multipath and 5G slicing, and on iOS
+/// the bundled packet tunnel and a Personal VPN (IKEv2) configuration.
 struct WiFiCapabilitiesRunView: View {
     @StateObject private var service = WiFiCapabilityService()
 
@@ -14,6 +15,10 @@ struct WiFiCapabilitiesRunView: View {
         #endif
         LocalNetworkProbeSection(service: service)
         CapabilityBoundarySection(service: service)
+        #if os(iOS)
+        PacketTunnelSection()
+        PersonalVPNSection()
+        #endif
     }
 }
 
@@ -112,6 +117,107 @@ private struct HotspotSection: View {
             }
         }
         .onAppear(perform: service.refreshConfiguredNetworks)
+    }
+}
+#endif
+
+#if os(iOS)
+/// The bundled packet tunnel: install its configuration, start and stop it, send datagrams into the test range and
+/// watch the provider's counters.
+private struct PacketTunnelSection: View {
+    @StateObject private var tunnel = PacketTunnelExperimentService()
+
+    var body: some View {
+        Section("Packet tunnel · NETunnelProviderManager") {
+            LabeledContent("Extension", value: tunnel.providerBundleIdentifier ?? "Not embedded")
+            LabeledContent("Status", value: tunnel.status)
+            ForEach(tunnel.configuration) { row in LabeledContent(row.title, value: row.value) }
+            HStack {
+                Button("Load", action: tunnel.load)
+                Button(tunnel.hasConfiguration ? "Save Again" : "Install", action: tunnel.install)
+                if tunnel.hasConfiguration { Button("Remove", role: .destructive, action: tunnel.remove) }
+            }
+            .buttonStyle(.bordered)
+            .disabled(tunnel.isWorking)
+            Button(tunnel.isConnectingOrConnected ? "Stop Tunnel" : "Start Tunnel") {
+                tunnel.isConnectingOrConnected ? tunnel.stopTunnel() : tunnel.start()
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(!tunnel.hasConfiguration || tunnel.isWorking)
+            .experimentSession(tunnel)
+            Picker("Test datagrams", selection: $tunnel.packetCount) {
+                ForEach(PacketTunnelExperimentService.packetCounts, id: \.self) { Text("\($0)").tag($0) }
+            }
+            HStack {
+                Button("Send to \(TunnelTestRange.testTarget)", action: tunnel.sendTestPackets)
+                Button("Reset Counters", action: tunnel.resetStats)
+            }
+            .buttonStyle(.bordered)
+            .disabled(!tunnel.isConnected)
+            if let stats = tunnel.stats {
+                OutputView(text: "Provider counters (handleAppMessage)\n" + stats.summary, isError: false)
+            }
+            OutputView(text: tunnel.output, isError: tunnel.isError)
+            Text("The provider has no server: it claims only \(TunnelTestRange.cidr) (RFC 2544 benchmarking range) without DNS settings, so all other traffic keeps its normal route. It counts the packets that reach it and drops them. Leaving the experiment stops the tunnel.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .onAppear(perform: tunnel.load)
+    }
+}
+
+/// The built-in IKEv2 client. The form only saves what the person enters; connecting needs a real server.
+private struct PersonalVPNSection: View {
+    @StateObject private var vpn = PersonalVPNExperimentService()
+
+    var body: some View {
+        Section("Personal VPN · NEVPNManager (IKEv2)") {
+            LabeledContent("Status", value: vpn.status)
+            ForEach(vpn.savedSummary) { row in LabeledContent(row.title, value: row.value) }
+            TextField("Server (host name or IP)", text: $vpn.form.server)
+                .networkFieldStyle(.host)
+            TextField("Remote ID", text: $vpn.form.remoteIdentifier)
+                .networkFieldStyle(.host)
+            TextField("Local ID (optional)", text: $vpn.form.localIdentifier)
+                .networkFieldStyle(.text)
+            Picker("Authentication", selection: $vpn.form.authentication) {
+                ForEach(PersonalVPNAuthentication.allCases) { Text($0.title).tag($0) }
+            }
+            TextField(vpn.form.authentication == .usernamePassword ? "Username" : "Username (optional, EAP)", text: $vpn.form.username)
+                .networkFieldStyle(.text)
+            SecureField("Password", text: $vpn.form.password)
+            if vpn.form.authentication == .sharedSecret {
+                SecureField("Shared secret", text: $vpn.form.sharedSecret)
+            }
+            Picker("Encryption", selection: $vpn.form.encryption) {
+                ForEach(PersonalVPNEncryption.allCases) { Text($0.title).tag($0) }
+            }
+            Picker("Diffie-Hellman group", selection: $vpn.form.diffieHellman) {
+                ForEach(PersonalVPNDiffieHellman.allCases) { Text($0.title).tag($0) }
+            }
+            Picker("Dead peer detection", selection: $vpn.form.deadPeerDetection) {
+                ForEach(PersonalVPNDeadPeerDetection.allCases) { Text($0.title).tag($0) }
+            }
+            Toggle("Disconnect on sleep", isOn: $vpn.form.disconnectOnSleep)
+            HStack {
+                Button("Load", action: vpn.load)
+                Button("Save Configuration", action: vpn.save)
+                if vpn.hasConfiguration { Button("Remove", role: .destructive, action: vpn.remove) }
+            }
+            .buttonStyle(.bordered)
+            .disabled(vpn.isWorking)
+            Button(vpn.isConnectingOrConnected ? "Disconnect" : "Connect") {
+                vpn.isConnectingOrConnected ? vpn.disconnect() : vpn.connect()
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(!vpn.hasConfiguration || vpn.isWorking)
+            .experimentSession(vpn)
+            OutputView(text: vpn.output, isError: vpn.isError)
+            Text("Secrets go to the keychain; NEVPNManager only stores persistent references to them. There is no Apple Toolbox VPN server, so without your own IKEv2 server the connection fails and fetchLastDisconnectError reports why.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .onAppear(perform: vpn.load)
     }
 }
 #endif

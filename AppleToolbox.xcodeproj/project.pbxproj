@@ -480,6 +480,9 @@
 		A646E239C7F1AD0303810406 /* CredentialProviderVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64B0C446C59A1CA55BC8948 /* CredentialProviderVault.swift */; };
 		34DC751E2BA48315308F9A40 /* CredentialProviderVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64B0C446C59A1CA55BC8948 /* CredentialProviderVault.swift */; };
 		738058EC3869359C0F7BA17B /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
+		C5AE5EFFF461039A51F68A28 /* AppleToolbox Packet Tunnel.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7C34834915D76F23B23FB279 /* AppleToolbox Packet Tunnel.appex */; };
+		047CA5F1D0B0E32579A6F629 /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C29D39ECCC307A4467BDDC9 /* PacketTunnelProvider.swift */; };
+		AFBB64C1658AEBEA6E872670 /* PacketTunnelShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6089A500A8A0A5EB8D4A803C /* PacketTunnelShared.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -539,6 +542,13 @@
 			remoteGlobalIDString = 82F36B2BEF6BB4F3D1B2F398;
 			remoteInfo = "AppleToolbox Credential Provider";
 		};
+		E7059BDAB1C3914D57268A12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B13F609303DA61D00AA8D3F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC08198008CD9B8471609C61;
+			remoteInfo = "AppleToolbox Packet Tunnel";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -552,6 +562,7 @@
 				FD40CA9E2993FED1A7794FE7 /* AppleToolbox Notification Content.appex in Embed Foundation Extensions */,
 				FECCE6A84FD309E8CE173DE6 /* AppleToolbox Notification Service.appex in Embed Foundation Extensions */,
 				5EF845D3D365E3F20BCCDCDF /* AppleToolbox Credential Provider.appex in Embed Foundation Extensions */,
+				C5AE5EFFF461039A51F68A28 /* AppleToolbox Packet Tunnel.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -804,6 +815,9 @@
 		501C6BE5107FFEF3CEDC253F /* AppleToolbox Credential Provider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "AppleToolbox Credential Provider.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FBBFE8948050447CACF3C11 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CredentialProviderViewController.swift; path = AppleToolbox/CredentialProvider/CredentialProviderViewController.swift; sourceTree = "<group>"; };
 		A64B0C446C59A1CA55BC8948 /* CredentialProviderVault.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CredentialProviderVault.swift; path = AppleToolbox/Shared/Services/CredentialProviderVault.swift; sourceTree = "<group>"; };
+		7C34834915D76F23B23FB279 /* AppleToolbox Packet Tunnel.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "AppleToolbox Packet Tunnel.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C29D39ECCC307A4467BDDC9 /* PacketTunnelProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PacketTunnelProvider.swift; path = AppleToolbox/PacketTunnel/PacketTunnelProvider.swift; sourceTree = "<group>"; };
+		6089A500A8A0A5EB8D4A803C /* PacketTunnelShared.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PacketTunnelShared.swift; path = AppleToolbox/Shared/Services/PacketTunnelShared.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -840,6 +854,9 @@
 				CredentialProvider/CredentialProviderViewController.swift,
 				CredentialProvider/Info.plist,
 				CredentialProvider/AppleToolboxCredentialProvider.entitlements,
+				PacketTunnel/PacketTunnelProvider.swift,
+				PacketTunnel/Info.plist,
+				PacketTunnel/AppleToolboxPacketTunnel.entitlements,
 			);
 			target = 5B13F610303DA61D00AA8D3F /* AppleToolbox iOS */;
 		};
@@ -946,6 +963,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		1700A01AF1FE34A94BA7255E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		10C6CE4C664060EAD6F6CC89 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1203,6 +1227,8 @@
 				FD8EF5CDAFE721ED2450DDBE /* EmbeddedAppExtensions.swift */,
 				9FBBFE8948050447CACF3C11 /* CredentialProviderViewController.swift */,
 				A64B0C446C59A1CA55BC8948 /* CredentialProviderVault.swift */,
+				3C29D39ECCC307A4467BDDC9 /* PacketTunnelProvider.swift */,
+				6089A500A8A0A5EB8D4A803C /* PacketTunnelShared.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1220,6 +1246,7 @@
 				FD8F764B13F9AAF839177AA2 /* AppleToolbox Watch Widget.appex */,
 				C430F164159B4FE988024EAC /* AppleToolbox Notification Service.appex */,
 				501C6BE5107FFEF3CEDC253F /* AppleToolbox Credential Provider.appex */,
+				7C34834915D76F23B23FB279 /* AppleToolbox Packet Tunnel.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1306,6 +1333,7 @@
 				581B82B4A4062510D5809983 /* PBXTargetDependency */,
 				A3CB8F5072D862DD503B72FF /* PBXTargetDependency */,
 				A49CBE46C8CE0CC993D32048 /* PBXTargetDependency */,
+				419149411BF716436FF373A2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5B13F613303DA61D00AA8D3F /* AppleToolbox */,
@@ -1461,6 +1489,23 @@
 			productReference = 501C6BE5107FFEF3CEDC253F /* AppleToolbox Credential Provider.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		AC08198008CD9B8471609C61 /* AppleToolbox Packet Tunnel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9579A9D458C444C462F432F6 /* Build configuration list for PBXNativeTarget "AppleToolbox Packet Tunnel" */;
+			buildPhases = (
+				68D304D7AEBCAD72F2D1CC57 /* Sources */,
+				10C6CE4C664060EAD6F6CC89 /* Frameworks */,
+				ABAAD7E0722354AF214AC835 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppleToolbox Packet Tunnel";
+			productName = "AppleToolbox Packet Tunnel";
+			productReference = 7C34834915D76F23B23FB279 /* AppleToolbox Packet Tunnel.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1509,6 +1554,7 @@
 				B754CBD1C1321CFF1C2EEEF5 /* AppleToolbox Watch Widget */,
 				82FEEAA326D7B10CE38432E8 /* AppleToolbox Notification Service */,
 				82F36B2BEF6BB4F3D1B2F398 /* AppleToolbox Credential Provider */,
+				AC08198008CD9B8471609C61 /* AppleToolbox Packet Tunnel */,
 			);
 		};
 /* End PBXProject section */
@@ -1590,6 +1636,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2F6C11E7E9D467C09B90A650 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABAAD7E0722354AF214AC835 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2135,6 +2188,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		68D304D7AEBCAD72F2D1CC57 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047CA5F1D0B0E32579A6F629 /* PacketTunnelProvider.swift in Sources */,
+				AFBB64C1658AEBEA6E872670 /* PacketTunnelShared.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2183,6 +2245,12 @@
 			name = "AppleToolbox Credential Provider";
 			target = 82F36B2BEF6BB4F3D1B2F398 /* AppleToolbox Credential Provider */;
 			targetProxy = C018BED73A3B743BD3D9FA7E /* PBXContainerItemProxy */;
+		};
+		419149411BF716436FF373A2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppleToolbox Packet Tunnel";
+			target = AC08198008CD9B8471609C61 /* AppleToolbox Packet Tunnel */;
+			targetProxy = E7059BDAB1C3914D57268A12 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2944,6 +3012,57 @@
 			};
 			name = Debug;
 		};
+		F6962EBCAC86CF8FE4D8FC42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = AppleToolbox/PacketTunnel/AppleToolboxPacketTunnel.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AppleToolbox/PacketTunnel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.packet-tunnel";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FBC3B5A29BB3829309710259 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = AppleToolbox/PacketTunnel/AppleToolboxPacketTunnel.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AppleToolbox/PacketTunnel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.packet-tunnel";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3051,6 +3170,15 @@
 			buildConfigurations = (
 				FCAF814CABC434CC619047BA /* Release */,
 				6FD5D9FF15A3B8DC3D59D33A /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9579A9D458C444C462F432F6 /* Build configuration list for PBXNativeTarget "AppleToolbox Packet Tunnel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F6962EBCAC86CF8FE4D8FC42 /* Release */,
+				FBC3B5A29BB3829309710259 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
