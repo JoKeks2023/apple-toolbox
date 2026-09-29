@@ -49,13 +49,24 @@
 	<key>NSHealthShareUsageDescription</key>
 	<string>Joris Apple Toolbox reads step count only when you explicitly authorize the HealthKit experiment.</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>Joris Apple Toolbox discovers nearby devices for the MultipeerConnectivity experiment.</string>
+	<string>Joris Apple Toolbox discovers nearby devices and local network services for the MultipeerConnectivity experiment and the Network Inspector, and runs the inspector's echo listener.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_apple-toolbox._tcp</string>
 		<string>_apple-toolbox._udp</string>
 		<string>_joris-nearby._tcp</string>
 		<string>_joris-nearby._udp</string>
+		<string>_toolbox-echo._tcp</string>
+		<string>_http._tcp</string>
+		<string>_ipp._tcp</string>
+		<string>_airplay._tcp</string>
+		<string>_raop._tcp</string>
+		<string>_companion-link._tcp</string>
+		<string>_hap._tcp</string>
+		<string>_matter._tcp</string>
+		<string>_ssh._tcp</string>
+		<string>_smb._tcp</string>
+		<string>_googlecast._tcp</string>
 	</array>
 </dict>
 </plist>

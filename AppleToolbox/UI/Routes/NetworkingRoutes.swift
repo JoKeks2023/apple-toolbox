@@ -6,7 +6,7 @@ struct NetworkingRunRoutes: View {
 
     var body: some View {
         switch experiment.id {
-        case "network-path": NetworkPathRunView()
+        case "network-path": NetworkInspectorRunView()
         default: UnroutedExperimentView()
         }
     }

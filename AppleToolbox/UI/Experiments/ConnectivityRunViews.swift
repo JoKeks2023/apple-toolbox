@@ -1,16 +1,5 @@
 import SwiftUI
 
-struct NetworkPathRunView: View {
-    @StateObject private var network = NetworkExperimentService()
-
-    var body: some View {
-        Button(network.isMonitoring ? "Stop Network Monitor" : "Start Network Monitor") { network.isMonitoring ? network.stop() : network.start() }.buttonStyle(.borderedProminent)
-            .experimentSession(network)
-        NetworkInterfacesView(interfaces: network.interfaces)
-        OutputView(text: network.output, isError: network.output.localizedCaseInsensitiveContains("not available"))
-    }
-}
-
 struct WatchConnectivityRunView: View {
     @ObservedObject private var continuity = ContinuityExperimentService.shared
 
@@ -68,30 +57,5 @@ struct MultipeerRunView: View {
                 .buttonStyle(.borderedProminent)
         }
         OutputView(text: service.output, isError: service.output.localizedCaseInsensitiveContains("could not") || service.output.localizedCaseInsensitiveContains("not supported") || service.output.localizedCaseInsensitiveContains("no connected"))
-    }
-}
-
-private struct NetworkInterfacesView: View {
-    let interfaces: [NetworkInterfaceResult]
-
-    var body: some View {
-        Section("Available interfaces") {
-            if interfaces.isEmpty {
-                Text("Start the monitor to inspect the current network path.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            } else {
-                ForEach(interfaces) { interface in
-                    Label {
-                        VStack(alignment: .leading) {
-                            Text(interface.name)
-                            Text(interface.type).font(.caption).foregroundStyle(.secondary)
-                        }
-                    } icon: {
-                        Image(systemName: interface.type.localizedCaseInsensitiveContains("wifi") ? "wifi" : "network")
-                    }
-                }
-            }
-        }
     }
 }
