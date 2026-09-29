@@ -142,7 +142,7 @@ nonisolated struct CryptoLabRequest: Sendable {
     var keyKind = CryptoLabKeyKind.p256
     var keyFormat = CryptoLabKeyFormat.pem
     var keyPart = CryptoLabKeyPart.publicKey
-    var message = "Hello from Joris Apple Toolbox"
+    var message = "Hello from Apple Toolbox"
     var associatedData = ""
     var hmacKey = "toolbox-secret"
     var importText = ""

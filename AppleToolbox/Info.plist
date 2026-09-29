@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Joris Apple Toolbox uses your location to inspect live Core Location updates and, with Precise Location, to read the name of the connected Wi-Fi network.</string>
+	<string>Apple Toolbox uses your location to inspect live Core Location updates and, with Precise Location, to read the name of the connected Wi-Fi network.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Joris Apple Toolbox asks for Always access only when you choose to test visit and significant-change monitoring.</string>
+	<string>Apple Toolbox asks for Always access only when you choose to test visit and significant-change monitoring.</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>LiveDashboard</key>
@@ -14,15 +14,15 @@
 		<string>Precise location lets the system reveal the name (SSID) and BSSID of the Wi-Fi network you are connected to.</string>
 	</dict>
 	<key>NSMotionUsageDescription</key>
-	<string>Joris Apple Toolbox reads steps, distance, floors and barometric altitude for the Core Motion experiment.</string>
+	<string>Apple Toolbox reads steps, distance, floors and barometric altitude for the Core Motion experiment.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Joris Apple Toolbox uses Face ID for the LocalAuthentication, Keychain and Secure Enclave experiments.</string>
+	<string>Apple Toolbox uses Face ID for the LocalAuthentication, Keychain and Secure Enclave experiments.</string>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Joris Apple Toolbox requests Apple Music access for the MusicKit experiment.</string>
+	<string>Apple Toolbox requests Apple Music access for the MusicKit experiment.</string>
 	<key>NSNearbyInteractionUsageDescription</key>
-	<string>Joris Apple Toolbox measures distance and direction to a nearby device for the Nearby Interaction and Spatial Link experiments.</string>
+	<string>Apple Toolbox measures distance and direction to a nearby device for the Nearby Interaction and Spatial Link experiments.</string>
 	<key>NFCReaderUsageDescription</key>
-	<string>Joris Apple Toolbox reads nearby NFC tags, and writes a tag only when you choose to, for the NFC experiments.</string>
+	<string>Apple Toolbox reads nearby NFC tags, and writes a tag only when you choose to, for the NFC experiments.</string>
 	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
 	<array>
 		<string>D2760000850101</string>
@@ -39,21 +39,21 @@
 		<string>FE00</string>
 	</array>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Joris Apple Toolbox uses Bluetooth to scan for, connect to and advertise to nearby Bluetooth LE devices and to pair Bluetooth MIDI devices in the Bluetooth experiments.</string>
+	<string>Apple Toolbox uses Bluetooth to scan for, connect to and advertise to nearby Bluetooth LE devices and to pair Bluetooth MIDI devices in the Bluetooth experiments.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Joris Apple Toolbox uses the camera for the Camera Lab, Vision Lab, ARKit &amp; RealityKit Lab and RoomPlan experiments.</string>
+	<string>Apple Toolbox uses the camera for the Camera Lab, Vision Lab, ARKit &amp; RealityKit Lab and RoomPlan experiments.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Joris Apple Toolbox uses the microphone for the Audio Analyzer, Speech Recognition, SpeechAnalyzer, Sound Analysis and ShazamKit experiments, and for sound in Camera Lab videos.</string>
+	<string>Apple Toolbox uses the microphone for the Audio Analyzer, Speech Recognition, SpeechAnalyzer, Sound Analysis and ShazamKit experiments, and for sound in Camera Lab videos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Joris Apple Toolbox saves a Camera Lab photo or video to your library only when you choose Save in its share sheet.</string>
+	<string>Apple Toolbox saves a Camera Lab photo or video to your library only when you choose Save in its share sheet.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Joris Apple Toolbox uses speech recognition for the Speech experiment.</string>
+	<string>Apple Toolbox uses speech recognition for the Speech experiment.</string>
 	<key>NSHomeKitUsageDescription</key>
-	<string>Joris Apple Toolbox shows your homes, accessories, scenes and automations in the Home Inspector, and reads, writes or runs them only when you choose to.</string>
+	<string>Apple Toolbox shows your homes, accessories, scenes and automations in the Home Inspector, and reads, writes or runs them only when you choose to.</string>
 	<key>NSHealthShareUsageDescription</key>
-	<string>Joris Apple Toolbox reads the Health data you choose in the HealthKit Reader (activity, heart, sleep, workouts, respiratory, mobility and environmental data) and only shows it on this device.</string>
+	<string>Apple Toolbox reads the Health data you choose in the HealthKit Reader (activity, heart, sleep, workouts, respiratory, mobility and environmental data) and only shows it on this device.</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>Joris Apple Toolbox discovers nearby devices and local network services for the MultipeerConnectivity, Network Inspector and Spatial Link experiments, and runs the inspector's echo listener.</string>
+	<string>Apple Toolbox discovers nearby devices and local network services for the MultipeerConnectivity, Network Inspector and Spatial Link experiments, and runs the inspector's echo listener.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>$(BUNDLE_ID_PREFIX).AppleToolbox.experiment</string>
@@ -62,8 +62,8 @@
 	<array>
 		<string>_apple-toolbox._tcp</string>
 		<string>_apple-toolbox._udp</string>
-		<string>_joris-nearby._tcp</string>
-		<string>_joris-nearby._udp</string>
+		<string>_toolbox-nearby._tcp</string>
+		<string>_toolbox-nearby._udp</string>
 		<string>_toolbox-echo._tcp</string>
 		<string>_toolbox-link._tcp</string>
 		<string>_toolbox-link._udp</string>

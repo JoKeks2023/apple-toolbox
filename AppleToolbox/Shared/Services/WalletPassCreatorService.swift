@@ -4,7 +4,7 @@ import Combine
 @MainActor
 final class WalletPassCreatorService: ObservableObject {
     @Published var passName = "Apple Toolbox Pass"
-    @Published var organizationName = "Joris Apple Toolbox"
+    @Published var organizationName = "Apple Toolbox"
     @Published var serialNumber = "toolbox-001"
     @Published private(set) var output = "No Wallet pass draft created yet."
     @Published private(set) var draftURL: URL?

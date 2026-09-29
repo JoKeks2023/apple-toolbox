@@ -180,11 +180,11 @@ final class NearbyExperimentService: NSObject, ObservableObject {
         let transport = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         transport.delegate = self
         transportSession = transport
-        let advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: [PeerInvitationPolicy.identifierKey: invitationIdentifier], serviceType: "joris-nearby")
+        let advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: [PeerInvitationPolicy.identifierKey: invitationIdentifier], serviceType: "toolbox-nearby")
         advertiser.delegate = self
         advertiser.startAdvertisingPeer()
         self.advertiser = advertiser
-        let browser = MCNearbyServiceBrowser(peer: peerID, serviceType: "joris-nearby")
+        let browser = MCNearbyServiceBrowser(peer: peerID, serviceType: "toolbox-nearby")
         browser.delegate = self
         browser.startBrowsingForPeers()
         self.browser = browser

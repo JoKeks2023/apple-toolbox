@@ -1,10 +1,3 @@
-//
-//  AppleToolboxUITestsLaunchTests.swift
-//  AppleToolboxUITests
-//
-//  Created by Joris Conrad on 25.08.26.
-//
-
 import XCTest
 
 final class AppleToolboxUITestsLaunchTests: XCTestCase {

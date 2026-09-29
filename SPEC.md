@@ -1,8 +1,8 @@
-# Joris Apple Toolbox
+# Apple Toolbox
 
 ## 1. Vision
 
-**Joris Apple Toolbox** ist eine native Apple-Ecosystem-App und persönliches Technologie-Labor.
+**Apple Toolbox** ist eine native Apple-Ecosystem-App und persönliches Technologie-Labor.
 
 Die App soll möglichst viele interessante Apple-Technologien praktisch erfahrbar machen: Frameworks, APIs, Hardwarefunktionen, Capabilities, Entitlements, Systemintegrationen, Developer Tools und spezielle Apple-Technologien.
 
@@ -80,7 +80,7 @@ Es soll langfristig als richtiges Location-Dashboard verwendbar sein.
 Die App soll modular aufgebaut sein.
 
 ```text
-JorisAppleToolbox/
+AppleToolbox/
 │
 ├── Shared/
 │   ├── Models/

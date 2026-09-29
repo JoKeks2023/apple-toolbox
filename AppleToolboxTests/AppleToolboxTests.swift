@@ -1,10 +1,3 @@
-//
-//  AppleToolboxTests.swift
-//  AppleToolboxTests
-//
-//  Created by Joris Conrad on 25.08.26.
-//
-
 import Testing
 import Foundation
 @testable import AppleToolbox

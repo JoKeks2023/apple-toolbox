@@ -236,7 +236,7 @@ final class AppIntentsExperimentService: ObservableObject {
     @Published private(set) var output = "Run an intent to see the value its perform() returns."
     @Published private(set) var isError = false
     @Published private(set) var running: ToolboxShortcutInfo.Kind?
-    @Published var text = "Joris Apple Toolbox"
+    @Published var text = "Apple Toolbox"
     @Published var category: ExperimentCategory = .security
     @Published var experimentID = "cryptokit"
 

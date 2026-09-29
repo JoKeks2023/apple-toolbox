@@ -135,7 +135,7 @@ struct KeychainRunView: View {
 }
 
 struct SecureEnclaveRunView: View {
-    @State private var message = "Hello from Joris Apple Toolbox"
+    @State private var message = "Hello from Apple Toolbox"
     @State private var requireUserPresence = false
     @State private var storedKey = "—"
     @State private var output: String

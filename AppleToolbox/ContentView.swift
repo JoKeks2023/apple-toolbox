@@ -111,7 +111,7 @@ struct ContentView: View {
 private struct WelcomeView: View {
     var body: some View {
         ContentUnavailableView {
-            Label("Joris Apple Toolbox", systemImage: "wrench.and.screwdriver")
+            Label("Apple Toolbox", systemImage: "wrench.and.screwdriver")
         } description: {
             Text("A native laboratory for discovering what your Apple devices can actually do. Start with a tool, or explore the experiments by category.")
         }
