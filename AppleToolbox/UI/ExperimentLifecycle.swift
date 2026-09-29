@@ -52,7 +52,7 @@ extension LocationExperimentService: StoppableExperiment {
 }
 extension MotionExperimentService: StoppableExperiment { var isActive: Bool { isRunning || isPedometerRunning || isAltimeterRunning } }
 extension NetworkExperimentService: StoppableExperiment { var isActive: Bool { isMonitoring } }
-extension BluetoothExperimentService: StoppableExperiment { var isActive: Bool { isScanning } }
+extension BluetoothExperimentService: StoppableExperiment { var isActive: Bool { isScanning || isConnected } }
 extension NFCExperimentService: StoppableExperiment { var isActive: Bool { isScanning } }
 extension NFCInspectorService: StoppableExperiment {}
 extension NFCCardEmulationService: StoppableExperiment {}

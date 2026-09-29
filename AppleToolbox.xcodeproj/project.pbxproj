@@ -291,6 +291,12 @@
 		87C06CAD8E4ADE30D582E0D6 /* AdvancedWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F09210E5C1E241EC928DE8F /* AdvancedWalletServices.swift */; };
 		8BB22FFFCB24D1529DE1CC73 /* AdvancedWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F09210E5C1E241EC928DE8F /* AdvancedWalletServices.swift */; };
 		CD3EBAD9A9DC51B04FC347D0 /* AdvancedWalletServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F09210E5C1E241EC928DE8F /* AdvancedWalletServices.swift */; };
+		08E6586C86EE674CF3805C68 /* BluetoothGATTSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F53ADD0F52307235F6AF59 /* BluetoothGATTSupport.swift */; };
+		01351817DF636D73DBDBE773 /* BluetoothGATTSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F53ADD0F52307235F6AF59 /* BluetoothGATTSupport.swift */; };
+		6B5EDF77FB6D2D0645BE1938 /* BluetoothExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16962BE40CDD940A482462B1 /* BluetoothExperimentServices.swift */; };
+		D31036A6E114B52EDA93C883 /* BluetoothExperimentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16962BE40CDD940A482462B1 /* BluetoothExperimentServices.swift */; };
+		92BA1EDF4FE08FB7CFDB6D36 /* BluetoothRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72FDFA15E8BB255D4C5EB42 /* BluetoothRunViews.swift */; };
+		AF83F73C1BE842DB05E28B61 /* BluetoothRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72FDFA15E8BB255D4C5EB42 /* BluetoothRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -483,6 +489,9 @@
 		0B5AC73D0C8706847AE75DDA /* WalletPaymentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WalletPaymentServices.swift; path = AppleToolbox/Shared/Services/WalletPaymentServices.swift; sourceTree = "<group>"; };
 		8D1C2AFBC07DB112A750B48C /* WalletRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WalletRunViews.swift; path = AppleToolbox/UI/Experiments/WalletRunViews.swift; sourceTree = "<group>"; };
 		4F09210E5C1E241EC928DE8F /* AdvancedWalletServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdvancedWalletServices.swift; path = AppleToolbox/Shared/Services/AdvancedWalletServices.swift; sourceTree = "<group>"; };
+		57F53ADD0F52307235F6AF59 /* BluetoothGATTSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BluetoothGATTSupport.swift; path = AppleToolbox/Shared/Services/BluetoothGATTSupport.swift; sourceTree = "<group>"; };
+		16962BE40CDD940A482462B1 /* BluetoothExperimentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BluetoothExperimentServices.swift; path = AppleToolbox/Shared/Services/BluetoothExperimentServices.swift; sourceTree = "<group>"; };
+		B72FDFA15E8BB255D4C5EB42 /* BluetoothRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BluetoothRunViews.swift; path = AppleToolbox/UI/Experiments/BluetoothRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -746,6 +755,9 @@
 				0B5AC73D0C8706847AE75DDA /* WalletPaymentServices.swift */,
 				8D1C2AFBC07DB112A750B48C /* WalletRunViews.swift */,
 				4F09210E5C1E241EC928DE8F /* AdvancedWalletServices.swift */,
+				57F53ADD0F52307235F6AF59 /* BluetoothGATTSupport.swift */,
+				16962BE40CDD940A482462B1 /* BluetoothExperimentServices.swift */,
+				B72FDFA15E8BB255D4C5EB42 /* BluetoothRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1145,6 +1157,9 @@
 				23576C1ADBC8C820DD02CBF7 /* WalletPaymentServices.swift in Sources */,
 				0AC6D3115567944D90E5876E /* WalletRunViews.swift in Sources */,
 				87C06CAD8E4ADE30D582E0D6 /* AdvancedWalletServices.swift in Sources */,
+				08E6586C86EE674CF3805C68 /* BluetoothGATTSupport.swift in Sources */,
+				6B5EDF77FB6D2D0645BE1938 /* BluetoothExperimentServices.swift in Sources */,
+				92BA1EDF4FE08FB7CFDB6D36 /* BluetoothRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1344,6 +1359,9 @@
 				831854A40763B57B26BE5FAE /* WalletPaymentServices.swift in Sources */,
 				7C50E89D9003AABED4103657 /* WalletRunViews.swift in Sources */,
 				8BB22FFFCB24D1529DE1CC73 /* AdvancedWalletServices.swift in Sources */,
+				01351817DF636D73DBDBE773 /* BluetoothGATTSupport.swift in Sources */,
+				D31036A6E114B52EDA93C883 /* BluetoothExperimentServices.swift in Sources */,
+				AF83F73C1BE842DB05E28B61 /* BluetoothRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
