@@ -17,22 +17,6 @@ struct WatchConnectivityRunView: View {
     }
 }
 
-struct NearbyInteractionRunView: View {
-    @StateObject private var nearby = NearbyExperimentService()
-
-    var body: some View {
-        Group {
-            if nearby.isRunning {
-                Button("Stop Nearby Interaction", action: nearby.stop).buttonStyle(.borderedProminent)
-            } else {
-                Button("Inspect Nearby Interaction", action: nearby.start).buttonStyle(.borderedProminent)
-            }
-        }
-        .experimentSession(nearby)
-        OutputView(text: nearby.output, isError: nearby.output.localizedCaseInsensitiveContains("error") || nearby.output.localizedCaseInsensitiveContains("not supported"))
-    }
-}
-
 struct MultipeerRunView: View {
     @StateObject private var service = MultipeerConnectivityExperimentService()
     @State private var message = "Hello from Apple Toolbox"

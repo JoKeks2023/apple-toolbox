@@ -328,6 +328,8 @@
 		5315246DCF29B6BE8C97A1E5 /* NetworkCapabilityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83294D80DB40E9AFB66C2EEB /* NetworkCapabilityServices.swift */; };
 		BAAB07ADCB89BA661BD06A9B /* WiFiCapabilitiesRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBECCA87E325C9A6B83FFD /* WiFiCapabilitiesRunView.swift */; };
 		5090F5DBB5418B63CDC8D86E /* WiFiCapabilitiesRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBECCA87E325C9A6B83FFD /* WiFiCapabilitiesRunView.swift */; };
+		73824327E7B970C69592CF6C /* NearbyInteractionRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5756851E4980E36BA5EED6 /* NearbyInteractionRunView.swift */; };
+		04308AAD78735F95893A39D2 /* NearbyInteractionRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5756851E4980E36BA5EED6 /* NearbyInteractionRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -537,6 +539,7 @@
 		3386865B99C682145C16E4D3 /* NetworkInspectorRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkInspectorRunView.swift; path = AppleToolbox/UI/Experiments/NetworkInspectorRunView.swift; sourceTree = "<group>"; };
 		83294D80DB40E9AFB66C2EEB /* NetworkCapabilityServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkCapabilityServices.swift; path = AppleToolbox/Shared/Services/NetworkCapabilityServices.swift; sourceTree = "<group>"; };
 		7AFBECCA87E325C9A6B83FFD /* WiFiCapabilitiesRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WiFiCapabilitiesRunView.swift; path = AppleToolbox/UI/Experiments/WiFiCapabilitiesRunView.swift; sourceTree = "<group>"; };
+		6F5756851E4980E36BA5EED6 /* NearbyInteractionRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NearbyInteractionRunView.swift; path = AppleToolbox/UI/Experiments/NearbyInteractionRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -817,6 +820,7 @@
 				3386865B99C682145C16E4D3 /* NetworkInspectorRunView.swift */,
 				83294D80DB40E9AFB66C2EEB /* NetworkCapabilityServices.swift */,
 				7AFBECCA87E325C9A6B83FFD /* WiFiCapabilitiesRunView.swift */,
+				6F5756851E4980E36BA5EED6 /* NearbyInteractionRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1233,6 +1237,7 @@
 				7B530270C03457B0DF9D80E1 /* NetworkInspectorRunView.swift in Sources */,
 				48C7DBECB7C254697D8CC7C8 /* NetworkCapabilityServices.swift in Sources */,
 				BAAB07ADCB89BA661BD06A9B /* WiFiCapabilitiesRunView.swift in Sources */,
+				73824327E7B970C69592CF6C /* NearbyInteractionRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1452,6 +1457,7 @@
 				21D1334A2192B79235F8EF72 /* NetworkInspectorRunView.swift in Sources */,
 				33ACAEE7956769DC5BFEDB67 /* NetworkCapabilityServices.swift in Sources */,
 				5090F5DBB5418B63CDC8D86E /* WiFiCapabilitiesRunView.swift in Sources */,
+				04308AAD78735F95893A39D2 /* NearbyInteractionRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -50,10 +50,13 @@ extension ExperimentRegistry {
                     nextStep: "Run the experiment on the iPhone that is paired with your watch."),
             ]),
         ExperimentDescriptor(id: "nearby-interaction", name: "Nearby Interaction / UWB", category: .connectivity,
-            description: "Inspect Nearby Interaction device capabilities and prepare a real peer-ranging session using discovery tokens.", frameworks: ["NearbyInteraction"], supportedPlatforms: [.iOS, .iPadOS, .watchOS], hardwareRequirements: ["UWB-capable peer devices for precise ranging"], osRequirements: ["iOS 16+ · iPadOS 16+ · watchOS 9+"], permissions: [], capabilities: ["Nearby Interaction", "Ultra Wideband"], entitlements: [], documentationURL: URL(string: "https://developer.apple.com/documentation/nearbyinteraction")!, evaluate: ExperimentAvailability.nearbyInteraction,
+            description: "Range with a nearby iPhone over Ultra Wideband and see distance and direction live on a radar, with camera assistance, extended distance, convergence coaching and the accessory session boundary.", frameworks: ["NearbyInteraction", "MultipeerConnectivity", "ARKit (camera assistance)"], supportedPlatforms: [.iOS, .iPadOS, .watchOS], hardwareRequirements: ["UWB chip on both devices (iPhone 11 or later)", "Camera assistance and extended distance only where NIDeviceCapability reports support"], osRequirements: ["iOS 16+ · iPadOS 16+ · watchOS 9+", "Extended distance and peer capabilities: iOS 17+"], permissions: ["Nearby Interaction", "Local Network (token exchange)", "Camera (camera assistance)"], capabilities: ["Nearby Interaction", "Ultra Wideband"], entitlements: [], documentationURL: URL(string: "https://developer.apple.com/documentation/nearbyinteraction")!, evaluate: ExperimentAvailability.nearbyInteraction,
+            useCase: ExperimentUseCase(id: "uwb-finder", title: "Find the other iPhone",
+                summary: "Point towards a second iPhone and watch the arrow and distance follow it in real time.",
+                interaction: "Start peer ranging on two UWB iPhones with Apple Toolbox open. Turn on camera assistance and sweep the phone slowly until convergence reports converged."),
             explanations: [
-                .hardwareUnsupported: ExperimentExplanation(reason: "This device does not provide an Ultra Wideband chip.", required: "iPhone 11 or later, or Apple Watch Series 6 or later",
-                    nextStep: "Use two UWB-capable devices running Apple Toolbox."),
+                .hardwareUnsupported: ExperimentExplanation(reason: "This device does not provide an Ultra Wideband chip (no iPad has one).", required: "iPhone 11 or later, or Apple Watch Series 6 or later",
+                    nextStep: "Use two UWB-capable iPhones running Apple Toolbox."),
             ]),
     ]
 }

@@ -39,13 +39,119 @@ nonisolated enum PeerInvitationPolicy {
 }
 #endif
 
+/// Pure geometry and naming for Nearby Interaction readings, shared by the Nearby and Spatial Link views.
+nonisolated enum NearbyGeometry {
+    /// Horizontal angle in radians (positive = to the right) from NI's unit direction vector, as in Apple's samples.
+    static func azimuth(_ direction: SIMD3<Float>) -> Float {
+        asin(max(-1, min(1, direction.x)))
+    }
+
+    /// Vertical angle in radians (positive = above); NI's z axis points out of the screen towards the user.
+    static func elevation(_ direction: SIMD3<Float>) -> Float {
+        atan2(direction.z, direction.y) + .pi / 2
+    }
+
+    static func degrees(_ radians: Float) -> String {
+        let value = Int((radians * 180 / .pi).rounded())
+        return value == 0 ? "0°" : String(format: "%+d°", value)
+    }
+
+    static func meters(_ distance: Float) -> String {
+        distance < 10 ? String(format: "%.2f m", distance) : String(format: "%.1f m", distance)
+    }
+
+    /// Unit-circle position of a blip: x to the right, y negative = ahead. Distances beyond the range stay on the edge.
+    static func radarPoint(distance: Float, azimuth: Float, range: Float) -> SIMD2<Float> {
+        let radius = range > 0 ? min(max(distance, 0) / range, 1) : 0
+        return SIMD2(sin(azimuth) * radius, -cos(azimuth) * radius)
+    }
+
+    /// The smallest "nice" radar range that shows every distance.
+    static func radarRange(for distances: [Float]) -> Float {
+        let farthest = distances.max() ?? 0
+        return [1, 2, 5, 10, 20, 50, 100].first { $0 >= farthest * 1.1 } ?? 200
+    }
+
+    /// NIError codes (NIErrorDomain).
+    static func errorDescription(code: Int) -> String {
+        switch code {
+        case -5889: "Unsupported platform: this device has no Ultra Wideband chip"
+        case -5888: "Invalid configuration"
+        case -5887: "Session failed and cannot be restarted"
+        case -5886: "Resource usage timeout: the session ran in the background for too long"
+        case -5885: "Too many active sessions"
+        case -5884: "The user did not allow Nearby Interaction"
+        case -5883: "Camera assistance is not supported or the ARSession configuration is incompatible"
+        case -5882: "The accessory's Bluetooth peer is not available"
+        case -5881: "The peer device does not support this configuration (for example extended distance)"
+        case -5880: "Too many extended-distance sessions"
+        default: "Error \(code)"
+        }
+    }
+}
+
+/// What a device reports through NIDeviceCapability; nil means the OS does not offer the query.
+nonisolated struct NearbyCapabilitySummary: Equatable, Sendable {
+    var preciseDistance = false
+    var direction = false
+    var cameraAssistance = false
+    var extendedDistance = false
+    var dlTDOA: Bool?
+    var bluetoothChannelSounding: Bool?
+
+    static var current: NearbyCapabilitySummary {
+        #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
+        NearbyCapabilitySummary(NISession.deviceCapabilities)
+        #else
+        NearbyCapabilitySummary()
+        #endif
+    }
+}
+
+#if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
+nonisolated extension NearbyCapabilitySummary {
+    init(_ capability: any NIDeviceCapability) {
+        preciseDistance = capability.supportsPreciseDistanceMeasurement
+        direction = capability.supportsDirectionMeasurement
+        cameraAssistance = capability.supportsCameraAssistance
+        extendedDistance = capability.supportsExtendedDistanceMeasurement
+        #if os(iOS)
+        dlTDOA = capability.supportsDLTDOAMeasurement
+        if #available(iOS 27.0, *) { bluetoothChannelSounding = capability.supportsBluetoothChannelSounding }
+        #endif
+    }
+}
+#endif
+
+/// One distance/direction update for the peer.
+nonisolated struct NearbyReading: Equatable, Sendable {
+    let distance: Float?
+    let direction: SIMD3<Float>?
+    let horizontalAngle: Float?
+    let verticalEstimate: String
+    let date: Date
+
+    /// Direction when available, otherwise the camera-assisted horizontal angle.
+    var azimuth: Float? { direction.map(NearbyGeometry.azimuth) ?? horizontalAngle }
+}
+
 @MainActor
 final class NearbyExperimentService: NSObject, ObservableObject {
     @Published private(set) var output = "Nearby Interaction is ready."
     @Published private(set) var isRunning = false
+    @Published private(set) var phase = "Idle"
+    @Published private(set) var peerName: String?
+    @Published private(set) var reading: NearbyReading?
+    @Published private(set) var convergence = "—"
+    @Published private(set) var capabilities = NearbyCapabilitySummary.current
+    @Published private(set) var peerCapabilities: NearbyCapabilitySummary?
+    @Published private(set) var useCameraAssistance = false
+    @Published private(set) var useExtendedDistance = false
+    @Published private(set) var accessoryReport: String?
 
     #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
     private var session: NISession?
+    private var peerToken: NIDiscoveryToken?
     #endif
 
     #if canImport(MultipeerConnectivity) && os(iOS)
@@ -58,16 +164,18 @@ final class NearbyExperimentService: NSObject, ObservableObject {
 
     func start() {
         #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
-        guard NISession.deviceCapabilities.supportsPreciseDistanceMeasurement else {
-            output = "Nearby Interaction is present, but precise distance measurement is not supported by this device."
+        capabilities = .current
+        guard capabilities.preciseDistance else {
+            output = "Nearby Interaction is present, but this device has no Ultra Wideband chip, so precise distance measurement is not supported."
             return
         }
-
         let session = NISession()
-        session.delegate = self
+        session.delegate = self // Delegate calls arrive on the main queue (no delegateQueue set).
         self.session = session
         isRunning = true
-        let capabilities = NISession.deviceCapabilities
+        phase = "Waiting for a peer"
+        reading = nil
+        convergence = "—"
         #if canImport(MultipeerConnectivity) && os(iOS)
         let transport = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         transport.delegate = self
@@ -80,9 +188,9 @@ final class NearbyExperimentService: NSObject, ObservableObject {
         browser.delegate = self
         browser.startBrowsingForPeers()
         self.browser = browser
-        output = "Session created.\nPrecise distance: \(capabilities.supportsPreciseDistanceMeasurement)\nDirection: \(capabilities.supportsDirectionMeasurement)\nCamera assistance: \(capabilities.supportsCameraAssistance)\n\nAdvertising and browsing for a nearby Apple Toolbox peer."
+        output = "NISession created. Advertising and browsing for a nearby Apple Toolbox peer to exchange discovery tokens over MultipeerConnectivity."
         #else
-        output = "Session created.\nPrecise distance: \(capabilities.supportsPreciseDistanceMeasurement)\nDirection: \(capabilities.supportsDirectionMeasurement)\nCamera assistance: \(capabilities.supportsCameraAssistance)\n\nA peer discovery token is required."
+        output = "NISession created. A peer discovery token is required; this platform has no peer transport in Apple Toolbox."
         #endif
         #else
         output = "Nearby Interaction is not supported on this platform."
@@ -93,6 +201,7 @@ final class NearbyExperimentService: NSObject, ObservableObject {
         #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
         session?.invalidate()
         session = nil
+        peerToken = nil
         #if canImport(MultipeerConnectivity) && os(iOS)
         advertiser?.stopAdvertisingPeer()
         browser?.stopBrowsingForPeers()
@@ -102,41 +211,165 @@ final class NearbyExperimentService: NSObject, ObservableObject {
         transportSession = nil
         #endif
         isRunning = false
+        phase = "Idle"
+        peerName = nil
+        peerCapabilities = nil
         output = "Nearby Interaction session stopped."
         #else
         output = "Nearby Interaction is not supported on this platform."
         #endif
     }
+
+    /// Camera assistance fuses UWB with ARKit for a horizontal angle and world transform on devices that support it.
+    func setCameraAssistance(_ enabled: Bool) {
+        useCameraAssistance = enabled
+        rerunIfRanging()
+    }
+
+    /// Extended distance needs both devices to report support in NIDeviceCapability.
+    func setExtendedDistance(_ enabled: Bool) {
+        useExtendedDistance = enabled
+        rerunIfRanging()
+    }
+
+    /// Third-party UWB accessories hand their configuration data to the app over their own Bluetooth protocol.
+    /// Without an accessory there is no such data; the real initializer shows how the framework rejects it.
+    func tryAccessoryConfiguration() {
+        #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
+        do {
+            _ = try NINearbyAccessoryConfiguration(data: Data())
+            accessoryReport = "NINearbyAccessoryConfiguration accepted empty data."
+        } catch {
+            let nsError = error as NSError
+            accessoryReport = "NINearbyAccessoryConfiguration(data:) rejected the call: \(nsError.domain) \(nsError.code): \(nsError.localizedDescription)"
+        }
+        #else
+        accessoryReport = "Nearby Interaction accessory sessions are not available on this platform."
+        #endif
+    }
+
+    private func rerunIfRanging() {
+        #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
+        guard session != nil, peerToken != nil else { return }
+        runRanging()
+        #endif
+    }
+
+    #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
+
+    private func runRanging() {
+        guard let session, let peerToken else { return }
+        let configuration = NINearbyPeerConfiguration(peerToken: peerToken)
+        var notes: [String] = []
+        #if os(iOS)
+        if useCameraAssistance {
+            if capabilities.cameraAssistance {
+                configuration.isCameraAssistanceEnabled = true
+                notes.append("camera assistance on (keep the camera unobstructed and move the phone slowly)")
+            } else {
+                notes.append("camera assistance is not supported on this device")
+            }
+        }
+        #endif
+        if useExtendedDistance {
+            if capabilities.extendedDistance && peerCapabilities?.extendedDistance == true {
+                configuration.isExtendedDistanceMeasurementEnabled = true
+                notes.append("extended distance on")
+            } else {
+                notes.append("extended distance needs support on both devices (this device: \(capabilities.extendedDistance ? "yes" : "no"), peer: \(peerCapabilities.map { $0.extendedDistance ? "yes" : "no" } ?? "unknown"))")
+            }
+        }
+        session.run(configuration)
+        phase = "Ranging"
+        output = "Ranging with \(peerName ?? "peer")." + (notes.isEmpty ? "" : "\n" + notes.joined(separator: "\n"))
+    }
+
+    private func receivedToken(_ token: NIDiscoveryToken, from name: String) {
+        peerToken = token
+        peerName = name
+        peerCapabilities = NearbyCapabilitySummary(token.deviceCapabilities)
+        runRanging()
+    }
+
+    private static func title(_ estimate: NINearbyObject.VerticalDirectionEstimate) -> String {
+        switch estimate {
+        case .same: "Same level"
+        case .above: "Above"
+        case .below: "Below"
+        case .aboveOrBelow: "Above or below"
+        case .unknown: "Unknown"
+        @unknown default: "Unknown"
+        }
+    }
+    #endif
 }
 
 #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
+// NISession calls its delegate on the main queue because no delegateQueue is set.
 extension NearbyExperimentService: NISessionDelegate {
     func session(_ session: NISession, didGenerateShareableConfigurationData data: Data, for object: NINearbyObject) {
-        output = "Nearby configuration data generated. A platform-specific peer transport is required to exchange it."
+        output = "Shareable configuration data generated (\(data.count) bytes). Only accessory sessions use it."
     }
 
     func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
         guard let object = nearbyObjects.first else { return }
-        let distance = object.distance.map { String(format: "%.2f m", $0) } ?? "unknown"
-        let direction = object.direction.map { "\($0)" } ?? "unknown"
-        output = "Nearby object detected.\nDistance: \(distance)\nDirection: \(direction)"
+        let horizontalAngle: Float? = object.horizontalAngle
+        reading = NearbyReading(distance: object.distance, direction: object.direction, horizontalAngle: horizontalAngle,
+                                verticalEstimate: Self.title(object.verticalDirectionEstimate), date: Date())
+        phase = "Ranging"
     }
 
     func session(_ session: NISession, didRemove nearbyObjects: [NINearbyObject], reason: NINearbyObject.RemovalReason) {
-        output = "Nearby object removed: \(reason)."
+        switch reason {
+        case .peerEnded:
+            phase = "Peer ended the session"
+            output = "\(peerName ?? "The peer") ended its Nearby Interaction session."
+            peerToken = nil
+            reading = nil
+        case .timeout:
+            phase = "Peer out of range"
+            output = "No UWB measurements for a while (out of range or blocked). Ranging restarts automatically."
+            runRanging()
+        @unknown default:
+            output = "Nearby object removed."
+        }
+    }
+
+    func session(_ session: NISession, didUpdateAlgorithmConvergence convergence: NIAlgorithmConvergence, for object: NINearbyObject?) {
+        switch convergence.status {
+        case .converged:
+            self.convergence = "Converged"
+        case .notConverged(let reasons):
+            let text = reasons.map { $0.localizedDescription ?? $0.rawValue }.joined(separator: ", ")
+            self.convergence = "Not converged" + (text.isEmpty ? "" : ": \(text)")
+        case .unknown:
+            self.convergence = "Unknown"
+        @unknown default:
+            self.convergence = "Unknown"
+        }
+    }
+
+    func sessionDidStartRunning(_ session: NISession) {
+        phase = "Running"
     }
 
     func sessionWasSuspended(_ session: NISession) {
-        output = "Nearby Interaction session suspended."
+        phase = "Suspended"
+        output = "Nearby Interaction session suspended (app in the background or another session took over)."
     }
 
     func sessionSuspensionEnded(_ session: NISession) {
-        output = "Nearby Interaction session resumed."
+        output = "Suspension ended; running the configuration again."
+        runRanging()
     }
 
     func session(_ session: NISession, didInvalidateWith error: Error) {
+        let nsError = error as NSError
         isRunning = false
-        output = "Nearby Interaction error: \(error.localizedDescription)"
+        phase = "Invalidated"
+        output = "Nearby Interaction error \(nsError.code): \(NearbyGeometry.errorDescription(code: nsError.code)). \(nsError.localizedDescription)"
+        self.session = nil
+        peerToken = nil
     }
 }
 #endif
@@ -151,6 +384,7 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
         Task { @MainActor [weak self] in
             guard let self else { return }
             output = "Peer \(peerID.displayName): \(state.title)."
+            if state == .connected { phase = "Connected to \(peerID.displayName)" }
             guard state == .connected, let discoveryToken = self.session?.discoveryToken else { return }
             do {
                 let archived = try NSKeyedArchiver.archivedData(withRootObject: discoveryToken, requiringSecureCoding: true)
@@ -170,8 +404,7 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
                     output = "Received peer data, but it was not a valid Nearby token."
                     return
                 }
-                self.session?.run(NINearbyPeerConfiguration(peerToken: token))
-                output = "Peer token received from \(peerName). Nearby ranging started."
+                receivedToken(token, from: peerName)
             } catch {
                 output = "Could not decode peer token: \(error.localizedDescription)"
             }
