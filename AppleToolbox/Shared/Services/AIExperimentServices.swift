@@ -86,5 +86,4 @@ final class SpeechExperimentService: NSObject, ObservableObject {
 
 enum AIAvailabilityExperimentService {
     static func coreMLStatus() -> String { "Core ML is available as a framework. A real model must be bundled or selected before inference can run; no fake model output is generated." }
-    static func soundAnalysisStatus() -> String { "SoundAnalysis is available for real classifier models. No bundled classifier is present yet, so the experiment reports the integration boundary instead of inventing labels." }
 }

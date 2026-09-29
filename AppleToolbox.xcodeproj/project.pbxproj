@@ -153,6 +153,10 @@
 		95B490EE4A74EB6720CB39E0 /* TranslationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C59C4A64C812ED3F1566FAA /* TranslationExperimentService.swift */; };
 		4F70786B0D3F281714CFF57B /* TranslationRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7209859E7280C19057CDFF07 /* TranslationRunView.swift */; };
 		117CB580B44B1488A6C4DB2D /* TranslationRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7209859E7280C19057CDFF07 /* TranslationRunView.swift */; };
+		685758D6DBD3D2F783E2664C /* SoundAnalysisExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7477941FD4E5A650299E8A8D /* SoundAnalysisExperimentService.swift */; };
+		EA675EF6B312822E9A70D893 /* SoundAnalysisExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7477941FD4E5A650299E8A8D /* SoundAnalysisExperimentService.swift */; };
+		FA06BB08B325D217CEC740B8 /* SoundAnalysisRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD27F86185035C2B50D5C974 /* SoundAnalysisRunView.swift */; };
+		2EB473BDDB7DC3B0CB155956 /* SoundAnalysisRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD27F86185035C2B50D5C974 /* SoundAnalysisRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -287,6 +291,8 @@
 		0A5F3545F3EC2E7A3F004911 /* FoundationModelsRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsRunView.swift; path = AppleToolbox/UI/Experiments/FoundationModelsRunView.swift; sourceTree = "<group>"; };
 		6C59C4A64C812ED3F1566FAA /* TranslationExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TranslationExperimentService.swift; path = AppleToolbox/Shared/Services/TranslationExperimentService.swift; sourceTree = "<group>"; };
 		7209859E7280C19057CDFF07 /* TranslationRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TranslationRunView.swift; path = AppleToolbox/UI/Experiments/TranslationRunView.swift; sourceTree = "<group>"; };
+		7477941FD4E5A650299E8A8D /* SoundAnalysisExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SoundAnalysisExperimentService.swift; path = AppleToolbox/Shared/Services/SoundAnalysisExperimentService.swift; sourceTree = "<group>"; };
+		FD27F86185035C2B50D5C974 /* SoundAnalysisRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SoundAnalysisRunView.swift; path = AppleToolbox/UI/Experiments/SoundAnalysisRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -492,6 +498,8 @@
 				0A5F3545F3EC2E7A3F004911 /* FoundationModelsRunView.swift */,
 				6C59C4A64C812ED3F1566FAA /* TranslationExperimentService.swift */,
 				7209859E7280C19057CDFF07 /* TranslationRunView.swift */,
+				7477941FD4E5A650299E8A8D /* SoundAnalysisExperimentService.swift */,
+				FD27F86185035C2B50D5C974 /* SoundAnalysisRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -833,6 +841,8 @@
 				2285BD54F95825C09D9F42FE /* FoundationModelsRunView.swift in Sources */,
 				3EE84E035DEA6980F8CCC682 /* TranslationExperimentService.swift in Sources */,
 				4F70786B0D3F281714CFF57B /* TranslationRunView.swift in Sources */,
+				685758D6DBD3D2F783E2664C /* SoundAnalysisExperimentService.swift in Sources */,
+				FA06BB08B325D217CEC740B8 /* SoundAnalysisRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -952,6 +962,8 @@
 				C2D9960EBD1F9B2C58EB24EA /* FoundationModelsRunView.swift in Sources */,
 				95B490EE4A74EB6720CB39E0 /* TranslationExperimentService.swift in Sources */,
 				117CB580B44B1488A6C4DB2D /* TranslationRunView.swift in Sources */,
+				EA675EF6B312822E9A70D893 /* SoundAnalysisExperimentService.swift in Sources */,
+				2EB473BDDB7DC3B0CB155956 /* SoundAnalysisRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
