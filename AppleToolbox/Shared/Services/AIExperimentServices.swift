@@ -16,6 +16,8 @@ final class SpeechExperimentService: NSObject, ObservableObject {
     private let audioEngine = AVAudioEngine()
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var task: SFSpeechRecognitionTask?
+    /// Set once the recording session is active, so a failed start still deactivates it.
+    private var isAudioSessionActive = false
     #endif
 
     func start() {
@@ -43,13 +45,14 @@ final class SpeechExperimentService: NSObject, ObservableObject {
             guard granted else { output = "Microphone permission was denied."; return }
             stop()
             try AudioSessionController.activateForRecording()
+            isAudioSessionActive = true
             let request = SFSpeechAudioBufferRecognitionRequest()
             request.shouldReportPartialResults = true
             self.request = request
             let input = audioEngine.inputNode
             let format = input.outputFormat(forBus: 0)
             guard format.sampleRate > 0, format.channelCount > 0 else {
-                AudioSessionController.deactivate()
+                stop()
                 output = "No audio input is available right now."
                 return
             }
@@ -81,7 +84,10 @@ final class SpeechExperimentService: NSObject, ObservableObject {
         task?.cancel()
         request = nil
         task = nil
-        if isRunning { AudioSessionController.deactivate() }
+        if isAudioSessionActive {
+            AudioSessionController.deactivate()
+            isAudioSessionActive = false
+        }
         #endif
         isRunning = false
     }

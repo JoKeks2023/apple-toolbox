@@ -148,9 +148,9 @@ final class AudioExperimentService: ObservableObject {
         do {
             if isMicrophoneRunning { try AudioSessionController.activateForPlayAndRecord() } else { try AudioSessionController.activateForPlayback() }
             let engine = AVAudioEngine()
+            toneEngine = engine // Before building: a failure below tears down (and detaches the shared units from) this engine.
             try buildToneGraph(in: engine)
             try engine.start()
-            toneEngine = engine
             toneObserver = observeConfigurationChanges(of: engine)
             isTonePlaying = true
             status = .available

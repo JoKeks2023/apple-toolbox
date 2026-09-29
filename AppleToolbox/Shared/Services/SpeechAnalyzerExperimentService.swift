@@ -108,6 +108,8 @@ final class SpeechAnalyzerExperimentService: ObservableObject {
     private var converter: SpeechBufferConverter?
     private var resultsTask: Task<Void, Never>?
     private var runTask: Task<Void, Never>?
+    /// Set once the recording session is active, so a failed or cancelled start still deactivates it.
+    private var isAudioSessionActive = false
     #endif
 
     var isSupported: Bool {
@@ -322,10 +324,10 @@ final class SpeechAnalyzerExperimentService: ObservableObject {
                 return finishRun("SpeechAnalyzer.bestAvailableAudioFormat returned nil for this transcriber.", error: true)
             }
             try AudioSessionController.activateForRecording()
+            isAudioSessionActive = true
             let input = engine.inputNode
             let micFormat = input.outputFormat(forBus: 0)
             guard micFormat.sampleRate > 0, micFormat.channelCount > 0 else {
-                AudioSessionController.deactivate()
                 return finishRun("No audio input is available right now.", error: true)
             }
             inputFormat = Self.describe(micFormat)
@@ -408,9 +410,10 @@ final class SpeechAnalyzerExperimentService: ObservableObject {
 
     private func stopAudioInput() {
         engine.inputNode.removeTap(onBus: 0)
-        if engine.isRunning {
-            engine.stop()
+        if engine.isRunning { engine.stop() }
+        if isAudioSessionActive {
             AudioSessionController.deactivate()
+            isAudioSessionActive = false
         }
         converter?.finish()
     }
