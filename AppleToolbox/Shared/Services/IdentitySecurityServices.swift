@@ -25,6 +25,59 @@ extension ExperimentAvailability {
         .platformUnsupported
         #endif
     }
+
+    /// Security keys use the same relying-party binding as passkeys, but only iOS and macOS offer the provider.
+    static func securityKeys() -> ExperimentStatus {
+        #if canImport(AuthenticationServices) && (os(iOS) || os(macOS))
+        WebCredentialsConfiguration.current.isConfigured ? .available : .entitlementRequired
+        #else
+        .platformUnsupported
+        #endif
+    }
+
+    /// Only a missing declaration counts: the default access group always works, and profiles carry the team wildcard.
+    static func keychainSharing() -> ExperimentStatus {
+        switch IdentityEntitlements.state(ofCapability: "keychain-sharing") {
+        case .notProvisioned, .notDeclared: .entitlementRequired
+        default: .available
+        }
+    }
+
+    static func credentialProvider() -> ExperimentStatus {
+        #if canImport(AuthenticationServices) && (os(iOS) || os(macOS))
+        CredentialProviderExtensionScan.bundled.isEmpty ? .entitlementRequired : .available
+        #else
+        .platformUnsupported
+        #endif
+    }
+}
+
+/// AutoFill credential provider extensions bundled with this app, read from the extensions' own Info.plist files.
+enum CredentialProviderExtensionScan {
+    static let extensionPoint = "com.apple.authentication-services-credential-provider-ui"
+
+    struct Provider: Equatable {
+        let bundleIdentifier: String
+        /// Keys of ASCredentialProviderExtensionCapabilities that are true (for example ProvidesPasskeys).
+        let capabilities: [String]
+    }
+
+    static func providers(in infoPlists: [[String: Any]]) -> [Provider] {
+        infoPlists.compactMap { plist in
+            guard let nsExtension = plist["NSExtension"] as? [String: Any],
+                  nsExtension["NSExtensionPointIdentifier"] as? String == extensionPoint else { return nil }
+            let attributes = nsExtension["NSExtensionAttributes"] as? [String: Any]
+            let capabilities = attributes?["ASCredentialProviderExtensionCapabilities"] as? [String: Any] ?? [:]
+            return Provider(bundleIdentifier: plist["CFBundleIdentifier"] as? String ?? "unknown bundle",
+                            capabilities: capabilities.filter { ($0.value as? Bool) == true }.map(\.key).sorted())
+        }
+    }
+
+    static var bundled: [Provider] {
+        guard let plugIns = Bundle.main.builtInPlugInsURL,
+              let urls = try? FileManager.default.contentsOfDirectory(at: plugIns, includingPropertiesForKeys: nil) else { return [] }
+        return providers(in: urls.filter { $0.pathExtension == "appex" }.compactMap { Bundle(url: $0)?.infoDictionary })
+    }
 }
 
 /// What the running app can show about an identity entitlement. The embedded provisioning profile decides; only when no

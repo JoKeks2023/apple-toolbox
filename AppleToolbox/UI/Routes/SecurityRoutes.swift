@@ -13,6 +13,9 @@ struct SecurityRunRoutes: View {
         case "app-attest": AppAttestRunView(experiment: experiment)
         case "passkeys": PasskeysRunView(experiment: experiment)
         case "sign-in-with-apple": SignInWithAppleRunView(experiment: experiment)
+        case "keychain-sharing": KeychainSharingRunView(experiment: experiment)
+        case "security-keys": SecurityKeysRunView(experiment: experiment)
+        case "credential-provider": CredentialProviderRunView(experiment: experiment)
         default: UnroutedExperimentView()
         }
     }

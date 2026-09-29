@@ -58,17 +58,7 @@ struct PasskeysRunView: View {
 
     var body: some View {
         OutputView(text: PasskeyExperimentService.configurationSummary, isError: false)
-        TextField("Relying-party identifier (domain)", text: $passkeys.relyingPartyID)
-            .autocorrectionDisabled()
-            #if os(iOS)
-            .textInputAutocapitalization(.never)
-            .keyboardType(.URL)
-            #endif
-        TextField("User name", text: $passkeys.userName)
-            .autocorrectionDisabled()
-            #if os(iOS)
-            .textInputAutocapitalization(.never)
-            #endif
+        RelyingPartyFields(service: passkeys)
         HStack {
             Button("Create Passkey", action: passkeys.register).buttonStyle(.borderedProminent)
                 .experimentSession(passkeys)
@@ -78,5 +68,55 @@ struct PasskeysRunView: View {
         OutputView(text: passkeys.output, isError: passkeys.isError)
         Text("Challenges and the user ID are random bytes generated on this device. A real relying party issues the challenge on its server and verifies the returned attestation or signature.")
             .font(.caption).foregroundStyle(.secondary)
+    }
+}
+
+struct SecurityKeysRunView: View {
+    @StateObject private var keys: PasskeyExperimentService
+
+    init(experiment: ExperimentDescriptor) {
+        _keys = StateObject(wrappedValue: PasskeyExperimentService(initialOutput: ExperimentOutput.initialMessage(for: experiment.currentStatus), authenticator: .securityKey))
+    }
+
+    var body: some View {
+        OutputView(text: PasskeyExperimentService.configurationSummary, isError: false)
+        RelyingPartyFields(service: keys)
+        Picker("User verification", selection: $keys.userVerification) {
+            ForEach(WebAuthnUserVerification.allCases) { Text($0.title).tag($0) }
+        }
+        Picker("Attestation", selection: $keys.attestation) {
+            ForEach(WebAuthnAttestation.allCases) { Text($0.title).tag($0) }
+        }
+        Picker("Discoverable credential", selection: $keys.residentKey) {
+            ForEach(WebAuthnResidentKey.allCases) { Text($0.title).tag($0) }
+        }
+        HStack {
+            Button("Register Security Key", action: keys.register).buttonStyle(.borderedProminent)
+                .experimentSession(keys)
+            Button("Sign In with Security Key", action: keys.signIn).buttonStyle(.bordered)
+        }
+        .disabled(keys.isRunning)
+        OutputView(text: keys.output, isError: keys.isError)
+        Text("Connect a FIDO2 security key over USB, NFC or Lightning when the sheet asks for it. Challenges and the user ID are random bytes generated on this device; a real relying party issues the challenge and verifies attestation and signature on its server.")
+            .font(.caption).foregroundStyle(.secondary)
+    }
+}
+
+/// Relying-party domain and user name, shared by the passkey and security key labs.
+private struct RelyingPartyFields: View {
+    @ObservedObject var service: PasskeyExperimentService
+
+    var body: some View {
+        TextField("Relying-party identifier (domain)", text: $service.relyingPartyID)
+            .autocorrectionDisabled()
+            #if os(iOS)
+            .textInputAutocapitalization(.never)
+            .keyboardType(.URL)
+            #endif
+        TextField("User name", text: $service.userName)
+            .autocorrectionDisabled()
+            #if os(iOS)
+            .textInputAutocapitalization(.never)
+            #endif
     }
 }

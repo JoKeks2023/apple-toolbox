@@ -57,5 +57,33 @@ extension ExperimentRegistry {
                     nextStep: "Add the Sign in with Apple capability to this target in Xcode › Signing & Capabilities; the button below still shows the system's real error."),
             ],
             applePrograms: ["Apple Developer Program: Sign in with Apple is not available to free Personal Teams"]),
+        ExperimentDescriptor(id: "keychain-sharing", name: "Keychain Sharing & iCloud Keychain", category: .security,
+            description: "Save, read and delete an item in the app's own, a team-shared or the App Group keychain access group, list every item the app can see per group, and mark items as iCloud Keychain synchronizable.",
+            frameworks: ["Security"], supportedPlatforms: [.iOS, .iPadOS, .macOS, .tvOS], hardwareRequirements: [], osRequirements: ["Access groups: iOS 3+ · macOS 10.9+ · tvOS 9+", "Synchronizable items: iOS 7+ · macOS 10.9+ · tvOS 9+", "macOS: data protection keychain, 10.15+"], permissions: [], capabilities: ["Keychain Sharing", "App Groups", "iCloud Keychain turned on by the person (synchronizable items)"], entitlements: ["keychain-access-groups", "com.apple.security.application-groups"],
+            documentationURL: URL(string: "https://developer.apple.com/documentation/security/sharing-access-to-keychain-items-among-a-collection-of-apps")!, evaluate: ExperimentAvailability.keychainSharing,
+            useCase: ExperimentUseCase(id: "shared-credential", title: "Share a credential between your apps", summary: "Put a secret into a keychain access group that other apps of the same team can read, optionally synced through iCloud Keychain.", interaction: "Check the access groups, pick one, save and read an item, and list what the app can see in each group."),
+            explanations: [
+                .entitlementRequired: ExperimentExplanation(reason: "This build declares no keychain-access-groups entitlement, so it can only use its default access group.", required: "The Keychain Sharing capability listing $(AppIdentifierPrefix)com.jorisconrad.AppleToolbox.shared (the iOS target has it)",
+                    nextStep: "Add Keychain Sharing under Signing & Capabilities for this target. The buttons below still run and show errSecMissingEntitlement for the shared group."),
+            ]),
+        ExperimentDescriptor(id: "security-keys", name: "Security Keys (WebAuthn)", category: .security,
+            description: "Register and use a FIDO2 security key over USB, NFC or Lightning with ASAuthorizationSecurityKeyPublicKeyCredentialProvider for a relying party you enter, with user verification, attestation and discoverable-credential choices. Challenges are local random bytes.",
+            frameworks: ["AuthenticationServices"], supportedPlatforms: [.iOS, .iPadOS, .macOS], hardwareRequirements: ["A FIDO2 / WebAuthn security key (USB, NFC or Lightning)"], osRequirements: ["iOS 15+ · macOS 12+", "Reported transports and AppID flag: iOS 17.5+ · macOS 14.5+"], permissions: [], capabilities: ["Associated Domains with a webcredentials: entry", "apple-app-site-association file on the relying-party domain"], entitlements: ["com.apple.developer.associated-domains (webcredentials:)"],
+            documentationURL: URL(string: "https://developer.apple.com/documentation/authenticationservices/asauthorizationsecuritykeypublickeycredentialprovider")!, evaluate: ExperimentAvailability.securityKeys,
+            useCase: ExperimentUseCase(id: "security-key-login", title: "Sign in with a hardware key", summary: "Use a phishing-resistant FIDO2 security key as a second factor or passwordless credential for your relying party.", interaction: "Enter the relying-party domain, choose the WebAuthn options, register the key, then sign in with it."),
+            explanations: [
+                .entitlementRequired: ExperimentExplanation(reason: "Security key credentials are bound to a relying-party domain, and no webcredentials: associated domain is provisioned for this app.", required: "Associated Domains entitlement with webcredentials:<domain> and an apple-app-site-association file on that domain listing this app",
+                    nextStep: "Add the Associated Domains capability for your relying party and host the association file. The requests below still run and show the system's rejection."),
+            ],
+            applePrograms: ["Apple Developer Program: Associated Domains are not available to free Personal Teams"]),
+        ExperimentDescriptor(id: "credential-provider", name: "AutoFill Credential Provider", category: .security,
+            description: "Show the AutoFill credential provider boundary: which provider extensions this app bundles, the live ASCredentialIdentityStore state, and the system's real answer when the app saves an identity or asks to be turned on.",
+            frameworks: ["AuthenticationServices"], supportedPlatforms: [.iOS, .iPadOS, .macOS], hardwareRequirements: [], osRequirements: ["iOS 12+ · macOS 11+", "Settings shortcut: iOS 17+ · macOS 14+", "Turn-on request: iOS 18+ · macOS 15+"], permissions: [], capabilities: ["Credential provider app extension (ASCredentialProviderViewController)", "Turned on by the person in Settings › General › AutoFill & Passwords"], entitlements: ["com.apple.developer.authentication-services.autofill-credential-provider (on the extension)"],
+            documentationURL: URL(string: "https://developer.apple.com/documentation/authenticationservices/ascredentialidentitystore")!, evaluate: ExperimentAvailability.credentialProvider,
+            useCase: ExperimentUseCase(id: "autofill-provider", title: "Offer your credentials in AutoFill", summary: "See what a password manager needs before the system offers its passwords and passkeys in the QuickType bar.", interaction: "Check the identity store, try to save a demo identity, and ask the system to turn the provider on; each call shows the real result."),
+            explanations: [
+                .entitlementRequired: ExperimentExplanation(reason: "Apple Toolbox bundles no credential provider extension, so it cannot be turned on for AutoFill and the identity store stays disabled for it.", required: "An app extension with extension point com.apple.authentication-services-credential-provider-ui, an ASCredentialProviderViewController subclass and the AutoFill Credential Provider entitlement",
+                    nextStep: "Add an AutoFill Credential Provider extension target; the person then turns it on in Settings › General › AutoFill & Passwords. The buttons below still run and show the store's real state and errors."),
+            ]),
     ]
 }

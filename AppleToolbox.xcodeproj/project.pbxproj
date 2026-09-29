@@ -266,6 +266,12 @@
 		953DADDCB5F296A48F16A819 /* LocalAuthenticationExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E080911F0188C9D7350AF088 /* LocalAuthenticationExperimentService.swift */; };
 		FC6E66701B9AA9F910C820DB /* LocalAuthenticationRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816DB20F2D5FFD840E3EEBCF /* LocalAuthenticationRunView.swift */; };
 		7091324832ED91C95DFAEAFF /* LocalAuthenticationRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816DB20F2D5FFD840E3EEBCF /* LocalAuthenticationRunView.swift */; };
+		CE3299285CD22174A5BC4E12 /* KeychainSharingExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EED652489B33E4F3FEB0D4 /* KeychainSharingExperimentService.swift */; };
+		7E21C7D6AFD069FFEFB579B4 /* KeychainSharingExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EED652489B33E4F3FEB0D4 /* KeychainSharingExperimentService.swift */; };
+		9068EC39398B3D1BDC9D8115 /* CredentialProviderExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0D74DD5DE749AD390A76CE /* CredentialProviderExperimentService.swift */; };
+		02ABC003A3185355863CF6DB /* CredentialProviderExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0D74DD5DE749AD390A76CE /* CredentialProviderExperimentService.swift */; };
+		699E46AF4FF0CAB01F1745B7 /* CredentialRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB91830272F1BE88B8E7D9B1 /* CredentialRunViews.swift */; };
+		9C0B09D44FB1270B23FE6191 /* CredentialRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB91830272F1BE88B8E7D9B1 /* CredentialRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -448,6 +454,9 @@
 		98FFB1CA1ED25A210D97929C /* CryptoLab.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CryptoLab.swift; path = AppleToolbox/Shared/Services/CryptoLab.swift; sourceTree = "<group>"; };
 		E080911F0188C9D7350AF088 /* LocalAuthenticationExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocalAuthenticationExperimentService.swift; path = AppleToolbox/Shared/Services/LocalAuthenticationExperimentService.swift; sourceTree = "<group>"; };
 		816DB20F2D5FFD840E3EEBCF /* LocalAuthenticationRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocalAuthenticationRunView.swift; path = AppleToolbox/UI/Experiments/LocalAuthenticationRunView.swift; sourceTree = "<group>"; };
+		38EED652489B33E4F3FEB0D4 /* KeychainSharingExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeychainSharingExperimentService.swift; path = AppleToolbox/Shared/Services/KeychainSharingExperimentService.swift; sourceTree = "<group>"; };
+		7F0D74DD5DE749AD390A76CE /* CredentialProviderExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CredentialProviderExperimentService.swift; path = AppleToolbox/Shared/Services/CredentialProviderExperimentService.swift; sourceTree = "<group>"; };
+		CB91830272F1BE88B8E7D9B1 /* CredentialRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CredentialRunViews.swift; path = AppleToolbox/UI/Experiments/CredentialRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -701,6 +710,9 @@
 				98FFB1CA1ED25A210D97929C /* CryptoLab.swift */,
 				E080911F0188C9D7350AF088 /* LocalAuthenticationExperimentService.swift */,
 				816DB20F2D5FFD840E3EEBCF /* LocalAuthenticationRunView.swift */,
+				38EED652489B33E4F3FEB0D4 /* KeychainSharingExperimentService.swift */,
+				7F0D74DD5DE749AD390A76CE /* CredentialProviderExperimentService.swift */,
+				CB91830272F1BE88B8E7D9B1 /* CredentialRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1090,6 +1102,9 @@
 				E798340DF9E4CFDC54524486 /* CryptoLab.swift in Sources */,
 				AE3062B4B62B9C79455F817A /* LocalAuthenticationExperimentService.swift in Sources */,
 				FC6E66701B9AA9F910C820DB /* LocalAuthenticationRunView.swift in Sources */,
+				CE3299285CD22174A5BC4E12 /* KeychainSharingExperimentService.swift in Sources */,
+				9068EC39398B3D1BDC9D8115 /* CredentialProviderExperimentService.swift in Sources */,
+				699E46AF4FF0CAB01F1745B7 /* CredentialRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1274,6 +1289,9 @@
 				28BEC64613D667B8A310EB3B /* CryptoLab.swift in Sources */,
 				953DADDCB5F296A48F16A819 /* LocalAuthenticationExperimentService.swift in Sources */,
 				7091324832ED91C95DFAEAFF /* LocalAuthenticationRunView.swift in Sources */,
+				7E21C7D6AFD069FFEFB579B4 /* KeychainSharingExperimentService.swift in Sources */,
+				02ABC003A3185355863CF6DB /* CredentialProviderExperimentService.swift in Sources */,
+				9C0B09D44FB1270B23FE6191 /* CredentialRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
