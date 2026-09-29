@@ -28,10 +28,13 @@ extension ExperimentDescriptor {
             outcome: status == .osUnsupported ? .failed : .passed))
 
         if !hardwareRequirements.isEmpty {
-            let failed = status == .hardwareUnsupported
-            checks.append(ExperimentCheck(id: "hardware", title: "Hardware",
-                detail: (failed ? "Missing: " : "No blocker detected · ") + hardwareRequirements.joined(separator: ", "),
-                outcome: failed ? .failed : .passed))
+            let requirements = hardwareRequirements.joined(separator: ", ")
+            let check: (String, ExperimentCheck.Outcome) = switch status {
+            case .hardwareUnsupported: ("Missing: " + requirements, .failed)
+            case .unavailable: ("Not available right now · " + requirements, .pending)
+            default: ("No blocker detected · " + requirements, .passed)
+            }
+            checks.append(ExperimentCheck(id: "hardware", title: "Hardware", detail: check.0, outcome: check.1))
         }
 
         if !permissions.isEmpty {

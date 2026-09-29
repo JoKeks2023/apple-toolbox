@@ -116,6 +116,10 @@ extension ExperimentDescriptor {
             .entitlementRequired: ExperimentExplanation(reason: "The Sign in with Apple capability is not enabled for this app.", required: "com.apple.developer.applesignin",
                                                         nextStep: "Enable Sign in with Apple for the App ID in Xcode › Signing & Capabilities."),
         ],
+        "game-controller": [
+            .unavailable: ExperimentExplanation(reason: "No game controller is connected right now.", required: "A paired MFi, Xbox, PlayStation, or Switch controller (the Siri Remote counts on Apple TV)",
+                                                nextStep: "Pair the controller in Bluetooth settings, or put an MFi controller in pairing mode and start wireless discovery below."),
+        ],
         "app-attest": [
             .hardwareUnsupported: ExperimentExplanation(reason: "App Attest is not supported here (for example in the Simulator).", required: "A physical device with a Secure Enclave",
                                                         nextStep: "Run the experiment on a real device."),

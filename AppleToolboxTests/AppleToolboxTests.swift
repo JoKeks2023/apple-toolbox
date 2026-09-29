@@ -12,8 +12,8 @@ import Foundation
 struct AppleToolboxTests {
 
     @Test func registryContainsOnlyFoundationExperiments() async throws {
-        #expect(ExperimentRegistry.all.map(\.id) == ["localauthentication", "cryptokit", "keychain", "secure-enclave", "core-location", "core-motion", "core-nfc", "core-bluetooth", "multipeer-connectivity", "network-path", "camera-vision", "audio-input", "mapkit-search", "homekit-discovery", "matter-status", "continuity", "app-intents", "natural-language", "foundation-models", "healthkit-status", "wallet-status", "wallet-creator", "widgetkit", "nearby-interaction", "indoor-imdf", "arkit", "roomplan", "speech", "core-ml", "translation", "sound-analysis", "musickit", "shazamkit", "notifications", "app-attest", "passkeys", "sign-in-with-apple", "capability-explorer"])
-        #expect(ExperimentRegistry.all.count == 38)
+        #expect(ExperimentRegistry.all.map(\.id) == ["localauthentication", "cryptokit", "keychain", "secure-enclave", "core-location", "core-motion", "core-nfc", "core-bluetooth", "multipeer-connectivity", "network-path", "camera-vision", "audio-input", "mapkit-search", "homekit-discovery", "matter-status", "continuity", "app-intents", "natural-language", "foundation-models", "healthkit-status", "wallet-status", "wallet-creator", "widgetkit", "nearby-interaction", "indoor-imdf", "arkit", "roomplan", "speech", "core-ml", "translation", "sound-analysis", "musickit", "shazamkit", "notifications", "app-attest", "passkeys", "sign-in-with-apple", "capability-explorer", "game-controller"])
+        #expect(ExperimentRegistry.all.count == 39)
     }
 
     @Test func everyExperimentHasDocumentationAndMetadata() async throws {

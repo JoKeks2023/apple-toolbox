@@ -7,6 +7,7 @@ enum ExperimentCategory: String, CaseIterable, Identifiable {
     case security = "Security"
     case location = "Location"
     case sensors = "Sensors"
+    case input = "Input"
     case connectivity = "Connectivity"
     case networking = "Networking"
     case nfc = "NFC"
@@ -24,6 +25,7 @@ enum ExperimentCategory: String, CaseIterable, Identifiable {
         case .security: "lock.shield"
         case .location: "location"
         case .sensors: "waveform.path.ecg"
+        case .input: "gamecontroller"
         case .connectivity: "point.3.connected.trianglepath.dotted"
         case .networking: "network"
         case .nfc: "wave.3.right"
@@ -133,6 +135,7 @@ enum ExperimentUseCaseCatalog {
         case "core-location": ExperimentUseCase(id: "location-dashboard", title: "Build a live location dashboard", summary: "Use the device's real location stream to inspect movement and altitude.", interaction: "Grant permission, start updates, and watch coordinate, accuracy, speed, course, and heading change live.")
         case "core-motion": ExperimentUseCase(id: "motion-meter", title: "Move the device", summary: "Turn your iPhone or Apple Watch into a live motion meter.", interaction: "Start updates, tilt or move the device, and compare acceleration, rotation, and gravity vectors.")
         case "multipeer-connectivity": multipeerConnectivity
+        case "game-controller": ExperimentUseCase(id: "controller-input-monitor", title: "Test a game controller", summary: "See which controllers the system reports and watch every button, trigger, and stick as you use it.", interaction: "Start monitoring, turn on or pair a controller (or use the Siri Remote on Apple TV), then press buttons and move the sticks.")
         default: ExperimentUseCase(
             id: "inspect-\(id)",
             title: "Try the real API",

@@ -124,6 +124,11 @@
 		EA150673D2C12043831FF906 /* DeviceScannerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */; };
 		F9CE8A8EFE0A9ED9BDFF2F08 /* WatchLabServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD355AB8036A97EE4652A61 /* WatchLabServices.swift */; };
 		3216CE13790F630D9BCB5078 /* WatchLabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D35DE1C00677CD5C5B4E6A /* WatchLabViews.swift */; };
+		E859694049D0C4AD52018350 /* GameControllerExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A18EDE511B727640FF35CDA /* GameControllerExperimentService.swift */; };
+		91FCC5081C266E13AE4D108E /* GameControllerExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A18EDE511B727640FF35CDA /* GameControllerExperimentService.swift */; };
+		269B5D1C218592E6A1093599 /* GameControllerExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A18EDE511B727640FF35CDA /* GameControllerExperimentService.swift */; };
+		DFB7F2998844029F10E79662 /* GameControllerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A082415FFA4DB395CF6783 /* GameControllerRunView.swift */; };
+		ACFE80B65BF96FEA292622EC /* GameControllerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A082415FFA4DB395CF6783 /* GameControllerRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -245,6 +250,8 @@
 		A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeviceScannerRunView.swift; path = AppleToolbox/UI/Experiments/DeviceScannerRunView.swift; sourceTree = "<group>"; };
 		CFD355AB8036A97EE4652A61 /* WatchLabServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchLabServices.swift; path = AppleToolbox/WatchApp/WatchLabServices.swift; sourceTree = "<group>"; };
 		41D35DE1C00677CD5C5B4E6A /* WatchLabViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchLabViews.swift; path = AppleToolbox/WatchApp/WatchLabViews.swift; sourceTree = "<group>"; };
+		1A18EDE511B727640FF35CDA /* GameControllerExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GameControllerExperimentService.swift; path = AppleToolbox/Shared/Services/GameControllerExperimentService.swift; sourceTree = "<group>"; };
+		43A082415FFA4DB395CF6783 /* GameControllerRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GameControllerRunView.swift; path = AppleToolbox/UI/Experiments/GameControllerRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -436,6 +443,8 @@
 				A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */,
 				CFD355AB8036A97EE4652A61 /* WatchLabServices.swift */,
 				41D35DE1C00677CD5C5B4E6A /* WatchLabViews.swift */,
+				1A18EDE511B727640FF35CDA /* GameControllerExperimentService.swift */,
+				43A082415FFA4DB395CF6783 /* GameControllerRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -765,6 +774,8 @@
 				48E2AB940F81C4C8550E8E50 /* EntitlementExplorerView.swift in Sources */,
 				671C03356F094CE64874EF35 /* DeviceScanner.swift in Sources */,
 				EB97970FF0C458E04D92FD86 /* DeviceScannerRunView.swift in Sources */,
+				E859694049D0C4AD52018350 /* GameControllerExperimentService.swift in Sources */,
+				DFB7F2998844029F10E79662 /* GameControllerRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -800,6 +811,7 @@
 				014600BA1371D2D4E77485D1 /* DeviceScanner.swift in Sources */,
 				F9CE8A8EFE0A9ED9BDFF2F08 /* WatchLabServices.swift in Sources */,
 				3216CE13790F630D9BCB5078 /* WatchLabViews.swift in Sources */,
+				269B5D1C218592E6A1093599 /* GameControllerExperimentService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -868,6 +880,8 @@
 				A9586D3C60E0535042A4B20B /* EntitlementExplorerView.swift in Sources */,
 				789D50E76E6784DDF015F6B8 /* DeviceScanner.swift in Sources */,
 				EA150673D2C12043831FF906 /* DeviceScannerRunView.swift in Sources */,
+				91FCC5081C266E13AE4D108E /* GameControllerExperimentService.swift in Sources */,
+				ACFE80B65BF96FEA292622EC /* GameControllerRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
