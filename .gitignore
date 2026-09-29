@@ -19,3 +19,6 @@ Package.resolved
 
 # Local signing (see Config/Signing.xcconfig)
 Config/Local.xcconfig
+
+# Python
+__pycache__/
