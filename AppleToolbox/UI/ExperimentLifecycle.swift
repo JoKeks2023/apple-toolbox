@@ -62,6 +62,6 @@ extension VisionLabService: StoppableExperiment {}
 extension CameraLabService: StoppableExperiment {}
 extension AudioExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension SpeechExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
-extension ARExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
+extension ARLabService: StoppableExperiment {}
 extension ShazamExperimentService: StoppableExperiment { var isActive: Bool { isListening } }
 extension RoomPlanExperimentService: StoppableExperiment {}

@@ -352,6 +352,10 @@
 		D763452C9E2E045724BE7EB2 /* VisionLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2BE4B38195F31A280013F /* VisionLabService.swift */; };
 		B98034C63B5A07CF61FAA43C /* VisionLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */; };
 		3489EB818B1EE3D5100EDA59 /* VisionLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */; };
+		6B9639029B3BB820D6B9E078 /* ARLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04843891CCAB8300DDACE44E /* ARLabService.swift */; };
+		A651D0E1D43C60400294E5D5 /* ARLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04843891CCAB8300DDACE44E /* ARLabService.swift */; };
+		7D001CE888154410C6C25502 /* ARLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084AC6A80AD47491B8DD5A71 /* ARLabRunView.swift */; };
+		16E25B3971EF5F4790C540DB /* ARLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084AC6A80AD47491B8DD5A71 /* ARLabRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -572,6 +576,8 @@
 		8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraLabRunView.swift; path = AppleToolbox/UI/Experiments/CameraLabRunView.swift; sourceTree = "<group>"; };
 		EFE2BE4B38195F31A280013F /* VisionLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VisionLabService.swift; path = AppleToolbox/Shared/Services/VisionLabService.swift; sourceTree = "<group>"; };
 		B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VisionLabRunView.swift; path = AppleToolbox/UI/Experiments/VisionLabRunView.swift; sourceTree = "<group>"; };
+		04843891CCAB8300DDACE44E /* ARLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ARLabService.swift; path = AppleToolbox/Shared/Services/ARLabService.swift; sourceTree = "<group>"; };
+		084AC6A80AD47491B8DD5A71 /* ARLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ARLabRunView.swift; path = AppleToolbox/UI/Experiments/ARLabRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -863,6 +869,8 @@
 				8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */,
 				EFE2BE4B38195F31A280013F /* VisionLabService.swift */,
 				B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */,
+				04843891CCAB8300DDACE44E /* ARLabService.swift */,
+				084AC6A80AD47491B8DD5A71 /* ARLabRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1290,6 +1298,8 @@
 				68485B07EEFE34CED7B2CB3C /* CameraLabRunView.swift in Sources */,
 				8D4F07A03F5597E083D4C32B /* VisionLabService.swift in Sources */,
 				B98034C63B5A07CF61FAA43C /* VisionLabRunView.swift in Sources */,
+				6B9639029B3BB820D6B9E078 /* ARLabService.swift in Sources */,
+				7D001CE888154410C6C25502 /* ARLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1522,6 +1532,8 @@
 				8055348A9658F4D82184A5A1 /* CameraLabRunView.swift in Sources */,
 				D763452C9E2E045724BE7EB2 /* VisionLabService.swift in Sources */,
 				3489EB818B1EE3D5100EDA59 /* VisionLabRunView.swift in Sources */,
+				A651D0E1D43C60400294E5D5 /* ARLabService.swift in Sources */,
+				16E25B3971EF5F4790C540DB /* ARLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

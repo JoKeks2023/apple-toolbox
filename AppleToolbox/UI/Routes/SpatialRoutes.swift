@@ -6,7 +6,7 @@ struct SpatialRunRoutes: View {
 
     var body: some View {
         switch experiment.id {
-        case "arkit": ARKitRunView()
+        case "arkit": ARLabRunView()
         case "roomplan": RoomPlanRunView()
         default: UnroutedExperimentView()
         }
