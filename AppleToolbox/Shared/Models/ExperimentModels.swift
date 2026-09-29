@@ -20,6 +20,7 @@ enum ExperimentCategory: String, CaseIterable, Identifiable, Sendable {
     case wallet = "Wallet"
     case health = "Health"
     case system = "System"
+    case platform = "Platform"
     case developer = "Developer"
 
     var id: String { rawValue }
@@ -41,6 +42,7 @@ enum ExperimentCategory: String, CaseIterable, Identifiable, Sendable {
         case .wallet: "wallet.pass"
         case .health: "heart"
         case .system: "app.badge"
+        case .platform: "desktopcomputer"
         case .developer: "hammer"
         }
     }

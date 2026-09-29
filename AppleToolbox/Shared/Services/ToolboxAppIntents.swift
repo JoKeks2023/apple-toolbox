@@ -87,6 +87,7 @@ nonisolated extension ExperimentCategory: AppEnum {
         .wallet: DisplayRepresentation(title: "Wallet", image: .init(systemName: "wallet.pass")),
         .health: DisplayRepresentation(title: "Health", image: .init(systemName: "heart")),
         .system: DisplayRepresentation(title: "System", image: .init(systemName: "app.badge")),
+        .platform: DisplayRepresentation(title: "Platform", image: .init(systemName: "desktopcomputer")),
         .developer: DisplayRepresentation(title: "Developer", image: .init(systemName: "hammer")),
     ]
 }

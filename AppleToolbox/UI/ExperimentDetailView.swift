@@ -59,6 +59,7 @@ struct ExperimentRunView: View {
         case .wallet: WalletRunRoutes(experiment: experiment)
         case .health: HealthRunRoutes(experiment: experiment)
         case .system: SystemRunRoutes(experiment: experiment)
+        case .platform: PlatformRunRoutes(experiment: experiment)
         case .developer: DeveloperRunRoutes(experiment: experiment)
         }
     }

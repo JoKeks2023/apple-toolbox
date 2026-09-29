@@ -22,6 +22,7 @@ enum ExperimentRegistry {
         case .wallet: wallet
         case .health: health
         case .system: system
+        case .platform: platform
         case .developer: developer
         }
     }

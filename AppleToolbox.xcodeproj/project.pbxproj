@@ -420,6 +420,19 @@
 		940C46409ACEA05FEAC374AB /* MusicKitRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C6888865067A1AF78ADAF5 /* MusicKitRunView.swift */; };
 		8F9E5EA9E98E2248CE695D7C /* ToolboxTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0BD2768BBBD57E59F72E2B /* ToolboxTools.swift */; };
 		BB1C586CC60E9AF6BEB4E8F2 /* ToolboxTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0BD2768BBBD57E59F72E2B /* ToolboxTools.swift */; };
+		080C2270A360318E1EA0AD1F /* Registry+Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768B75C3BDA48B9B108192F /* Registry+Platform.swift */; };
+		EBB577ADE18F31B5E4232F38 /* Registry+Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768B75C3BDA48B9B108192F /* Registry+Platform.swift */; };
+		A83E3593F81B742F73009171 /* Registry+Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768B75C3BDA48B9B108192F /* Registry+Platform.swift */; };
+		5C6D5CCCCE800786E140E850 /* MetalLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63166EB40BAA226FAA03E4F0 /* MetalLabService.swift */; };
+		E90F803E7E61241983A85DD4 /* MetalLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63166EB40BAA226FAA03E4F0 /* MetalLabService.swift */; };
+		03DD2D7CF08BC558740361BE /* MetalLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63166EB40BAA226FAA03E4F0 /* MetalLabService.swift */; };
+		B70A6E4A144EEFD90A7BEF31 /* MacHardwareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2D2C5B76B3F99709A29EAD /* MacHardwareService.swift */; };
+		85CD533AF568A794B1C46D71 /* MacHardwareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2D2C5B76B3F99709A29EAD /* MacHardwareService.swift */; };
+		03AE961185B7FEA0A62FC422 /* MacHardwareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2D2C5B76B3F99709A29EAD /* MacHardwareService.swift */; };
+		495A9F299420F2D781CB2405 /* PlatformRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99085E7126FC58E5AFE33616 /* PlatformRoutes.swift */; };
+		71ECF95916A7E5FE40BB83FA /* PlatformRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99085E7126FC58E5AFE33616 /* PlatformRoutes.swift */; };
+		23387DFDDABDB8C5718A0955 /* PlatformRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348FB0AAFA4C28674AF754 /* PlatformRunViews.swift */; };
+		A7C5F9570F280C2C959602ED /* PlatformRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348FB0AAFA4C28674AF754 /* PlatformRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -684,6 +697,11 @@
 		6EBEC16051AB936A9EB5E647 /* MusicKitExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MusicKitExperimentService.swift; path = AppleToolbox/Shared/Services/MusicKitExperimentService.swift; sourceTree = "<group>"; };
 		63C6888865067A1AF78ADAF5 /* MusicKitRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MusicKitRunView.swift; path = AppleToolbox/UI/Experiments/MusicKitRunView.swift; sourceTree = "<group>"; };
 		BB0BD2768BBBD57E59F72E2B /* ToolboxTools.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxTools.swift; path = AppleToolbox/Shared/Models/ToolboxTools.swift; sourceTree = "<group>"; };
+		9768B75C3BDA48B9B108192F /* Registry+Platform.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Platform.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Platform.swift"; sourceTree = "<group>"; };
+		63166EB40BAA226FAA03E4F0 /* MetalLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalLabService.swift; path = AppleToolbox/Shared/Services/MetalLabService.swift; sourceTree = "<group>"; };
+		6A2D2C5B76B3F99709A29EAD /* MacHardwareService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacHardwareService.swift; path = AppleToolbox/Shared/Services/MacHardwareService.swift; sourceTree = "<group>"; };
+		99085E7126FC58E5AFE33616 /* PlatformRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PlatformRoutes.swift; path = AppleToolbox/UI/Routes/PlatformRoutes.swift; sourceTree = "<group>"; };
+		64348FB0AAFA4C28674AF754 /* PlatformRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PlatformRunViews.swift; path = AppleToolbox/UI/Experiments/PlatformRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -1023,6 +1041,11 @@
 				6EBEC16051AB936A9EB5E647 /* MusicKitExperimentService.swift */,
 				63C6888865067A1AF78ADAF5 /* MusicKitRunView.swift */,
 				BB0BD2768BBBD57E59F72E2B /* ToolboxTools.swift */,
+				9768B75C3BDA48B9B108192F /* Registry+Platform.swift */,
+				63166EB40BAA226FAA03E4F0 /* MetalLabService.swift */,
+				6A2D2C5B76B3F99709A29EAD /* MacHardwareService.swift */,
+				99085E7126FC58E5AFE33616 /* PlatformRoutes.swift */,
+				64348FB0AAFA4C28674AF754 /* PlatformRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1506,6 +1529,11 @@
 				B6E2421A3E04EB59861E4C5C /* MusicKitExperimentService.swift in Sources */,
 				3B7626D0B8D2A45EE29A6E39 /* MusicKitRunView.swift in Sources */,
 				8F9E5EA9E98E2248CE695D7C /* ToolboxTools.swift in Sources */,
+				080C2270A360318E1EA0AD1F /* Registry+Platform.swift in Sources */,
+				5C6D5CCCCE800786E140E850 /* MetalLabService.swift in Sources */,
+				B70A6E4A144EEFD90A7BEF31 /* MacHardwareService.swift in Sources */,
+				495A9F299420F2D781CB2405 /* PlatformRoutes.swift in Sources */,
+				23387DFDDABDB8C5718A0955 /* PlatformRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1574,6 +1602,9 @@
 				023060AD41FB51B9DC07E5E7 /* SpeechAnalyzerExperimentService.swift in Sources */,
 				7430171C4DF60404B938D33D /* CreateMLExperimentService.swift in Sources */,
 				ABFBB966EC9E7C8BD6537A52 /* SpotlightSiriServices.swift in Sources */,
+				A83E3593F81B742F73009171 /* Registry+Platform.swift in Sources */,
+				03DD2D7CF08BC558740361BE /* MetalLabService.swift in Sources */,
+				03AE961185B7FEA0A62FC422 /* MacHardwareService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1769,6 +1800,11 @@
 				D557220DFDEF3A6783A6BACC /* MusicKitExperimentService.swift in Sources */,
 				940C46409ACEA05FEAC374AB /* MusicKitRunView.swift in Sources */,
 				BB1C586CC60E9AF6BEB4E8F2 /* ToolboxTools.swift in Sources */,
+				EBB577ADE18F31B5E4232F38 /* Registry+Platform.swift in Sources */,
+				E90F803E7E61241983A85DD4 /* MetalLabService.swift in Sources */,
+				85CD533AF568A794B1C46D71 /* MacHardwareService.swift in Sources */,
+				71ECF95916A7E5FE40BB83FA /* PlatformRoutes.swift in Sources */,
+				A7C5F9570F280C2C959602ED /* PlatformRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
