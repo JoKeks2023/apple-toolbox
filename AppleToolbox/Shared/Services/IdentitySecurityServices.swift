@@ -43,9 +43,11 @@ extension ExperimentAvailability {
         }
     }
 
+    /// Available when a provider extension is bundled and its own provisioning profile does not lack the AutoFill
+    /// Credential Provider entitlement. Whether the person turned it on is only known asynchronously (identity store state).
     static func credentialProvider() -> ExperimentStatus {
         #if canImport(AuthenticationServices) && (os(iOS) || os(macOS))
-        CredentialProviderExtensionScan.bundled.isEmpty ? .entitlementRequired : .available
+        CredentialProviderExtensionScan.status(for: CredentialProviderExtensionScan.bundled)
         #else
         .platformUnsupported
         #endif
@@ -55,11 +57,27 @@ extension ExperimentAvailability {
 /// AutoFill credential provider extensions bundled with this app, read from the extensions' own Info.plist files.
 enum CredentialProviderExtensionScan {
     static let extensionPoint = "com.apple.authentication-services-credential-provider-ui"
+    static let entitlementKey = "com.apple.developer.authentication-services.autofill-credential-provider"
 
     struct Provider: Equatable {
         let bundleIdentifier: String
         /// Keys of ASCredentialProviderExtensionCapabilities that are true (for example ProvidesPasskeys).
         let capabilities: [String]
+        /// The AutoFill Credential Provider entitlement in the extension's own embedded provisioning profile.
+        var entitlement: ProvisioningState = .unknown("Not read.")
+    }
+
+    static func status(for providers: [Provider]) -> ExperimentStatus {
+        providers.contains { $0.entitlement != .notProvisioned } ? .available : .entitlementRequired
+    }
+
+    /// Reads the entitlement from the extension's embedded.mobileprovision; Simulator and locally signed builds have none.
+    static func entitlementState(inExtensionAt url: URL) -> ProvisioningState {
+        guard let data = try? Data(contentsOf: url.appendingPathComponent("embedded.mobileprovision")) else {
+            return .unknown("The extension embeds no provisioning profile (Simulator or local signing), so its entitlement only shows when AutoFill uses it.")
+        }
+        guard let profile = ProvisioningInspector.parse(data) else { return .unknown("The extension's provisioning profile is unreadable.") }
+        return profile.entitlements[entitlementKey].map(ProvisioningState.provisioned) ?? .notProvisioned
     }
 
     static func providers(in infoPlists: [[String: Any]]) -> [Provider] {
@@ -76,7 +94,11 @@ enum CredentialProviderExtensionScan {
     static var bundled: [Provider] {
         guard let plugIns = Bundle.main.builtInPlugInsURL,
               let urls = try? FileManager.default.contentsOfDirectory(at: plugIns, includingPropertiesForKeys: nil) else { return [] }
-        return providers(in: urls.filter { $0.pathExtension == "appex" }.compactMap { Bundle(url: $0)?.infoDictionary })
+        return urls.filter { $0.pathExtension == "appex" }.compactMap { url in
+            guard let info = Bundle(url: url)?.infoDictionary, var provider = providers(in: [info]).first else { return nil }
+            provider.entitlement = entitlementState(inExtensionAt: url)
+            return provider
+        }
     }
 }
 

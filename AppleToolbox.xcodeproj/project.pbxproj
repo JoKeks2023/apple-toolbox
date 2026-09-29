@@ -474,6 +474,12 @@
 		162F30D54CCB69F7243F673E /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
 		E8BF7455CBDD630368DC7051 /* EmbeddedAppExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8EF5CDAFE721ED2450DDBE /* EmbeddedAppExtensions.swift */; };
 		3E68557B6BE8030E8639554B /* EmbeddedAppExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8EF5CDAFE721ED2450DDBE /* EmbeddedAppExtensions.swift */; };
+		5EF845D3D365E3F20BCCDCDF /* AppleToolbox Credential Provider.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 501C6BE5107FFEF3CEDC253F /* AppleToolbox Credential Provider.appex */; };
+		F5233748DA7342D59279E244 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBBFE8948050447CACF3C11 /* CredentialProviderViewController.swift */; };
+		24CF4BFBCFF26A39166184E8 /* CredentialProviderVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64B0C446C59A1CA55BC8948 /* CredentialProviderVault.swift */; };
+		A646E239C7F1AD0303810406 /* CredentialProviderVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64B0C446C59A1CA55BC8948 /* CredentialProviderVault.swift */; };
+		34DC751E2BA48315308F9A40 /* CredentialProviderVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64B0C446C59A1CA55BC8948 /* CredentialProviderVault.swift */; };
+		738058EC3869359C0F7BA17B /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -526,6 +532,13 @@
 			remoteGlobalIDString = 82FEEAA326D7B10CE38432E8;
 			remoteInfo = "AppleToolbox Notification Service";
 		};
+		C018BED73A3B743BD3D9FA7E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B13F609303DA61D00AA8D3F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 82F36B2BEF6BB4F3D1B2F398;
+			remoteInfo = "AppleToolbox Credential Provider";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -538,6 +551,7 @@
 				982DBF88B14E4318F6F8A632 /* AppleToolbox Widget.appex in Embed Foundation Extensions */,
 				FD40CA9E2993FED1A7794FE7 /* AppleToolbox Notification Content.appex in Embed Foundation Extensions */,
 				FECCE6A84FD309E8CE173DE6 /* AppleToolbox Notification Service.appex in Embed Foundation Extensions */,
+				5EF845D3D365E3F20BCCDCDF /* AppleToolbox Credential Provider.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -787,6 +801,9 @@
 		CAF1CB912CFF83F2D39A7792 /* NotificationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NotificationService.swift; path = AppleToolbox/NotificationService/NotificationService.swift; sourceTree = "<group>"; };
 		8B301021DC4DC184EFFD089E /* NotificationServicePayload.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NotificationServicePayload.swift; path = AppleToolbox/Shared/Services/NotificationServicePayload.swift; sourceTree = "<group>"; };
 		FD8EF5CDAFE721ED2450DDBE /* EmbeddedAppExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EmbeddedAppExtensions.swift; path = AppleToolbox/Shared/Services/EmbeddedAppExtensions.swift; sourceTree = "<group>"; };
+		501C6BE5107FFEF3CEDC253F /* AppleToolbox Credential Provider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "AppleToolbox Credential Provider.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FBBFE8948050447CACF3C11 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CredentialProviderViewController.swift; path = AppleToolbox/CredentialProvider/CredentialProviderViewController.swift; sourceTree = "<group>"; };
+		A64B0C446C59A1CA55BC8948 /* CredentialProviderVault.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CredentialProviderVault.swift; path = AppleToolbox/Shared/Services/CredentialProviderVault.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -820,6 +837,9 @@
 				NotificationService/NotificationService.swift,
 				NotificationService/Info.plist,
 				NotificationService/AppleToolboxNotificationService.entitlements,
+				CredentialProvider/CredentialProviderViewController.swift,
+				CredentialProvider/Info.plist,
+				CredentialProvider/AppleToolboxCredentialProvider.entitlements,
 			);
 			target = 5B13F610303DA61D00AA8D3F /* AppleToolbox iOS */;
 		};
@@ -919,6 +939,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FC626D97A38727AABE754BD9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1700A01AF1FE34A94BA7255E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1174,6 +1201,8 @@
 				CAF1CB912CFF83F2D39A7792 /* NotificationService.swift */,
 				8B301021DC4DC184EFFD089E /* NotificationServicePayload.swift */,
 				FD8EF5CDAFE721ED2450DDBE /* EmbeddedAppExtensions.swift */,
+				9FBBFE8948050447CACF3C11 /* CredentialProviderViewController.swift */,
+				A64B0C446C59A1CA55BC8948 /* CredentialProviderVault.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1190,6 +1219,7 @@
 				D5C87DF57516155A427747DB /* AppleToolbox Notification Content.appex */,
 				FD8F764B13F9AAF839177AA2 /* AppleToolbox Watch Widget.appex */,
 				C430F164159B4FE988024EAC /* AppleToolbox Notification Service.appex */,
+				501C6BE5107FFEF3CEDC253F /* AppleToolbox Credential Provider.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1275,6 +1305,7 @@
 				C4397ABC3C27590391670CE3 /* PBXTargetDependency */,
 				581B82B4A4062510D5809983 /* PBXTargetDependency */,
 				A3CB8F5072D862DD503B72FF /* PBXTargetDependency */,
+				A49CBE46C8CE0CC993D32048 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5B13F613303DA61D00AA8D3F /* AppleToolbox */,
@@ -1413,6 +1444,23 @@
 			productReference = C430F164159B4FE988024EAC /* AppleToolbox Notification Service.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		82F36B2BEF6BB4F3D1B2F398 /* AppleToolbox Credential Provider */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92717BCFD496C177268081C4 /* Build configuration list for PBXNativeTarget "AppleToolbox Credential Provider" */;
+			buildPhases = (
+				A3E0CC3E4590507A94668894 /* Sources */,
+				1700A01AF1FE34A94BA7255E /* Frameworks */,
+				2F6C11E7E9D467C09B90A650 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppleToolbox Credential Provider";
+			productName = "AppleToolbox Credential Provider";
+			productReference = 501C6BE5107FFEF3CEDC253F /* AppleToolbox Credential Provider.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1460,6 +1508,7 @@
 				0FFE048137AF8C900B4E3D72 /* AppleToolbox Notification Content */,
 				B754CBD1C1321CFF1C2EEEF5 /* AppleToolbox Watch Widget */,
 				82FEEAA326D7B10CE38432E8 /* AppleToolbox Notification Service */,
+				82F36B2BEF6BB4F3D1B2F398 /* AppleToolbox Credential Provider */,
 			);
 		};
 /* End PBXProject section */
@@ -1534,6 +1583,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		406FC21A13A4910DFED7D5EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2F6C11E7E9D467C09B90A650 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1724,6 +1780,7 @@
 				A028762A56823163D6718DD9 /* ToolboxIdentifiers.swift in Sources */,
 				305ED3510925CE568263029B /* NotificationServicePayload.swift in Sources */,
 				E8BF7455CBDD630368DC7051 /* EmbeddedAppExtensions.swift in Sources */,
+				A646E239C7F1AD0303810406 /* CredentialProviderVault.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2020,6 +2077,7 @@
 				ACDC03D54FD144B3AF07D744 /* ToolboxIdentifiers.swift in Sources */,
 				E38E3958D97D78CED3B06FFC /* NotificationServicePayload.swift in Sources */,
 				3E68557B6BE8030E8639554B /* EmbeddedAppExtensions.swift in Sources */,
+				34DC751E2BA48315308F9A40 /* CredentialProviderVault.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2067,6 +2125,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A3E0CC3E4590507A94668894 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5233748DA7342D59279E244 /* CredentialProviderViewController.swift in Sources */,
+				24CF4BFBCFF26A39166184E8 /* CredentialProviderVault.swift in Sources */,
+				738058EC3869359C0F7BA17B /* ToolboxIdentifiers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2109,6 +2177,12 @@
 			name = "AppleToolbox Notification Service";
 			target = 82FEEAA326D7B10CE38432E8 /* AppleToolbox Notification Service */;
 			targetProxy = A45551F965BF129DA05E7BD4 /* PBXContainerItemProxy */;
+		};
+		A49CBE46C8CE0CC993D32048 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppleToolbox Credential Provider";
+			target = 82F36B2BEF6BB4F3D1B2F398 /* AppleToolbox Credential Provider */;
+			targetProxy = C018BED73A3B743BD3D9FA7E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2819,6 +2893,57 @@
 			};
 			name = Debug;
 		};
+		FCAF814CABC434CC619047BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = AppleToolbox/CredentialProvider/AppleToolboxCredentialProvider.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AppleToolbox/CredentialProvider/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.credential-provider";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6FD5D9FF15A3B8DC3D59D33A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = AppleToolbox/CredentialProvider/AppleToolboxCredentialProvider.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AppleToolbox/CredentialProvider/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.credential-provider";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2917,6 +3042,15 @@
 			buildConfigurations = (
 				CA5E7742F1F777AB34812E7B /* Release */,
 				1DA1881CA4A7C37015244033 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92717BCFD496C177268081C4 /* Build configuration list for PBXNativeTarget "AppleToolbox Credential Provider" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FCAF814CABC434CC619047BA /* Release */,
+				6FD5D9FF15A3B8DC3D59D33A /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

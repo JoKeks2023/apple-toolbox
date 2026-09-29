@@ -1,5 +1,6 @@
 import Testing
 import Foundation
+import CryptoKit
 @testable import AppleToolbox
 
 struct KeychainSharingTests {
@@ -58,8 +59,15 @@ struct CredentialProviderScanTests {
         #expect(providers == [CredentialProviderExtensionScan.Provider(bundleIdentifier: "com.example.app.provider", capabilities: ["ProvidesPasskeys"])])
     }
 
-    @Test func thisBuildBundlesNoProvider() {
-        #expect(CredentialProviderExtensionScan.bundled.isEmpty)
+    @Test func statusFollowsTheBundledProviders() {
+        #expect(ExperimentAvailability.credentialProvider() == CredentialProviderExtensionScan.status(for: CredentialProviderExtensionScan.bundled))
+        #expect(CredentialProviderExtensionScan.status(for: []) == .entitlementRequired)
+        let unprovisioned = CredentialProviderExtensionScan.Provider(bundleIdentifier: "p", capabilities: [], entitlement: .notProvisioned)
+        #expect(CredentialProviderExtensionScan.status(for: [unprovisioned]) == .entitlementRequired)
+        let provisioned = CredentialProviderExtensionScan.Provider(bundleIdentifier: "p", capabilities: [], entitlement: .provisioned("true"))
+        #expect(CredentialProviderExtensionScan.status(for: [provisioned]) == .available)
+        // Simulator and local builds embed no profile: the extension is trusted until AutoFill says otherwise.
+        #expect(CredentialProviderExtensionScan.status(for: [CredentialProviderExtensionScan.Provider(bundleIdentifier: "p", capabilities: [])]) == .available)
     }
 
     @Test func namesIdentityStoreErrors() {
@@ -90,5 +98,84 @@ struct CredentialExperimentRegistryTests {
         }
         #expect(CapabilityRegistry.descriptor(for: "keychain-sharing")?.experimentID == "keychain-sharing")
         #expect(CapabilityRegistry.descriptor(for: "autofill-credential-provider")?.experimentID == "credential-provider")
+    }
+}
+
+struct CredentialVaultTests {
+
+    @Test func matchesPasswordsByDomainAndSubdomain() {
+        let vault = CredentialVault(passwords: [
+            DemoPasswordCredential(id: "a", domain: "example.com", user: "one", password: "x"),
+            DemoPasswordCredential(id: "b", domain: "login.example.com", user: "two", password: "y"),
+        ])
+        #expect(vault.passwords(matching: ["https://www.example.com/sign-in"]).map(\.id) == ["a"])
+        #expect(vault.passwords(matching: ["login.example.com"]).map(\.id) == ["a", "b"])
+        #expect(vault.passwords(matching: ["example.org"]).isEmpty)
+        #expect(vault.passwords(matching: []).count == 2)
+        #expect(!CredentialVault.host("badexample.com", belongsTo: "example.com"))
+    }
+
+    @Test func filtersPasskeysByRelyingPartyAndAllowList() {
+        let passkey = DemoPasskeyCredential(relyingParty: "webauthn.io", userName: "u", userHandle: Data([1]), credentialID: Data([9, 9]), signCount: 0, createdAt: .now)
+        let vault = CredentialVault(passkeys: [passkey])
+        #expect(vault.passkeys(forRelyingParty: "WebAuthn.io").count == 1)
+        #expect(vault.passkeys(forRelyingParty: "webauthn.io", allowedCredentialIDs: [Data([1])]).isEmpty)
+        #expect(vault.passkeys(forRelyingParty: "webauthn.io", allowedCredentialIDs: [Data([9, 9])]).count == 1)
+        #expect(passkey.id == "CQk")
+    }
+
+    @Test func generatesDemoPasswordsInTheExpectedShape() {
+        var generator = SystemRandomNumberGenerator()
+        let passwords = CredentialVault.demoPasswords(using: &generator)
+        #expect(passwords.map(\.domain) == ["example.com", "login.example.com"])
+        #expect(passwords.allSatisfy { $0.password.hasPrefix("Demo-") && $0.password.count == 19 })
+    }
+
+    @Test func keepsTheNewestEventsFirst() {
+        var vault = CredentialVault()
+        for index in 0..<(CredentialVault.eventLimit + 5) { vault.log("event \(index)") }
+        #expect(vault.events.count == CredentialVault.eventLimit)
+        #expect(vault.events.first?.text == "event \(CredentialVault.eventLimit + 4)")
+    }
+}
+
+struct SoftwarePasskeyAuthenticatorTests {
+
+    @Test func encodesCBORHeads() {
+        #expect(CBOR.unsigned(10).encoded == Data([0x0a]))
+        #expect(CBOR.unsigned(100).encoded == Data([0x18, 0x64]))
+        #expect(CBOR.unsigned(1000).encoded == Data([0x19, 0x03, 0xe8]))
+        #expect(CBOR.int(-7).encoded == Data([0x26]))
+        #expect(CBOR.int(-1).encoded == Data([0x20]))
+        #expect(CBOR.text("fmt").encoded == Data([0x63, 0x66, 0x6d, 0x74]))
+        #expect(CBOR.bytes(Data([1, 2])).encoded == Data([0x42, 1, 2]))
+        #expect(CBOR.map([]).encoded == Data([0xa0]))
+        #expect(CBOR.array([.unsigned(1), .unsigned(2)]).encoded == Data([0x82, 1, 2]))
+    }
+
+    @Test func buildsAssertionAuthenticatorData() {
+        let data = SoftwarePasskeyAuthenticator.authenticatorData(relyingParty: "example.com", flags: [.userPresent, .userVerified], signCount: 258)
+        #expect(data.count == 37)
+        #expect(data.prefix(32) == Data(SHA256.hash(data: Data("example.com".utf8))))
+        #expect(data[32] == 0x05)
+        #expect(Array(data.suffix(4)) == [0, 0, 1, 2])
+    }
+
+    @Test func buildsARegistrationThatVerifies() throws {
+        let key = P256.Signing.PrivateKey()
+        let credentialID = SoftwarePasskeyAuthenticator.randomCredentialID()
+        let attested = SoftwarePasskeyAuthenticator.attestedCredentialData(credentialID: credentialID, publicKey: key.publicKey)
+        // AAGUID (16) + length (2) + ID (16) + COSE key (77: map header, kty, alg, crv, x and y with their headers)
+        #expect(attested.count == 16 + 2 + 16 + 77)
+        #expect(Array(attested[16..<18]) == [0, 16])
+        let authData = SoftwarePasskeyAuthenticator.authenticatorData(relyingParty: "example.com", flags: [.userPresent], signCount: 0, attestedCredential: attested)
+        #expect(authData[32] == 0x41)
+        let object = SoftwarePasskeyAuthenticator.attestationObject(authenticatorData: authData)
+        #expect(object.prefix(5) == Data([0xa3, 0x63, 0x66, 0x6d, 0x74]))
+
+        let clientDataHash = Data(SHA256.hash(data: Data("{}".utf8)))
+        let signature = try SoftwarePasskeyAuthenticator.signature(privateKey: key, authenticatorData: authData, clientDataHash: clientDataHash)
+        let parsed = try P256.Signing.ECDSASignature(derRepresentation: signature)
+        #expect(key.publicKey.isValidSignature(parsed, for: authData + clientDataHash))
     }
 }
