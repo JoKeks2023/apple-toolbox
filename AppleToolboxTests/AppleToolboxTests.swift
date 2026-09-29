@@ -140,11 +140,6 @@ struct CryptoServiceTests {
 
     @Test func sha256MatchesTheKnownVector() {
         #expect(CryptoService.sha256Hex("abc") == "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")
-        #expect(CryptoService.hash(message: "abc").contains("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"))
-    }
-
-    @Test func signatureVerifies() {
-        #expect(CryptoService.signAndVerify(message: "Apple Toolbox").contains("Signature verified: true"))
     }
 }
 

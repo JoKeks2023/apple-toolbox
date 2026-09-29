@@ -31,10 +31,10 @@ final class AppleToolboxUITests: XCTestCase {
         XCTAssertTrue(experiment.waitForExistence(timeout: 10))
         experiment.tap()
 
-        let hash = app.buttons["Hash with SHA-256"]
+        let hash = app.buttons["Run Hash"]
         scroll(app, until: hash)
         hash.tap()
-        let digest = app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "SHA-256:")).firstMatch
+        let digest = app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "Digest (32 bytes):")).firstMatch
         XCTAssertTrue(digest.waitForExistence(timeout: 5))
     }
 

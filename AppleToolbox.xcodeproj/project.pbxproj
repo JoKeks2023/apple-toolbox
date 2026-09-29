@@ -260,6 +260,8 @@
 		4B8C531E79940D8647B227DF /* DiagnosticsExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D49D35B43CBB6E3D34791F /* DiagnosticsExperimentService.swift */; };
 		BC10CA8900496C8D65A22640 /* DeveloperToolsRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E6F6500EC93A8BB11D3834 /* DeveloperToolsRunViews.swift */; };
 		0840CDEC46C9D4A625A56FEE /* DeveloperToolsRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E6F6500EC93A8BB11D3834 /* DeveloperToolsRunViews.swift */; };
+		E798340DF9E4CFDC54524486 /* CryptoLab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FFB1CA1ED25A210D97929C /* CryptoLab.swift */; };
+		28BEC64613D667B8A310EB3B /* CryptoLab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FFB1CA1ED25A210D97929C /* CryptoLab.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -439,6 +441,7 @@
 		0F7D06BDCDD26F6123F10E7D /* DeveloperToolsCatalog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeveloperToolsCatalog.swift; path = AppleToolbox/Shared/Services/DeveloperToolsCatalog.swift; sourceTree = "<group>"; };
 		F5D49D35B43CBB6E3D34791F /* DiagnosticsExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DiagnosticsExperimentService.swift; path = AppleToolbox/Shared/Services/DiagnosticsExperimentService.swift; sourceTree = "<group>"; };
 		D8E6F6500EC93A8BB11D3834 /* DeveloperToolsRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeveloperToolsRunViews.swift; path = AppleToolbox/UI/Experiments/DeveloperToolsRunViews.swift; sourceTree = "<group>"; };
+		98FFB1CA1ED25A210D97929C /* CryptoLab.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CryptoLab.swift; path = AppleToolbox/Shared/Services/CryptoLab.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -689,6 +692,7 @@
 				0F7D06BDCDD26F6123F10E7D /* DeveloperToolsCatalog.swift */,
 				F5D49D35B43CBB6E3D34791F /* DiagnosticsExperimentService.swift */,
 				D8E6F6500EC93A8BB11D3834 /* DeveloperToolsRunViews.swift */,
+				98FFB1CA1ED25A210D97929C /* CryptoLab.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1075,6 +1079,7 @@
 				6DB754B81CC37DF57453A43B /* DeveloperToolsCatalog.swift in Sources */,
 				7CBBC17449E62F2445620482 /* DiagnosticsExperimentService.swift in Sources */,
 				BC10CA8900496C8D65A22640 /* DeveloperToolsRunViews.swift in Sources */,
+				E798340DF9E4CFDC54524486 /* CryptoLab.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1256,6 +1261,7 @@
 				4000F10FF92DCB99E9F63A90 /* DeveloperToolsCatalog.swift in Sources */,
 				4B8C531E79940D8647B227DF /* DiagnosticsExperimentService.swift in Sources */,
 				0840CDEC46C9D4A625A56FEE /* DeveloperToolsRunViews.swift in Sources */,
+				28BEC64613D667B8A310EB3B /* CryptoLab.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -28,20 +28,94 @@ struct LocalAuthenticationRunView: View {
 }
 
 struct CryptoKitRunView: View {
-    @State private var message = "Hello from Joris Apple Toolbox"
+    @State private var request = CryptoLabRequest()
     @State private var output: String
+    @State private var isError = false
 
     init(experiment: ExperimentDescriptor) {
         _output = State(initialValue: ExperimentOutput.initialMessage(for: experiment.currentStatus))
     }
 
     var body: some View {
-        TextField("Message to hash or sign", text: $message)
-        Button("Hash with SHA-256") { output = CryptoService.hash(message: message) }
-        Button("Sign and Verify with P-256") { output = CryptoService.signAndVerify(message: message) }
+        Picker("Operation", selection: $request.operation) {
+            ForEach(CryptoLabOperation.allCases) { Text($0.title).tag($0) }
+        }
+        algorithmPickers
+        if request.operation != .keys {
+            TextField("Message", text: $request.message, axis: .vertical)
+                .lineLimit(1...4)
+        }
+        if request.operation == .hmac {
+            TextField("HMAC key (UTF-8 text)", text: $request.hmacKey)
+                .autocorrectionDisabled()
+        }
+        if request.operation == .encrypt || request.operation == .hpke {
+            TextField("Associated data (optional, authenticated but not encrypted)", text: $request.associatedData)
+                .autocorrectionDisabled()
+        }
+        Button(request.operation == .keys ? "Generate & Export Key" : "Run \(request.operation.title)") { show(CryptoLab.run(request)) }
             .buttonStyle(.borderedProminent)
-        Button("Run Complete Crypto Experiment") { output = CryptoService.run(message: message) }
-        OutputView(text: output, isError: output.localizedCaseInsensitiveContains("not available"))
+        if request.operation == .keys {
+            Picker("Import format", selection: $request.keyFormat) {
+                ForEach(CryptoLabKeyFormat.allCases) { Text($0.title).tag($0) }
+            }
+            Picker("Key part", selection: $request.keyPart) {
+                ForEach(CryptoLabKeyPart.allCases) { Text($0.title).tag($0) }
+            }
+            TextField("Key to import: PEM, hex or Base64", text: $request.importText, axis: .vertical)
+                .lineLimit(2...8)
+                .font(.system(.footnote, design: .monospaced))
+                .autocorrectionDisabled()
+                #if os(iOS)
+                .textInputAutocapitalization(.never)
+                #endif
+            Button("Import Key") { show(CryptoLab.importReport(request)) }
+        }
+        OutputView(text: output, isError: isError)
+        Text("Keys generated here live only in memory for this run and are shown in full so you can inspect them; never paste production private keys into a lab.")
+            .font(.caption).foregroundStyle(.secondary)
+    }
+
+    @ViewBuilder private var algorithmPickers: some View {
+        switch request.operation {
+        case .hash, .hmac:
+            Picker("Hash function", selection: $request.hash) {
+                ForEach(CryptoLabHash.allCases) { Text($0.title).tag($0) }
+            }
+        case .encrypt:
+            Picker("Cipher", selection: $request.cipher) {
+                ForEach(CryptoLabCipher.allCases) { Text($0.title).tag($0) }
+            }
+        case .keyAgreement:
+            Picker("Curve", selection: $request.curve) {
+                ForEach(CryptoLabCurve.allCases) { Text($0.title).tag($0) }
+            }
+            Picker("HKDF hash", selection: $request.hash) {
+                ForEach(CryptoLabHash.allCases) { Text($0.title).tag($0) }
+            }
+        case .signature:
+            Picker("Algorithm", selection: $request.signature) {
+                ForEach(CryptoLabSignatureAlgorithm.allCases) { Text($0.title).tag($0) }
+            }
+        case .hpke:
+            Picker("Ciphersuite", selection: $request.hpkeSuite) {
+                ForEach(CryptoLabHPKESuite.allCases) { Text($0.title).tag($0) }
+            }
+        case .keys:
+            Picker("Key type", selection: $request.keyKind) {
+                ForEach(CryptoLabKeyKind.allCases) { Text($0.title).tag($0) }
+            }
+        }
+    }
+
+    private func show(_ report: CryptoLabReport) {
+        output = report.text
+        isError = report.isError
+        if let candidate = report.importCandidate {
+            request.importText = candidate
+            request.keyFormat = report.importFormat ?? request.keyFormat
+            request.keyPart = report.importPart ?? request.keyPart
+        }
     }
 }
 

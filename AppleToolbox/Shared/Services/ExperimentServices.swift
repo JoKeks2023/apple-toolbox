@@ -69,13 +69,6 @@ private extension LABiometryType {
 #endif
 
 struct CryptoService {
-    private static let defaultMessage = "Joris Apple Toolbox · CryptoKit"
-
-    static func hash(message: String = defaultMessage) -> String {
-        guard let digest = sha256Hex(message) else { return "CryptoKit is not available on this platform." }
-        return "Message: \(message)\nSHA-256: \(digest)"
-    }
-
     /// Lowercase hex SHA-256 digest of the UTF-8 bytes, or nil where CryptoKit is missing.
     static func sha256Hex(_ message: String) -> String? {
         #if canImport(CryptoKit)
@@ -84,18 +77,4 @@ struct CryptoService {
         nil
         #endif
     }
-
-    static func signAndVerify(message: String = defaultMessage) -> String {
-        #if canImport(CryptoKit)
-        let data = Data(message.utf8)
-        let key = P256.Signing.PrivateKey()
-        let signature = try? key.signature(for: data)
-        let verified = signature.map { (try? key.publicKey.isValidSignature($0, for: data)) == true } ?? false
-        return "Message: \(message)\nP256 public key: \(key.publicKey.rawRepresentation.base64EncodedString())\nSignature bytes: \(signature?.rawRepresentation.count ?? 0)\nSignature verified: \(verified)"
-        #else
-        return "CryptoKit is not available on this platform."
-        #endif
-    }
-
-    static func run(message: String = defaultMessage) -> String { "\(hash(message: message))\n\n\(signAndVerify(message: message))" }
 }
