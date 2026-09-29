@@ -14,6 +14,7 @@ struct ConnectivityRunRoutes: View {
         case "multipeer-connectivity": MultipeerRunView()
         case "continuity": WatchConnectivityRunView()
         case "nearby-interaction": NearbyInteractionRunView()
+        case "spatial-link": SpatialLinkRunView()
         default: UnroutedExperimentView()
         }
     }

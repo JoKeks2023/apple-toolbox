@@ -23,6 +23,8 @@ final class ContinuityExperimentService: NSObject, ObservableObject {
     @Published private(set) var isCounterpartInstalled: Bool?
     @Published private(set) var isReachable = false
     @Published private(set) var lastMessage: String?
+    /// Round trip of the last answered ping, in milliseconds.
+    @Published private(set) var lastRoundTripMilliseconds: Int?
 
     static var deviceName: String {
         #if os(watchOS)
@@ -71,6 +73,7 @@ final class ContinuityExperimentService: NSObject, ObservableObject {
             let milliseconds = Int(Date().timeIntervalSince(sent) * 1000)
             Task { @MainActor in
                 self?.lastMessage = "Pong from \(from)"
+                self?.lastRoundTripMilliseconds = milliseconds
                 self?.output = "Round trip to \(from): \(milliseconds) ms"
             }
         }, errorHandler: { @Sendable [weak self] error in

@@ -58,5 +58,20 @@ extension ExperimentRegistry {
                 .hardwareUnsupported: ExperimentExplanation(reason: "This device does not provide an Ultra Wideband chip (no iPad has one).", required: "iPhone 11 or later, or Apple Watch Series 6 or later",
                     nextStep: "Use two UWB-capable iPhones running Apple Toolbox."),
             ]),
+        ExperimentDescriptor(id: "spatial-link", name: "Spatial Link", category: .connectivity,
+            description: "One live view of nearby Apple Toolbox devices: MultipeerConnectivity discovery, UWB distance and direction where both devices support it, each device's network path and message latency, plus the paired Apple Watch over WatchConnectivity.",
+            frameworks: ["MultipeerConnectivity", "NearbyInteraction", "Network", "WatchConnectivity"], supportedPlatforms: [.iOS, .iPadOS, .macOS],
+            hardwareRequirements: ["A second iPhone, iPad or Mac running Apple Toolbox", "UWB on both ends for distance and direction (iPhone 11 or later)"],
+            osRequirements: ["iOS 17+ · iPadOS 17+ · macOS 14+"], permissions: ["Local Network", "Nearby Interaction (UWB ranging)"],
+            capabilities: ["Bonjour services _toolbox-link._tcp and _toolbox-link._udp in NSBonjourServices"], entitlements: [],
+            documentationURL: URL(string: "https://developer.apple.com/documentation/multipeerconnectivity")!,
+            evaluate: { [.iOS, .iPadOS, .macOS].contains(CurrentPlatform.value) ? .available : .platformUnsupported },
+            useCase: ExperimentUseCase(id: "spatial-link", title: "Map the devices around you",
+                summary: "See every nearby Apple Toolbox device with its platform, transport, network path and latency, and where UWB allows it, its distance and direction.",
+                interaction: "Start Spatial Link on an iPhone, an iPad and a Mac on the same network or near each other. Two UWB iPhones also show each other on the radar; an iPhone lists its paired Apple Watch."),
+            explanations: [
+                .platformUnsupported: ExperimentExplanation(reason: "watchOS and tvOS have no MultipeerConnectivity, so this device cannot join the link.",
+                    required: "iPhone, iPad or Mac", nextStep: "Run Spatial Link on an iPhone; its paired Apple Watch appears there through WatchConnectivity."),
+            ]),
     ]
 }

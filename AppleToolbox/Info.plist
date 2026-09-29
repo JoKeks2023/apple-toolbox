@@ -20,7 +20,7 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Joris Apple Toolbox requests Apple Music access for the MusicKit experiment.</string>
 	<key>NSNearbyInteractionUsageDescription</key>
-	<string>Joris Apple Toolbox measures distance and direction to a nearby device for the Nearby Interaction experiment.</string>
+	<string>Joris Apple Toolbox measures distance and direction to a nearby device for the Nearby Interaction and Spatial Link experiments.</string>
 	<key>NFCReaderUsageDescription</key>
 	<string>Joris Apple Toolbox reads nearby NFC tags, and writes a tag only when you choose to, for the NFC experiments.</string>
 	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
@@ -51,7 +51,7 @@
 	<key>NSHealthShareUsageDescription</key>
 	<string>Joris Apple Toolbox reads step count only when you explicitly authorize the HealthKit experiment.</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>Joris Apple Toolbox discovers nearby devices and local network services for the MultipeerConnectivity experiment and the Network Inspector, and runs the inspector's echo listener.</string>
+	<string>Joris Apple Toolbox discovers nearby devices and local network services for the MultipeerConnectivity, Network Inspector and Spatial Link experiments, and runs the inspector's echo listener.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_apple-toolbox._tcp</string>
@@ -59,6 +59,8 @@
 		<string>_joris-nearby._tcp</string>
 		<string>_joris-nearby._udp</string>
 		<string>_toolbox-echo._tcp</string>
+		<string>_toolbox-link._tcp</string>
+		<string>_toolbox-link._udp</string>
 		<string>_http._tcp</string>
 		<string>_ipp._tcp</string>
 		<string>_airplay._tcp</string>
