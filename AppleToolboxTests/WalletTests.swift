@@ -39,3 +39,54 @@ struct WalletPaymentTests {
         #expect(ExperimentRegistry.descriptor(for: "apple-pay")?.entitlements.contains("com.apple.developer.in-app-payments") == true)
     }
 }
+
+struct WalletPassJSONTests {
+
+    @Test func boardingPassHasTransitTypeAndStructure() throws {
+        var draft = WalletPassDraft()
+        draft.style = .boardingPass
+        draft.transitType = .train
+        let pass = WalletPassJSON.build(draft)
+        let structure = try #require(pass["boardingPass"] as? [String: Any])
+        #expect(structure["transitType"] as? String == "PKTransitTypeTrain")
+        #expect((structure["primaryFields"] as? [[String: String]])?.count == 2)
+        #expect(pass["generic"] == nil)
+    }
+
+    @Test func everyStyleUsesItsOwnKey() {
+        for style in WalletPassStyle.allCases {
+            var draft = WalletPassDraft()
+            draft.style = style
+            let pass = WalletPassJSON.build(draft)
+            #expect(pass[style.rawValue] is [String: Any])
+            let structure = pass[style.rawValue] as? [String: Any]
+            #expect((structure?["transitType"] != nil) == (style == .boardingPass))
+        }
+    }
+
+    @Test func optionalRelevanceKeys() throws {
+        var draft = WalletPassDraft()
+        #expect(WalletPassJSON.build(draft)["locations"] == nil)
+        draft.includeLocation = true
+        draft.includeBeacon = true
+        draft.beaconUUID = "e2c56db5-dffb-48d2-b060-d0f5a71096e0"
+        draft.includeRelevantDate = true
+        draft.relevantDate = Date(timeIntervalSince1970: 0)
+        let pass = WalletPassJSON.build(draft)
+        #expect((pass["locations"] as? [[String: Any]])?.count == 1)
+        let beacon = try #require((pass["beacons"] as? [[String: Any]])?.first)
+        #expect(beacon["proximityUUID"] as? String == "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0")
+        #expect(pass["relevantDate"] as? String == "1970-01-01T00:00:00Z")
+        #expect(pass["webServiceURL"] == nil && pass["nfc"] == nil)
+    }
+
+    @Test func reportsInvalidDrafts() {
+        var draft = WalletPassDraft()
+        #expect(WalletPassJSON.issues(draft).isEmpty)
+        draft.includeBeacon = true
+        draft.beaconUUID = "not-a-uuid"
+        draft.includeLocation = true
+        draft.latitude = 120
+        #expect(WalletPassJSON.issues(draft).count == 2)
+    }
+}

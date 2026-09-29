@@ -15,16 +15,58 @@ struct WalletPassCreatorRunView: View {
     @StateObject private var walletCreator = WalletPassCreatorService()
 
     var body: some View {
+        Picker("Pass style", selection: $walletCreator.style) {
+            ForEach(WalletPassStyle.allCases) { Text($0.title).tag($0) }
+        }
+        if walletCreator.style == .boardingPass {
+            Picker("Transit type", selection: $walletCreator.transitType) {
+                ForEach(WalletTransitType.allCases) { Text($0.title).tag($0) }
+            }
+        }
         TextField("Pass name", text: $walletCreator.passName)
         TextField("Organization", text: $walletCreator.organizationName)
         TextField("Serial number", text: $walletCreator.serialNumber)
+        Section("Relevance (optional)") {
+            Toggle("Location", isOn: $walletCreator.includeLocation)
+            if walletCreator.includeLocation {
+                TextField("Latitude", value: $walletCreator.latitude, format: .number)
+                TextField("Longitude", value: $walletCreator.longitude, format: .number)
+            }
+            Toggle("iBeacon", isOn: $walletCreator.includeBeacon)
+            if walletCreator.includeBeacon {
+                TextField("Proximity UUID", text: $walletCreator.beaconUUID).font(.body.monospaced()).autocorrectionDisabled()
+                TextField("Major", value: $walletCreator.beaconMajor, format: .number)
+                TextField("Minor", value: $walletCreator.beaconMinor, format: .number)
+            }
+            Toggle("Relevant date", isOn: $walletCreator.includeRelevantDate)
+            #if !os(tvOS)
+            if walletCreator.includeRelevantDate {
+                DatePicker("Date", selection: $walletCreator.relevantDate)
+            }
+            #endif
+        }
+        Section("Server-only keys") {
+            Text(WalletPassJSON.serverOnlyKeys).font(.caption).foregroundStyle(.secondary)
+        }
         Button("Create Wallet Pass Draft", action: walletCreator.createDraft).buttonStyle(.borderedProminent)
         #if !os(tvOS)
         if let draftURL = walletCreator.draftURL {
             ShareLink(item: draftURL) { Label("Share pass.json draft", systemImage: "square.and.arrow.up") }
         }
         #endif
-        OutputView(text: walletCreator.output, isError: walletCreator.output.localizedCaseInsensitiveContains("could not"))
+        OutputView(text: walletCreator.output, isError: walletCreator.isError)
+        Section("Pass library changes") {
+            Button(walletCreator.isObserving ? "Stop Observing" : "Observe PKPassLibraryDidChange") {
+                walletCreator.isObserving ? walletCreator.stopObserving() : walletCreator.startObserving()
+            }
+            .experimentSession(walletCreator)
+            ForEach(walletCreator.libraryChanges) { change in
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(change.date, style: .time).font(.caption2).foregroundStyle(.secondary)
+                    Text(change.summary).font(.caption)
+                }
+            }
+        }
     }
 }
 
