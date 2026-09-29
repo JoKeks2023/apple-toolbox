@@ -63,17 +63,21 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     override func prepareInterfaceToProvideCredential(for credentialRequest: any ASCredentialRequest) {
         switch credentialRequest.type {
         case .password:
-            let service = (credentialRequest.credentialIdentity as? ASPasswordCredentialIdentity)?.serviceIdentifier.identifier
+            let service = AutoFillObject.identity(of: credentialRequest)
+                .flatMap { AutoFillObject.object("serviceIdentifier", of: $0) }
+                .flatMap { AutoFillObject.string("identifier", of: $0) }
             model.show(.list(services: service.map { [$0] } ?? [], passkeyRequest: nil))
         case .passkeyAssertion:
             guard let request = credentialRequest as? ASPasskeyCredentialRequest,
-                  let identity = request.credentialIdentity as? ASPasskeyCredentialIdentity,
-                  let passkey = CredentialVaultStore.load().passkeys.first(where: { $0.credentialID == identity.credentialID }) else {
+                  let identity = AutoFillObject.identity(of: request),
+                  let credentialID = AutoFillObject.data("credentialID", of: identity),
+                  let relyingParty = AutoFillObject.string("relyingPartyIdentifier", of: identity),
+                  let passkey = CredentialVaultStore.load().passkeys.first(where: { $0.credentialID == credentialID }) else {
                 cancel(.credentialIdentityNotFound)
                 return
             }
-            let context = PasskeyAssertionContext(relyingParty: identity.relyingPartyIdentifier, clientDataHash: request.clientDataHash,
-                                                  userVerification: request.userVerificationPreference, allowedCredentials: [identity.credentialID])
+            let context = PasskeyAssertionContext(relyingParty: relyingParty, clientDataHash: request.clientDataHash,
+                                                  userVerification: request.userVerificationPreference, allowedCredentials: [credentialID])
             model.show(.confirm(passkey, context))
         default:
             cancel(.failed)
@@ -84,7 +88,10 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func prepareInterface(forPasskeyRegistration registrationRequest: any ASCredentialRequest) {
         guard let request = registrationRequest as? ASPasskeyCredentialRequest,
-              let identity = request.credentialIdentity as? ASPasskeyCredentialIdentity else {
+              let identity = AutoFillObject.identity(of: request),
+              let relyingParty = AutoFillObject.string("relyingPartyIdentifier", of: identity),
+              let userName = AutoFillObject.string("userName", of: identity),
+              let userHandle = AutoFillObject.data("userHandle", of: identity) else {
             cancel(.failed)
             return
         }
@@ -93,13 +100,13 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
             model.show(.unsupported)
             return
         }
-        let excluded = Set((request.excludedCredentials ?? []).map(\.credentialID))
+        let excluded = AutoFillObject.excludedCredentialIDs(of: request)
         if CredentialVaultStore.load().passkeys.contains(where: { excluded.contains($0.credentialID) }) {
             cancel(.matchedExcludedCredential)
             return
         }
-        model.show(.register(PasskeyRegistrationContext(relyingParty: identity.relyingPartyIdentifier, userName: identity.userName,
-                                                        userHandle: identity.userHandle, clientDataHash: request.clientDataHash,
+        model.show(.register(PasskeyRegistrationContext(relyingParty: relyingParty, userName: userName,
+                                                        userHandle: userHandle, clientDataHash: request.clientDataHash,
                                                         userVerification: request.userVerificationPreference)))
     }
 
@@ -111,7 +118,7 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     // MARK: Completing requests
 
     private func password(for request: any ASCredentialRequest) -> DemoPasswordCredential? {
-        guard let recordIdentifier = request.credentialIdentity.recordIdentifier else { return nil }
+        guard let recordIdentifier = AutoFillObject.identity(of: request).flatMap({ AutoFillObject.string("recordIdentifier", of: $0) }) else { return nil }
         return CredentialVaultStore.load().passwords.first { $0.id == recordIdentifier }
     }
 
@@ -388,5 +395,32 @@ private struct PasskeyRow: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
+    }
+}
+
+/// Reads the system's AutoFill request objects through KVC instead of the AuthenticationServices Swift types. On iOS 27
+/// the system hands over private classes (such as SFPasskeyCredentialIdentity) that don't cast to
+/// ASPasskeyCredentialIdentity, and arrays of them trap when the Swift overlay bridges them (#109). The app side reads
+/// stored identities the same way (CredentialProviderExperimentService.describeIdentity).
+private enum AutoFillObject {
+    static func value(_ key: String, of object: NSObject) -> Any? {
+        guard object.responds(to: NSSelectorFromString(key)) else { return nil }
+        return object.value(forKey: key)
+    }
+
+    static func object(_ key: String, of object: NSObject) -> NSObject? { value(key, of: object) as? NSObject }
+    static func string(_ key: String, of object: NSObject) -> String? { value(key, of: object) as? String }
+    static func data(_ key: String, of object: NSObject) -> Data? { value(key, of: object) as? Data }
+
+    /// The request's identity as a plain object, whatever class the system used.
+    static func identity(of request: any ASCredentialRequest) -> NSObject? {
+        guard let request = request as AnyObject as? NSObject else { return nil }
+        return object("credentialIdentity", of: request)
+    }
+
+    /// `excludedCredentials` kept as an NSArray, so no element is bridged to a Swift type.
+    static func excludedCredentialIDs(of request: ASPasskeyCredentialRequest) -> Set<Data> {
+        guard let descriptors = value("excludedCredentials", of: request) as? NSArray else { return [] }
+        return Set(descriptors.compactMap { ($0 as? NSObject).flatMap { data("credentialID", of: $0) } })
     }
 }
