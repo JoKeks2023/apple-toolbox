@@ -8,31 +8,9 @@ import MapKit
 
 struct IndoorIMDFRunView: View {
     @StateObject private var indoor = IndoorIMDFExperimentService()
-    /// true: pick an archive folder, false: pick GeoJSON files, nil: importer closed.
-    @State private var importsFolder: Bool?
 
     var body: some View {
-        Text("IMDF archives are usually shared as .zip files. iOS has no public API to extract zip archives, so unzip the archive first (for example by tapping it in the Files app) and import the resulting folder. Individual .geojson files can be imported too.")
-            .font(.caption)
-            .foregroundStyle(.secondary)
-        HStack {
-            Button("Import IMDF Folder", systemImage: "folder") { importsFolder = true }.buttonStyle(.borderedProminent)
-            Button("Import GeoJSON Files", systemImage: "doc.on.doc") { importsFolder = false }.buttonStyle(.bordered)
-        }
-        .disabled(indoor.isLoading)
-        #if canImport(UniformTypeIdentifiers) && !os(tvOS)
-        .fileImporter(isPresented: Binding(get: { importsFolder != nil }, set: { if !$0 { importsFolder = nil } }),
-                      allowedContentTypes: importsFolder == true ? [.folder] : Self.geoJSONTypes,
-                      allowsMultipleSelection: importsFolder != true) { result in
-            switch result {
-            case .success(let urls): indoor.load(urls: urls)
-            case .failure(let error): indoor.reportImportFailure(error)
-            }
-        }
-        #endif
-        if indoor.isLoading {
-            ProgressView("Decoding GeoJSON…")
-        }
+        IMDFImportControls(indoor: indoor)
         if let summary = indoor.summary {
             IMDFSummaryView(summary: summary)
             if !summary.levels.isEmpty {
@@ -60,6 +38,37 @@ struct IndoorIMDFRunView: View {
         }
         OutputView(text: indoor.output, isError: indoor.status == .unavailable)
     }
+}
+
+/// Import buttons for an unzipped IMDF archive folder or loose GeoJSON files; shared by the IMDF and survey experiments.
+struct IMDFImportControls: View {
+    @ObservedObject var indoor: IndoorIMDFExperimentService
+    /// true: pick an archive folder, false: pick GeoJSON files, nil: importer closed.
+    @State private var importsFolder: Bool?
+
+    var body: some View {
+        Text("IMDF archives are usually shared as .zip files. iOS has no public API to extract zip archives, so unzip the archive first (for example by tapping it in the Files app) and import the resulting folder. Individual .geojson files can be imported too.")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+        HStack {
+            Button("Import IMDF Folder", systemImage: "folder") { importsFolder = true }.buttonStyle(.borderedProminent)
+            Button("Import GeoJSON Files", systemImage: "doc.on.doc") { importsFolder = false }.buttonStyle(.bordered)
+        }
+        .disabled(indoor.isLoading)
+        #if canImport(UniformTypeIdentifiers) && !os(tvOS)
+        .fileImporter(isPresented: Binding(get: { importsFolder != nil }, set: { if !$0 { importsFolder = nil } }),
+                      allowedContentTypes: importsFolder == true ? [.folder] : Self.geoJSONTypes,
+                      allowsMultipleSelection: importsFolder != true) { result in
+            switch result {
+            case .success(let urls): indoor.load(urls: urls)
+            case .failure(let error): indoor.reportImportFailure(error)
+            }
+        }
+        #endif
+        if indoor.isLoading {
+            ProgressView("Decoding GeoJSON…")
+        }
+    }
 
     #if canImport(UniformTypeIdentifiers)
     private static let geoJSONTypes: [UTType] = [.json, UTType(filenameExtension: "geojson", conformingTo: .json)].compactMap { $0 }
@@ -82,6 +91,20 @@ private struct IMDFSummaryView: View {
 }
 
 #if canImport(MapKit)
+/// Venue outline, level outline, units and openings of one IMDF level as map overlays.
+struct IMDFLevelOverlays: MapContent {
+    let geometry: IMDFMapGeometry
+    let levelID: String
+
+    var body: some MapContent {
+        let shapes = geometry.levels[levelID] ?? IMDFLevelShapes()
+        ForEach(Array(geometry.venue.enumerated()), id: \.offset) { MapPolygon($0.element).foregroundStyle(.gray.opacity(0.06)).stroke(.gray, lineWidth: 2) }
+        ForEach(Array(shapes.outline.enumerated()), id: \.offset) { MapPolygon($0.element).foregroundStyle(.gray.opacity(0.12)).stroke(.secondary, lineWidth: 1) }
+        ForEach(Array(shapes.units.enumerated()), id: \.offset) { MapPolygon($0.element).foregroundStyle(.blue.opacity(0.18)).stroke(.blue, lineWidth: 1) }
+        ForEach(Array(shapes.openings.enumerated()), id: \.offset) { MapPolyline($0.element).stroke(.orange, lineWidth: 3) }
+    }
+}
+
 private struct IMDFLevelMap: View {
     let geometry: IMDFMapGeometry
     let levelID: String
@@ -90,10 +113,7 @@ private struct IMDFLevelMap: View {
         let shapes = geometry.levels[levelID] ?? IMDFLevelShapes()
         VStack(alignment: .leading, spacing: 6) {
             Map(initialPosition: cameraPosition) {
-                ForEach(Array(geometry.venue.enumerated()), id: \.offset) { MapPolygon($0.element).foregroundStyle(.gray.opacity(0.06)).stroke(.gray, lineWidth: 2) }
-                ForEach(Array(shapes.outline.enumerated()), id: \.offset) { MapPolygon($0.element).foregroundStyle(.gray.opacity(0.12)).stroke(.secondary, lineWidth: 1) }
-                ForEach(Array(shapes.units.enumerated()), id: \.offset) { MapPolygon($0.element).foregroundStyle(.blue.opacity(0.18)).stroke(.blue, lineWidth: 1) }
-                ForEach(Array(shapes.openings.enumerated()), id: \.offset) { MapPolyline($0.element).stroke(.orange, lineWidth: 3) }
+                IMDFLevelOverlays(geometry: geometry, levelID: levelID)
             }
             .mapStyle(.standard(pointsOfInterest: .excludingAll))
             .frame(height: 320)

@@ -314,6 +314,10 @@
 		3F7E2E629B260C8BD0D66463 /* BeaconRangingRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE20785D94E9BFBB1776D2DA /* BeaconRangingRunView.swift */; };
 		6807C1F4873C5D420D84F685 /* LocationDashboardRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32104EC74AD75F1BDB1FDDA /* LocationDashboardRunView.swift */; };
 		45776623B54689AC2DEB5140 /* LocationDashboardRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32104EC74AD75F1BDB1FDDA /* LocationDashboardRunView.swift */; };
+		B2413671B4115BAF34C989C1 /* IndoorSurveyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0B5FB7F9F6E32621B89AFA /* IndoorSurveyService.swift */; };
+		0FE241F25BDDB8B644AB7618 /* IndoorSurveyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0B5FB7F9F6E32621B89AFA /* IndoorSurveyService.swift */; };
+		00F6C982EFD510DC1E227014 /* IndoorSurveyRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C09B41038A274D22612679 /* IndoorSurveyRunView.swift */; };
+		29A201BA2D61EF7DDEE92E03 /* IndoorSurveyRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C09B41038A274D22612679 /* IndoorSurveyRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -516,6 +520,8 @@
 		F66011D97BD76329B25840DE /* LocationDashboardService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationDashboardService.swift; path = AppleToolbox/Shared/Services/LocationDashboardService.swift; sourceTree = "<group>"; };
 		AE20785D94E9BFBB1776D2DA /* BeaconRangingRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeaconRangingRunView.swift; path = AppleToolbox/UI/Experiments/BeaconRangingRunView.swift; sourceTree = "<group>"; };
 		C32104EC74AD75F1BDB1FDDA /* LocationDashboardRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationDashboardRunView.swift; path = AppleToolbox/UI/Experiments/LocationDashboardRunView.swift; sourceTree = "<group>"; };
+		AB0B5FB7F9F6E32621B89AFA /* IndoorSurveyService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IndoorSurveyService.swift; path = AppleToolbox/Shared/Services/IndoorSurveyService.swift; sourceTree = "<group>"; };
+		78C09B41038A274D22612679 /* IndoorSurveyRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IndoorSurveyRunView.swift; path = AppleToolbox/UI/Experiments/IndoorSurveyRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -789,6 +795,8 @@
 				F66011D97BD76329B25840DE /* LocationDashboardService.swift */,
 				AE20785D94E9BFBB1776D2DA /* BeaconRangingRunView.swift */,
 				C32104EC74AD75F1BDB1FDDA /* LocationDashboardRunView.swift */,
+				AB0B5FB7F9F6E32621B89AFA /* IndoorSurveyService.swift */,
+				78C09B41038A274D22612679 /* IndoorSurveyRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1198,6 +1206,8 @@
 				9F8C65DEE5B4D8145A581EA1 /* LocationDashboardService.swift in Sources */,
 				EAB85C681D1A2843A363130F /* BeaconRangingRunView.swift in Sources */,
 				6807C1F4873C5D420D84F685 /* LocationDashboardRunView.swift in Sources */,
+				B2413671B4115BAF34C989C1 /* IndoorSurveyService.swift in Sources */,
+				00F6C982EFD510DC1E227014 /* IndoorSurveyRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1410,6 +1420,8 @@
 				FEACC7AE0BB8B74BB001B7A8 /* LocationDashboardService.swift in Sources */,
 				3F7E2E629B260C8BD0D66463 /* BeaconRangingRunView.swift in Sources */,
 				45776623B54689AC2DEB5140 /* LocationDashboardRunView.swift in Sources */,
+				0FE241F25BDDB8B644AB7618 /* IndoorSurveyService.swift in Sources */,
+				29A201BA2D61EF7DDEE92E03 /* IndoorSurveyRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

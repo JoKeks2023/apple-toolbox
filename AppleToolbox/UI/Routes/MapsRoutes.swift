@@ -8,6 +8,7 @@ struct MapsRunRoutes: View {
         switch experiment.id {
         case "mapkit-search": MapKitSearchRunView()
         case "indoor-imdf": IndoorIMDFRunView()
+        case "indoor-survey": IndoorSurveyRunView()
         default: UnroutedExperimentView()
         }
     }

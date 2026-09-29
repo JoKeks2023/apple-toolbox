@@ -11,5 +11,18 @@ extension ExperimentRegistry {
                 .platformUnsupported: ExperimentExplanation(reason: "IMDF archives are imported through the document picker, which Apple TV and Apple Watch do not offer to this app.", required: "iOS, iPadOS or macOS",
                     nextStep: "Open Apple Toolbox on iPhone, iPad or Mac and import the unzipped IMDF folder."),
             ]),
+        ExperimentDescriptor(id: "indoor-survey", name: "Indoor Survey", category: .maps,
+            description: "Survey an imported IMDF level: record reference points and walking paths with Core Location accuracy, floor, confidence and notes, compare reference and measured positions, view an accuracy heatmap, save surveys as JSON in the app's Documents folder (Application Support on Mac) and export them as GeoJSON.",
+            frameworks: ["CoreLocation", "MapKit", "Foundation"], supportedPlatforms: [.iOS, .iPadOS, .macOS], hardwareRequirements: ["GPS, Wi-Fi and Bluetooth positioning", "Floors only in venues with Apple indoor positioning"], osRequirements: ["iOS 17+ · macOS 14+"], permissions: ["Location When In Use", "Temporary precise location (purpose key)", "User-selected file access (IMDF import)"], capabilities: ["Indoor Mapping Data Format", "Local JSON storage"], entitlements: [],
+            documentationURL: URL(string: "https://developer.apple.com/documentation/corelocation/clfloor")!, evaluate: ExperimentAvailability.location,
+            useCase: ExperimentUseCase(id: "indoor-survey-utility", title: "Survey positioning quality in a building", summary: "Measure how well Core Location performs on each floor of a venue and hand the results to GIS tools.", interaction: "Import the venue's IMDF folder and pick a level, start location, tap a spot you can identify and stand on it while recording, walk the corridors as a path, then read the error vectors and heatmap and export the survey as GeoJSON."),
+            explanations: [
+                .platformUnsupported: ExperimentExplanation(reason: "Surveys need continuous location updates and the document picker for IMDF, which Apple TV and Apple Watch do not offer to this app.", required: "iOS, iPadOS or macOS",
+                    nextStep: "Open Apple Toolbox on iPhone, iPad or Mac."),
+                .permissionRequired: ExperimentExplanation(reason: "The app has not asked for location access yet; without it points can only be placed by tapping the map.", required: "Location When In Use",
+                    nextStep: "Tap Start Location; the system asks for location access first."),
+                .permissionDenied: ExperimentExplanation(reason: "Location access is denied or restricted, so no measured positions or accuracies can be recorded.", required: "Location Services on and Apple Toolbox allowed While Using the App",
+                    nextStep: "Allow Apple Toolbox in Settings › Privacy & Security › Location Services."),
+            ]),
     ]
 }
