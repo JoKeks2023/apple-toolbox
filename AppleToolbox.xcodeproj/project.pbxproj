@@ -138,6 +138,9 @@
 		2DD90CEF9D51F209B46BDF02 /* ProvisioningInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74066D2DEC64C74C01FCD3E /* ProvisioningInspector.swift */; };
 		743D118603427E9CA2F9C1DF /* PasskeyExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFBA96A2C9D3B80BB2F86F4 /* PasskeyExperimentService.swift */; };
 		86DF507F4CE8D231903A1301 /* PasskeyExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFBA96A2C9D3B80BB2F86F4 /* PasskeyExperimentService.swift */; };
+		EF8BEDD841E7B9531F0833EB /* ToolboxAppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDEBD9F7788C14604828260 /* ToolboxAppIntents.swift */; };
+		F6FDB568203E84C34F6F4F84 /* ToolboxAppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDEBD9F7788C14604828260 /* ToolboxAppIntents.swift */; };
+		0E34F1CE793709EA982D9A68 /* ToolboxAppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDEBD9F7788C14604828260 /* ToolboxAppIntents.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -265,6 +268,7 @@
 		EA3E6A0C1A8FC25C723A1E05 /* IdentityRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IdentityRunViews.swift; path = AppleToolbox/UI/Experiments/IdentityRunViews.swift; sourceTree = "<group>"; };
 		7586888B76A67E0CBEB09816 /* SignInWithAppleExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SignInWithAppleExperimentService.swift; path = AppleToolbox/Shared/Services/SignInWithAppleExperimentService.swift; sourceTree = "<group>"; };
 		2AFBA96A2C9D3B80BB2F86F4 /* PasskeyExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PasskeyExperimentService.swift; path = AppleToolbox/Shared/Services/PasskeyExperimentService.swift; sourceTree = "<group>"; };
+		6EDEBD9F7788C14604828260 /* ToolboxAppIntents.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxAppIntents.swift; path = AppleToolbox/Shared/Services/ToolboxAppIntents.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -462,6 +466,7 @@
 				EA3E6A0C1A8FC25C723A1E05 /* IdentityRunViews.swift */,
 				7586888B76A67E0CBEB09816 /* SignInWithAppleExperimentService.swift */,
 				2AFBA96A2C9D3B80BB2F86F4 /* PasskeyExperimentService.swift */,
+				6EDEBD9F7788C14604828260 /* ToolboxAppIntents.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -797,6 +802,7 @@
 				42AD02522844D21219E09159 /* IdentityRunViews.swift in Sources */,
 				22C1FA45046598DFFFFC7E36 /* SignInWithAppleExperimentService.swift in Sources */,
 				743D118603427E9CA2F9C1DF /* PasskeyExperimentService.swift in Sources */,
+				EF8BEDD841E7B9531F0833EB /* ToolboxAppIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -834,6 +840,7 @@
 				3216CE13790F630D9BCB5078 /* WatchLabViews.swift in Sources */,
 				269B5D1C218592E6A1093599 /* GameControllerExperimentService.swift in Sources */,
 				2DD90CEF9D51F209B46BDF02 /* ProvisioningInspector.swift in Sources */,
+				0E34F1CE793709EA982D9A68 /* ToolboxAppIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,6 +915,7 @@
 				5E00D312E59877F5708A5BA8 /* IdentityRunViews.swift in Sources */,
 				E4ABEBA404DBB1EF36A92B15 /* SignInWithAppleExperimentService.swift in Sources */,
 				86DF507F4CE8D231903A1301 /* PasskeyExperimentService.swift in Sources */,
+				F6FDB568203E84C34F6F4F84 /* ToolboxAppIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1003,6 +1011,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppleToolbox/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1032,6 +1041,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppleToolbox/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -1077,6 +1087,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppleToolbox/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -1351,6 +1362,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppleToolbox/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

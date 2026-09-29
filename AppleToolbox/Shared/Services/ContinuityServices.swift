@@ -173,15 +173,3 @@ private extension WCSessionActivationState {
     }
 }
 #endif
-
-#if canImport(AppIntents)
-import AppIntents
-
-struct ToolboxStatusIntent: AppIntent {
-    static var title: LocalizedStringResource = "Show Apple Toolbox Status"
-    static var description = IntentDescription("Returns a short status from Joris Apple Toolbox.")
-    func perform() async throws -> some IntentResult & ReturnsValue<String> {
-        .result(value: "Joris Apple Toolbox is ready for experiments.")
-    }
-}
-#endif

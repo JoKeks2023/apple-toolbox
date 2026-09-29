@@ -77,7 +77,7 @@ struct ExperimentRunView: View {
         case "notifications": NotificationsRunView()
         case "wallet-status": StatusCheckRunView(experiment: experiment, title: "Inspect Wallet Capability", check: WalletExperimentService.statusText)
         case "wallet-creator": WalletPassCreatorRunView()
-        case "app-intents": StatusCheckRunView(experiment: experiment, title: "Refresh App Intents Report") { "App Intent registered: ToolboxStatusIntent\nUse Siri or Shortcuts to discover it." }
+        case "app-intents": AppIntentsRunView()
         case "widgetkit": StatusCheckRunView(experiment: experiment, title: "Inspect Widget Extension") { "WidgetKit extension is included in the iOS app.\nAdd “Apple Toolbox” from the Home Screen widget gallery." }
         case "capability-explorer": DeviceScannerRunView()
         case "game-controller": GameControllerRunView()

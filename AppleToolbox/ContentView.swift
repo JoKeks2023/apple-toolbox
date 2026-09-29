@@ -8,6 +8,9 @@ private enum SidebarItem: Hashable {
 struct ContentView: View {
     @State private var selection: SidebarItem?
     @State private var detailPath = NavigationPath()
+    /// Experiment to push once a navigation request has switched the sidebar category.
+    @State private var pendingExperimentID: String?
+    @ObservedObject private var navigator = ToolboxNavigator.shared
     @Environment(\.scenePhase) private var scenePhase
     private let experiments = ExperimentRegistry.all
 
@@ -55,10 +58,37 @@ struct ContentView: View {
             }
         }
         .navigationSplitViewStyle(.balanced)
-        .onChange(of: selection) { detailPath = NavigationPath() }
+        .onChange(of: selection) {
+            detailPath = NavigationPath()
+            if let pendingExperimentID { detailPath.append(pendingExperimentID) }
+            pendingExperimentID = nil
+        }
+        // App Intents may request navigation before this view exists, so the pending request is also read initially.
+        .onChange(of: navigator.request, initial: true) {
+            guard let request = navigator.request else { return }
+            navigator.request = nil
+            open(request)
+        }
         // Permissions can change in Settings while the app is in the background.
         .task { await PermissionCenter.shared.refresh() }
         .onChange(of: scenePhase) { if scenePhase == .active { Task { await PermissionCenter.shared.refresh() } } }
+    }
+
+    private func open(_ request: ToolboxNavigator.Request) {
+        switch request {
+        case .category(let category):
+            selection = .category(category)
+            detailPath = NavigationPath()
+        case .experiment(let id):
+            guard let experiment = ExperimentRegistry.descriptor(for: id) else { return }
+            let target = SidebarItem.category(experiment.category)
+            if selection == target {
+                detailPath = NavigationPath([id])
+            } else {
+                pendingExperimentID = id
+                selection = target
+            }
+        }
     }
 }
 

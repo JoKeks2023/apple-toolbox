@@ -3,7 +3,7 @@ import Foundation
 import UIKit
 #endif
 
-enum ExperimentCategory: String, CaseIterable, Identifiable {
+enum ExperimentCategory: String, CaseIterable, Identifiable, Sendable {
     case security = "Security"
     case location = "Location"
     case sensors = "Sensors"

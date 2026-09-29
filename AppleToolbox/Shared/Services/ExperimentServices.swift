@@ -75,12 +75,16 @@ struct CryptoService {
     private static let defaultMessage = "Joris Apple Toolbox · CryptoKit"
 
     static func hash(message: String = defaultMessage) -> String {
-        #if canImport(CryptoKit)
-        let data = Data(message.utf8)
-        let digest = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+        guard let digest = sha256Hex(message) else { return "CryptoKit is not available on this platform." }
         return "Message: \(message)\nSHA-256: \(digest)"
+    }
+
+    /// Lowercase hex SHA-256 digest of the UTF-8 bytes, or nil where CryptoKit is missing.
+    static func sha256Hex(_ message: String) -> String? {
+        #if canImport(CryptoKit)
+        SHA256.hash(data: Data(message.utf8)).map { String(format: "%02x", $0) }.joined()
         #else
-        return "CryptoKit is not available on this platform."
+        nil
         #endif
     }
 

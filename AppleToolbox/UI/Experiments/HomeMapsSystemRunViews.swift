@@ -96,6 +96,33 @@ struct WalletPassCreatorRunView: View {
     }
 }
 
+struct AppIntentsRunView: View {
+    @StateObject private var intents = AppIntentsExperimentService()
+
+    var body: some View {
+        LabeledContent("Registered App Shortcuts", value: "\(intents.registeredCount)")
+        TextField("Text to hash", text: $intents.text)
+        Picker("Category", selection: $intents.category) {
+            ForEach(ExperimentCategory.allCases) { Text($0.rawValue).tag($0) }
+        }
+        Picker("Experiment", selection: $intents.experimentID) {
+            ForEach(ExperimentRegistry.all) { Text($0.name).tag($0.id) }
+        }
+        ForEach(intents.shortcuts) { shortcut in
+            VStack(alignment: .leading, spacing: 6) {
+                Label(shortcut.title, systemImage: shortcut.symbol).font(.headline)
+                Text(shortcut.summary).font(.caption).foregroundStyle(.secondary)
+                Text("“\(shortcut.phrase)”").font(.caption.italic())
+                Button(intents.running == shortcut.id ? "Running…" : shortcut.opensApp ? "Run perform() · navigates" : "Run perform()") { intents.run(shortcut) }
+                    .buttonStyle(.bordered)
+                    .disabled(intents.running != nil)
+            }
+            .padding(.vertical, 4)
+        }
+        OutputView(text: intents.output, isError: intents.isError)
+    }
+}
+
 private struct MapResultsView: View {
     let results: [MapSearchResult]
 
