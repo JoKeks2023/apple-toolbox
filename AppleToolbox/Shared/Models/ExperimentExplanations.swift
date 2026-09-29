@@ -113,8 +113,8 @@ extension ExperimentDescriptor {
                                                         nextStep: "Add the Associated Domains capability for your relying party and host the association file."),
         ],
         "sign-in-with-apple": [
-            .entitlementRequired: ExperimentExplanation(reason: "The Sign in with Apple capability is not enabled for this app.", required: "com.apple.developer.applesignin",
-                                                        nextStep: "Enable Sign in with Apple for the App ID in Xcode › Signing & Capabilities."),
+            .entitlementRequired: ExperimentExplanation(reason: "Neither the embedded provisioning profile nor this build's readable signed entitlements include Sign in with Apple.", required: "com.apple.developer.applesignin = [Default], enabled on the App ID of a paid developer team",
+                                                        nextStep: "Add the Sign in with Apple capability to this target in Xcode › Signing & Capabilities; the button below still shows the system's real error."),
         ],
         "game-controller": [
             .unavailable: ExperimentExplanation(reason: "No game controller is connected right now.", required: "A paired MFi, Xbox, PlayStation, or Switch controller (the Siri Remote counts on Apple TV)",
