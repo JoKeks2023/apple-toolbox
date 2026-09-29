@@ -24,5 +24,14 @@ extension ExperimentRegistry {
                 .permissionDenied: ExperimentExplanation(reason: "Location access is denied or restricted, so no measured positions or accuracies can be recorded.", required: "Location Services on and Apple Toolbox allowed While Using the App",
                     nextStep: "Allow Apple Toolbox in Settings › Privacy & Security › Location Services."),
             ]),
+        ExperimentDescriptor(id: "maps-lab", name: "Maps Lab", category: .maps,
+            description: "Geocode addresses with MKGeocodingRequest, reverse geocode map taps with MKReverseGeocodingRequest, route with ETA for driving, walking, cycling and transit, preview Look Around, and switch map styles, 3D elevation, points of interest, annotations, overlays and your position.",
+            frameworks: ["MapKit", "CoreLocation"], supportedPlatforms: [.iOS, .iPadOS, .macOS, .tvOS], hardwareRequirements: [], osRequirements: ["iOS 26+ · macOS 26+ · tvOS 26+ (MKGeocodingRequest)", "Look Around: iOS and macOS only"], permissions: ["Location When In Use (optional: your position and routes from it)"], capabilities: [], entitlements: [],
+            documentationURL: URL(string: "https://developer.apple.com/documentation/mapkit/mapkit-for-swiftui")!, evaluate: { [.iOS, .iPadOS, .macOS, .tvOS].contains(CurrentPlatform.value) ? .available : .platformUnsupported },
+            useCase: ExperimentUseCase(id: "maps-playground", title: "Plan a trip with MapKit", summary: "Find an address, inspect what MapKit knows about it, compare routes per transport mode and look around at the destination.", interaction: "Geocode an address, tap the map to reverse geocode another spot, pick an origin and transport mode, calculate routes or a transit ETA, then switch to realistic elevation and tilt the camera, and open the Look Around preview."),
+            explanations: [
+                .platformUnsupported: ExperimentExplanation(reason: "MapKit's SwiftUI map and request APIs are not available to this app on Apple Watch.", required: "iOS, iPadOS, macOS or tvOS",
+                    nextStep: "Open Apple Toolbox on iPhone, iPad, Mac or Apple TV."),
+            ]),
     ]
 }

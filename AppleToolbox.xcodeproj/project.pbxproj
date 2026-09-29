@@ -318,6 +318,10 @@
 		0FE241F25BDDB8B644AB7618 /* IndoorSurveyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0B5FB7F9F6E32621B89AFA /* IndoorSurveyService.swift */; };
 		00F6C982EFD510DC1E227014 /* IndoorSurveyRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C09B41038A274D22612679 /* IndoorSurveyRunView.swift */; };
 		29A201BA2D61EF7DDEE92E03 /* IndoorSurveyRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C09B41038A274D22612679 /* IndoorSurveyRunView.swift */; };
+		95A53FD830D2FEEF6FDB4DD5 /* MapsLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED4B82D5866F1EB44CD8437 /* MapsLabService.swift */; };
+		B2FAF666D6641DFE1C40E0F4 /* MapsLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED4B82D5866F1EB44CD8437 /* MapsLabService.swift */; };
+		7F1941C85AFA7AA7290BA700 /* MapsLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F59035B6B57FC9CF6CF8 /* MapsLabRunView.swift */; };
+		8C2448C29F0027FFA1CA992A /* MapsLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F661F59035B6B57FC9CF6CF8 /* MapsLabRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -522,6 +526,8 @@
 		C32104EC74AD75F1BDB1FDDA /* LocationDashboardRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationDashboardRunView.swift; path = AppleToolbox/UI/Experiments/LocationDashboardRunView.swift; sourceTree = "<group>"; };
 		AB0B5FB7F9F6E32621B89AFA /* IndoorSurveyService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IndoorSurveyService.swift; path = AppleToolbox/Shared/Services/IndoorSurveyService.swift; sourceTree = "<group>"; };
 		78C09B41038A274D22612679 /* IndoorSurveyRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IndoorSurveyRunView.swift; path = AppleToolbox/UI/Experiments/IndoorSurveyRunView.swift; sourceTree = "<group>"; };
+		9ED4B82D5866F1EB44CD8437 /* MapsLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapsLabService.swift; path = AppleToolbox/Shared/Services/MapsLabService.swift; sourceTree = "<group>"; };
+		F661F59035B6B57FC9CF6CF8 /* MapsLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapsLabRunView.swift; path = AppleToolbox/UI/Experiments/MapsLabRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -797,6 +803,8 @@
 				C32104EC74AD75F1BDB1FDDA /* LocationDashboardRunView.swift */,
 				AB0B5FB7F9F6E32621B89AFA /* IndoorSurveyService.swift */,
 				78C09B41038A274D22612679 /* IndoorSurveyRunView.swift */,
+				9ED4B82D5866F1EB44CD8437 /* MapsLabService.swift */,
+				F661F59035B6B57FC9CF6CF8 /* MapsLabRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1208,6 +1216,8 @@
 				6807C1F4873C5D420D84F685 /* LocationDashboardRunView.swift in Sources */,
 				B2413671B4115BAF34C989C1 /* IndoorSurveyService.swift in Sources */,
 				00F6C982EFD510DC1E227014 /* IndoorSurveyRunView.swift in Sources */,
+				95A53FD830D2FEEF6FDB4DD5 /* MapsLabService.swift in Sources */,
+				7F1941C85AFA7AA7290BA700 /* MapsLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1422,6 +1432,8 @@
 				45776623B54689AC2DEB5140 /* LocationDashboardRunView.swift in Sources */,
 				0FE241F25BDDB8B644AB7618 /* IndoorSurveyService.swift in Sources */,
 				29A201BA2D61EF7DDEE92E03 /* IndoorSurveyRunView.swift in Sources */,
+				B2FAF666D6641DFE1C40E0F4 /* MapsLabService.swift in Sources */,
+				8C2448C29F0027FFA1CA992A /* MapsLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

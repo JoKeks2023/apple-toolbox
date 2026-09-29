@@ -41,8 +41,9 @@ final class MapExperimentService: ObservableObject {
                 if let error { self?.output = "MapKit error: \(error.localizedDescription)"; return }
                 let items = response?.mapItems.prefix(5) ?? []
                 self?.results = items.map { item in
-                    let coordinate = item.placemark.coordinate
-                    let address = [item.placemark.thoroughfare, item.placemark.locality].compactMap { $0 }.joined(separator: ", ")
+                    // MKMapItem.placemark is deprecated since iOS/macOS/tvOS 26; location and address replace it.
+                    let coordinate = item.location.coordinate
+                    let address = item.address?.shortAddress ?? item.address?.fullAddress ?? ""
                     return MapSearchResult(name: item.name ?? "Unnamed", coordinate: String(format: "%.5f, %.5f", coordinate.latitude, coordinate.longitude), address: address)
                 }
                 self?.output = items.isEmpty ? "No results." : "Found \(items.count) result(s) for \(self?.query ?? "your query")."
