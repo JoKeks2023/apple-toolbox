@@ -157,6 +157,10 @@
 		EA675EF6B312822E9A70D893 /* SoundAnalysisExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7477941FD4E5A650299E8A8D /* SoundAnalysisExperimentService.swift */; };
 		FA06BB08B325D217CEC740B8 /* SoundAnalysisRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD27F86185035C2B50D5C974 /* SoundAnalysisRunView.swift */; };
 		2EB473BDDB7DC3B0CB155956 /* SoundAnalysisRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD27F86185035C2B50D5C974 /* SoundAnalysisRunView.swift */; };
+		BA863FFDD313AA303D8B81DA /* CoreMLExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B399AF36DD2DBC94357999EB /* CoreMLExperimentService.swift */; };
+		C72C0929AA38B4A4111761A4 /* CoreMLExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B399AF36DD2DBC94357999EB /* CoreMLExperimentService.swift */; };
+		C0D8478351E98CF44B878B77 /* CoreMLRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A4B811E651C528D15ED979 /* CoreMLRunView.swift */; };
+		19ED01DD4247C79666261765 /* CoreMLRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A4B811E651C528D15ED979 /* CoreMLRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -293,6 +297,8 @@
 		7209859E7280C19057CDFF07 /* TranslationRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TranslationRunView.swift; path = AppleToolbox/UI/Experiments/TranslationRunView.swift; sourceTree = "<group>"; };
 		7477941FD4E5A650299E8A8D /* SoundAnalysisExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SoundAnalysisExperimentService.swift; path = AppleToolbox/Shared/Services/SoundAnalysisExperimentService.swift; sourceTree = "<group>"; };
 		FD27F86185035C2B50D5C974 /* SoundAnalysisRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SoundAnalysisRunView.swift; path = AppleToolbox/UI/Experiments/SoundAnalysisRunView.swift; sourceTree = "<group>"; };
+		B399AF36DD2DBC94357999EB /* CoreMLExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoreMLExperimentService.swift; path = AppleToolbox/Shared/Services/CoreMLExperimentService.swift; sourceTree = "<group>"; };
+		D7A4B811E651C528D15ED979 /* CoreMLRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoreMLRunView.swift; path = AppleToolbox/UI/Experiments/CoreMLRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -500,6 +506,8 @@
 				7209859E7280C19057CDFF07 /* TranslationRunView.swift */,
 				7477941FD4E5A650299E8A8D /* SoundAnalysisExperimentService.swift */,
 				FD27F86185035C2B50D5C974 /* SoundAnalysisRunView.swift */,
+				B399AF36DD2DBC94357999EB /* CoreMLExperimentService.swift */,
+				D7A4B811E651C528D15ED979 /* CoreMLRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -843,6 +851,8 @@
 				4F70786B0D3F281714CFF57B /* TranslationRunView.swift in Sources */,
 				685758D6DBD3D2F783E2664C /* SoundAnalysisExperimentService.swift in Sources */,
 				FA06BB08B325D217CEC740B8 /* SoundAnalysisRunView.swift in Sources */,
+				BA863FFDD313AA303D8B81DA /* CoreMLExperimentService.swift in Sources */,
+				C0D8478351E98CF44B878B77 /* CoreMLRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -964,6 +974,8 @@
 				117CB580B44B1488A6C4DB2D /* TranslationRunView.swift in Sources */,
 				EA675EF6B312822E9A70D893 /* SoundAnalysisExperimentService.swift in Sources */,
 				2EB473BDDB7DC3B0CB155956 /* SoundAnalysisRunView.swift in Sources */,
+				C72C0929AA38B4A4111761A4 /* CoreMLExperimentService.swift in Sources */,
+				19ED01DD4247C79666261765 /* CoreMLRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

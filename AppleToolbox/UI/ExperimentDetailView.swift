@@ -66,7 +66,7 @@ struct ExperimentRunView: View {
         case "natural-language": NaturalLanguageRunView()
         case "foundation-models": FoundationModelsRunView()
         case "speech": SpeechRunView()
-        case "core-ml": StatusCheckRunView(experiment: experiment, title: "Inspect Core ML Availability", check: AIAvailabilityExperimentService.coreMLStatus)
+        case "core-ml": CoreMLRunView()
         case "translation": TranslationRunView()
         case "mapkit-search": MapKitSearchRunView()
         case "indoor-imdf": IndoorIMDFRunView()

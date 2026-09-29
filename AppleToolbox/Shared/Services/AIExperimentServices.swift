@@ -83,7 +83,3 @@ final class SpeechExperimentService: NSObject, ObservableObject {
         isRunning = false
     }
 }
-
-enum AIAvailabilityExperimentService {
-    static func coreMLStatus() -> String { "Core ML is available as a framework. A real model must be bundled or selected before inference can run; no fake model output is generated." }
-}

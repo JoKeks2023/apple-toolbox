@@ -112,6 +112,10 @@ extension ExperimentDescriptor {
             .hardwareUnsupported: ExperimentExplanation(reason: "No microphone is available to this app, so there is no audio stream to classify.", required: "A built-in or connected microphone",
                                                         nextStep: "Connect a microphone (Mac) or run the experiment on an iPhone or iPad."),
         ],
+        "core-ml": [
+            .platformUnsupported: ExperimentExplanation(reason: "Importing a model needs the system document picker, which Apple TV and Apple Watch do not offer; watchOS also cannot compile models on device.", required: "iOS, iPadOS or macOS",
+                                                        nextStep: "Open the experiment on iPhone, iPad or Mac. On Apple TV the compute devices are still listed below."),
+        ],
         "passkeys": [
             .entitlementRequired: ExperimentExplanation(reason: "Passkeys are bound to a relying-party domain, and no webcredentials: associated domain is provisioned for this app.", required: "Associated Domains entitlement with webcredentials:<domain> and an apple-app-site-association file on that domain listing this app",
                                                         nextStep: "Add the Associated Domains capability for your relying party and host the association file. The requests below still run and show the system's rejection."),
