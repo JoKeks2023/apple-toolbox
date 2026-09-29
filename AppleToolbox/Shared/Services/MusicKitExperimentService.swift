@@ -248,7 +248,7 @@ final class MusicExperimentService: ObservableObject {
     // MARK: ApplicationMusicPlayer
 
     func play(_ row: MusicResultRow) {
-        #if canImport(MusicKit)
+        #if canImport(MusicKit) && !os(watchOS)
         guard let item = row.item else { return }
         // MusicKit's player types are not annotated for Swift concurrency. They are only used from main-actor tasks,
         // as in Apple's MusicKit samples; nonisolated(unsafe) lets their async methods be awaited from here.
@@ -262,11 +262,13 @@ final class MusicExperimentService: ObservableObject {
         observePlayer()
         isPlayerActive = true
         perform("play \(row.title)", catalog: !row.isFromLibrary) { try await player.play() }
+        #else
+        reportPlayerUnavailable()
         #endif
     }
 
     func enqueue(_ row: MusicResultRow) {
-        #if canImport(MusicKit)
+        #if canImport(MusicKit) && !os(watchOS)
         guard let item = row.item else { return }
         nonisolated(unsafe) let queue = ApplicationMusicPlayer.shared.queue // See play(_:).
         observePlayer()
@@ -278,11 +280,13 @@ final class MusicExperimentService: ObservableObject {
             case .track(let track): try await queue.insert(track, position: .tail)
             }
         }
+        #else
+        reportPlayerUnavailable()
         #endif
     }
 
     func togglePlayPause() {
-        #if canImport(MusicKit)
+        #if canImport(MusicKit) && !os(watchOS)
         nonisolated(unsafe) let player = ApplicationMusicPlayer.shared // See play(_:).
         if player.state.playbackStatus == .playing {
             player.pause()
@@ -295,7 +299,7 @@ final class MusicExperimentService: ObservableObject {
     }
 
     func skip(forward: Bool) {
-        #if canImport(MusicKit)
+        #if canImport(MusicKit) && !os(watchOS)
         nonisolated(unsafe) let player = ApplicationMusicPlayer.shared // See play(_:).
         perform(forward ? "skip to next entry" : "skip to previous entry", catalog: false) {
             if forward { try await player.skipToNextEntry() } else { try await player.skipToPreviousEntry() }
@@ -305,7 +309,7 @@ final class MusicExperimentService: ObservableObject {
 
     /// Stops ApplicationMusicPlayer so music does not keep playing after the experiment is left.
     func stop() {
-        #if canImport(MusicKit)
+        #if canImport(MusicKit) && !os(watchOS)
         ApplicationMusicPlayer.shared.stop()
         #endif
         playerCancellables.removeAll()
@@ -313,7 +317,7 @@ final class MusicExperimentService: ObservableObject {
         refreshPlayer()
     }
 
-    #if canImport(MusicKit)
+    #if canImport(MusicKit) && !os(watchOS)
     private func perform(_ action: String, catalog: Bool, _ operation: @escaping () async throws -> Void) {
         Task {
             do {
@@ -344,8 +348,16 @@ final class MusicExperimentService: ObservableObject {
     }
     #endif
 
+    #if !canImport(MusicKit) || os(watchOS)
+    /// watchOS offers MusicKit's catalog and library requests but no ApplicationMusicPlayer.
+    private func reportPlayerUnavailable() {
+        isError = true
+        output = "ApplicationMusicPlayer is unavailable on watchOS, so this app cannot play Apple Music items on Apple Watch. Catalog search and library requests work; play from the Music app or on iPhone."
+    }
+    #endif
+
     private func refreshPlayer() {
-        #if canImport(MusicKit)
+        #if canImport(MusicKit) && !os(watchOS)
         let player = ApplicationMusicPlayer.shared
         let status = player.state.playbackStatus
         isPlaying = status == .playing

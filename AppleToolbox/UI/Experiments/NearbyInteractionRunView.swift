@@ -19,6 +19,9 @@ struct NearbyInteractionRunView: View {
         Toggle("Extended distance", isOn: Binding(get: { nearby.useExtendedDistance }, set: nearby.setExtendedDistance))
             .disabled(!nearby.capabilities.extendedDistance)
         NearbyLiveSection(nearby: nearby)
+        #if canImport(NearbyInteraction) && os(iOS)
+        NearbyWatchSection()
+        #endif
         NearbyCapabilitiesSection(nearby: nearby)
         NearbyAccessorySection(nearby: nearby)
         OutputView(text: nearby.output, isError: nearby.output.localizedCaseInsensitiveContains("error") || nearby.output.localizedCaseInsensitiveContains("not supported"))
@@ -51,6 +54,26 @@ private struct NearbyLiveSection: View {
         }
     }
 }
+
+#if canImport(NearbyInteraction) && os(iOS)
+/// Ranging requests from the Apple Toolbox watch app, answered by `WatchNearbyResponder` through WatchConnectivity.
+private struct NearbyWatchSection: View {
+    @ObservedObject private var responder = WatchNearbyResponder.shared
+
+    var body: some View {
+        Section("Apple Watch · tokens over WatchConnectivity") {
+            LabeledContent("State", value: responder.state)
+            LabeledContent("Distance", value: responder.distance.map(NearbyGeometry.meters) ?? "—")
+            if responder.isRanging {
+                Button("End Watch Ranging", systemImage: "stop.fill") { responder.stop(reason: "Ended on the iPhone.") }
+            }
+            Text("An Apple Watch with UWB (Series 6 or later) ranges with its paired iPhone: open this experiment in the watch app and tap Start while Apple Toolbox is open here. watchOS has no MultipeerConnectivity, so both discovery tokens travel over WatchConnectivity. Apple Watch reports distance, not direction.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+}
+#endif
 
 private struct NearbyCapabilitiesSection: View {
     @ObservedObject var nearby: NearbyExperimentService

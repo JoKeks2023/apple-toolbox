@@ -5,6 +5,8 @@ struct AppleToolboxWatchApp: App {
     init() {
         // Activate immediately so the iPhone can reach the watch app while it is open.
         ContinuityExperimentService.shared.activate()
+        // Installed at launch so notifications show while the app is open and action responses reach the delegate log.
+        ToolboxNotificationDelegate.install()
     }
 
     var body: some Scene {
@@ -33,7 +35,12 @@ private struct WatchHomeView: View {
                 Section {
                     NavigationLink { WatchExperimentListView() } label: { Label("All Experiments", systemImage: "list.bullet") }
                 } footer: {
-                    Text("Status of every Apple Toolbox experiment on this watch.")
+                    Text("Status, checks and a watch run for every experiment that supports Apple Watch.")
+                }
+                Section {
+                    Text(WatchAppIndependence.summary).font(.caption2).foregroundStyle(.secondary)
+                } header: {
+                    Text("Independent App")
                 }
             }
             .navigationTitle("Toolbox")
@@ -69,30 +76,29 @@ private struct WatchExperimentRow: View {
     let experiment: ExperimentDescriptor
 
     var body: some View {
-        let status = experiment.currentStatus
         VStack(alignment: .leading, spacing: 2) {
             Text(experiment.name)
-            Text(status.title).font(.caption2.weight(.semibold)).foregroundStyle(status == .available ? .green : .orange)
+            HStack(spacing: 4) {
+                WatchStatusText(status: experiment.currentStatus)
+                if WatchRunCatalog.hasWatchRun(experiment.id) {
+                    Image(systemName: "applewatch").font(.caption2).foregroundStyle(.secondary)
+                        .accessibilityLabel("Runs on Apple Watch")
+                }
+            }
         }
     }
 }
 
-private struct WatchExperimentDetailView: View {
-    let experiment: ExperimentDescriptor
+/// `WKRunsIndependentlyOfCompanionApp` (Info.plist, set through the target's build settings).
+enum WatchAppIndependence {
+    static var isIndependent: Bool {
+        Bundle.main.object(forInfoDictionaryKey: "WKRunsIndependentlyOfCompanionApp") as? Bool ?? false
+    }
 
-    var body: some View {
-        List {
-            Section {
-                Text(experiment.description).font(.caption)
-                LabeledContent("Status", value: experiment.currentStatus.title)
-                LabeledContent("Platforms", value: experiment.supportedPlatforms.map(\.rawValue).joined(separator: ", "))
-            }
-            switch experiment.id {
-            case "core-motion": NavigationLink("Run on Watch") { WatchMotionView() }
-            case "continuity": NavigationLink("Run on Watch") { WatchLinkView() }
-            default: EmptyView()
-            }
-        }
-        .navigationTitle(experiment.name)
+    static var summary: String {
+        isIndependent
+            ? "WKRunsIndependentlyOfCompanionApp is YES: this watch app installs and runs without Apple Toolbox on the iPhone. Experiments on the watch call the watch's own APIs; only WatchConnectivity and UWB ranging with the iPhone need the iPhone app."
+            : "WKRunsIndependentlyOfCompanionApp is not set, so watchOS treats this app as dependent on its iPhone app."
     }
 }
+

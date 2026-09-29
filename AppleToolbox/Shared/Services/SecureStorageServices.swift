@@ -2,7 +2,7 @@ import Foundation
 #if canImport(CryptoKit)
 import CryptoKit
 #endif
-#if canImport(LocalAuthentication) && (os(iOS) || os(macOS))
+#if canImport(LocalAuthentication) && (os(iOS) || os(macOS) || os(watchOS))
 import LocalAuthentication
 #endif
 #if canImport(Security)
@@ -206,7 +206,7 @@ nonisolated struct SecureEnclaveService {
 
     /// Restores the key from its Keychain blob ("reused") or creates and stores a new one ("created"), then signs and verifies.
     static func signWithPersistentKey(message: String, requireUserPresence: Bool) async -> String {
-        #if canImport(CryptoKit) && canImport(LocalAuthentication) && (os(iOS) || os(macOS))
+        #if canImport(CryptoKit) && canImport(LocalAuthentication) && (os(iOS) || os(macOS) || os(watchOS))
         await Task.detached(priority: .userInitiated) { persistentSign(message: message, requireUserPresence: requireUserPresence) }.value
         #else
         "Persistent Secure Enclave keys are not available on this platform."
@@ -223,11 +223,13 @@ nonisolated struct SecureEnclaveService {
         #endif
     }
 
-    #if canImport(CryptoKit) && canImport(LocalAuthentication) && (os(iOS) || os(macOS))
+    #if canImport(CryptoKit) && canImport(LocalAuthentication) && (os(iOS) || os(macOS) || os(watchOS))
     private static func persistentSign(message: String, requireUserPresence: Bool) -> String {
         guard SecureEnclave.isAvailable else { return "This device or simulator does not provide a Secure Enclave." }
         let context = LAContext()
+        #if !os(watchOS)
         context.localizedReason = "Sign your message with the Apple Toolbox Secure Enclave key"
+        #endif
         var lines: [String] = []
         do {
             let key: SecureEnclave.P256.Signing.PrivateKey

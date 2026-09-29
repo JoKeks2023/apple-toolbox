@@ -118,7 +118,7 @@ private struct SpatialLinkWatchSection: View {
             LabeledContent("Paired · app installed", value: "\(watch.isPaired.map { $0 ? "Yes" : "No" } ?? "—") · \(watch.isCounterpartInstalled.map { $0 ? "Yes" : "No" } ?? "—")")
             LabeledContent("Reachable", value: watch.isReachable ? "Yes" : "No")
             LabeledContent("Latency", value: watch.lastRoundTripMilliseconds.map { "\($0) ms round trip" } ?? "—")
-            Text("watchOS has no MultipeerConnectivity, so the watch links to its paired iPhone only, through WatchConnectivity. While Spatial Link runs and the watch app is open, the iPhone pings it every two seconds. UWB ranging with an Apple Watch (Series 6 or later) would need a Nearby Interaction session in the watch app, which Apple Toolbox's watch app does not run yet.")
+            Text("watchOS has no MultipeerConnectivity, so the watch links to its paired iPhone only, through WatchConnectivity. While Spatial Link runs and the watch app is open, the iPhone pings it every two seconds. UWB ranging with an Apple Watch (Series 6 or later) runs in the Nearby Interaction experiment of the watch app, which swaps discovery tokens with this iPhone over WatchConnectivity.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

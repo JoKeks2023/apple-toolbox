@@ -14,6 +14,9 @@ struct WatchConnectivityRunView: View {
             Button("Ping Apple Watch", action: continuity.ping).buttonStyle(.bordered)
         }
         OutputView(text: continuity.output, isError: continuity.output.localizedCaseInsensitiveContains("error"))
+        Text("The Apple Toolbox watch app runs independently (WKRunsIndependentlyOfCompanionApp): it can be installed from the watch without this iPhone app, and its experiments call the watch's own APIs. WatchConnectivity links the two only when both apps are installed.")
+            .font(.caption)
+            .foregroundStyle(.secondary)
     }
 }
 

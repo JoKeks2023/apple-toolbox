@@ -189,6 +189,10 @@ final class NearbyExperimentService: NSObject, ObservableObject {
         browser.startBrowsingForPeers()
         self.browser = browser
         output = "NISession created. Advertising and browsing for a nearby Apple Toolbox peer to exchange discovery tokens over MultipeerConnectivity."
+        #elseif os(watchOS)
+        phase = "Waiting for the iPhone"
+        output = "NISession created. Sending this watch's discovery token to the paired iPhone over WatchConnectivity…"
+        exchangeTokenWithPairedPhone()
         #else
         output = "NISession created. A peer discovery token is required; this platform has no peer transport in Apple Toolbox."
         #endif
@@ -199,6 +203,9 @@ final class NearbyExperimentService: NSObject, ObservableObject {
 
     func stop() {
         #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
+        #if os(watchOS)
+        if isRunning { ContinuityExperimentService.shared.endNearbyRanging() }
+        #endif
         session?.invalidate()
         session = nil
         peerToken = nil
@@ -283,6 +290,46 @@ final class NearbyExperimentService: NSObject, ObservableObject {
         phase = "Ranging"
         output = "Ranging with \(peerName ?? "peer")." + (notes.isEmpty ? "" : "\n" + notes.joined(separator: "\n"))
     }
+
+    #if os(watchOS)
+    /// watchOS has no MultipeerConnectivity: the watch ranges with its paired iPhone and swaps discovery tokens over
+    /// WatchConnectivity (Apple's watchOS Nearby Interaction sample does the same). Apple Toolbox must be open on the iPhone.
+    private func exchangeTokenWithPairedPhone() {
+        guard let token = session?.discoveryToken else {
+            output = "The NISession has no discovery token (it is not ready or was invalidated)."
+            return
+        }
+        let archived: Data
+        do {
+            archived = try NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
+        } catch {
+            output = "Could not archive the local Nearby token: \(error.localizedDescription)"
+            return
+        }
+        Task {
+            do {
+                let reply = try await ContinuityExperimentService.shared.exchangeNearbyToken(archived)
+                guard isRunning else { return }
+                guard let peer = try NSKeyedUnarchiver.unarchivedObject(ofClass: NIDiscoveryToken.self, from: reply) else {
+                    output = "The iPhone answered, but not with a Nearby discovery token."
+                    return
+                }
+                receivedToken(peer, from: "iPhone")
+            } catch {
+                guard isRunning else { return }
+                phase = "Waiting for the iPhone"
+                output = "Token exchange with the iPhone failed: \(error.localizedDescription)"
+            }
+        }
+    }
+
+    /// Sends the token again, for example after Apple Toolbox was opened on the iPhone.
+    func retryTokenExchange() {
+        guard isRunning, peerToken == nil else { return }
+        output = "Sending this watch's discovery token to the iPhone again…"
+        exchangeTokenWithPairedPhone()
+    }
+    #endif
 
     private func receivedToken(_ token: NIDiscoveryToken, from name: String) {
         peerToken = token
@@ -370,6 +417,92 @@ extension NearbyExperimentService: NISessionDelegate {
         output = "Nearby Interaction error \(nsError.code): \(NearbyGeometry.errorDescription(code: nsError.code)). \(nsError.localizedDescription)"
         self.session = nil
         peerToken = nil
+    }
+}
+#endif
+
+#if canImport(NearbyInteraction) && os(iOS)
+/// The iPhone end of Apple Watch ranging. The watch app sends its discovery token over WatchConnectivity; this responder
+/// runs a peer session with it and answers with the iPhone's own token. NISession calls the delegate on the main queue.
+@MainActor
+final class WatchNearbyResponder: NSObject, ObservableObject {
+    static let shared = WatchNearbyResponder()
+
+    @Published private(set) var state = "Idle. Start Nearby Interaction in the Apple Toolbox watch app."
+    @Published private(set) var distance: Float?
+    @Published private(set) var lastUpdate: Date?
+    private var session: NISession?
+    private var watchToken: NIDiscoveryToken?
+
+    var isRanging: Bool { session != nil }
+
+    /// Starts ranging with the watch's archived token and returns this iPhone's archived token for the reply.
+    func respond(toWatchToken data: Data, from name: String) throws -> Data {
+        guard NISession.deviceCapabilities.supportsPreciseDistanceMeasurement else {
+            state = "Rejected a request from \(name): this iPhone has no Ultra Wideband chip."
+            throw ExperimentServiceError.unavailable("This iPhone has no Ultra Wideband chip, so it cannot range with the watch.")
+        }
+        guard let token = try NSKeyedUnarchiver.unarchivedObject(ofClass: NIDiscoveryToken.self, from: data) else {
+            throw ExperimentServiceError.unavailable("The watch's message did not contain a Nearby discovery token.")
+        }
+        session?.invalidate()
+        let session = NISession()
+        session.delegate = self
+        guard let ownToken = session.discoveryToken else {
+            throw ExperimentServiceError.unavailable("The iPhone's NISession has no discovery token.")
+        }
+        let archived = try NSKeyedArchiver.archivedData(withRootObject: ownToken, requiringSecureCoding: true)
+        self.session = session
+        watchToken = token
+        distance = nil
+        session.run(NINearbyPeerConfiguration(peerToken: token))
+        state = "Ranging with \(name). Keep Apple Toolbox open on this iPhone."
+        return archived
+    }
+
+    func stop(reason: String) {
+        session?.invalidate()
+        session = nil
+        watchToken = nil
+        distance = nil
+        state = reason
+    }
+}
+
+extension WatchNearbyResponder: NISessionDelegate {
+    func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
+        guard let object = nearbyObjects.first else { return }
+        distance = object.distance
+        lastUpdate = Date()
+    }
+
+    func session(_ session: NISession, didRemove nearbyObjects: [NINearbyObject], reason: NINearbyObject.RemovalReason) {
+        switch reason {
+        case .peerEnded: stop(reason: "The watch ended its Nearby Interaction session.")
+        case .timeout:
+            state = "No UWB measurements from the watch for a while (out of range or covered). Ranging restarts."
+            if let watchToken { session.run(NINearbyPeerConfiguration(peerToken: watchToken)) }
+        @unknown default: state = "The watch was removed from the session."
+        }
+    }
+
+    func sessionWasSuspended(_ session: NISession) {
+        state = "Suspended: Apple Toolbox left the foreground on this iPhone."
+    }
+
+    func sessionSuspensionEnded(_ session: NISession) {
+        guard let watchToken else { return }
+        session.run(NINearbyPeerConfiguration(peerToken: watchToken))
+        state = "Suspension ended; ranging with the watch again."
+    }
+
+    func session(_ session: NISession, didInvalidateWith error: Error) {
+        let nsError = error as NSError
+        guard session === self.session else { return }
+        self.session = nil
+        watchToken = nil
+        distance = nil
+        state = "Nearby Interaction error \(nsError.code): \(NearbyGeometry.errorDescription(code: nsError.code))."
     }
 }
 #endif

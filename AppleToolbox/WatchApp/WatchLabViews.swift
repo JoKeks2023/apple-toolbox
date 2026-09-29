@@ -8,13 +8,49 @@ struct WatchMotionView: View {
 
     var body: some View {
         List {
-            Button(motion.isRunning ? "Stop" : "Start", systemImage: motion.isRunning ? "stop.fill" : "play.fill") {
-                motion.isRunning ? motion.stopMotion() : motion.startMotion()
+            Section("Device motion") {
+                Button(motion.isRunning ? "Stop" : "Start", systemImage: motion.isRunning ? "stop.fill" : "play.fill") {
+                    motion.isRunning ? motion.stopMotion() : motion.startMotion()
+                }
+                WatchVectorRow(title: "Acceleration · g", vector: motion.userAcceleration)
+                WatchVectorRow(title: "Rotation · rad/s", vector: motion.rotationRate)
+                WatchVectorRow(title: "Gravity · g", vector: motion.gravity)
+                WatchVectorRow(title: "Roll · pitch · yaw · °", vector: motion.attitude, digits: 0)
             }
-            WatchVectorRow(title: "Acceleration · g", vector: motion.userAcceleration)
-            WatchVectorRow(title: "Rotation · rad/s", vector: motion.rotationRate)
-            WatchVectorRow(title: "Gravity · g", vector: motion.gravity)
-            Text(motion.output).font(.caption2).foregroundStyle(.secondary)
+            Section {
+                Button(motion.isPedometerRunning ? "Stop Pedometer" : "Start Pedometer", systemImage: motion.isPedometerRunning ? "stop.fill" : "figure.walk") {
+                    motion.isPedometerRunning ? motion.stopPedometer() : motion.startPedometer()
+                }
+                LabeledContent("Steps", value: motion.pedometerReading.steps)
+                LabeledContent("Today", value: motion.pedometerReading.today)
+                LabeledContent("Distance", value: motion.pedometerReading.distance)
+                LabeledContent("Floors", value: motion.pedometerReading.floors)
+                LabeledContent("Cadence", value: motion.pedometerReading.cadence)
+                LabeledContent("Pace", value: motion.pedometerReading.pace)
+            } header: {
+                Text("Pedometer · CMPedometer")
+            } footer: {
+                Text("Counts from the moment you start; Today queries the pedometer history since midnight.")
+            }
+            Section {
+                Button(motion.isAltimeterRunning ? "Stop Altimeter" : "Start Altimeter", systemImage: motion.isAltimeterRunning ? "stop.fill" : "barometer") {
+                    motion.isAltimeterRunning ? motion.stopAltimeter() : motion.startAltimeter()
+                }
+                LabeledContent("Relative", value: motion.altitudeReading.relative)
+                LabeledContent("Pressure", value: motion.altitudeReading.pressure)
+                LabeledContent("Absolute", value: motion.altitudeReading.absolute)
+                LabeledContent("Accuracy", value: motion.altitudeReading.absoluteAccuracy)
+            } header: {
+                Text("Altimeter · CMAltimeter")
+            } footer: {
+                Text("Relative altitude starts at 0 m. Pedometer and altimeter need Motion & Fitness access; the first start asks for it.")
+            }
+            Section("Sensors") {
+                ForEach(motion.features) { feature in
+                    LabeledContent(feature.title, value: feature.detail)
+                }
+            }
+            WatchOutput(text: motion.output, isError: motion.output.localizedCaseInsensitiveContains("error") || motion.output.localizedCaseInsensitiveContains("denied"))
         }
         .navigationTitle("Motion")
         .onDisappear { motion.stop() }
@@ -27,6 +63,7 @@ struct WatchMotionView: View {
 private struct WatchVectorRow: View {
     let title: String
     let vector: MotionVector
+    var digits = 2
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -42,7 +79,7 @@ private struct WatchVectorRow: View {
     private func axis(_ name: String, _ value: Double) -> some View {
         VStack(spacing: 0) {
             Text(name).font(.caption2).foregroundStyle(.secondary)
-            Text(value.formatted(.number.precision(.fractionLength(2)))).font(.caption.monospacedDigit())
+            Text(value.formatted(.number.precision(.fractionLength(digits)))).font(.caption.monospacedDigit())
         }
         .frame(maxWidth: .infinity)
     }
@@ -83,6 +120,11 @@ struct WatchLinkView: View {
                 Button("Activate Session", action: link.activate)
             }
             Text(link.output).font(.caption2).foregroundStyle(.secondary)
+            Section {
+                LabeledContent("Runs independently", value: WatchAppIndependence.isIndependent ? "Yes" : "No")
+            } footer: {
+                Text("WKRunsIndependentlyOfCompanionApp lets this watch app install and run without the iPhone app. WatchConnectivity still needs Apple Toolbox on the paired iPhone; “iPhone app” above is WCSession.isCompanionAppInstalled.")
+            }
         }
         .navigationTitle("iPhone Link")
         // The complication shows the last message exchanged with the iPhone.

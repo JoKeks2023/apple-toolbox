@@ -440,11 +440,16 @@ nonisolated enum CryptoLab {
 
     static func hpkeRun(_ suite: CryptoLabHPKESuite, message: Data, info: Data = hpkeInfo, associatedData: Data) throws -> CryptoLabHPKERun {
         switch suite {
-        case .p256: try hpke(P256.KeyAgreement.PrivateKey.self, .P256_SHA256_AES_GCM_256, kem: .P256_HKDF_SHA256, message, info, associatedData)
-        case .p384: try hpke(P384.KeyAgreement.PrivateKey.self, .P384_SHA384_AES_GCM_256, kem: .P384_HKDF_SHA384, message, info, associatedData)
-        case .p521: try hpke(P521.KeyAgreement.PrivateKey.self, .P521_SHA512_AES_GCM_256, kem: .P521_HKDF_SHA512, message, info, associatedData)
-        case .x25519: try hpke(Curve25519.KeyAgreement.PrivateKey.self, .Curve25519_SHA256_ChachaPoly, kem: .Curve25519_HKDF_SHA256, message, info, associatedData)
-        case .xWing: try hpkeKEM(XWingMLKEM768X25519.PrivateKey.self, .XWingMLKEM768X25519_SHA256_AES_GCM_256, kem: .XWingMLKEM768X25519, message, info, associatedData)
+        case .p256: return try hpke(P256.KeyAgreement.PrivateKey.self, .P256_SHA256_AES_GCM_256, kem: .P256_HKDF_SHA256, message, info, associatedData)
+        case .p384: return try hpke(P384.KeyAgreement.PrivateKey.self, .P384_SHA384_AES_GCM_256, kem: .P384_HKDF_SHA384, message, info, associatedData)
+        case .p521: return try hpke(P521.KeyAgreement.PrivateKey.self, .P521_SHA512_AES_GCM_256, kem: .P521_HKDF_SHA512, message, info, associatedData)
+        case .x25519: return try hpke(Curve25519.KeyAgreement.PrivateKey.self, .Curve25519_SHA256_ChachaPoly, kem: .Curve25519_HKDF_SHA256, message, info, associatedData)
+        case .xWing:
+            // X-Wing is new in the 26 releases; the watch app still deploys to watchOS 11.
+            guard #available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *) else {
+                throw CryptoLabError.unsupported("X-Wing HPKE needs iOS, macOS, tvOS or watchOS 26 or later.")
+            }
+            return try hpkeKEM(XWingMLKEM768X25519.PrivateKey.self, .XWingMLKEM768X25519_SHA256_AES_GCM_256, kem: .XWingMLKEM768X25519, message, info, associatedData)
         }
     }
 
@@ -466,6 +471,7 @@ nonisolated enum CryptoLab {
                                 ciphertext: ciphertext, opened: opened, wrongRecipientError: wrongRecipientError, tamperedError: tamperedError)
     }
 
+    @available(iOS 26.0, macOS 26.0, tvOS 26.0, watchOS 26.0, *)
     private static func hpkeKEM<Key: HPKEKEMPrivateKeyGeneration>(_ type: Key.Type, _ suite: HPKE.Ciphersuite, kem: HPKE.KEM, _ message: Data, _ info: Data, _ aad: Data) throws -> CryptoLabHPKERun {
         let recipientKey = try Key()
         var sender = try HPKE.Sender(recipientKey: recipientKey.publicKey, ciphersuite: suite, info: info)

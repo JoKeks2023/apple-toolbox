@@ -310,10 +310,15 @@ enum ToolboxNotificationCategories {
     }
 
     private static func category(_ category: ToolboxNotificationCategory, actions: [UNNotificationAction]) -> UNNotificationCategory {
+        #if os(watchOS)
+        // watchOS has no hidden-preview placeholder or summary format; the watch shows the actions below the notification.
+        UNNotificationCategory(identifier: category.rawValue, actions: actions, intentIdentifiers: [], options: [.customDismissAction])
+        #else
         UNNotificationCategory(identifier: category.rawValue, actions: actions, intentIdentifiers: [],
                                hiddenPreviewsBodyPlaceholder: "Apple Toolbox notification",
                                categorySummaryFormat: "%u more Apple Toolbox notifications",
                                options: [.customDismissAction, .hiddenPreviewsShowTitle])
+        #endif
     }
 }
 #endif
@@ -343,12 +348,16 @@ final class ToolboxNotificationDelegate: NSObject, UNUserNotificationCenterDeleg
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
                                             withCompletionHandler completionHandler: @escaping () -> Void) {
         NotificationEventStore.append(.response(response))
+        #if os(watchOS)
+        Task { @MainActor in NotificationEventLog.shared.reload() }
+        #else
         let opensApp = [UNNotificationDefaultActionIdentifier, ToolboxNotificationAction.open].contains(response.actionIdentifier)
         Task { @MainActor in
             NotificationEventLog.shared.reload()
             // The default and the foreground action bring the app forward; show the experiment that sent the notification.
             if opensApp { ToolboxNavigator.shared.request = .experiment("notifications") }
         }
+        #endif
         completionHandler()
     }
     #endif
@@ -420,8 +429,10 @@ nonisolated struct NotificationSettingsSnapshot: Equatable, Sendable {
     init(_ settings: UNNotificationSettings) {
         authorization = NotificationFormatting.authorization(settings.authorizationStatus)
         isAuthorized = [.authorized, .provisional].contains(settings.authorizationStatus)
-        var rows = [NotificationSettingRow(title: "Authorization", value: authorization),
-                    NotificationSettingRow(title: "Badge", value: NotificationFormatting.setting(settings.badgeSetting))]
+        var rows = [NotificationSettingRow(title: "Authorization", value: authorization)]
+        #if !os(watchOS)
+        rows.append(NotificationSettingRow(title: "Badge", value: NotificationFormatting.setting(settings.badgeSetting)))
+        #endif
         #if !os(tvOS)
         timeSensitive = NotificationFormatting.setting(settings.timeSensitiveSetting)
         criticalAlert = NotificationFormatting.setting(settings.criticalAlertSetting)
