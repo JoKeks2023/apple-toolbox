@@ -267,7 +267,7 @@ nonisolated enum SurveyHeatmap {
 // MARK: - Persistence and export
 
 /// Stores surveys as JSON files: in the app container's Documents folder on iOS and iPadOS, and in Application Support
-/// on macOS, where the unsandboxed app's Documents folder would be the user's own and trigger a privacy prompt.
+/// on macOS (inside the sandbox container), so surveys never land in the user's own Documents folder.
 nonisolated enum IndoorSurveyStore {
     static let folderName = "IndoorSurveys"
 

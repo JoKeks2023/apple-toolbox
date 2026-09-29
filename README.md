@@ -19,6 +19,8 @@ Requires Xcode 26 or newer; all targets use the Swift 6 language mode with `Main
 
 Many experiments (NFC, UWB, LiDAR, HealthKit, HomeKit, camera, motion, App Attest) only produce meaningful results on a physical device. Signing team `T9CA6D7T8N` needs these capabilities on the App IDs; automatic signing registers them on the first device build: HomeKit, HealthKit (with Background Delivery), NFC Tag Reading, Sign in with Apple and the App Group `group.com.jorisconrad.AppleToolbox` (app and widget). ShazamKit matching also needs the ShazamKit App Service enabled for the App ID in the developer portal.
 
+The Mac app (`com.jorisconrad.AppleToolbox.macos`) runs in the App Sandbox with the hardened runtime (`AppleToolbox/AppleToolbox-macOS.entitlements`): camera, microphone, Bluetooth, USB, location, outgoing and incoming network connections and read-only access to files the user picks, plus Sign in with Apple, Keychain Sharing and the same App Group. The matching `ENABLE_*` build settings mirror the file so Xcode's Signing & Capabilities editor shows the same state.
+
 ## Structure
 
 ```text
