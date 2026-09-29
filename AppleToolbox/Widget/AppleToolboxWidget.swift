@@ -133,6 +133,13 @@ private struct LastOpenedView: View {
 }
 
 @main
+struct AppleToolboxWidgetBundle: WidgetBundle {
+    var body: some Widget {
+        AppleToolboxWidget()
+        ToolboxLiveActivity()
+    }
+}
+
 struct AppleToolboxWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: ToolboxWidgetStore.widgetKind, provider: ToolboxWidgetProvider()) { entry in
