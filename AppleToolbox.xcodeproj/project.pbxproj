@@ -169,6 +169,91 @@
 		B9ED3B6763F50CC2A2A77BD4 /* RoomPlanRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2622D29D41C1BD604E8A44 /* RoomPlanRunView.swift */; };
 		51AC604608BC29988A57A0F3 /* IndoorMapRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2A9BF7FEB0F98C6C5EA88 /* IndoorMapRunView.swift */; };
 		629343AE63A45DF45620B3F9 /* IndoorMapRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2A9BF7FEB0F98C6C5EA88 /* IndoorMapRunView.swift */; };
+		B360C25B1D6B5CF64F3BFCD6 /* Registry+AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C79488E435541221032310 /* Registry+AI.swift */; };
+		49B857DA857B2E0EBE1F2F3D /* Registry+AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C79488E435541221032310 /* Registry+AI.swift */; };
+		300B2428F4E2D8892572551D /* Registry+AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C79488E435541221032310 /* Registry+AI.swift */; };
+		CFA97938EC7A9F88FB24CA83 /* Registry+Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4F2460663AF8EBAFE4B7F /* Registry+Audio.swift */; };
+		D05AFAA9F5C8F625665B43B9 /* Registry+Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4F2460663AF8EBAFE4B7F /* Registry+Audio.swift */; };
+		A8E567C0C62309F72EE65F65 /* Registry+Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4F2460663AF8EBAFE4B7F /* Registry+Audio.swift */; };
+		6FDD4A970F291ADDC16AA074 /* Registry+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB33C949E0012A1559417E38 /* Registry+Camera.swift */; };
+		7F06266B8CF2F0FABD640320 /* Registry+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB33C949E0012A1559417E38 /* Registry+Camera.swift */; };
+		6E72A9CF0407F7C5AFF051A8 /* Registry+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB33C949E0012A1559417E38 /* Registry+Camera.swift */; };
+		9B166AEAC36462D8840B6B6A /* Registry+Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B409E0025E85650E0CAD50 /* Registry+Connectivity.swift */; };
+		44E36A5D164D38CDCBD24E82 /* Registry+Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B409E0025E85650E0CAD50 /* Registry+Connectivity.swift */; };
+		3D8EA6E52899171B6E48C728 /* Registry+Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B409E0025E85650E0CAD50 /* Registry+Connectivity.swift */; };
+		13E3BA3E1BBCD4D7BC0E82B8 /* Registry+Developer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D4EE5BD50CF73B449862EB /* Registry+Developer.swift */; };
+		3387E52A9B88474DF294C294 /* Registry+Developer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D4EE5BD50CF73B449862EB /* Registry+Developer.swift */; };
+		26AF1ACF959253C080B0D422 /* Registry+Developer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D4EE5BD50CF73B449862EB /* Registry+Developer.swift */; };
+		E66524A716947027AFD6A2D6 /* Registry+Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E83ECB92B003657AFF2C6 /* Registry+Health.swift */; };
+		F335157427013C70CB35BD93 /* Registry+Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E83ECB92B003657AFF2C6 /* Registry+Health.swift */; };
+		28BF167BBEE2EF65857DAB7F /* Registry+Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E83ECB92B003657AFF2C6 /* Registry+Health.swift */; };
+		9D023EEB843A5171376BB964 /* Registry+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A490BF006C5A28894CAB68 /* Registry+Home.swift */; };
+		BE01E8814846D7DCECCD4AC4 /* Registry+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A490BF006C5A28894CAB68 /* Registry+Home.swift */; };
+		E4EA78BF62C2C09E073E9F18 /* Registry+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A490BF006C5A28894CAB68 /* Registry+Home.swift */; };
+		4DACD2333C602A1BAC697AE4 /* Registry+Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC5235B568031250F1C616 /* Registry+Input.swift */; };
+		9675C73B35DC87E549BE43F0 /* Registry+Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC5235B568031250F1C616 /* Registry+Input.swift */; };
+		7853E0FA6BA93003EE81DB62 /* Registry+Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABC5235B568031250F1C616 /* Registry+Input.swift */; };
+		CF6936B3924B2D532C29F57A /* Registry+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3AA56902E159D472D9B544 /* Registry+Location.swift */; };
+		117F576164B42B4A62BB80D7 /* Registry+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3AA56902E159D472D9B544 /* Registry+Location.swift */; };
+		0078765A50D496E5A62870DD /* Registry+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3AA56902E159D472D9B544 /* Registry+Location.swift */; };
+		E3B14A36BE94623FE7AF0C76 /* Registry+Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291B9F443CCB7528905AD34F /* Registry+Maps.swift */; };
+		9952B3EA87275B8674233522 /* Registry+Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291B9F443CCB7528905AD34F /* Registry+Maps.swift */; };
+		E922537BEA6CF27AE87B7F77 /* Registry+Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291B9F443CCB7528905AD34F /* Registry+Maps.swift */; };
+		5931B3DCF8D365BD34F4A3F4 /* Registry+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1892ABF951D773C07A60A1 /* Registry+Networking.swift */; };
+		3A4B28398B65AC9DA3BDBE36 /* Registry+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1892ABF951D773C07A60A1 /* Registry+Networking.swift */; };
+		B4D6F5C4D799F073FE19356A /* Registry+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1892ABF951D773C07A60A1 /* Registry+Networking.swift */; };
+		F326A7EC304899EB1E9B889C /* Registry+NFC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9441F236B5067C24DAA112 /* Registry+NFC.swift */; };
+		15E22B374EDB8159487A2984 /* Registry+NFC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9441F236B5067C24DAA112 /* Registry+NFC.swift */; };
+		5375A1912A9237C64FD66184 /* Registry+NFC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9441F236B5067C24DAA112 /* Registry+NFC.swift */; };
+		1EEA5C21BC7BA04FB407C6B8 /* Registry+Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7508DF1184E88B5C9BE4D25 /* Registry+Security.swift */; };
+		53D671EA8D5F4D2095D1955C /* Registry+Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7508DF1184E88B5C9BE4D25 /* Registry+Security.swift */; };
+		CB12DAA3E58FFC4AAA7C1E6F /* Registry+Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7508DF1184E88B5C9BE4D25 /* Registry+Security.swift */; };
+		7076208B4F668DAB52D49189 /* Registry+Sensors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B34480F73A805CACADE472D /* Registry+Sensors.swift */; };
+		53076F9B3C0B082ED41BD5BC /* Registry+Sensors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B34480F73A805CACADE472D /* Registry+Sensors.swift */; };
+		2E7A594E40F1E66CEB108B65 /* Registry+Sensors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B34480F73A805CACADE472D /* Registry+Sensors.swift */; };
+		493D8B8F74002B7C0DEFD1B7 /* Registry+Spatial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F60800B4041720DD482A364 /* Registry+Spatial.swift */; };
+		3D087AB375E3ECF2B204E287 /* Registry+Spatial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F60800B4041720DD482A364 /* Registry+Spatial.swift */; };
+		B301041275C90FCC57124E2F /* Registry+Spatial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F60800B4041720DD482A364 /* Registry+Spatial.swift */; };
+		20BF0441E796961482D5EA55 /* Registry+System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD509E5C9D0E95C9E1C2BD2 /* Registry+System.swift */; };
+		5A7BE51905EEAB49ED77B887 /* Registry+System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD509E5C9D0E95C9E1C2BD2 /* Registry+System.swift */; };
+		99F31A8B503B328C5B2DF8E7 /* Registry+System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD509E5C9D0E95C9E1C2BD2 /* Registry+System.swift */; };
+		D8870BE752EA132C91F3423B /* Registry+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDAB2C2BE36CC9233617351 /* Registry+Wallet.swift */; };
+		ED4AB63F4DB3BEC7A8A7347B /* Registry+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDAB2C2BE36CC9233617351 /* Registry+Wallet.swift */; };
+		8C69A71A1DAE3AA9A85C297E /* Registry+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDAB2C2BE36CC9233617351 /* Registry+Wallet.swift */; };
+		2A536E03E3CAD9C8570A9B7F /* AIRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1929125996306391BCEE4F2F /* AIRoutes.swift */; };
+		60B34A231898A66FD0E7E853 /* AIRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1929125996306391BCEE4F2F /* AIRoutes.swift */; };
+		4698230E94346B6940281B65 /* AudioRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70476E21AB96B9951A4FC0 /* AudioRoutes.swift */; };
+		7AB3306F6125B3D0292859C2 /* AudioRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70476E21AB96B9951A4FC0 /* AudioRoutes.swift */; };
+		6DDAA7DA59B037B564F51165 /* CameraRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF7F5865B0E4EED0411E2D2 /* CameraRoutes.swift */; };
+		F1D6591DF94E0A2664A0D7F2 /* CameraRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF7F5865B0E4EED0411E2D2 /* CameraRoutes.swift */; };
+		A9CF89864898E47E8DB28952 /* ConnectivityRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BCF793294886E6D9FF3511 /* ConnectivityRoutes.swift */; };
+		3B42302105231C5BD6D8EC92 /* ConnectivityRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BCF793294886E6D9FF3511 /* ConnectivityRoutes.swift */; };
+		3F983CB901AB30FF063E605C /* DeveloperRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1AC618BCBDE4FFB29A609 /* DeveloperRoutes.swift */; };
+		4DD30AFB7E2E3DDAC50031A6 /* DeveloperRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1AC618BCBDE4FFB29A609 /* DeveloperRoutes.swift */; };
+		80288D24A9ECCAB0E1BDEE17 /* HealthRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6E1B63ECB2E05B0B41033E /* HealthRoutes.swift */; };
+		09D4EC47262EE5A554A32437 /* HealthRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6E1B63ECB2E05B0B41033E /* HealthRoutes.swift */; };
+		3A1198BD1F4FD233FF0F044B /* HomeRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AE544637B795CEA5F45032 /* HomeRoutes.swift */; };
+		981D64E225F5FC66419FB30C /* HomeRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AE544637B795CEA5F45032 /* HomeRoutes.swift */; };
+		45337FC2CE89B596319764B4 /* InputRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B216CB385C07083A2EB0DA1 /* InputRoutes.swift */; };
+		4463C8A5F251FDCCE5704576 /* InputRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B216CB385C07083A2EB0DA1 /* InputRoutes.swift */; };
+		220972E39386CBEF277CB3B7 /* LocationRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28E6DBF3EABDF6F83FDB511 /* LocationRoutes.swift */; };
+		E942D3E482143DD4D34AA90D /* LocationRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28E6DBF3EABDF6F83FDB511 /* LocationRoutes.swift */; };
+		20B1A1C0B84A6AEC60AEEE33 /* MapsRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BD02D68AB13B4E5C15C65 /* MapsRoutes.swift */; };
+		40B7B0811C3AC74F4589B065 /* MapsRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5BD02D68AB13B4E5C15C65 /* MapsRoutes.swift */; };
+		EC08654C3BA4C868E7650056 /* NetworkingRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8122391D5CF69AB5D9002D /* NetworkingRoutes.swift */; };
+		E0D6C53C3C9FD1F4C220D16D /* NetworkingRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8122391D5CF69AB5D9002D /* NetworkingRoutes.swift */; };
+		3D6519BF67F019AC4EDAA001 /* NFCRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A6A7CC1213A50AF559865F /* NFCRoutes.swift */; };
+		585B68BA2CE5A69B393FF892 /* NFCRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A6A7CC1213A50AF559865F /* NFCRoutes.swift */; };
+		1C8A5DA6B6C0795E22BC61BB /* SecurityRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F25F89A302058CD32BB1 /* SecurityRoutes.swift */; };
+		2723840163E61AE1203F892A /* SecurityRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F25F89A302058CD32BB1 /* SecurityRoutes.swift */; };
+		54816E8319BB525986D93D17 /* SensorsRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62DE08B6ED0B8E9C5A592ED /* SensorsRoutes.swift */; };
+		8B1CBDFB0248F3453F838C04 /* SensorsRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62DE08B6ED0B8E9C5A592ED /* SensorsRoutes.swift */; };
+		2FC973C4150949EA0E1A74BA /* SpatialRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B66BC82962E646F57FD7CC /* SpatialRoutes.swift */; };
+		0533F4E9C763A47AFB443B13 /* SpatialRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B66BC82962E646F57FD7CC /* SpatialRoutes.swift */; };
+		2FD08E6FA0909F172E2934DE /* SystemRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E247CF07B7DB10ABB4108004 /* SystemRoutes.swift */; };
+		1538FA2E68E90F9F06F6B1B7 /* SystemRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E247CF07B7DB10ABB4108004 /* SystemRoutes.swift */; };
+		6F9B31EF9E198A4E998216AB /* WalletRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C81DB864590B74BA5B865 /* WalletRoutes.swift */; };
+		DD8E9968C23F8743A20A8EE6 /* WalletRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C81DB864590B74BA5B865 /* WalletRoutes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -311,6 +396,40 @@
 		40FF487C4E4F3DC0834277E5 /* ShazamKitRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ShazamKitRunView.swift; path = AppleToolbox/UI/Experiments/ShazamKitRunView.swift; sourceTree = "<group>"; };
 		FA2622D29D41C1BD604E8A44 /* RoomPlanRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RoomPlanRunView.swift; path = AppleToolbox/UI/Experiments/RoomPlanRunView.swift; sourceTree = "<group>"; };
 		3AE2A9BF7FEB0F98C6C5EA88 /* IndoorMapRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IndoorMapRunView.swift; path = AppleToolbox/UI/Experiments/IndoorMapRunView.swift; sourceTree = "<group>"; };
+		04C79488E435541221032310 /* Registry+AI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+AI.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+AI.swift"; sourceTree = "<group>"; };
+		12B4F2460663AF8EBAFE4B7F /* Registry+Audio.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Audio.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Audio.swift"; sourceTree = "<group>"; };
+		FB33C949E0012A1559417E38 /* Registry+Camera.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Camera.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Camera.swift"; sourceTree = "<group>"; };
+		92B409E0025E85650E0CAD50 /* Registry+Connectivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Connectivity.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Connectivity.swift"; sourceTree = "<group>"; };
+		28D4EE5BD50CF73B449862EB /* Registry+Developer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Developer.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Developer.swift"; sourceTree = "<group>"; };
+		435E83ECB92B003657AFF2C6 /* Registry+Health.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Health.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Health.swift"; sourceTree = "<group>"; };
+		62A490BF006C5A28894CAB68 /* Registry+Home.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Home.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Home.swift"; sourceTree = "<group>"; };
+		BABC5235B568031250F1C616 /* Registry+Input.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Input.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Input.swift"; sourceTree = "<group>"; };
+		1C3AA56902E159D472D9B544 /* Registry+Location.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Location.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Location.swift"; sourceTree = "<group>"; };
+		291B9F443CCB7528905AD34F /* Registry+Maps.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Maps.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Maps.swift"; sourceTree = "<group>"; };
+		9E1892ABF951D773C07A60A1 /* Registry+Networking.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Networking.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Networking.swift"; sourceTree = "<group>"; };
+		3E9441F236B5067C24DAA112 /* Registry+NFC.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+NFC.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+NFC.swift"; sourceTree = "<group>"; };
+		F7508DF1184E88B5C9BE4D25 /* Registry+Security.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Security.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Security.swift"; sourceTree = "<group>"; };
+		2B34480F73A805CACADE472D /* Registry+Sensors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Sensors.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Sensors.swift"; sourceTree = "<group>"; };
+		3F60800B4041720DD482A364 /* Registry+Spatial.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Spatial.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Spatial.swift"; sourceTree = "<group>"; };
+		9CD509E5C9D0E95C9E1C2BD2 /* Registry+System.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+System.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+System.swift"; sourceTree = "<group>"; };
+		2FDAB2C2BE36CC9233617351 /* Registry+Wallet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Registry+Wallet.swift"; path = "AppleToolbox/Shared/ExperimentRegistry/Registry+Wallet.swift"; sourceTree = "<group>"; };
+		1929125996306391BCEE4F2F /* AIRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AIRoutes.swift; path = AppleToolbox/UI/Routes/AIRoutes.swift; sourceTree = "<group>"; };
+		7E70476E21AB96B9951A4FC0 /* AudioRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioRoutes.swift; path = AppleToolbox/UI/Routes/AudioRoutes.swift; sourceTree = "<group>"; };
+		7CF7F5865B0E4EED0411E2D2 /* CameraRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraRoutes.swift; path = AppleToolbox/UI/Routes/CameraRoutes.swift; sourceTree = "<group>"; };
+		B6BCF793294886E6D9FF3511 /* ConnectivityRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConnectivityRoutes.swift; path = AppleToolbox/UI/Routes/ConnectivityRoutes.swift; sourceTree = "<group>"; };
+		45F1AC618BCBDE4FFB29A609 /* DeveloperRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeveloperRoutes.swift; path = AppleToolbox/UI/Routes/DeveloperRoutes.swift; sourceTree = "<group>"; };
+		BA6E1B63ECB2E05B0B41033E /* HealthRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthRoutes.swift; path = AppleToolbox/UI/Routes/HealthRoutes.swift; sourceTree = "<group>"; };
+		99AE544637B795CEA5F45032 /* HomeRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeRoutes.swift; path = AppleToolbox/UI/Routes/HomeRoutes.swift; sourceTree = "<group>"; };
+		4B216CB385C07083A2EB0DA1 /* InputRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InputRoutes.swift; path = AppleToolbox/UI/Routes/InputRoutes.swift; sourceTree = "<group>"; };
+		E28E6DBF3EABDF6F83FDB511 /* LocationRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LocationRoutes.swift; path = AppleToolbox/UI/Routes/LocationRoutes.swift; sourceTree = "<group>"; };
+		3F5BD02D68AB13B4E5C15C65 /* MapsRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapsRoutes.swift; path = AppleToolbox/UI/Routes/MapsRoutes.swift; sourceTree = "<group>"; };
+		EA8122391D5CF69AB5D9002D /* NetworkingRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkingRoutes.swift; path = AppleToolbox/UI/Routes/NetworkingRoutes.swift; sourceTree = "<group>"; };
+		42A6A7CC1213A50AF559865F /* NFCRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCRoutes.swift; path = AppleToolbox/UI/Routes/NFCRoutes.swift; sourceTree = "<group>"; };
+		F676F25F89A302058CD32BB1 /* SecurityRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecurityRoutes.swift; path = AppleToolbox/UI/Routes/SecurityRoutes.swift; sourceTree = "<group>"; };
+		C62DE08B6ED0B8E9C5A592ED /* SensorsRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SensorsRoutes.swift; path = AppleToolbox/UI/Routes/SensorsRoutes.swift; sourceTree = "<group>"; };
+		96B66BC82962E646F57FD7CC /* SpatialRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpatialRoutes.swift; path = AppleToolbox/UI/Routes/SpatialRoutes.swift; sourceTree = "<group>"; };
+		E247CF07B7DB10ABB4108004 /* SystemRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SystemRoutes.swift; path = AppleToolbox/UI/Routes/SystemRoutes.swift; sourceTree = "<group>"; };
+		D80C81DB864590B74BA5B865 /* WalletRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WalletRoutes.swift; path = AppleToolbox/UI/Routes/WalletRoutes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -524,6 +643,40 @@
 				40FF487C4E4F3DC0834277E5 /* ShazamKitRunView.swift */,
 				FA2622D29D41C1BD604E8A44 /* RoomPlanRunView.swift */,
 				3AE2A9BF7FEB0F98C6C5EA88 /* IndoorMapRunView.swift */,
+				04C79488E435541221032310 /* Registry+AI.swift */,
+				12B4F2460663AF8EBAFE4B7F /* Registry+Audio.swift */,
+				FB33C949E0012A1559417E38 /* Registry+Camera.swift */,
+				92B409E0025E85650E0CAD50 /* Registry+Connectivity.swift */,
+				28D4EE5BD50CF73B449862EB /* Registry+Developer.swift */,
+				435E83ECB92B003657AFF2C6 /* Registry+Health.swift */,
+				62A490BF006C5A28894CAB68 /* Registry+Home.swift */,
+				BABC5235B568031250F1C616 /* Registry+Input.swift */,
+				1C3AA56902E159D472D9B544 /* Registry+Location.swift */,
+				291B9F443CCB7528905AD34F /* Registry+Maps.swift */,
+				9E1892ABF951D773C07A60A1 /* Registry+Networking.swift */,
+				3E9441F236B5067C24DAA112 /* Registry+NFC.swift */,
+				F7508DF1184E88B5C9BE4D25 /* Registry+Security.swift */,
+				2B34480F73A805CACADE472D /* Registry+Sensors.swift */,
+				3F60800B4041720DD482A364 /* Registry+Spatial.swift */,
+				9CD509E5C9D0E95C9E1C2BD2 /* Registry+System.swift */,
+				2FDAB2C2BE36CC9233617351 /* Registry+Wallet.swift */,
+				1929125996306391BCEE4F2F /* AIRoutes.swift */,
+				7E70476E21AB96B9951A4FC0 /* AudioRoutes.swift */,
+				7CF7F5865B0E4EED0411E2D2 /* CameraRoutes.swift */,
+				B6BCF793294886E6D9FF3511 /* ConnectivityRoutes.swift */,
+				45F1AC618BCBDE4FFB29A609 /* DeveloperRoutes.swift */,
+				BA6E1B63ECB2E05B0B41033E /* HealthRoutes.swift */,
+				99AE544637B795CEA5F45032 /* HomeRoutes.swift */,
+				4B216CB385C07083A2EB0DA1 /* InputRoutes.swift */,
+				E28E6DBF3EABDF6F83FDB511 /* LocationRoutes.swift */,
+				3F5BD02D68AB13B4E5C15C65 /* MapsRoutes.swift */,
+				EA8122391D5CF69AB5D9002D /* NetworkingRoutes.swift */,
+				42A6A7CC1213A50AF559865F /* NFCRoutes.swift */,
+				F676F25F89A302058CD32BB1 /* SecurityRoutes.swift */,
+				C62DE08B6ED0B8E9C5A592ED /* SensorsRoutes.swift */,
+				96B66BC82962E646F57FD7CC /* SpatialRoutes.swift */,
+				E247CF07B7DB10ABB4108004 /* SystemRoutes.swift */,
+				D80C81DB864590B74BA5B865 /* WalletRoutes.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -873,6 +1026,40 @@
 				081BE9E790018F5C1D195631 /* ShazamKitRunView.swift in Sources */,
 				036456533EAEDDBB22902835 /* RoomPlanRunView.swift in Sources */,
 				51AC604608BC29988A57A0F3 /* IndoorMapRunView.swift in Sources */,
+				B360C25B1D6B5CF64F3BFCD6 /* Registry+AI.swift in Sources */,
+				CFA97938EC7A9F88FB24CA83 /* Registry+Audio.swift in Sources */,
+				6FDD4A970F291ADDC16AA074 /* Registry+Camera.swift in Sources */,
+				9B166AEAC36462D8840B6B6A /* Registry+Connectivity.swift in Sources */,
+				13E3BA3E1BBCD4D7BC0E82B8 /* Registry+Developer.swift in Sources */,
+				E66524A716947027AFD6A2D6 /* Registry+Health.swift in Sources */,
+				9D023EEB843A5171376BB964 /* Registry+Home.swift in Sources */,
+				4DACD2333C602A1BAC697AE4 /* Registry+Input.swift in Sources */,
+				CF6936B3924B2D532C29F57A /* Registry+Location.swift in Sources */,
+				E3B14A36BE94623FE7AF0C76 /* Registry+Maps.swift in Sources */,
+				5931B3DCF8D365BD34F4A3F4 /* Registry+Networking.swift in Sources */,
+				F326A7EC304899EB1E9B889C /* Registry+NFC.swift in Sources */,
+				1EEA5C21BC7BA04FB407C6B8 /* Registry+Security.swift in Sources */,
+				7076208B4F668DAB52D49189 /* Registry+Sensors.swift in Sources */,
+				493D8B8F74002B7C0DEFD1B7 /* Registry+Spatial.swift in Sources */,
+				20BF0441E796961482D5EA55 /* Registry+System.swift in Sources */,
+				D8870BE752EA132C91F3423B /* Registry+Wallet.swift in Sources */,
+				2A536E03E3CAD9C8570A9B7F /* AIRoutes.swift in Sources */,
+				4698230E94346B6940281B65 /* AudioRoutes.swift in Sources */,
+				6DDAA7DA59B037B564F51165 /* CameraRoutes.swift in Sources */,
+				A9CF89864898E47E8DB28952 /* ConnectivityRoutes.swift in Sources */,
+				3F983CB901AB30FF063E605C /* DeveloperRoutes.swift in Sources */,
+				80288D24A9ECCAB0E1BDEE17 /* HealthRoutes.swift in Sources */,
+				3A1198BD1F4FD233FF0F044B /* HomeRoutes.swift in Sources */,
+				45337FC2CE89B596319764B4 /* InputRoutes.swift in Sources */,
+				220972E39386CBEF277CB3B7 /* LocationRoutes.swift in Sources */,
+				20B1A1C0B84A6AEC60AEEE33 /* MapsRoutes.swift in Sources */,
+				EC08654C3BA4C868E7650056 /* NetworkingRoutes.swift in Sources */,
+				3D6519BF67F019AC4EDAA001 /* NFCRoutes.swift in Sources */,
+				1C8A5DA6B6C0795E22BC61BB /* SecurityRoutes.swift in Sources */,
+				54816E8319BB525986D93D17 /* SensorsRoutes.swift in Sources */,
+				2FC973C4150949EA0E1A74BA /* SpatialRoutes.swift in Sources */,
+				2FD08E6FA0909F172E2934DE /* SystemRoutes.swift in Sources */,
+				6F9B31EF9E198A4E998216AB /* WalletRoutes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -912,6 +1099,23 @@
 				2DD90CEF9D51F209B46BDF02 /* ProvisioningInspector.swift in Sources */,
 				0E34F1CE793709EA982D9A68 /* ToolboxAppIntents.swift in Sources */,
 				4F543AE27D9201F4C03CDD95 /* WidgetKitExperimentService.swift in Sources */,
+				300B2428F4E2D8892572551D /* Registry+AI.swift in Sources */,
+				A8E567C0C62309F72EE65F65 /* Registry+Audio.swift in Sources */,
+				6E72A9CF0407F7C5AFF051A8 /* Registry+Camera.swift in Sources */,
+				3D8EA6E52899171B6E48C728 /* Registry+Connectivity.swift in Sources */,
+				26AF1ACF959253C080B0D422 /* Registry+Developer.swift in Sources */,
+				28BF167BBEE2EF65857DAB7F /* Registry+Health.swift in Sources */,
+				E4EA78BF62C2C09E073E9F18 /* Registry+Home.swift in Sources */,
+				7853E0FA6BA93003EE81DB62 /* Registry+Input.swift in Sources */,
+				0078765A50D496E5A62870DD /* Registry+Location.swift in Sources */,
+				E922537BEA6CF27AE87B7F77 /* Registry+Maps.swift in Sources */,
+				B4D6F5C4D799F073FE19356A /* Registry+Networking.swift in Sources */,
+				5375A1912A9237C64FD66184 /* Registry+NFC.swift in Sources */,
+				CB12DAA3E58FFC4AAA7C1E6F /* Registry+Security.swift in Sources */,
+				2E7A594E40F1E66CEB108B65 /* Registry+Sensors.swift in Sources */,
+				B301041275C90FCC57124E2F /* Registry+Spatial.swift in Sources */,
+				99F31A8B503B328C5B2DF8E7 /* Registry+System.swift in Sources */,
+				8C69A71A1DAE3AA9A85C297E /* Registry+Wallet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1000,6 +1204,40 @@
 				C4E90154EC9D5477636F2490 /* ShazamKitRunView.swift in Sources */,
 				B9ED3B6763F50CC2A2A77BD4 /* RoomPlanRunView.swift in Sources */,
 				629343AE63A45DF45620B3F9 /* IndoorMapRunView.swift in Sources */,
+				49B857DA857B2E0EBE1F2F3D /* Registry+AI.swift in Sources */,
+				D05AFAA9F5C8F625665B43B9 /* Registry+Audio.swift in Sources */,
+				7F06266B8CF2F0FABD640320 /* Registry+Camera.swift in Sources */,
+				44E36A5D164D38CDCBD24E82 /* Registry+Connectivity.swift in Sources */,
+				3387E52A9B88474DF294C294 /* Registry+Developer.swift in Sources */,
+				F335157427013C70CB35BD93 /* Registry+Health.swift in Sources */,
+				BE01E8814846D7DCECCD4AC4 /* Registry+Home.swift in Sources */,
+				9675C73B35DC87E549BE43F0 /* Registry+Input.swift in Sources */,
+				117F576164B42B4A62BB80D7 /* Registry+Location.swift in Sources */,
+				9952B3EA87275B8674233522 /* Registry+Maps.swift in Sources */,
+				3A4B28398B65AC9DA3BDBE36 /* Registry+Networking.swift in Sources */,
+				15E22B374EDB8159487A2984 /* Registry+NFC.swift in Sources */,
+				53D671EA8D5F4D2095D1955C /* Registry+Security.swift in Sources */,
+				53076F9B3C0B082ED41BD5BC /* Registry+Sensors.swift in Sources */,
+				3D087AB375E3ECF2B204E287 /* Registry+Spatial.swift in Sources */,
+				5A7BE51905EEAB49ED77B887 /* Registry+System.swift in Sources */,
+				ED4AB63F4DB3BEC7A8A7347B /* Registry+Wallet.swift in Sources */,
+				60B34A231898A66FD0E7E853 /* AIRoutes.swift in Sources */,
+				7AB3306F6125B3D0292859C2 /* AudioRoutes.swift in Sources */,
+				F1D6591DF94E0A2664A0D7F2 /* CameraRoutes.swift in Sources */,
+				3B42302105231C5BD6D8EC92 /* ConnectivityRoutes.swift in Sources */,
+				4DD30AFB7E2E3DDAC50031A6 /* DeveloperRoutes.swift in Sources */,
+				09D4EC47262EE5A554A32437 /* HealthRoutes.swift in Sources */,
+				981D64E225F5FC66419FB30C /* HomeRoutes.swift in Sources */,
+				4463C8A5F251FDCCE5704576 /* InputRoutes.swift in Sources */,
+				E942D3E482143DD4D34AA90D /* LocationRoutes.swift in Sources */,
+				40B7B0811C3AC74F4589B065 /* MapsRoutes.swift in Sources */,
+				E0D6C53C3C9FD1F4C220D16D /* NetworkingRoutes.swift in Sources */,
+				585B68BA2CE5A69B393FF892 /* NFCRoutes.swift in Sources */,
+				2723840163E61AE1203F892A /* SecurityRoutes.swift in Sources */,
+				8B1CBDFB0248F3453F838C04 /* SensorsRoutes.swift in Sources */,
+				0533F4E9C763A47AFB443B13 /* SpatialRoutes.swift in Sources */,
+				1538FA2E68E90F9F06F6B1B7 /* SystemRoutes.swift in Sources */,
+				DD8E9968C23F8743A20A8EE6 /* WalletRoutes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

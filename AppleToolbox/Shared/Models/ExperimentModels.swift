@@ -13,10 +13,13 @@ enum ExperimentCategory: String, CaseIterable, Identifiable, Sendable {
     case nfc = "NFC"
     case home = "Home"
     case camera = "Camera"
+    case spatial = "Spatial"
     case audio = "Audio"
     case ai = "AI"
     case maps = "Maps"
     case wallet = "Wallet"
+    case health = "Health"
+    case system = "System"
     case developer = "Developer"
 
     var id: String { rawValue }
@@ -31,10 +34,13 @@ enum ExperimentCategory: String, CaseIterable, Identifiable, Sendable {
         case .nfc: "wave.3.right"
         case .home: "house"
         case .camera: "camera"
+        case .spatial: "arkit"
         case .audio: "waveform"
         case .ai: "sparkles"
         case .maps: "map"
         case .wallet: "wallet.pass"
+        case .health: "heart"
+        case .system: "app.badge"
         case .developer: "hammer"
         }
     }
@@ -45,7 +51,7 @@ enum SupportedPlatform: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-enum ExperimentStatus: Equatable {
+enum ExperimentStatus: Hashable {
     case available, permissionRequired, permissionDenied, entitlementRequired, approvalRequired
     case hardwareUnsupported, osUnsupported, platformUnsupported, regionRestricted
     case appleProgramRequired, developmentOnly, deviceOnly, simulatorOnly, unavailable
@@ -84,6 +90,12 @@ struct ExperimentDescriptor: Identifiable {
     let entitlements: [String]
     let documentationURL: URL
     let evaluate: @MainActor () -> ExperimentStatus
+    /// What the user can try with this experiment (spec §3).
+    var useCase: ExperimentUseCase? = nil
+    /// Experiment-specific "Why doesn't this work?" texts; other statuses use the defaults.
+    var explanations: [ExperimentStatus: ExperimentExplanation] = [:]
+    /// Apple programs or agreements needed beyond the developer program (spec §5).
+    var applePrograms: [String] = []
 
     var currentStatus: ExperimentStatus {
         supportedPlatforms.contains(CurrentPlatform.value) ? evaluate() : .platformUnsupported
@@ -120,38 +132,20 @@ struct ExperimentUseCase: Identifiable {
     let interaction: String
 }
 
-enum ExperimentUseCaseCatalog {
-    static let cryptoKit = ExperimentUseCase(id: "crypto-message", title: "Sign a message", summary: "Use CryptoKit to hash and sign text that you choose.", interaction: "Enter a message, then run hashing or signing and inspect the live output.")
-    static let keychain = ExperimentUseCase(id: "keychain-value", title: "Store a secret", summary: "Use the Keychain as a small persistent credential store and lock one item behind Face ID, Touch ID, or the passcode.", interaction: "Save, read, and delete a plain value; then pick a protection, save a protected item, and read it back through the real authentication prompt.")
-    static let secureEnclave = ExperimentUseCase(id: "secure-enclave-signature", title: "Sign with hardware-backed storage", summary: "Keep a non-exportable Secure Enclave key across launches and sign your own message with it.", interaction: "Sign with the persistent key to see whether it was created or reused and compare its fingerprint; delete it to start over. The private key never leaves the enclave.")
-    static let localAuthentication = ExperimentUseCase(id: "biometric-gate", title: "Protect an action", summary: "Use the device owner authentication policy before releasing a result.", interaction: "Run authentication and inspect the real biometric or passcode outcome.")
-
-    static func forExperimentID(_ id: String) -> ExperimentUseCase? {
-        switch id {
-        case "cryptokit": cryptoKit
-        case "keychain": keychain
-        case "secure-enclave": secureEnclave
-        case "localauthentication": localAuthentication
-        case "core-location": ExperimentUseCase(id: "location-dashboard", title: "Build a live location dashboard", summary: "Use the device's real location stream, heading, and a geofence around you.", interaction: "Grant permission and start updates, then monitor a region around you and walk in or out to see entry and exit events. Upgrade to Always only if you want visits and significant changes.")
-        case "core-motion": ExperimentUseCase(id: "motion-meter", title: "Move the device", summary: "Turn your iPhone or Apple Watch into a live motion meter, compass, step counter, and barometer.", interaction: "Start motion updates and tilt the device to watch attitude and the magnetic field, then start the pedometer or altimeter and walk or take the stairs.")
-        case "multipeer-connectivity": multipeerConnectivity
-        case "game-controller": ExperimentUseCase(id: "controller-input-monitor", title: "Test a game controller", summary: "See which controllers the system reports and watch every button, trigger, and stick as you use it.", interaction: "Start monitoring, turn on or pair a controller (or use the Siri Remote on Apple TV), then press buttons and move the sticks.")
-        case "indoor-imdf": ExperimentUseCase(id: "imdf-explorer", title: "Explore an indoor map", summary: "Load a venue's IMDF archive and inspect its floors, rooms, doors and points of interest on a real map.", interaction: "Unzip the archive in Files, import the folder, pick a level, and compare the feature counts with the drawn units and openings.")
-        case "roomplan": ExperimentUseCase(id: "roomplan-scan", title: "Measure a room", summary: "Walk around a room with a LiDAR iPhone or iPad and let RoomPlan build a parametric 3D model of it.", interaction: "Start the capture, scan every wall slowly, tap Done, then inspect walls, doors, windows, objects and dimensions and share the USDZ file.")
-        case "shazamkit": ExperimentUseCase(id: "shazam-identify", title: "Identify a song", summary: "Let ShazamKit listen through the microphone and match what is playing against the Shazam catalog.", interaction: "Play music nearby, start listening, and inspect the matched title, artist, genres and links, or the real no-match or error result.")
-        default: ExperimentUseCase(
+extension ExperimentUseCase {
+    static func generic(for id: String) -> ExperimentUseCase {
+        ExperimentUseCase(
             id: "inspect-\(id)",
             title: "Try the real API",
             summary: "Run this experiment against the current device and inspect the result returned by Apple’s public framework.",
             interaction: "Use the action below to query availability or start the experiment. Unsupported and permission states remain visible."
         )
     }
-    }
+}
 
-    static let multipeerConnectivity = ExperimentUseCase(
-        id: "multipeer-messaging",
-        title: "Nearby device messaging",
-        summary: "Turn two Apple devices into a small local playground without a server or internet connection.",
-        interaction: "Start discovery on both devices, accept the connection, then send a message between them."
-    )
+/// "Why doesn't this work?" (spec §38): reason, requirement and next step for an unavailable experiment.
+struct ExperimentExplanation: Equatable {
+    let reason: String
+    let required: String
+    let nextStep: String
 }

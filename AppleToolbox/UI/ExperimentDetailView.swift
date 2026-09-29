@@ -16,9 +16,7 @@ struct ExperimentDetailView: View {
                 WhyNotSection(explanation: explanation, status: status)
             }
             ExperimentChecksSection(checks: experiment.checks(for: status))
-            if let useCase = ExperimentUseCaseCatalog.forExperimentID(experiment.id) {
-                UseCaseSection(useCase: useCase, experiment: experiment)
-            }
+            UseCaseSection(useCase: experiment.useCase ?? .generic(for: experiment.id), experiment: experiment)
             Section("Run") {
                 ExperimentRunView(experiment: experiment).id(runID)
                 Button("Reset Experiment", systemImage: "arrow.counterclockwise") {
@@ -42,49 +40,30 @@ struct ExperimentRunView: View {
     let experiment: ExperimentDescriptor
 
     var body: some View {
-        switch experiment.id {
-        case "localauthentication": LocalAuthenticationRunView(experiment: experiment)
-        case "cryptokit": CryptoKitRunView(experiment: experiment)
-        case "keychain": KeychainRunView(experiment: experiment)
-        case "secure-enclave": SecureEnclaveRunView(experiment: experiment)
-        case "app-attest": AppAttestRunView(experiment: experiment)
-        case "passkeys": PasskeysRunView(experiment: experiment)
-        case "sign-in-with-apple": SignInWithAppleRunView(experiment: experiment)
-        case "core-location": CoreLocationRunView()
-        case "core-motion": CoreMotionRunView()
-        case "core-nfc": CoreNFCRunView()
-        case "core-bluetooth": CoreBluetoothRunView()
-        case "multipeer-connectivity": MultipeerRunView()
-        case "nearby-interaction": NearbyInteractionRunView()
-        case "network-path": NetworkPathRunView()
-        case "continuity": WatchConnectivityRunView()
-        case "camera-vision": CameraVisionRunView()
-        case "audio-input": AudioInputRunView()
-        case "musickit": MusicKitRunView()
-        case "shazamkit": ShazamKitRunView()
-        case "sound-analysis": SoundAnalysisRunView()
-        case "natural-language": NaturalLanguageRunView()
-        case "foundation-models": FoundationModelsRunView()
-        case "speech": SpeechRunView()
-        case "core-ml": CoreMLRunView()
-        case "translation": TranslationRunView()
-        case "mapkit-search": MapKitSearchRunView()
-        case "indoor-imdf": IndoorIMDFRunView()
-        case "homekit-discovery": HomeKitRunView()
-        case "matter-status": MatterSetupRunView()
-        case "arkit": ARKitRunView()
-        case "roomplan": RoomPlanRunView()
-        case "healthkit-status": HealthKitRunView()
-        case "notifications": NotificationsRunView()
-        case "wallet-status": StatusCheckRunView(experiment: experiment, title: "Inspect Wallet Capability", check: WalletExperimentService.statusText)
-        case "wallet-creator": WalletPassCreatorRunView()
-        case "app-intents": AppIntentsRunView()
-        case "widgetkit": WidgetKitRunView()
-        case "capability-explorer": DeviceScannerRunView()
-        case "game-controller": GameControllerRunView()
-        default: OutputView(text: "No run view is registered for this experiment.", isError: true)
+        switch experiment.category {
+        case .security: SecurityRunRoutes(experiment: experiment)
+        case .location: LocationRunRoutes(experiment: experiment)
+        case .sensors: SensorsRunRoutes(experiment: experiment)
+        case .input: InputRunRoutes(experiment: experiment)
+        case .connectivity: ConnectivityRunRoutes(experiment: experiment)
+        case .networking: NetworkingRunRoutes(experiment: experiment)
+        case .nfc: NFCRunRoutes(experiment: experiment)
+        case .home: HomeRunRoutes(experiment: experiment)
+        case .camera: CameraRunRoutes(experiment: experiment)
+        case .spatial: SpatialRunRoutes(experiment: experiment)
+        case .audio: AudioRunRoutes(experiment: experiment)
+        case .ai: AIRunRoutes(experiment: experiment)
+        case .maps: MapsRunRoutes(experiment: experiment)
+        case .wallet: WalletRunRoutes(experiment: experiment)
+        case .health: HealthRunRoutes(experiment: experiment)
+        case .system: SystemRunRoutes(experiment: experiment)
+        case .developer: DeveloperRunRoutes(experiment: experiment)
         }
     }
+}
+
+struct UnroutedExperimentView: View {
+    var body: some View { OutputView(text: "No run view is registered for this experiment.", isError: true) }
 }
 
 private struct ExperimentHeroView: View {

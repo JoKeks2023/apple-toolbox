@@ -1,16 +1,9 @@
 import Foundation
 
-/// "Why doesn't this work?" (spec §38): reason, requirement and next step for an unavailable experiment.
-struct ExperimentExplanation: Equatable {
-    let reason: String
-    let required: String
-    let nextStep: String
-}
-
 extension ExperimentDescriptor {
     func explanation(for status: ExperimentStatus) -> ExperimentExplanation? {
         guard status != .available else { return nil }
-        return Self.specificExplanations[id]?[status] ?? defaultExplanation(for: status)
+        return explanations[status] ?? defaultExplanation(for: status)
     }
 
     private func defaultExplanation(for status: ExperimentStatus) -> ExperimentExplanation {
@@ -62,105 +55,4 @@ extension ExperimentDescriptor {
                                   nextStep: "Check the device settings and try again later.")
         }
     }
-
-    private static let specificExplanations: [String: [ExperimentStatus: ExperimentExplanation]] = [
-        "localauthentication": [
-            .unavailable: ExperimentExplanation(reason: "No device passcode is set, so owner authentication cannot run.", required: "A device passcode (and optionally Face ID or Touch ID)",
-                                                nextStep: "Set a passcode in Settings › Face ID & Passcode."),
-            .hardwareUnsupported: ExperimentExplanation(reason: "Neither biometrics nor passcode authentication can be evaluated here.", required: "Face ID, Touch ID or a device passcode",
-                                                        nextStep: "Run on a device with a passcode; in the Simulator enroll Face ID via Features › Face ID."),
-        ],
-        "secure-enclave": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "This device or simulator does not provide a Secure Enclave, so keys can be neither created nor restored.", required: "A device with a Secure Enclave (iPhone 5s or later, Apple silicon or T2 Mac, Apple Watch)",
-                                                        nextStep: "Run the experiment on a physical device."),
-        ],
-        "core-location": [
-            .permissionRequired: ExperimentExplanation(reason: "The app has not asked for location access yet.", required: "Location When In Use (Always only for visits and significant changes)",
-                                                       nextStep: "Tap Request Location Permission; the Always upgrade is offered separately."),
-            .permissionDenied: ExperimentExplanation(reason: "Location access is denied, restricted by Screen Time or MDM, or Location Services are off.", required: "Location Services on and Apple Toolbox allowed While Using the App",
-                                                     nextStep: "Turn on Settings › Privacy & Security › Location Services and allow Apple Toolbox."),
-        ],
-        "core-motion": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "Device motion data is not available (for example in the Simulator).", required: "Accelerometer and gyroscope",
-                                                        nextStep: "Run on an iPhone, iPad or Apple Watch."),
-            .permissionDenied: ExperimentExplanation(reason: "Motion & Fitness access is denied or restricted, so the pedometer and altimeter return no data. Device motion still works.", required: "Motion & Fitness access for Apple Toolbox and Fitness Tracking turned on",
-                                                     nextStep: "Allow it in Settings › Privacy & Security › Motion & Fitness."),
-        ],
-        "core-nfc": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "This device has no NFC reader available to apps.", required: "iPhone 7 or later (iPad has no NFC reader)",
-                                                        nextStep: "Run the experiment on an NFC-capable iPhone."),
-        ],
-        "nearby-interaction": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "This device does not provide an Ultra Wideband chip.", required: "iPhone 11 or later, or Apple Watch Series 6 or later",
-                                                        nextStep: "Use two UWB-capable devices running Apple Toolbox."),
-        ],
-        "continuity": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "WatchConnectivity is only supported on iPhone.", required: "An iPhone paired with an Apple Watch",
-                                                        nextStep: "Run the experiment on the iPhone that is paired with your watch."),
-        ],
-        "arkit": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "World tracking is not supported on this device.", required: "A device with an A9 chip or later and a rear camera",
-                                                        nextStep: "Run the experiment on a recent iPhone or iPad."),
-        ],
-        "roomplan": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "RoomCaptureSession.isSupported is false: this device (or the Simulator) has no LiDAR Scanner.", required: "A LiDAR-capable iPhone Pro or iPad Pro",
-                                                        nextStep: "Run the experiment on a LiDAR device."),
-            .permissionDenied: ExperimentExplanation(reason: "Camera access was denied, and RoomPlan scans the room through the camera.", required: "Camera Usage Description",
-                                                     nextStep: "Allow camera access in Settings › Privacy & Security › Camera, then return to the app."),
-        ],
-        "indoor-imdf": [
-            .platformUnsupported: ExperimentExplanation(reason: "IMDF archives are imported through the document picker, which Apple TV and Apple Watch do not offer to this app.", required: "iOS, iPadOS or macOS",
-                                                        nextStep: "Open Apple Toolbox on iPhone, iPad or Mac and import the unzipped IMDF folder."),
-        ],
-        "shazamkit": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "No microphone input is available, so ShazamKit has no audio to match.", required: "A built-in or connected microphone",
-                                                        nextStep: "Connect a microphone or run the experiment on iPhone, iPad or a Mac with a microphone."),
-            .platformUnsupported: ExperimentExplanation(reason: "This experiment records from the device microphone, which Apple Toolbox only uses on iPhone, iPad and Mac.", required: "iOS, iPadOS or macOS",
-                                                        nextStep: "Open Apple Toolbox on iPhone, iPad or Mac."),
-        ],
-        "healthkit-status": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "Health data is not available on this device.", required: "iPhone, Apple Watch or an iPad with the Health app",
-                                                        nextStep: "Run the experiment on iPhone or Apple Watch."),
-        ],
-        "foundation-models": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "This device is not eligible for Apple Intelligence.", required: "An Apple Intelligence-capable device",
-                                                        nextStep: "Run on a device that supports Apple Intelligence."),
-            .unavailable: ExperimentExplanation(reason: "Apple Intelligence is turned off (appleIntelligenceNotEnabled) or the model is still downloading (modelNotReady); the run section shows which.", required: "Apple Intelligence enabled with the model downloaded",
-                                                nextStep: "Turn on Apple Intelligence in Settings › Apple Intelligence & Siri and wait for the model download to finish."),
-        ],
-        "sound-analysis": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "No microphone is available to this app, so there is no audio stream to classify.", required: "A built-in or connected microphone",
-                                                        nextStep: "Connect a microphone (Mac) or run the experiment on an iPhone or iPad."),
-        ],
-        "core-ml": [
-            .platformUnsupported: ExperimentExplanation(reason: "Importing a model needs the system document picker, which Apple TV and Apple Watch do not offer; watchOS also cannot compile models on device.", required: "iOS, iPadOS or macOS",
-                                                        nextStep: "Open the experiment on iPhone, iPad or Mac. On Apple TV the compute devices are still listed below."),
-        ],
-        "passkeys": [
-            .entitlementRequired: ExperimentExplanation(reason: "Passkeys are bound to a relying-party domain, and no webcredentials: associated domain is provisioned for this app.", required: "Associated Domains entitlement with webcredentials:<domain> and an apple-app-site-association file on that domain listing this app",
-                                                        nextStep: "Add the Associated Domains capability for your relying party and host the association file. The requests below still run and show the system's rejection."),
-        ],
-        "sign-in-with-apple": [
-            .entitlementRequired: ExperimentExplanation(reason: "Neither the embedded provisioning profile nor this build's readable signed entitlements include Sign in with Apple.", required: "com.apple.developer.applesignin = [Default], enabled on the App ID of a paid developer team",
-                                                        nextStep: "Add the Sign in with Apple capability to this target in Xcode › Signing & Capabilities; the button below still shows the system's real error."),
-        ],
-        "game-controller": [
-            .unavailable: ExperimentExplanation(reason: "No game controller is connected right now.", required: "A paired MFi, Xbox, PlayStation, or Switch controller (the Siri Remote counts on Apple TV)",
-                                                nextStep: "Pair the controller in Bluetooth settings, or put an MFi controller in pairing mode and start wireless discovery below."),
-        ],
-        "matter-status": [
-            .platformUnsupported: ExperimentExplanation(reason: "Apple Toolbox starts Apple Home's accessory setup only on iPhone and iPad; watchOS and tvOS have no setup API.", required: "iOS or iPadOS 15.4+ with Apple Home",
-                                                        nextStep: "Open Apple Toolbox on an iPhone or iPad."),
-            .unavailable: ExperimentExplanation(reason: "The system reports that accessory setup is not supported on this device (HMAccessorySetupManager.isSupported is false).", required: "An iPhone or iPad that supports Apple Home accessory setup",
-                                                nextStep: "Run the experiment on a physical iPhone or iPad with Apple Home set up."),
-        ],
-        "widgetkit": [
-            .entitlementRequired: ExperimentExplanation(reason: "The App Group container is not provisioned, so the app cannot share data with its widget.", required: "com.apple.security.application-groups with group.com.jorisconrad.AppleToolbox for the app and the widget extension",
-                                                        nextStep: "Register the App Group for both App IDs in Signing & Capabilities and reinstall the app."),
-        ],
-        "app-attest": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "DCAppAttestService reports that App Attest is not supported here (for example in the Simulator).", required: "A physical device with a Secure Enclave and an App ID registered with Apple",
-                                                        nextStep: "Run the experiment on a real device; the DeviceCheck token can still be tried below."),
-        ],
-    ]
 }
