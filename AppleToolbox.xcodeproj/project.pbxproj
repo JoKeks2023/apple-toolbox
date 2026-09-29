@@ -410,6 +410,10 @@
 		0DDEE34FF962980E5A7D3958 /* AudioExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A47EDAEA79082AF614779D8 /* AudioExperimentService.swift */; };
 		27E702C04FE80A3115D2314D /* AudioAnalyzerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAF90DC2DCBCAD72A82927D /* AudioAnalyzerRunView.swift */; };
 		BAFE7E8B092D16C1433A1AB3 /* AudioAnalyzerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAF90DC2DCBCAD72A82927D /* AudioAnalyzerRunView.swift */; };
+		B91EC4B7203D689985EF571B /* MediaPlaybackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28A70BD8D134DB8D366602C /* MediaPlaybackService.swift */; };
+		26882BAAB7F7B76605B2ABA0 /* MediaPlaybackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28A70BD8D134DB8D366602C /* MediaPlaybackService.swift */; };
+		CAED89E58D68C72FD2E7BD6A /* MediaPlaybackRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5930EA4D157F82FFB5F3D5E /* MediaPlaybackRunView.swift */; };
+		C082467CF45F67A4A17EEFCB /* MediaPlaybackRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5930EA4D157F82FFB5F3D5E /* MediaPlaybackRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -669,6 +673,8 @@
 		1DD75E2879E9CD352D92ACF1 /* AudioRouteInspector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioRouteInspector.swift; path = AppleToolbox/Shared/Services/AudioRouteInspector.swift; sourceTree = "<group>"; };
 		3A47EDAEA79082AF614779D8 /* AudioExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioExperimentService.swift; path = AppleToolbox/Shared/Services/AudioExperimentService.swift; sourceTree = "<group>"; };
 		4CAF90DC2DCBCAD72A82927D /* AudioAnalyzerRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioAnalyzerRunView.swift; path = AppleToolbox/UI/Experiments/AudioAnalyzerRunView.swift; sourceTree = "<group>"; };
+		E28A70BD8D134DB8D366602C /* MediaPlaybackService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MediaPlaybackService.swift; path = AppleToolbox/Shared/Services/MediaPlaybackService.swift; sourceTree = "<group>"; };
+		F5930EA4D157F82FFB5F3D5E /* MediaPlaybackRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MediaPlaybackRunView.swift; path = AppleToolbox/UI/Experiments/MediaPlaybackRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -1002,6 +1008,8 @@
 				1DD75E2879E9CD352D92ACF1 /* AudioRouteInspector.swift */,
 				3A47EDAEA79082AF614779D8 /* AudioExperimentService.swift */,
 				4CAF90DC2DCBCAD72A82927D /* AudioAnalyzerRunView.swift */,
+				E28A70BD8D134DB8D366602C /* MediaPlaybackService.swift */,
+				F5930EA4D157F82FFB5F3D5E /* MediaPlaybackRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1480,6 +1488,8 @@
 				9ECA61ED14AD046438C067EF /* AudioRouteInspector.swift in Sources */,
 				718869184F34BA953A462B4A /* AudioExperimentService.swift in Sources */,
 				27E702C04FE80A3115D2314D /* AudioAnalyzerRunView.swift in Sources */,
+				B91EC4B7203D689985EF571B /* MediaPlaybackService.swift in Sources */,
+				CAED89E58D68C72FD2E7BD6A /* MediaPlaybackRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1738,6 +1748,8 @@
 				39526498F996C91A36AD2A7C /* AudioRouteInspector.swift in Sources */,
 				0DDEE34FF962980E5A7D3958 /* AudioExperimentService.swift in Sources */,
 				BAFE7E8B092D16C1433A1AB3 /* AudioAnalyzerRunView.swift in Sources */,
+				26882BAAB7F7B76605B2ABA0 /* MediaPlaybackService.swift in Sources */,
+				C082467CF45F67A4A17EEFCB /* MediaPlaybackRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

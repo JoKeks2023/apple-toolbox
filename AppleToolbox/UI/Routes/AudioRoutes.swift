@@ -8,6 +8,7 @@ struct AudioRunRoutes: View {
         switch experiment.id {
         case "audio-input": AudioAnalyzerRunView()
         case "sound-analysis": SoundAnalysisRunView()
+        case "media-playback": MediaPlaybackRunView()
         case "musickit": MusicKitRunView()
         case "shazamkit": ShazamKitRunView()
         default: UnroutedExperimentView()
