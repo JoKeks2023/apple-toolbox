@@ -494,6 +494,8 @@
 		D9BF17D504A354F447A79C3E /* FoundationModelsImageRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CF81111DFE3AE7CD8EFEAB /* FoundationModelsImageRunView.swift */; };
 		56C5F0DFEBA53D7014EA91A8 /* CoreAIRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6918C7E5678D9290A822A6D8 /* CoreAIRunView.swift */; };
 		2C9C6496D0BCB4482A34E1CF /* CoreAIRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6918C7E5678D9290A822A6D8 /* CoreAIRunView.swift */; };
+		75C5DF5AB8DFC7A4BF153C4E /* EmbeddedAppExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8EF5CDAFE721ED2450DDBE /* EmbeddedAppExtensions.swift */; };
+		D75BE35410D2EE881AFC0C64 /* NotificationServicePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B301021DC4DC184EFFD089E /* NotificationServicePayload.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1952,6 +1954,8 @@
 				339D16E10057AD91E486160D /* WatchConnectivityRunViews.swift in Sources */,
 				60ADF40874822C988C9ACD14 /* WatchDataRunViews.swift in Sources */,
 				A930600DD122A251958F6B47 /* AIAvailability.swift in Sources */,
+				75C5DF5AB8DFC7A4BF153C4E /* EmbeddedAppExtensions.swift in Sources */,
+				D75BE35410D2EE881AFC0C64 /* NotificationServicePayload.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
