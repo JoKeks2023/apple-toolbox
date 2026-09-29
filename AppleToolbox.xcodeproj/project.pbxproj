@@ -254,6 +254,12 @@
 		1538FA2E68E90F9F06F6B1B7 /* SystemRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E247CF07B7DB10ABB4108004 /* SystemRoutes.swift */; };
 		6F9B31EF9E198A4E998216AB /* WalletRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C81DB864590B74BA5B865 /* WalletRoutes.swift */; };
 		DD8E9968C23F8743A20A8EE6 /* WalletRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C81DB864590B74BA5B865 /* WalletRoutes.swift */; };
+		6DB754B81CC37DF57453A43B /* DeveloperToolsCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F7D06BDCDD26F6123F10E7D /* DeveloperToolsCatalog.swift */; };
+		4000F10FF92DCB99E9F63A90 /* DeveloperToolsCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F7D06BDCDD26F6123F10E7D /* DeveloperToolsCatalog.swift */; };
+		7CBBC17449E62F2445620482 /* DiagnosticsExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D49D35B43CBB6E3D34791F /* DiagnosticsExperimentService.swift */; };
+		4B8C531E79940D8647B227DF /* DiagnosticsExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D49D35B43CBB6E3D34791F /* DiagnosticsExperimentService.swift */; };
+		BC10CA8900496C8D65A22640 /* DeveloperToolsRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E6F6500EC93A8BB11D3834 /* DeveloperToolsRunViews.swift */; };
+		0840CDEC46C9D4A625A56FEE /* DeveloperToolsRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E6F6500EC93A8BB11D3834 /* DeveloperToolsRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -430,6 +436,9 @@
 		96B66BC82962E646F57FD7CC /* SpatialRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpatialRoutes.swift; path = AppleToolbox/UI/Routes/SpatialRoutes.swift; sourceTree = "<group>"; };
 		E247CF07B7DB10ABB4108004 /* SystemRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SystemRoutes.swift; path = AppleToolbox/UI/Routes/SystemRoutes.swift; sourceTree = "<group>"; };
 		D80C81DB864590B74BA5B865 /* WalletRoutes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WalletRoutes.swift; path = AppleToolbox/UI/Routes/WalletRoutes.swift; sourceTree = "<group>"; };
+		0F7D06BDCDD26F6123F10E7D /* DeveloperToolsCatalog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeveloperToolsCatalog.swift; path = AppleToolbox/Shared/Services/DeveloperToolsCatalog.swift; sourceTree = "<group>"; };
+		F5D49D35B43CBB6E3D34791F /* DiagnosticsExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DiagnosticsExperimentService.swift; path = AppleToolbox/Shared/Services/DiagnosticsExperimentService.swift; sourceTree = "<group>"; };
+		D8E6F6500EC93A8BB11D3834 /* DeveloperToolsRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeveloperToolsRunViews.swift; path = AppleToolbox/UI/Experiments/DeveloperToolsRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -677,6 +686,9 @@
 				96B66BC82962E646F57FD7CC /* SpatialRoutes.swift */,
 				E247CF07B7DB10ABB4108004 /* SystemRoutes.swift */,
 				D80C81DB864590B74BA5B865 /* WalletRoutes.swift */,
+				0F7D06BDCDD26F6123F10E7D /* DeveloperToolsCatalog.swift */,
+				F5D49D35B43CBB6E3D34791F /* DiagnosticsExperimentService.swift */,
+				D8E6F6500EC93A8BB11D3834 /* DeveloperToolsRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1060,6 +1072,9 @@
 				2FC973C4150949EA0E1A74BA /* SpatialRoutes.swift in Sources */,
 				2FD08E6FA0909F172E2934DE /* SystemRoutes.swift in Sources */,
 				6F9B31EF9E198A4E998216AB /* WalletRoutes.swift in Sources */,
+				6DB754B81CC37DF57453A43B /* DeveloperToolsCatalog.swift in Sources */,
+				7CBBC17449E62F2445620482 /* DiagnosticsExperimentService.swift in Sources */,
+				BC10CA8900496C8D65A22640 /* DeveloperToolsRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1238,6 +1253,9 @@
 				0533F4E9C763A47AFB443B13 /* SpatialRoutes.swift in Sources */,
 				1538FA2E68E90F9F06F6B1B7 /* SystemRoutes.swift in Sources */,
 				DD8E9968C23F8743A20A8EE6 /* WalletRoutes.swift in Sources */,
+				4000F10FF92DCB99E9F63A90 /* DeveloperToolsCatalog.swift in Sources */,
+				4B8C531E79940D8647B227DF /* DiagnosticsExperimentService.swift in Sources */,
+				0840CDEC46C9D4A625A56FEE /* DeveloperToolsRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

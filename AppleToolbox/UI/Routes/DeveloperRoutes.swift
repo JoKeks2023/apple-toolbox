@@ -7,6 +7,8 @@ struct DeveloperRunRoutes: View {
     var body: some View {
         switch experiment.id {
         case "capability-explorer": DeviceScannerRunView()
+        case "developer-tools": DeveloperToolsLabRunView()
+        case "diagnostics": DiagnosticsRunView()
         default: UnroutedExperimentView()
         }
     }
