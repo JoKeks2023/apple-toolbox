@@ -3,12 +3,13 @@ import Foundation
 extension ExperimentRegistry {
     static let security: [ExperimentDescriptor] = [
         ExperimentDescriptor(id: "localauthentication", name: "LocalAuthentication", category: .security,
-            description: "Test Face ID, Touch ID, or device-owner authentication and inspect real failure states.",
+            description: "Inspect the biometry type, every LocalAuthentication policy with its live result and error code, and enrolment changes through the domain state; evaluate a policy with a reuse window and authorize LARight and LAPersistedRight.",
             frameworks: ["LocalAuthentication"], supportedPlatforms: [.iOS, .iPadOS, .macOS],
-            hardwareRequirements: ["Face ID or Touch ID when biometrics are tested"], osRequirements: ["iOS 11+ · macOS 10.13+"],
-            permissions: ["Biometric/device authentication prompt"], capabilities: [], entitlements: [],
+            hardwareRequirements: ["Face ID, Touch ID or Optic ID when biometrics are tested", "Paired Mac, Apple Vision Pro or Apple Watch for companion policies"],
+            osRequirements: ["iOS 11+ · macOS 10.13+", "Domain state and companion policies: iOS 18+ · macOS 15+", "LARight and LAPersistedRight: iOS 16+ · macOS 13+"],
+            permissions: ["Biometric/device authentication prompt (only from the Evaluate and Authorize buttons)"], capabilities: [], entitlements: [],
             documentationURL: URL(string: "https://developer.apple.com/documentation/localauthentication")!, evaluate: ExperimentAvailability.localAuthentication,
-            useCase: ExperimentUseCase(id: "biometric-gate", title: "Protect an action", summary: "Use the device owner authentication policy before releasing a result.", interaction: "Run authentication and inspect the real biometric or passcode outcome."),
+            useCase: ExperimentUseCase(id: "biometric-gate", title: "Protect an action and notice enrolment changes", summary: "Gate an action behind a LocalAuthentication policy or an LARight, and detect when the enrolled faces or fingerprints changed.", interaction: "Open the experiment to compare the domain state with the last check, then evaluate a policy or authorize a right and inspect the real outcome."),
             explanations: [
                 .unavailable: ExperimentExplanation(reason: "No device passcode is set, so owner authentication cannot run.", required: "A device passcode (and optionally Face ID or Touch ID)",
                     nextStep: "Set a passcode in Settings › Face ID & Passcode."),

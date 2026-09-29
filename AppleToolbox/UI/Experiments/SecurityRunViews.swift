@@ -1,32 +1,5 @@
 import SwiftUI
 
-struct LocalAuthenticationRunView: View {
-    let experiment: ExperimentDescriptor
-    @State private var output: String
-    @State private var isRunning = false
-
-    init(experiment: ExperimentDescriptor) {
-        self.experiment = experiment
-        _output = State(initialValue: ExperimentOutput.initialMessage(for: experiment.currentStatus))
-    }
-
-    var body: some View {
-        OutputView(text: AuthenticationService.availability(), isError: false)
-        Button("Authenticate with Face ID / Touch ID", action: authenticate)
-            .buttonStyle(.borderedProminent).disabled(isRunning || experiment.currentStatus != .available)
-        OutputView(text: output, isError: output.localizedCaseInsensitiveContains("error"))
-    }
-
-    private func authenticate() {
-        isRunning = true
-        Task {
-            do { output = try await AuthenticationService.authenticate() }
-            catch { output = "Error: \(error.localizedDescription)" }
-            isRunning = false
-        }
-    }
-}
-
 struct CryptoKitRunView: View {
     @State private var request = CryptoLabRequest()
     @State private var output: String
