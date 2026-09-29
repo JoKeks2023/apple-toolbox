@@ -13,7 +13,18 @@ import CoreML
 nonisolated enum CreateMLTask: String, CaseIterable, Identifiable, Sendable {
     case textClassifier = "Text classifier"
     case tabularRegressor = "Tabular regressor"
+    case imageClassifier = "Image classifier"
+    case soundClassifier = "Sound classifier"
     var id: String { rawValue }
+
+    /// Image and sound classifiers train from files grouped by label instead of a CSV table.
+    var usesLabeledFiles: Bool { self == .imageClassifier || self == .soundClassifier }
+
+    /// The noun for one training sample of a file-based task.
+    var sampleNoun: String { self == .soundClassifier ? "sound" : "image" }
+
+    /// The file name stem of an exported model, e.g. "ImageClassifier".
+    var fileStem: String { rawValue.capitalized.replacingOccurrences(of: " ", with: "") }
 }
 
 nonisolated enum CreateMLTextAlgorithm: String, CaseIterable, Identifiable, Sendable {
@@ -91,6 +102,8 @@ nonisolated struct CreateMLTrainingReport: Equatable, Sendable {
     let confusions: [String]
     let modelFacts: [CreateMLMetricRow]
     let notes: [String]
+    /// The trained model as written to the Trained Models folder, or nil when writing failed.
+    let modelURL: URL?
 }
 
 nonisolated struct CreateMLPrediction: Identifiable, Equatable, Sendable {
@@ -120,6 +133,143 @@ nonisolated enum CreateMLFormat {
     /// The first column whose lowercased name contains one of `keywords` (Create ML's metric tables have no documented column names).
     static func column(in names: [String], matching keywords: [String]) -> String? {
         names.first { name in keywords.contains { name.lowercased().contains($0) } }
+    }
+}
+
+// MARK: - Labeled file samples (image and sound classifiers)
+
+nonisolated struct CreateMLSample: Identifiable, Equatable, Sendable {
+    let id: UUID
+    /// The app's own copy of the file, so it stays readable after security-scoped access ends.
+    let url: URL
+    /// The original file name, shown in the list.
+    let name: String
+}
+
+nonisolated struct CreateMLSampleGroup: Identifiable, Equatable, Sendable {
+    let label: String
+    var samples: [CreateMLSample]
+    var id: String { label }
+}
+
+nonisolated enum CreateMLLabelError: Error, Equatable, LocalizedError {
+    case empty
+    case duplicate(String)
+
+    var errorDescription: String? {
+        switch self {
+        case .empty: "Enter a label name."
+        case .duplicate(let label): "The label “\(label)” already exists."
+        }
+    }
+}
+
+/// Training samples grouped by label, in the order the labels were added. Create ML reads them as
+/// `DataSource.filesByLabel`.
+nonisolated struct CreateMLSampleSet: Equatable, Sendable {
+    private(set) var groups: [CreateMLSampleGroup] = []
+
+    var labels: [String] { groups.map(\.label) }
+    var sampleCount: Int { groups.reduce(0) { $0 + $1.samples.count } }
+    var isEmpty: Bool { groups.isEmpty }
+
+    /// Trims the name and collapses inner whitespace, so "  red   apple " becomes "red apple".
+    static func normalized(_ label: String) -> String {
+        label.split(whereSeparator: \.isWhitespace).joined(separator: " ")
+    }
+
+    /// Adds an empty label; labels are unique regardless of case.
+    @discardableResult
+    mutating func addLabel(_ raw: String) throws(CreateMLLabelError) -> String {
+        let label = Self.normalized(raw)
+        guard !label.isEmpty else { throw .empty }
+        if let existing = groups.first(where: { $0.label.caseInsensitiveCompare(label) == .orderedSame }) { throw .duplicate(existing.label) }
+        groups.append(CreateMLSampleGroup(label: label, samples: []))
+        return label
+    }
+
+    /// Removes a label and returns its samples so the caller can delete the files.
+    mutating func removeLabel(_ label: String) -> [CreateMLSample] {
+        guard let index = groups.firstIndex(where: { $0.label == label }) else { return [] }
+        return groups.remove(at: index).samples
+    }
+
+    /// Appends samples to an existing label; unknown labels are ignored.
+    mutating func add(_ samples: [CreateMLSample], to label: String) {
+        guard let index = groups.firstIndex(where: { $0.label == label }) else { return }
+        groups[index].samples += samples
+    }
+
+    mutating func removeSample(id: UUID) -> CreateMLSample? {
+        for index in groups.indices {
+            if let position = groups[index].samples.firstIndex(where: { $0.id == id }) {
+                return groups[index].samples.remove(at: position)
+            }
+        }
+        return nil
+    }
+
+    /// The training data for Create ML; labels without samples are left out.
+    var filesByLabel: [String: [URL]] {
+        Dictionary(uniqueKeysWithValues: groups.filter { !$0.samples.isEmpty }.map { ($0.label, $0.samples.map(\.url)) })
+    }
+
+    /// Nil when training can start, otherwise what is still missing.
+    func readiness(noun: String, minimumLabels: Int = 2, minimumPerLabel: Int = 2) -> String? {
+        let filled = groups.filter { !$0.samples.isEmpty }
+        if filled.count < minimumLabels {
+            return "Add at least \(minimumLabels) labels with \(noun)s (\(filled.count) so far)."
+        }
+        let short = groups.filter { $0.samples.count < minimumPerLabel }.map(\.label)
+        if !short.isEmpty {
+            return "Every label needs at least \(minimumPerLabel) \(noun)s: \(short.joined(separator: ", "))."
+        }
+        return nil
+    }
+}
+
+/// Where trained models are kept: Application Support › Trained Models. The Core ML experiment lists this folder.
+nonisolated enum CreateMLModelStore {
+    static let folderName = "Trained Models"
+    static let keptModels = 10
+
+    static var directory: URL {
+        let base = (try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true))
+            ?? FileManager.default.temporaryDirectory
+        return base.appendingPathComponent(folderName, isDirectory: true)
+    }
+
+    /// E.g. "ImageClassifier-20260929-143012.mlmodel" (UTC, so names sort by time).
+    static func fileName(for task: CreateMLTask, date: Date) -> String {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "UTC") ?? .gmt
+        let c = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        let stamp = String(format: "%04d%02d%02d-%02d%02d%02d", c.year ?? 0, c.month ?? 0, c.day ?? 0, c.hour ?? 0, c.minute ?? 0, c.second ?? 0)
+        return "\(task.fileStem)-\(stamp).mlmodel"
+    }
+
+    /// The saved .mlmodel files, newest first.
+    static func savedModels() -> [URL] {
+        let keys: [URLResourceKey] = [.contentModificationDateKey]
+        let files = (try? FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: keys)) ?? []
+        return files.filter { $0.pathExtension == "mlmodel" }.sorted { lhs, rhs in
+            let left = (try? lhs.resourceValues(forKeys: Set(keys)).contentModificationDate) ?? .distantPast
+            let right = (try? rhs.resourceValues(forKeys: Set(keys)).contentModificationDate) ?? .distantPast
+            return left > right
+        }
+    }
+
+    /// Writes a model through `write` and keeps only the newest `keptModels` files.
+    static func save(_ task: CreateMLTask, write: (URL) throws -> Void) throws -> URL {
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let url = directory.appendingPathComponent(fileName(for: task, date: Date()))
+        try write(url)
+        for old in savedModels().dropFirst(keptModels) { try? FileManager.default.removeItem(at: old) }
+        return url
+    }
+
+    static func fileSize(_ url: URL) -> Int64? {
+        (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? NSNumber)?.int64Value
     }
 }
 
@@ -177,6 +327,7 @@ nonisolated enum CreateMLDataset {
     150,6,3.0,2240
     """
 
+    /// The CSV sample of a table-based task (image and sound classifiers use labeled files instead).
     static func sample(for task: CreateMLTask) -> String {
         task == .textClassifier ? textSample : tabularSample
     }
@@ -241,6 +392,7 @@ nonisolated enum CreateMLTrainer {
         let perLabel = validationMetrics.isValid ? validationMetrics : training
         var notes = ["Per-label metrics use the \(validationMetrics.isValid ? "validation" : "training") set."]
         if !validationMetrics.isValid { notes.append("Validation metrics: \(validationMetrics.error?.localizedDescription ?? "not computed").") }
+        let saved = save(.textClassifier, algorithm: algorithm.rawValue) { try classifier.write(to: $0, metadata: $1) }
         let report = CreateMLTrainingReport(
             task: .textClassifier, algorithm: algorithm.rawValue, rows: frame.rows.count, seconds: elapsed,
             metrics: [
@@ -250,8 +402,9 @@ nonisolated enum CreateMLTrainer {
             ],
             labelMetrics: labelMetrics(perLabel),
             confusions: confusions(perLabel),
-            modelFacts: modelFacts(size: try? modelSize { try classifier.write(to: $0, metadata: nil) }, parameters: "\(classifier.modelParameters.algorithm)"),
-            notes: notes)
+            modelFacts: modelFacts(url: saved.url, parameters: "\(classifier.modelParameters.algorithm)"),
+            notes: notes + saved.notes,
+            modelURL: saved.url)
         return (classifier, report)
     }
 
@@ -279,6 +432,7 @@ nonisolated enum CreateMLTrainer {
         let validationMetrics = regressor.validationMetrics
         var notes = ["Features: \(features.joined(separator: ", ")) → \(target)."]
         if !validationMetrics.isValid { notes.append("Validation metrics: \(validationMetrics.error?.localizedDescription ?? "not computed").") }
+        let saved = save(.tabularRegressor, algorithm: algorithm.rawValue) { try regressor.write(to: $0, metadata: $1) }
         let report = CreateMLTrainingReport(
             task: .tabularRegressor, algorithm: algorithm.rawValue, rows: frame.rows.count, seconds: elapsed,
             metrics: [
@@ -288,9 +442,73 @@ nonisolated enum CreateMLTrainer {
                                   validation: validationMetrics.isValid ? CreateMLFormat.number(validationMetrics.maximumError) : "—"),
             ],
             labelMetrics: [], confusions: [],
-            modelFacts: modelFacts(size: try? modelSize { try regressor.write(to: $0, metadata: nil) }, parameters: algorithm.rawValue),
-            notes: notes)
+            modelFacts: modelFacts(url: saved.url, parameters: algorithm.rawValue),
+            notes: notes + saved.notes,
+            modelURL: saved.url)
         return (regressor, report)
+    }
+
+    static func trainImageClassifier(filesByLabel: [String: [URL]], validation: CreateMLValidationOption) throws -> (MLImageClassifier, CreateMLTrainingReport) {
+        let started = ContinuousClock.now
+        let parameters = MLImageClassifier.ModelParameters(validation: imageValidation(validation), augmentation: [])
+        let classifier = try MLImageClassifier(trainingData: .filesByLabel(filesByLabel), parameters: parameters)
+        let algorithm = "\(classifier.modelParameters.algorithm)"
+        let saved = save(.imageClassifier, algorithm: algorithm) { try classifier.write(to: $0, metadata: $1) }
+        let report = classifierReport(task: .imageClassifier, algorithm: algorithm, filesByLabel: filesByLabel, seconds: elapsedSeconds(since: started),
+                                      training: classifier.trainingMetrics, validation: classifier.validationMetrics, saved: saved)
+        return (classifier, report)
+    }
+
+    static func trainSoundClassifier(filesByLabel: [String: [URL]], validation: CreateMLValidationOption) throws -> (MLSoundClassifier, CreateMLTrainingReport) {
+        let started = ContinuousClock.now
+        var parameters = MLSoundClassifier.ModelParameters()
+        parameters.validation = soundValidation(validation)
+        let classifier = try MLSoundClassifier(trainingData: .filesByLabel(filesByLabel), parameters: parameters)
+        let algorithm = "\(classifier.modelParameters.algorithm)"
+        let saved = save(.soundClassifier, algorithm: algorithm) { try classifier.write(to: $0, metadata: $1) }
+        let report = classifierReport(task: .soundClassifier, algorithm: algorithm, filesByLabel: filesByLabel, seconds: elapsedSeconds(since: started),
+                                      training: classifier.trainingMetrics, validation: classifier.validationMetrics, saved: saved)
+        return (classifier, report)
+    }
+
+    /// Create ML's image classifier returns only the most likely label; the Core ML experiment shows the probabilities.
+    static func classify(imageAt url: URL, with classifier: MLImageClassifier) throws -> [String] {
+        [try classifier.prediction(from: url)]
+    }
+
+    static func classify(soundAt url: URL, with classifier: MLSoundClassifier) throws -> [String] {
+        try classifier.predictions(from: [url])
+    }
+
+    private static func classifierReport(task: CreateMLTask, algorithm: String, filesByLabel: [String: [URL]], seconds: Double,
+                                         training: MLClassifierMetrics, validation: MLClassifierMetrics,
+                                         saved: (url: URL?, notes: [String])) -> CreateMLTrainingReport {
+        let perLabel = validation.isValid ? validation : training
+        var notes = ["\(filesByLabel.count) labels: " + filesByLabel.keys.sorted().map { "\($0) ×\(filesByLabel[$0]?.count ?? 0)" }.joined(separator: ", ") + ".",
+                     "Per-label metrics use the \(validation.isValid ? "validation" : "training") set."]
+        if !validation.isValid { notes.append("Validation metrics: \(validation.error?.localizedDescription ?? "not computed").") }
+        return CreateMLTrainingReport(
+            task: task, algorithm: algorithm, rows: filesByLabel.values.reduce(0) { $0 + $1.count }, seconds: seconds,
+            metrics: [
+                CreateMLMetricRow(title: "Accuracy", training: accuracy(training), validation: accuracy(validation)),
+                CreateMLMetricRow(title: "Classification error", training: training.isValid ? CreateMLFormat.percent(training.classificationError) : "—",
+                                  validation: validation.isValid ? CreateMLFormat.percent(validation.classificationError) : "—"),
+            ],
+            labelMetrics: labelMetrics(perLabel),
+            confusions: confusions(perLabel),
+            modelFacts: modelFacts(url: saved.url, parameters: algorithm),
+            notes: notes + saved.notes,
+            modelURL: saved.url)
+    }
+
+    /// Writes the model to the Trained Models folder; a failed write is reported as a note, not as a training failure.
+    private static func save(_ task: CreateMLTask, algorithm: String, write: (URL, MLModelMetadata) throws -> Void) -> (url: URL?, notes: [String]) {
+        let metadata = MLModelMetadata(author: "Apple Toolbox", shortDescription: "\(task.rawValue) trained on device with Create ML (\(algorithm)).", version: "1")
+        do {
+            return (try CreateMLModelStore.save(task) { try write($0, metadata) }, [])
+        } catch {
+            return (nil, ["The model could not be written for export: \(error.localizedDescription)"])
+        }
     }
 
     static func classify(_ text: String, with classifier: MLTextClassifier) throws -> [CreateMLPrediction] {
@@ -378,20 +596,28 @@ nonisolated enum CreateMLTrainer {
         return CreateMLFormat.percent(number > 1 ? number / 100 : number)
     }
 
-    private static func modelFacts(size: Int64?, parameters: String) -> [CreateMLMetricRow] {
-        [
+    private static func modelFacts(url: URL?, parameters: String) -> [CreateMLMetricRow] {
+        let size = url.flatMap(CreateMLModelStore.fileSize)
+        return [
             CreateMLMetricRow(title: "Algorithm", training: parameters, validation: ""),
             CreateMLMetricRow(title: "Core ML model size", training: size.map { ByteCountFormatter.string(fromByteCount: $0, countStyle: .file) } ?? "—", validation: ""),
         ]
     }
 
-    /// Writes the model as .mlmodel to a temporary file and returns its size.
-    private static func modelSize(_ write: (URL) throws -> Void) throws -> Int64 {
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("CreateMLExperiment-\(UUID().uuidString).mlmodel")
-        defer { try? FileManager.default.removeItem(at: url) }
-        try write(url)
-        let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
-        return (attributes[.size] as? NSNumber)?.int64Value ?? 0
+    private static func imageValidation(_ option: CreateMLValidationOption) -> MLImageClassifier.ModelParameters.ValidationData {
+        switch option {
+        case .automatic: .split(strategy: .automatic)
+        case .holdOut: .split(strategy: .fixed(ratio: 0.2, seed: 7))
+        case .none: .none
+        }
+    }
+
+    private static func soundValidation(_ option: CreateMLValidationOption) -> MLSoundClassifier.ModelParameters.ValidationData {
+        switch option {
+        case .automatic: .split(strategy: .automatic)
+        case .holdOut: .split(strategy: .fixed(ratio: 0.2, seed: 7))
+        case .none: .none
+        }
     }
 }
 
@@ -425,12 +651,21 @@ final class CreateMLExperimentService: ObservableObject {
     @Published var textColumn = "" { didSet { if oldValue != textColumn { refreshLabels() } } }
     @Published var labelColumn = "" { didSet { if oldValue != labelColumn { refreshLabels() } } }
     @Published var targetColumn = ""
+    /// Image and sound samples, kept per task so switching tasks does not lose them.
+    @Published private(set) var sampleSets: [CreateMLTask: CreateMLSampleSet] = [:]
+    /// The label that receives newly added samples.
+    @Published var targetLabel = ""
+    @Published private(set) var sampleError: String?
+    @Published private(set) var isImportingSamples = false
     @Published private(set) var report: CreateMLTrainingReport?
     @Published private(set) var isTraining = false
     @Published var textInput = "The export button crashes the app"
     @Published var featureInputs: [String: String] = [:]
     @Published private(set) var predictions: [CreateMLPrediction] = []
     @Published private(set) var predictedValue: String?
+    /// The file classified with the trained image or sound classifier, and the labels Create ML returned.
+    @Published private(set) var classifiedFileName: String?
+    @Published private(set) var predictedLabels: [String] = []
     @Published private(set) var output = CreateMLExperimentService.isSupported
         ? "Edit the sample dataset or import a CSV, then train a model on this device."
         : CreateMLExperimentService.unsupportedMessage
@@ -442,6 +677,8 @@ final class CreateMLExperimentService: ObservableObject {
     #if canImport(CreateML) && (os(iOS) || os(macOS))
     private var classifier: MLTextClassifier?
     private var regressor: (any CreateMLRegressorModel)?
+    private var imageClassifier: MLImageClassifier?
+    private var soundClassifier: MLSoundClassifier?
     #endif
 
     static var isSupported: Bool {
@@ -456,26 +693,113 @@ final class CreateMLExperimentService: ObservableObject {
         #if os(iOS) && targetEnvironment(simulator)
         "CreateML.framework ships in the iOS device SDK but not in the iOS Simulator SDK, so this build contains no Create ML code. Run on an iPhone, iPad or Mac to train."
         #else
-        "The Create ML framework's text and tabular trainers are not available on this platform."
+        "The Create ML framework's text, tabular, image and sound trainers are not available on this platform."
         #endif
     }
 
+    /// Where copied sample files live; the folder is removed with the samples.
+    nonisolated static var samplesDirectory: URL {
+        FileManager.default.temporaryDirectory.appendingPathComponent("CreateMLSamples", isDirectory: true)
+    }
+
     var hasTrainedModel: Bool { report != nil }
+    var samples: CreateMLSampleSet { sampleSets[task] ?? CreateMLSampleSet() }
+    /// Nil when the image or sound samples are ready for training.
+    var sampleReadiness: String? { samples.readiness(noun: task.sampleNoun) }
 
     init() { loadSample() }
 
     func loadSample() {
         #if canImport(TabularData)
-        csv = CreateMLDataset.sample(for: task)
+        if !task.usesLabeledFiles { csv = CreateMLDataset.sample(for: task) }
         #endif
         report = nil
         predictions = []
         predictedValue = nil
+        predictedLabels = []
+        classifiedFileName = nil
+        sampleError = nil
+        if !samples.labels.contains(targetLabel) { targetLabel = samples.labels.first ?? "" }
         #if canImport(CreateML) && (os(iOS) || os(macOS))
         classifier = nil
         regressor = nil
+        imageClassifier = nil
+        soundClassifier = nil
         #endif
+        if Self.isSupported, !isTraining {
+            setOutput(task.usesLabeledFiles
+                ? "Add at least two labels and a few \(task.sampleNoun)s for each, then train an \(task.rawValue.lowercased()) on this device."
+                : "Edit the sample dataset or import a CSV, then train a model on this device.", error: false)
+        }
     }
+
+    // MARK: Labels and samples
+
+    func addLabel(_ name: String) {
+        var set = samples
+        do {
+            targetLabel = try set.addLabel(name)
+            sampleSets[task] = set
+            sampleError = nil
+        } catch {
+            sampleError = error.localizedDescription
+        }
+    }
+
+    func removeLabel(_ label: String) {
+        var set = samples
+        let removed = set.removeLabel(label)
+        sampleSets[task] = set
+        Self.deleteFiles(removed)
+        if targetLabel == label { targetLabel = set.labels.first ?? "" }
+    }
+
+    func removeSample(_ id: UUID) {
+        var set = samples
+        guard let removed = set.removeSample(id: id) else { return }
+        sampleSets[task] = set
+        Self.deleteFiles([removed])
+    }
+
+    /// Copies picked files (file importer) into the samples folder under the selected label.
+    func importSamples(from urls: [URL]) {
+        let label = targetLabel, task = task
+        guard !label.isEmpty else { return sampleError = "Add a label first; new \(task.sampleNoun)s go to the label selected in “Add to label”." }
+        isImportingSamples = true
+        Task { [weak self] in
+            let result = await Self.copySamples(urls)
+            self?.finishImport(result, label: label, task: task)
+        }
+    }
+
+    /// Stores picked photo data (PhotosPicker) as files under the selected label.
+    func importSampleData(_ items: [(data: Data, fileExtension: String)]) {
+        let label = targetLabel, task = task
+        guard !label.isEmpty else { return sampleError = "Add a label first; new \(task.sampleNoun)s go to the label selected in “Add to label”." }
+        isImportingSamples = true
+        Task { [weak self] in
+            let result = await Self.writeSamples(items)
+            self?.finishImport(result, label: label, task: task)
+        }
+    }
+
+    func reportSampleImportFailure(_ message: String) {
+        isImportingSamples = false
+        sampleError = message
+    }
+
+    private func finishImport(_ result: (samples: [CreateMLSample], failures: [String]), label: String, task: CreateMLTask) {
+        isImportingSamples = false
+        var set = sampleSets[task] ?? CreateMLSampleSet()
+        set.add(result.samples, to: label)
+        sampleSets[task] = set
+        sampleError = result.failures.isEmpty ? nil : result.failures.joined(separator: "\n")
+        if !result.samples.isEmpty {
+            setOutput("Added \(result.samples.count) \(task.sampleNoun)\(result.samples.count == 1 ? "" : "s") to “\(label)”. \(set.readiness(noun: task.sampleNoun) ?? "Ready to train.")", error: false)
+        }
+    }
+
+    // MARK: CSV
 
     func importCSV(from url: URL) {
         let scoped = url.startAccessingSecurityScopedResource()
@@ -496,19 +820,30 @@ final class CreateMLExperimentService: ObservableObject {
         setOutput("File import error: \(error.localizedDescription)", error: true)
     }
 
+    // MARK: Training
+
     func train() {
         #if canImport(CreateML) && (os(iOS) || os(macOS))
-        guard !isTraining, let dataset else { return }
+        guard !isTraining else { return }
+        if task.usesLabeledFiles {
+            if let missing = sampleReadiness { return setOutput(missing, error: true) }
+        } else if dataset == nil {
+            return
+        }
         generation += 1
         let run = generation
         let csv = csv, task = task, validation = validation
         let textAlgorithm = textAlgorithm, regressorAlgorithm = regressorAlgorithm
         let textColumn = textColumn, labelColumn = labelColumn, target = targetColumn
+        let columns = dataset?.columns ?? []
+        let files = samples.filesByLabel
         isTraining = true
         report = nil
         predictions = []
         predictedValue = nil
-        setOutput("Training a \(task.rawValue.lowercased()) (\(task == .textClassifier ? textAlgorithm.rawValue : regressorAlgorithm.rawValue)) on \(dataset.rowCount) rows…", error: false)
+        predictedLabels = []
+        classifiedFileName = nil
+        setOutput("Training a \(task.rawValue.lowercased())\(Self.algorithmSuffix(task, textAlgorithm, regressorAlgorithm)) on \(task.usesLabeledFiles ? "\(samples.sampleCount) \(task.sampleNoun)s" : "\(dataset?.rowCount ?? 0) rows")…", error: false)
         Task { [weak self] in
             switch task {
             case .textClassifier:
@@ -516,8 +851,8 @@ final class CreateMLExperimentService: ObservableObject {
                 guard let self, self.generation == run else { return }
                 switch result {
                 case .success(let (classifier, report)):
+                    self.clearModels()
                     self.classifier = classifier
-                    self.regressor = nil
                     self.finishTraining(report)
                 case .failure(let error): self.failTraining(error)
                 }
@@ -526,10 +861,30 @@ final class CreateMLExperimentService: ObservableObject {
                 guard let self, self.generation == run else { return }
                 switch result {
                 case .success(let (regressor, report)):
+                    self.clearModels()
                     self.regressor = regressor
-                    self.classifier = nil
-                    self.trainedFeatures = dataset.columns.filter { $0.name != target }
+                    self.trainedFeatures = columns.filter { $0.name != target }
                     self.featureInputs = Dictionary(uniqueKeysWithValues: self.trainedFeatures.map { ($0.name, self.featureInputs[$0.name] ?? $0.example) })
+                    self.finishTraining(report)
+                case .failure(let error): self.failTraining(error)
+                }
+            case .imageClassifier:
+                let result = await Self.detached { try CreateMLTrainer.trainImageClassifier(filesByLabel: files, validation: validation) }
+                guard let self, self.generation == run else { return }
+                switch result {
+                case .success(let (classifier, report)):
+                    self.clearModels()
+                    self.imageClassifier = classifier
+                    self.finishTraining(report)
+                case .failure(let error): self.failTraining(error)
+                }
+            case .soundClassifier:
+                let result = await Self.detached { try CreateMLTrainer.trainSoundClassifier(filesByLabel: files, validation: validation) }
+                guard let self, self.generation == run else { return }
+                switch result {
+                case .success(let (classifier, report)):
+                    self.clearModels()
+                    self.soundClassifier = classifier
                     self.finishTraining(report)
                 case .failure(let error): self.failTraining(error)
                 }
@@ -545,6 +900,8 @@ final class CreateMLExperimentService: ObservableObject {
         isTraining = false
         setOutput("Stopped waiting. Create ML cannot interrupt a running trainer, so it finishes in the background and its result is discarded.", error: false)
     }
+
+    // MARK: Prediction
 
     func predict() {
         #if canImport(CreateML) && (os(iOS) || os(macOS))
@@ -574,13 +931,78 @@ final class CreateMLExperimentService: ObservableObject {
         #endif
     }
 
+    /// Classifies a picked image or audio file with the trained image or sound classifier.
+    func classifyFile(at url: URL) {
+        let task = task
+        Task { [weak self] in
+            let copied = await Self.copySamples([url])
+            guard let sample = copied.samples.first else {
+                self?.setOutput(copied.failures.first ?? "The file could not be read.", error: true)
+                return
+            }
+            self?.classify(sample.url, name: sample.name, task: task)
+        }
+    }
+
+    /// Classifies picked photo data with the trained image classifier.
+    func classifyImageData(_ data: Data, fileExtension: String) {
+        let task = task
+        Task { [weak self] in
+            let written = await Self.writeSamples([(data, fileExtension)])
+            guard let sample = written.samples.first else {
+                self?.setOutput(written.failures.first ?? "The photo could not be stored.", error: true)
+                return
+            }
+            self?.classify(sample.url, name: "Photo", task: task)
+        }
+    }
+
+    private func classify(_ url: URL, name: String, task: CreateMLTask) {
+        #if canImport(CreateML) && (os(iOS) || os(macOS))
+        let work: @Sendable () throws -> [String]
+        if task == .imageClassifier, let imageClassifier {
+            work = { try CreateMLTrainer.classify(imageAt: url, with: imageClassifier) }
+        } else if task == .soundClassifier, let soundClassifier {
+            work = { try CreateMLTrainer.classify(soundAt: url, with: soundClassifier) }
+        } else {
+            try? FileManager.default.removeItem(at: url)
+            return setOutput("Train a \(task.rawValue.lowercased()) first.", error: true)
+        }
+        Task { [weak self] in
+            let outcome = await Self.detached(work)
+            try? FileManager.default.removeItem(at: url)
+            guard let self else { return }
+            self.classifiedFileName = name
+            switch outcome {
+            case .success(let labels):
+                self.predictedLabels = labels
+                let api = task == .imageClassifier ? "prediction(from:)" : "predictions(from:)"
+                self.setOutput("\(api) returned \(labels.isEmpty ? "no label" : labels.map { "“\($0)”" }.joined(separator: ", ")) for \(name).", error: labels.isEmpty)
+            case .failure(let error):
+                self.predictedLabels = []
+                self.setOutput("Prediction failed: \(error.localizedDescription)", error: true)
+            }
+        }
+        #endif
+    }
+
     var trainedFeatureColumns: [CreateMLColumnInfo] { trainedFeatures }
+
+    private func clearModels() {
+        #if canImport(CreateML) && (os(iOS) || os(macOS))
+        classifier = nil
+        regressor = nil
+        imageClassifier = nil
+        soundClassifier = nil
+        #endif
+    }
 
     private func finishTraining(_ report: CreateMLTrainingReport) {
         self.report = report
         isTraining = false
         let headline = report.metrics.first.map { "\($0.title): training \($0.training), validation \($0.validation)" } ?? ""
-        setOutput("Trained on device in \(report.seconds.formatted(.number.precision(.fractionLength(2)))) s. \(headline)", error: false)
+        let saved = report.modelURL.map { " Saved as \($0.lastPathComponent) for export and for the Core ML experiment." } ?? ""
+        setOutput("Trained on device in \(report.seconds.formatted(.number.precision(.fractionLength(2)))) s. \(headline)\(saved)", error: false)
     }
 
     private func failTraining(_ error: Error) {
@@ -619,9 +1041,59 @@ final class CreateMLExperimentService: ObservableObject {
         isError = error
     }
 
+    private static func algorithmSuffix(_ task: CreateMLTask, _ text: CreateMLTextAlgorithm, _ regressor: CreateMLRegressorAlgorithm) -> String {
+        switch task {
+        case .textClassifier: " (\(text.rawValue))"
+        case .tabularRegressor: " (\(regressor.rawValue))"
+        case .imageClassifier, .soundClassifier: ""
+        }
+    }
+
     /// Runs Create ML work off the main actor and hands back only Sendable values.
     @concurrent nonisolated private static func detached<T: Sendable>(_ body: @Sendable () throws -> T) async -> Result<T, Error> {
         Result { try body() }
+    }
+
+    /// Copies user-picked files into the samples folder (the originals are only readable while security-scoped access lasts).
+    @concurrent nonisolated private static func copySamples(_ urls: [URL]) async -> (samples: [CreateMLSample], failures: [String]) {
+        var samples: [CreateMLSample] = [], failures: [String] = []
+        for url in urls {
+            let scoped = url.startAccessingSecurityScopedResource()
+            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+            do {
+                let id = UUID()
+                let destination = try sampleURL(id: id, fileExtension: url.pathExtension)
+                try FileManager.default.copyItem(at: url, to: destination)
+                samples.append(CreateMLSample(id: id, url: destination, name: url.lastPathComponent))
+            } catch {
+                failures.append("\(url.lastPathComponent): \(error.localizedDescription)")
+            }
+        }
+        return (samples, failures)
+    }
+
+    @concurrent nonisolated private static func writeSamples(_ items: [(data: Data, fileExtension: String)]) async -> (samples: [CreateMLSample], failures: [String]) {
+        var samples: [CreateMLSample] = [], failures: [String] = []
+        for (index, item) in items.enumerated() {
+            do {
+                let id = UUID()
+                let destination = try sampleURL(id: id, fileExtension: item.fileExtension)
+                try item.data.write(to: destination)
+                samples.append(CreateMLSample(id: id, url: destination, name: "Photo \(index + 1).\(destination.pathExtension)"))
+            } catch {
+                failures.append("Photo \(index + 1): \(error.localizedDescription)")
+            }
+        }
+        return (samples, failures)
+    }
+
+    nonisolated private static func sampleURL(id: UUID, fileExtension: String) throws -> URL {
+        try FileManager.default.createDirectory(at: samplesDirectory, withIntermediateDirectories: true)
+        return samplesDirectory.appendingPathComponent(id.uuidString).appendingPathExtension(fileExtension.isEmpty ? "dat" : fileExtension)
+    }
+
+    private static func deleteFiles(_ samples: [CreateMLSample]) {
+        for sample in samples { try? FileManager.default.removeItem(at: sample.url) }
     }
 }
 
