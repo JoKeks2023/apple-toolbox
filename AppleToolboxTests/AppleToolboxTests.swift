@@ -112,6 +112,12 @@ struct ExperimentCheckTests {
         #expect(try outcome("permission", of: "core-location", for: .available) == .passed)
     }
 
+    @Test func appleProgramsAreChecked() throws {
+        #expect(try outcome("programs", of: "sign-in-with-apple", for: .entitlementRequired) == .passed)
+        #expect(try outcome("programs", of: "sign-in-with-apple", for: .appleProgramRequired) == .failed)
+        #expect(try outcome("programs", of: "cryptokit", for: .available) == nil)
+    }
+
     @Test func entitlementCheckFollowsTheStatus() throws {
         #expect(try outcome("entitlement", of: "homekit-discovery", for: .entitlementRequired) == .failed)
         #expect(try outcome("entitlement", of: "homekit-discovery", for: .available) == .passed)

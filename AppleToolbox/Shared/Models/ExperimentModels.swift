@@ -98,7 +98,13 @@ struct ExperimentDescriptor: Identifiable {
     var applePrograms: [String] = []
 
     var currentStatus: ExperimentStatus {
-        supportedPlatforms.contains(CurrentPlatform.value) ? evaluate() : .platformUnsupported
+        guard supportedPlatforms.contains(CurrentPlatform.value) else { return .platformUnsupported }
+        let status = evaluate()
+        #if targetEnvironment(simulator)
+        // The Simulator has no sensors, radios or Secure Enclave; the real device may well have them.
+        if status == .hardwareUnsupported { return .deviceOnly }
+        #endif
+        return status
     }
 }
 

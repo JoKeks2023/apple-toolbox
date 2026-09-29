@@ -40,18 +40,21 @@ extension ExperimentRegistry {
             explanations: [
                 .hardwareUnsupported: ExperimentExplanation(reason: "DCAppAttestService reports that App Attest is not supported here (for example in the Simulator).", required: "A physical device with a Secure Enclave and an App ID registered with Apple",
                     nextStep: "Run the experiment on a real device; the DeviceCheck token can still be tried below."),
-            ]),
+            ],
+            applePrograms: ["Apple Developer Program: App Attest needs a registered App ID"]),
         ExperimentDescriptor(id: "passkeys", name: "Passkeys", category: .security,
             description: "Send a real passkey registration or assertion request for a relying party you enter and inspect the credential or the system's error. Challenges are local random bytes.", frameworks: ["AuthenticationServices"], supportedPlatforms: [.iOS, .iPadOS, .macOS, .tvOS], hardwareRequirements: [], osRequirements: ["iOS 15+ · macOS 12+ · tvOS 16+"], permissions: [], capabilities: ["Associated Domains with a webcredentials: entry", "apple-app-site-association file on the relying-party domain"], entitlements: ["com.apple.developer.associated-domains (webcredentials:)"], documentationURL: URL(string: "https://developer.apple.com/documentation/authenticationservices/supporting-passkeys")!, evaluate: ExperimentAvailability.passkeys,
             explanations: [
                 .entitlementRequired: ExperimentExplanation(reason: "Passkeys are bound to a relying-party domain, and no webcredentials: associated domain is provisioned for this app.", required: "Associated Domains entitlement with webcredentials:<domain> and an apple-app-site-association file on that domain listing this app",
                     nextStep: "Add the Associated Domains capability for your relying party and host the association file. The requests below still run and show the system's rejection."),
-            ]),
+            ],
+            applePrograms: ["Apple Developer Program: Associated Domains are not available to free Personal Teams"]),
         ExperimentDescriptor(id: "sign-in-with-apple", name: "Sign in with Apple", category: .security,
             description: "Run the real Sign in with Apple flow, inspect the returned credential (shortened identifier, real-user status, token and code sizes) and query its credential state.", frameworks: ["AuthenticationServices"], supportedPlatforms: SupportedPlatform.allCases, hardwareRequirements: [], osRequirements: ["iOS 13+ · macOS 10.15+ · tvOS 13+ · watchOS 6+"], permissions: [], capabilities: ["Sign in with Apple", "Apple Account signed in on the device"], entitlements: ["com.apple.developer.applesignin"], documentationURL: URL(string: "https://developer.apple.com/documentation/authenticationservices/implementing-user-authentication-with-sign-in-with-apple")!, evaluate: ExperimentAvailability.signInWithApple,
             explanations: [
                 .entitlementRequired: ExperimentExplanation(reason: "Neither the embedded provisioning profile nor this build's readable signed entitlements include Sign in with Apple.", required: "com.apple.developer.applesignin = [Default], enabled on the App ID of a paid developer team",
                     nextStep: "Add the Sign in with Apple capability to this target in Xcode › Signing & Capabilities; the button below still shows the system's real error."),
-            ]),
+            ],
+            applePrograms: ["Apple Developer Program: Sign in with Apple is not available to free Personal Teams"]),
     ]
 }

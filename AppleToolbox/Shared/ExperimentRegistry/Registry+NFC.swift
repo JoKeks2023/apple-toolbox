@@ -7,6 +7,7 @@ extension ExperimentRegistry {
             explanations: [
                 .hardwareUnsupported: ExperimentExplanation(reason: "This device has no NFC reader available to apps.", required: "iPhone 7 or later (iPad has no NFC reader)",
                     nextStep: "Run the experiment on an NFC-capable iPhone."),
-            ]),
+            ],
+            applePrograms: ["Apple Developer Program: NFC Tag Reading is not available to free Personal Teams"]),
     ]
 }

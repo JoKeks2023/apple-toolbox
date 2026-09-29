@@ -31,6 +31,7 @@ extension ExperimentDescriptor {
             let requirements = hardwareRequirements.joined(separator: ", ")
             let check: (String, ExperimentCheck.Outcome) = switch status {
             case .hardwareUnsupported: ("Missing: " + requirements, .failed)
+            case .deviceOnly: ("Needs a physical device · " + requirements, .failed)
             case .unavailable: ("Not available right now · " + requirements, .pending)
             default: ("No blocker detected · " + requirements, .passed)
             }
@@ -56,6 +57,11 @@ extension ExperimentDescriptor {
             checks.append(ExperimentCheck(id: "entitlement", title: "Entitlements",
                 detail: (blocked ? "Not provisioned for this app: " : "Declared: ") + entitlements.joined(separator: ", "),
                 outcome: blocked ? .failed : .passed))
+        }
+
+        if !applePrograms.isEmpty {
+            checks.append(ExperimentCheck(id: "programs", title: "Apple programs", detail: applePrograms.joined(separator: " · "),
+                outcome: status == .appleProgramRequired ? .failed : .passed))
         }
 
         if status == .regionRestricted {

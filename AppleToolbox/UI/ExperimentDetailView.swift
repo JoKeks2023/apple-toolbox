@@ -224,6 +224,7 @@ private struct RequirementsView: View {
             LabeledContent("Permissions", value: experiment.permissions.isEmpty ? "None" : experiment.permissions.joined(separator: ", "))
             LabeledContent("Capabilities", value: experiment.capabilities.isEmpty ? "None" : experiment.capabilities.joined(separator: ", "))
             LabeledContent("Entitlements", value: experiment.entitlements.isEmpty ? "None" : experiment.entitlements.joined(separator: ", "))
+            LabeledContent("Apple programs", value: experiment.applePrograms.isEmpty ? "None beyond a free Apple Account" : experiment.applePrograms.joined(separator: ", "))
         }
     }
 }
