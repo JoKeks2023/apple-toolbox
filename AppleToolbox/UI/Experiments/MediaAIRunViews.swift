@@ -1,14 +1,5 @@
 import SwiftUI
 
-struct MusicKitRunView: View {
-    @StateObject private var music = MusicExperimentService()
-
-    var body: some View {
-        Button("Request MusicKit Authorization", action: music.requestAuthorization).buttonStyle(.borderedProminent)
-        OutputView(text: music.output, isError: music.output.localizedCaseInsensitiveContains("denied") || music.output.localizedCaseInsensitiveContains("restricted"))
-    }
-}
-
 struct SpeechRunView: View {
     @StateObject private var speech = SpeechExperimentService()
 
