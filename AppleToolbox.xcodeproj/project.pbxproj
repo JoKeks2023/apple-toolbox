@@ -1154,6 +1154,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios;
+				PRODUCT_MODULE_NAME = AppleToolbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
@@ -1200,6 +1201,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios;
+				PRODUCT_MODULE_NAME = AppleToolbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
@@ -1351,7 +1353,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppleToolbox iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AppleToolbox_iOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppleToolbox iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AppleToolbox iOS";
 			};
 			name = Debug;
 		};
@@ -1376,7 +1378,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppleToolbox iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AppleToolbox_iOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppleToolbox iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AppleToolbox iOS";
 			};
 			name = Release;
 		};

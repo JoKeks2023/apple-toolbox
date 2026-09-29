@@ -25,6 +25,7 @@ struct ContentView: View {
                                 HStack { Text(category.rawValue); Spacer(); if count > 0 { Text("\(count)").foregroundStyle(.secondary) } }
                             } icon: { Image(systemName: category.symbolName).foregroundStyle(.tint) }
                         }
+                        .accessibilityIdentifier("category.\(category.id)")
                     }
                 }
                 Section("Inspect") {
@@ -33,6 +34,7 @@ struct ContentView: View {
                             HStack { Text("Entitlements"); Spacer(); Text("\(CapabilityRegistry.all.count)").foregroundStyle(.secondary) }
                         } icon: { Image(systemName: "checkmark.seal").foregroundStyle(.tint) }
                     }
+                    .accessibilityIdentifier("inspect.entitlements")
                 }
             }
             .navigationTitle("Apple Toolbox")
@@ -111,6 +113,7 @@ private struct CategoryView: View {
             Section { Text("Foundation experiments for \(category.rawValue.lowercased()).").foregroundStyle(.secondary) }
             ForEach(experiments) { experiment in
                 NavigationLink(value: experiment.id) { ExperimentRow(experiment: experiment) }
+                    .accessibilityIdentifier("experiment.\(experiment.id)")
             }
         }.navigationTitle(category.rawValue)
     }

@@ -11,7 +11,8 @@
    </BuildAction>
    <TestAction buildConfiguration = "Debug" selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference skipped = "NO"><BuildableReference BuildableIdentifier = "primary" BlueprintIdentifier = "5B13F63A303DA62000AA8D3F" BuildableName = "AppleToolboxTests.xctest" BlueprintName = "AppleToolboxTests" ReferencedContainer = "container:AppleToolbox.xcodeproj" /></TestableReference>
+         <TestableReference skipped = "NO"><BuildableReference BuildableIdentifier = "primary" BlueprintIdentifier = "5B13F621303DA62000AA8D3F" BuildableName = "AppleToolboxTests.xctest" BlueprintName = "AppleToolboxTests" ReferencedContainer = "container:AppleToolbox.xcodeproj" /></TestableReference>
+         <TestableReference skipped = "NO"><BuildableReference BuildableIdentifier = "primary" BlueprintIdentifier = "5B13F62B303DA62000AA8D3F" BuildableName = "AppleToolboxUITests.xctest" BlueprintName = "AppleToolboxUITests" ReferencedContainer = "container:AppleToolbox.xcodeproj" /></TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction buildConfiguration = "Debug" selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle = "0" useCustomWorkingDirectory = "NO" ignoresPersistentStateOnLaunch = "NO" debugDocumentVersioning = "YES" allowLocationSimulation = "YES">
