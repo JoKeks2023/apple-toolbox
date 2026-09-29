@@ -369,6 +369,11 @@
 		CFB522FA64C7B427991865F1 /* LiveActivitiesRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCFC0B502D75BFD3791EA4 /* LiveActivitiesRunView.swift */; };
 		A8F79ED622BF566BA278B5BD /* ToolboxLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7F5581D2689039BA6C937C /* ToolboxLiveActivity.swift */; };
 		1CB8F54F973AD7A041FECA8B /* ToolboxActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45188541A82A50A2EE8CE94 /* ToolboxActivityAttributes.swift */; };
+		8364B2B4CA16977709362E7F /* WidgetKitRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DEEFA6A1C92BD61EF807 /* WidgetKitRunView.swift */; };
+		3D4C1F6F4C98DE02BF385413 /* WidgetKitRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7992DEEFA6A1C92BD61EF807 /* WidgetKitRunView.swift */; };
+		1DDCB5D8168B0E06E710BA3A /* ToolboxInteractiveWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A68EE1F33C4604C3A3E14E7 /* ToolboxInteractiveWidget.swift */; };
+		02A224D70700BDDC0CDA5A85 /* ToolboxControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077B02A6F8A1FD8354E92379 /* ToolboxControls.swift */; };
+		CD11E1B628F7B13C083086BA /* ToolboxWidgetIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981645C806854E2AB22F9E54 /* ToolboxWidgetIntents.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -607,6 +612,10 @@
 		A1DCFC0B502D75BFD3791EA4 /* LiveActivitiesRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LiveActivitiesRunView.swift; path = AppleToolbox/UI/Experiments/LiveActivitiesRunView.swift; sourceTree = "<group>"; };
 		7E7F5581D2689039BA6C937C /* ToolboxLiveActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxLiveActivity.swift; path = AppleToolbox/Widget/ToolboxLiveActivity.swift; sourceTree = "<group>"; };
 		C45188541A82A50A2EE8CE94 /* ToolboxActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxActivityAttributes.swift; path = AppleToolbox/Shared/Services/ToolboxActivityAttributes.swift; sourceTree = "<group>"; };
+		7992DEEFA6A1C92BD61EF807 /* WidgetKitRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WidgetKitRunView.swift; path = AppleToolbox/UI/Experiments/WidgetKitRunView.swift; sourceTree = "<group>"; };
+		2A68EE1F33C4604C3A3E14E7 /* ToolboxInteractiveWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxInteractiveWidget.swift; path = AppleToolbox/Widget/ToolboxInteractiveWidget.swift; sourceTree = "<group>"; };
+		077B02A6F8A1FD8354E92379 /* ToolboxControls.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxControls.swift; path = AppleToolbox/Widget/ToolboxControls.swift; sourceTree = "<group>"; };
+		981645C806854E2AB22F9E54 /* ToolboxWidgetIntents.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxWidgetIntents.swift; path = AppleToolbox/Shared/Services/ToolboxWidgetIntents.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -624,6 +633,8 @@
 				NotificationContent/NotificationViewController.swift,
 				NotificationContent/Info.plist,
 				Widget/ToolboxLiveActivity.swift,
+				Widget/ToolboxControls.swift,
+				Widget/ToolboxInteractiveWidget.swift,
 			);
 			target = 5B13F610303DA61D00AA8D3F /* AppleToolbox iOS */;
 		};
@@ -917,6 +928,10 @@
 				A1DCFC0B502D75BFD3791EA4 /* LiveActivitiesRunView.swift */,
 				7E7F5581D2689039BA6C937C /* ToolboxLiveActivity.swift */,
 				C45188541A82A50A2EE8CE94 /* ToolboxActivityAttributes.swift */,
+				7992DEEFA6A1C92BD61EF807 /* WidgetKitRunView.swift */,
+				2A68EE1F33C4604C3A3E14E7 /* ToolboxInteractiveWidget.swift */,
+				077B02A6F8A1FD8354E92379 /* ToolboxControls.swift */,
+				981645C806854E2AB22F9E54 /* ToolboxWidgetIntents.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1377,6 +1392,7 @@
 				5AF8F84967C1A5044891159D /* ARLabRunView.swift in Sources */,
 				36B7239AD18F4B23140A8AD2 /* LiveActivityServices.swift in Sources */,
 				9E061971B2765899837F1B6A /* LiveActivitiesRunView.swift in Sources */,
+				8364B2B4CA16977709362E7F /* WidgetKitRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1615,6 +1631,7 @@
 				E22FC390966E80F8890AC197 /* ARLabRunView.swift in Sources */,
 				B7D84FB4B0FA1903F156166F /* LiveActivityServices.swift in Sources */,
 				CFB522FA64C7B427991865F1 /* LiveActivitiesRunView.swift in Sources */,
+				3D4C1F6F4C98DE02BF385413 /* WidgetKitRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1626,6 +1643,9 @@
 				BB15BCCB5158340130955C1F /* ToolboxWidgetStore.swift in Sources */,
 				A8F79ED622BF566BA278B5BD /* ToolboxLiveActivity.swift in Sources */,
 				1CB8F54F973AD7A041FECA8B /* ToolboxActivityAttributes.swift in Sources */,
+				1DDCB5D8168B0E06E710BA3A /* ToolboxInteractiveWidget.swift in Sources */,
+				02A224D70700BDDC0CDA5A85 /* ToolboxControls.swift in Sources */,
+				CD11E1B628F7B13C083086BA /* ToolboxWidgetIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

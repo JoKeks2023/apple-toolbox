@@ -136,7 +136,10 @@ private struct LastOpenedView: View {
 struct AppleToolboxWidgetBundle: WidgetBundle {
     var body: some Widget {
         AppleToolboxWidget()
+        ToolboxInteractiveWidget()
         ToolboxLiveActivity()
+        ToolboxOpenAppControl()
+        ToolboxFavoriteControl()
     }
 }
 
