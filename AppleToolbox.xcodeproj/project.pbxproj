@@ -323,6 +323,11 @@
 		DCE089A3EA68A1FBCE662EEF /* NetworkInspectorServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C536C5BF6C7FEFCC16FE4A /* NetworkInspectorServices.swift */; };
 		7B530270C03457B0DF9D80E1 /* NetworkInspectorRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386865B99C682145C16E4D3 /* NetworkInspectorRunView.swift */; };
 		21D1334A2192B79235F8EF72 /* NetworkInspectorRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3386865B99C682145C16E4D3 /* NetworkInspectorRunView.swift */; };
+		48C7DBECB7C254697D8CC7C8 /* NetworkCapabilityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83294D80DB40E9AFB66C2EEB /* NetworkCapabilityServices.swift */; };
+		33ACAEE7956769DC5BFEDB67 /* NetworkCapabilityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83294D80DB40E9AFB66C2EEB /* NetworkCapabilityServices.swift */; };
+		5315246DCF29B6BE8C97A1E5 /* NetworkCapabilityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83294D80DB40E9AFB66C2EEB /* NetworkCapabilityServices.swift */; };
+		BAAB07ADCB89BA661BD06A9B /* WiFiCapabilitiesRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBECCA87E325C9A6B83FFD /* WiFiCapabilitiesRunView.swift */; };
+		5090F5DBB5418B63CDC8D86E /* WiFiCapabilitiesRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFBECCA87E325C9A6B83FFD /* WiFiCapabilitiesRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -530,6 +535,8 @@
 		F661F59035B6B57FC9CF6CF8 /* MapsLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapsLabRunView.swift; path = AppleToolbox/UI/Experiments/MapsLabRunView.swift; sourceTree = "<group>"; };
 		14C536C5BF6C7FEFCC16FE4A /* NetworkInspectorServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkInspectorServices.swift; path = AppleToolbox/Shared/Services/NetworkInspectorServices.swift; sourceTree = "<group>"; };
 		3386865B99C682145C16E4D3 /* NetworkInspectorRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkInspectorRunView.swift; path = AppleToolbox/UI/Experiments/NetworkInspectorRunView.swift; sourceTree = "<group>"; };
+		83294D80DB40E9AFB66C2EEB /* NetworkCapabilityServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkCapabilityServices.swift; path = AppleToolbox/Shared/Services/NetworkCapabilityServices.swift; sourceTree = "<group>"; };
+		7AFBECCA87E325C9A6B83FFD /* WiFiCapabilitiesRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WiFiCapabilitiesRunView.swift; path = AppleToolbox/UI/Experiments/WiFiCapabilitiesRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -808,6 +815,8 @@
 				F661F59035B6B57FC9CF6CF8 /* MapsLabRunView.swift */,
 				14C536C5BF6C7FEFCC16FE4A /* NetworkInspectorServices.swift */,
 				3386865B99C682145C16E4D3 /* NetworkInspectorRunView.swift */,
+				83294D80DB40E9AFB66C2EEB /* NetworkCapabilityServices.swift */,
+				7AFBECCA87E325C9A6B83FFD /* WiFiCapabilitiesRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1222,6 +1231,8 @@
 				7F1941C85AFA7AA7290BA700 /* MapsLabRunView.swift in Sources */,
 				601AB69689453B0B295A4FA8 /* NetworkInspectorServices.swift in Sources */,
 				7B530270C03457B0DF9D80E1 /* NetworkInspectorRunView.swift in Sources */,
+				48C7DBECB7C254697D8CC7C8 /* NetworkCapabilityServices.swift in Sources */,
+				BAAB07ADCB89BA661BD06A9B /* WiFiCapabilitiesRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1285,6 +1296,7 @@
 				F8D7DE4828F086A845423BE4 /* BluetoothGATTSupport.swift in Sources */,
 				EAE43697E862C4B7A0B3F851 /* AccessoryExperimentServices.swift in Sources */,
 				972235B9DFDDE9EC9025BCDB /* BeaconRangingService.swift in Sources */,
+				5315246DCF29B6BE8C97A1E5 /* NetworkCapabilityServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1438,6 +1450,8 @@
 				8C2448C29F0027FFA1CA992A /* MapsLabRunView.swift in Sources */,
 				DCE089A3EA68A1FBCE662EEF /* NetworkInspectorServices.swift in Sources */,
 				21D1334A2192B79235F8EF72 /* NetworkInspectorRunView.swift in Sources */,
+				33ACAEE7956769DC5BFEDB67 /* NetworkCapabilityServices.swift in Sources */,
+				5090F5DBB5418B63CDC8D86E /* WiFiCapabilitiesRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

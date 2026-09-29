@@ -3,13 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Joris Apple Toolbox uses your location to inspect live Core Location updates.</string>
+	<string>Joris Apple Toolbox uses your location to inspect live Core Location updates and, with Precise Location, to read the name of the connected Wi-Fi network.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Joris Apple Toolbox asks for Always access only when you choose to test visit and significant-change monitoring.</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>LiveDashboard</key>
 		<string>Precise location shows your exact position and lets the Core Location experiment monitor a small region around you.</string>
+		<key>WiFiInformation</key>
+		<string>Precise location lets the system reveal the name (SSID) and BSSID of the Wi-Fi network you are connected to.</string>
 	</dict>
 	<key>NSMotionUsageDescription</key>
 	<string>Joris Apple Toolbox reads steps, distance, floors and barometric altitude for the Core Motion experiment.</string>
