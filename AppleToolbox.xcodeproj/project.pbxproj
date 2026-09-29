@@ -122,6 +122,8 @@
 		014600BA1371D2D4E77485D1 /* DeviceScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBEF3E2F76F441D32CFAD5F /* DeviceScanner.swift */; };
 		EB97970FF0C458E04D92FD86 /* DeviceScannerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */; };
 		EA150673D2C12043831FF906 /* DeviceScannerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */; };
+		F9CE8A8EFE0A9ED9BDFF2F08 /* WatchLabServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD355AB8036A97EE4652A61 /* WatchLabServices.swift */; };
+		3216CE13790F630D9BCB5078 /* WatchLabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D35DE1C00677CD5C5B4E6A /* WatchLabViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -241,6 +243,8 @@
 		34EDDEEE432E2F625D463427 /* EntitlementExplorerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EntitlementExplorerView.swift; path = AppleToolbox/UI/EntitlementExplorerView.swift; sourceTree = "<group>"; };
 		AFBEF3E2F76F441D32CFAD5F /* DeviceScanner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeviceScanner.swift; path = AppleToolbox/Shared/CapabilitySystem/DeviceScanner.swift; sourceTree = "<group>"; };
 		A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeviceScannerRunView.swift; path = AppleToolbox/UI/Experiments/DeviceScannerRunView.swift; sourceTree = "<group>"; };
+		CFD355AB8036A97EE4652A61 /* WatchLabServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchLabServices.swift; path = AppleToolbox/WatchApp/WatchLabServices.swift; sourceTree = "<group>"; };
+		41D35DE1C00677CD5C5B4E6A /* WatchLabViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchLabViews.swift; path = AppleToolbox/WatchApp/WatchLabViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -252,6 +256,8 @@
 				Widget/AppleToolboxWidget.swift,
 				Widget/Info.plist,
 				AppleToolbox-tvOS.entitlements,
+				WatchApp/WatchLabServices.swift,
+				WatchApp/WatchLabViews.swift,
 			);
 			target = 5B13F610303DA61D00AA8D3F /* AppleToolbox iOS */;
 		};
@@ -428,6 +434,8 @@
 				34EDDEEE432E2F625D463427 /* EntitlementExplorerView.swift */,
 				AFBEF3E2F76F441D32CFAD5F /* DeviceScanner.swift */,
 				A1DCA6524C0A4F0DF09A2D3E /* DeviceScannerRunView.swift */,
+				CFD355AB8036A97EE4652A61 /* WatchLabServices.swift */,
+				41D35DE1C00677CD5C5B4E6A /* WatchLabViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -790,6 +798,8 @@
 				1DE96BB224D3B366E227511C /* AudioSessionController.swift in Sources */,
 				F56554927651290A64DB4A23 /* CapabilityRegistry.swift in Sources */,
 				014600BA1371D2D4E77485D1 /* DeviceScanner.swift in Sources */,
+				F9CE8A8EFE0A9ED9BDFF2F08 /* WatchLabServices.swift in Sources */,
+				3216CE13790F630D9BCB5078 /* WatchLabViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
