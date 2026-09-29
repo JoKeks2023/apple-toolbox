@@ -41,9 +41,11 @@
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Joris Apple Toolbox uses Bluetooth to scan for, connect to and advertise to nearby Bluetooth LE devices and to pair Bluetooth MIDI devices in the Bluetooth experiments.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Joris Apple Toolbox uses the camera for the Camera and Vision, ARKit and RoomPlan experiments.</string>
+	<string>Joris Apple Toolbox uses the camera for the Camera Lab, Camera and Vision, ARKit and RoomPlan experiments.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Joris Apple Toolbox uses the microphone for the Audio Input, Speech Recognition, Sound Analysis and ShazamKit experiments.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Joris Apple Toolbox saves a Camera Lab photo or video to your library only when you choose Save in its share sheet.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Joris Apple Toolbox uses speech recognition for the Speech experiment.</string>
 	<key>NSHomeKitUsageDescription</key>

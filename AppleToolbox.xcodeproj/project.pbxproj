@@ -344,6 +344,10 @@
 		D60C7FFDCC3637CC2A24C016 /* HealthKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */; };
 		DA50FEFC27E81BDEF0827783 /* HealthRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469DACD79441802363A7C56 /* HealthRunViews.swift */; };
 		904B20C154C8E4321B8D38A8 /* HealthRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1469DACD79441802363A7C56 /* HealthRunViews.swift */; };
+		CD8D3A4EA5A818862A1498BF /* CameraLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273C5380A7608600BAAB798E /* CameraLabService.swift */; };
+		88AEC658E10176073543FEE6 /* CameraLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273C5380A7608600BAAB798E /* CameraLabService.swift */; };
+		68485B07EEFE34CED7B2CB3C /* CameraLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */; };
+		8055348A9658F4D82184A5A1 /* CameraLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -560,6 +564,8 @@
 		9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeRunViews.swift; path = AppleToolbox/UI/Experiments/HomeRunViews.swift; sourceTree = "<group>"; };
 		50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthKitServices.swift; path = AppleToolbox/Shared/Services/HealthKitServices.swift; sourceTree = "<group>"; };
 		1469DACD79441802363A7C56 /* HealthRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthRunViews.swift; path = AppleToolbox/UI/Experiments/HealthRunViews.swift; sourceTree = "<group>"; };
+		273C5380A7608600BAAB798E /* CameraLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraLabService.swift; path = AppleToolbox/Shared/Services/CameraLabService.swift; sourceTree = "<group>"; };
+		8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraLabRunView.swift; path = AppleToolbox/UI/Experiments/CameraLabRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -847,6 +853,8 @@
 				9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */,
 				50708A6C3A661CB83E809AA7 /* HealthKitServices.swift */,
 				1469DACD79441802363A7C56 /* HealthRunViews.swift */,
+				273C5380A7608600BAAB798E /* CameraLabService.swift */,
+				8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1270,6 +1278,8 @@
 				A2BEBB310ACADE24D9A8E160 /* HomeRunViews.swift in Sources */,
 				90DC4FA15A53BC9C6EF47773 /* HealthKitServices.swift in Sources */,
 				DA50FEFC27E81BDEF0827783 /* HealthRunViews.swift in Sources */,
+				CD8D3A4EA5A818862A1498BF /* CameraLabService.swift in Sources */,
+				68485B07EEFE34CED7B2CB3C /* CameraLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1498,6 +1508,8 @@
 				E32A3B47C949B8EDDAD22968 /* HomeRunViews.swift in Sources */,
 				E13F6518A7D8CE79E9728906 /* HealthKitServices.swift in Sources */,
 				904B20C154C8E4321B8D38A8 /* HealthRunViews.swift in Sources */,
+				88AEC658E10176073543FEE6 /* CameraLabService.swift in Sources */,
+				8055348A9658F4D82184A5A1 /* CameraLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

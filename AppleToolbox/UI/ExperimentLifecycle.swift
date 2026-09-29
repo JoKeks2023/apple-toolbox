@@ -59,6 +59,7 @@ extension NFCCardEmulationService: StoppableExperiment {}
 extension NearbyExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension MultipeerConnectivityExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension CameraVisionExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
+extension CameraLabService: StoppableExperiment {}
 extension AudioExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension SpeechExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension ARExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
