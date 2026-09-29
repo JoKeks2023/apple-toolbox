@@ -26,5 +26,5 @@ The checklist for closing these gaps is issue #41.
 ## Known risks
 
 - Signing needs the new capabilities on the App IDs (HomeKit, HealthKit, NFC, Sign in with Apple, App Group for app and widget). A free Personal Team cannot provision all of them.
-- The watch app's bundle ID changed to `com.jorisconrad.AppleToolbox.ios.watchkitapp` (companion requirement); the tvOS bundle ID casing changed to `com.jorisconrad.AppleToolbox.tvos`. Previously installed builds remain as separate apps.
+- The watch app's bundle ID changed to `$(BUNDLE_ID_PREFIX).AppleToolbox.ios.watchkitapp` (companion requirement); the tvOS bundle ID casing changed to `$(BUNDLE_ID_PREFIX).AppleToolbox.tvos`. Previously installed builds remain as separate apps.
 - The macOS target has no entitlements file (#38): protected Keychain items, Sign in with Apple, App Groups and App Attest are expected to fail there.

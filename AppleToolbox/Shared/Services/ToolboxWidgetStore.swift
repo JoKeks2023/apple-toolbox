@@ -66,11 +66,11 @@ nonisolated struct ToolboxWidgetKindInfo: Identifiable, Equatable, Sendable {
 
 /// App Group store shared by the iOS app and the widget extension.
 nonisolated enum ToolboxWidgetStore {
-    static let appGroup = "group.com.jorisconrad.AppleToolbox"
+    static let appGroup = ToolboxIdentifiers.appGroup
     static let widgetKind = "AppleToolboxWidget"
     static let interactiveWidgetKind = "AppleToolboxInteractiveWidget"
-    static let openAppControlKind = "com.jorisconrad.AppleToolbox.control.open"
-    static let favoriteControlKind = "com.jorisconrad.AppleToolbox.control.favorite"
+    static let openAppControlKind = "\(ToolboxIdentifiers.base).control.open"
+    static let favoriteControlKind = "\(ToolboxIdentifiers.base).control.favorite"
     private static let snapshotKey = "widget.lastOpenedExperiment"
     private static let interactiveKey = "widget.interactiveState"
 

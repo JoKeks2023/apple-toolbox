@@ -209,7 +209,7 @@ final class LocalAuthenticationExperimentService: ObservableObject {
     @Published private(set) var isRunning = false
     @Published private(set) var rightState = "No LARight created yet"
 
-    static let persistedRightIdentifier = "com.jorisconrad.appletoolbox.la-right"
+    static let persistedRightIdentifier = "\(ToolboxIdentifiers.base).la-right"
     private let domainStates = DomainStateStore()
     #if canImport(LocalAuthentication) && (os(iOS) || os(macOS))
     private var evaluationContext: LAContext?

@@ -281,9 +281,13 @@ Grouped the way the app's sidebar is. Generated from the source with `scripts/ge
 
 **Requirements:** Xcode 26 or newer. Deployment targets: iOS / iPadOS 26.5, macOS 26.5, tvOS 26.0, watchOS 11.0.
 
-1. Clone the repository and open `AppleToolbox.xcodeproj`.
-2. In **Signing & Capabilities**, replace the development team (`T9CA6D7T8N`) with your own for the targets you want to run, and adjust the bundle identifiers if they are taken.
-3. Pick a scheme — `AppleToolbox iOS`, `AppleToolbox macOS`, `AppleToolbox tvOS` or `AppleToolbox watchOS` — and run.
+1. Clone the repository.
+2. Set your signing team and a bundle ID prefix you own — once, for every target:
+   ```sh
+   cp Config/Local.xcconfig.example Config/Local.xcconfig   # git-ignored
+   ```
+   Fill in `DEVELOPMENT_TEAM` and `BUNDLE_ID_PREFIX`. The bundle IDs, the App Group and the shared keychain group are all derived from the prefix (see `Config/Signing.xcconfig`), so there is nothing to change in the project.
+3. Open `AppleToolbox.xcodeproj`, pick a scheme — `AppleToolbox iOS`, `AppleToolbox macOS`, `AppleToolbox tvOS` or `AppleToolbox watchOS` — and run.
 
 The Simulator works for most of the UI, but sensors, radios, the Secure Enclave, NFC, UWB, LiDAR and Pencil need real hardware; there the app reports **Device Only** instead of pretending.
 

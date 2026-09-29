@@ -19,7 +19,7 @@ extension ExperimentRegistry {
                 summary: "Pin the last opened experiment from the Toolbox Controls widget or the Pin control and watch the shared state change here.",
                 interaction: "Add the widget and the controls, tap refresh or the pin, then list and reload them here. Each intent run names the process it ran in."),
             explanations: [
-                .entitlementRequired: ExperimentExplanation(reason: "The App Group container is not provisioned, so the app cannot share data with its widget.", required: "com.apple.security.application-groups with group.com.jorisconrad.AppleToolbox for the app and the widget extension",
+                .entitlementRequired: ExperimentExplanation(reason: "The App Group container is not provisioned, so the app cannot share data with its widget.", required: "com.apple.security.application-groups with \(ToolboxIdentifiers.appGroup) for the app and the widget extension",
                     nextStep: "Register the App Group for both App IDs in Signing & Capabilities and reinstall the app."),
             ]),
         ExperimentDescriptor(id: "live-activities", name: "Live Activities", category: .system,

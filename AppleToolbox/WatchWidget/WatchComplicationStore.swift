@@ -16,10 +16,10 @@ nonisolated struct WatchComplicationSnapshot: Codable, Equatable, Sendable {
 
 /// App Group store shared by the watch app (writer) and its widget extension (reader).
 nonisolated enum WatchComplicationStore {
-    static let appGroup = "group.com.jorisconrad.AppleToolbox"
+    static let appGroup = ToolboxIdentifiers.appGroup
     static let widgetKind = "AppleToolboxWatchComplication"
     /// Passed as `userInfo` when scheduling, so SwiftUI routes the task to `.backgroundTask(.appRefresh(_:))`.
-    static let refreshIdentifier = "com.jorisconrad.AppleToolbox.watch.complication-refresh"
+    static let refreshIdentifier = "\(ToolboxIdentifiers.base).watch.complication-refresh"
     private static let snapshotKey = "watch.complication"
 
     /// nil when the App Group is not provisioned for this process; `UserDefaults(suiteName:)` would still succeed

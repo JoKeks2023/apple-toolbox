@@ -21,7 +21,7 @@ struct WidgetInteractiveTests {
     @Test func recordsInteractionsNewestFirstWithinTheLimit() {
         var state = ToolboxInteractiveState()
         for index in 0..<(ToolboxInteractiveState.interactionLimit + 3) {
-            state.record("Refresh \(index)", bundleIdentifier: "com.jorisconrad.AppleToolbox.ios.widget", at: Date(timeIntervalSinceReferenceDate: Double(index)))
+            state.record("Refresh \(index)", bundleIdentifier: "com.example.AppleToolbox.ios.widget", at: Date(timeIntervalSinceReferenceDate: Double(index)))
         }
         #expect(state.interactions.count == ToolboxInteractiveState.interactionLimit)
         #expect(state.interactions.first?.intent == "Refresh \(ToolboxInteractiveState.interactionLimit + 2)")
@@ -29,8 +29,8 @@ struct WidgetInteractiveTests {
     }
 
     @Test func namesTheProcessThatRanAnIntent() {
-        #expect(ToolboxInteractiveState.processName("com.jorisconrad.AppleToolbox.ios.widget") == "widget extension")
-        #expect(ToolboxInteractiveState.processName("com.jorisconrad.AppleToolbox.ios") == "app")
+        #expect(ToolboxInteractiveState.processName("com.example.AppleToolbox.ios.widget") == "widget extension")
+        #expect(ToolboxInteractiveState.processName("com.example.AppleToolbox.ios") == "app")
         #expect(ToolboxInteractiveState.processName(nil) == "unknown process")
         #expect(ToolboxInteractiveState.processName("com.example.other") == "com.example.other")
     }

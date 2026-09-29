@@ -56,7 +56,7 @@
 	<string>Joris Apple Toolbox discovers nearby devices and local network services for the MultipeerConnectivity, Network Inspector and Spatial Link experiments, and runs the inspector's echo listener.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
-		<string>com.jorisconrad.AppleToolbox.experiment</string>
+		<string>$(BUNDLE_ID_PREFIX).AppleToolbox.experiment</string>
 	</array>
 	<key>NSBonjourServices</key>
 	<array>

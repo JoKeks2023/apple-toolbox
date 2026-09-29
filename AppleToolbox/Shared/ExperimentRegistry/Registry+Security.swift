@@ -63,7 +63,7 @@ extension ExperimentRegistry {
             documentationURL: URL(string: "https://developer.apple.com/documentation/security/sharing-access-to-keychain-items-among-a-collection-of-apps")!, evaluate: ExperimentAvailability.keychainSharing,
             useCase: ExperimentUseCase(id: "shared-credential", title: "Share a credential between your apps", summary: "Put a secret into a keychain access group that other apps of the same team can read, optionally synced through iCloud Keychain.", interaction: "Check the access groups, pick one, save and read an item, and list what the app can see in each group."),
             explanations: [
-                .entitlementRequired: ExperimentExplanation(reason: "This build declares no keychain-access-groups entitlement, so it can only use its default access group.", required: "The Keychain Sharing capability listing $(AppIdentifierPrefix)com.jorisconrad.AppleToolbox.shared (the iOS target has it)",
+                .entitlementRequired: ExperimentExplanation(reason: "This build declares no keychain-access-groups entitlement, so it can only use its default access group.", required: "The Keychain Sharing capability listing $(AppIdentifierPrefix)\(ToolboxIdentifiers.base).shared (the iOS target has it)",
                     nextStep: "Add Keychain Sharing under Signing & Capabilities for this target. The buttons below still run and show errSecMissingEntitlement for the shared group."),
             ]),
         ExperimentDescriptor(id: "security-keys", name: "Security Keys (WebAuthn)", category: .security,

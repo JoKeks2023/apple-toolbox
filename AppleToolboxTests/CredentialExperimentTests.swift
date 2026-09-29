@@ -3,19 +3,19 @@ import Foundation
 @testable import AppleToolbox
 
 struct KeychainSharingTests {
-    private let defaultGroup = "T9CA6D7T8N.com.jorisconrad.AppleToolbox.ios"
+    private let defaultGroup = "ABCDE12345.\(ToolboxIdentifiers.base).ios"
 
     @Test func readsTheTeamPrefixOfAnAccessGroup() {
-        #expect(KeychainSharingStore.teamPrefix(defaultGroup) == "T9CA6D7T8N")
-        #expect(KeychainSharingStore.teamPrefix("group.com.jorisconrad.AppleToolbox") == nil)
+        #expect(KeychainSharingStore.teamPrefix(defaultGroup) == "ABCDE12345")
+        #expect(KeychainSharingStore.teamPrefix("group.com.example.AppleToolbox") == nil)
         #expect(KeychainSharingStore.teamPrefix("com.apple.token") == nil)
         #expect(KeychainSharingStore.teamPrefix("") == nil)
     }
 
     @Test func namesEveryAccessGroupOption() {
         #expect(KeychainAccessGroupOption.appDefault.accessGroup(defaultGroup: defaultGroup) == defaultGroup)
-        #expect(KeychainAccessGroupOption.shared.accessGroup(defaultGroup: defaultGroup) == "T9CA6D7T8N.com.jorisconrad.AppleToolbox.shared")
-        #expect(KeychainAccessGroupOption.appGroup.accessGroup(defaultGroup: nil) == "group.com.jorisconrad.AppleToolbox")
+        #expect(KeychainAccessGroupOption.shared.accessGroup(defaultGroup: defaultGroup) == "ABCDE12345.\(ToolboxIdentifiers.base).shared")
+        #expect(KeychainAccessGroupOption.appGroup.accessGroup(defaultGroup: nil) == ToolboxIdentifiers.appGroup)
         #expect(KeychainAccessGroupOption.shared.accessGroup(defaultGroup: nil) == nil)
     }
 

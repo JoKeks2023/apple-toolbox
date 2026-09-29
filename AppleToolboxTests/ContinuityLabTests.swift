@@ -64,14 +64,14 @@ struct ContinuityLabTests {
 
     @Test func reportsWhetherTheFileLinksThisApp() throws {
         let url = try #require(URL(string: "https://example.com/.well-known/apple-app-site-association"))
-        let file = Data(#"{"applinks": {"details": [{"appIDs": ["T9CA6D7T8N.com.jorisconrad.AppleToolbox.ios"], "components": [{"/": "*"}]}]}}"#.utf8)
-        let linked = UniversalLinks.report(requestedURL: url, finalURL: url, statusCode: 200, contentType: "application/json", data: file, appID: "T9CA6D7T8N.com.jorisconrad.AppleToolbox.ios")
+        let file = Data(#"{"applinks": {"details": [{"appIDs": ["ABCDE12345.com.example.AppleToolbox.ios"], "components": [{"/": "*"}]}]}}"#.utf8)
+        let linked = UniversalLinks.report(requestedURL: url, finalURL: url, statusCode: 200, contentType: "application/json", data: file, appID: "ABCDE12345.com.example.AppleToolbox.ios")
         #expect(linked.linksThisApp == true)
-        let other = UniversalLinks.report(requestedURL: url, finalURL: url, statusCode: 200, contentType: "application/json", data: file, appID: "T9CA6D7T8N.com.other")
+        let other = UniversalLinks.report(requestedURL: url, finalURL: url, statusCode: 200, contentType: "application/json", data: file, appID: "ABCDE12345.com.other")
         #expect(other.linksThisApp == false)
         let unknown = UniversalLinks.report(requestedURL: url, finalURL: url, statusCode: 200, contentType: nil, data: file, appID: nil)
         #expect(unknown.linksThisApp == nil)
-        let missing = UniversalLinks.report(requestedURL: url, finalURL: url, statusCode: 404, contentType: "text/html", data: Data(), appID: "T9CA6D7T8N.com.other")
+        let missing = UniversalLinks.report(requestedURL: url, finalURL: url, statusCode: 404, contentType: "text/html", data: Data(), appID: "ABCDE12345.com.other")
         #expect(missing.linksThisApp == false)
         let redirected = UniversalLinks.report(requestedURL: url, finalURL: URL(string: "https://www.example.com/.well-known/apple-app-site-association"), statusCode: 200, contentType: nil, data: file, appID: nil)
         #expect(redirected.text.contains("Redirected"))

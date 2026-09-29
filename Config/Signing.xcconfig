@@ -1,0 +1,12 @@
+// Signing team and bundle ID prefix for every target (the project's base configuration).
+//
+// Leave this file as it is and put your own values in Config/Local.xcconfig, which git ignores:
+//     cp Config/Local.xcconfig.example Config/Local.xcconfig
+//
+// The bundle IDs become $(BUNDLE_ID_PREFIX).AppleToolbox.ios, .macos, .tvos, …; the App Group, the shared keychain
+// group and the Handoff activity type are built from the same prefix in the entitlements, Info.plist and code.
+
+DEVELOPMENT_TEAM =
+BUNDLE_ID_PREFIX = com.example
+
+#include? "Local.xcconfig"

@@ -47,9 +47,9 @@ nonisolated enum KeychainProtection: String, CaseIterable, Identifiable {
 }
 
 nonisolated struct KeychainService {
-    private static let account = "com.jorisconrad.appletoolbox.demo"
-    private static let protectedAccount = "com.jorisconrad.appletoolbox.protected"
-    private static let service = "com.jorisconrad.appletoolbox"
+    private static let account = "\(ToolboxIdentifiers.base).demo"
+    private static let protectedAccount = "\(ToolboxIdentifiers.base).protected"
+    private static let service = ToolboxIdentifiers.base
 
     static func save(value: String = "Keychain test · \(ISO8601DateFormatter().string(from: Date()))") -> String {
         #if canImport(Security)
@@ -163,8 +163,8 @@ nonisolated struct KeychainService {
 }
 
 nonisolated struct SecureEnclaveService {
-    private static let service = "com.jorisconrad.appletoolbox"
-    private static let keyAccount = "com.jorisconrad.appletoolbox.secure-enclave-key"
+    private static let service = ToolboxIdentifiers.base
+    private static let keyAccount = "\(ToolboxIdentifiers.base).secure-enclave-key"
     private static let userPresence = "requires user presence"
     private static let noProtection = "no user presence required"
 

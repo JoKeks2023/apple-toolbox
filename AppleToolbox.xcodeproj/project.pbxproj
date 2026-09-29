@@ -443,6 +443,11 @@
 		D59858E9D43B812BA32E4A8E /* WatchComplicationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E01391F8A8017A8FA8BABC2 /* WatchComplicationStore.swift */; };
 		829801854F06034263EC3D6B /* AppleToolboxWatchWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7B12C6D2F54B96688718D9 /* AppleToolboxWatchWidget.swift */; };
 		0CBFF294C311053E8D12454B /* WatchComplicationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E01391F8A8017A8FA8BABC2 /* WatchComplicationStore.swift */; };
+		A028762A56823163D6718DD9 /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
+		ACDC03D54FD144B3AF07D744 /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
+		37E8999898E66B6BDAA683E3 /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
+		F7F4B43FF873E836A519C018 /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
+		2E0675F31F95701E98445A41 /* ToolboxIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -736,6 +741,8 @@
 		AD0A0672A612B29A46C93F62 /* WatchHealthServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchHealthServices.swift; path = AppleToolbox/WatchApp/WatchHealthServices.swift; sourceTree = "<group>"; };
 		8E01391F8A8017A8FA8BABC2 /* WatchComplicationStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchComplicationStore.swift; path = AppleToolbox/WatchWidget/WatchComplicationStore.swift; sourceTree = "<group>"; };
 		EC7B12C6D2F54B96688718D9 /* AppleToolboxWatchWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleToolboxWatchWidget.swift; path = AppleToolbox/WatchWidget/AppleToolboxWatchWidget.swift; sourceTree = "<group>"; };
+		D906B9CADD3C34A4E50C0F6D /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Signing.xcconfig; path = Config/Signing.xcconfig; sourceTree = "<group>"; };
+		6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxIdentifiers.swift; path = AppleToolbox/Shared/Models/ToolboxIdentifiers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -911,6 +918,7 @@
 		5B13F608303DA61D00AA8D3F = {
 			isa = PBXGroup;
 			children = (
+				D906B9CADD3C34A4E50C0F6D /* Signing.xcconfig */,
 				5B13F613303DA61D00AA8D3F /* AppleToolbox */,
 				5B13F625303DA62000AA8D3F /* AppleToolboxTests */,
 				5B13F62F303DA62000AA8D3F /* AppleToolboxUITests */,
@@ -1098,6 +1106,7 @@
 				AD0A0672A612B29A46C93F62 /* WatchHealthServices.swift */,
 				8E01391F8A8017A8FA8BABC2 /* WatchComplicationStore.swift */,
 				EC7B12C6D2F54B96688718D9 /* AppleToolboxWatchWidget.swift */,
+				6B1C7F8509453C26CC7D0691 /* ToolboxIdentifiers.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1616,6 +1625,7 @@
 				23387DFDDABDB8C5718A0955 /* PlatformRunViews.swift in Sources */,
 				36A8F90595B65C064F7FBB51 /* IPadLabServices.swift in Sources */,
 				6CCB4CDA6B1B0F443F82411E /* IPadLabRunViews.swift in Sources */,
+				A028762A56823163D6718DD9 /* ToolboxIdentifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1690,6 +1700,7 @@
 				641A40821D793C1C86A8F97F /* IPadLabServices.swift in Sources */,
 				11EA2847922A2BAC26AD7DCF /* WatchHealthServices.swift in Sources */,
 				D59858E9D43B812BA32E4A8E /* WatchComplicationStore.swift in Sources */,
+				37E8999898E66B6BDAA683E3 /* ToolboxIdentifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1892,6 +1903,7 @@
 				A7C5F9570F280C2C959602ED /* PlatformRunViews.swift in Sources */,
 				CEDFD00567200746D40A263D /* IPadLabServices.swift in Sources */,
 				DE73DF1A2990AC74742BE1D5 /* IPadLabRunViews.swift in Sources */,
+				ACDC03D54FD144B3AF07D744 /* ToolboxIdentifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1906,6 +1918,7 @@
 				1DDCB5D8168B0E06E710BA3A /* ToolboxInteractiveWidget.swift in Sources */,
 				02A224D70700BDDC0CDA5A85 /* ToolboxControls.swift in Sources */,
 				CD11E1B628F7B13C083086BA /* ToolboxWidgetIntents.swift in Sources */,
+				F7F4B43FF873E836A519C018 /* ToolboxIdentifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1924,6 +1937,7 @@
 			files = (
 				829801854F06034263EC3D6B /* AppleToolboxWatchWidget.swift in Sources */,
 				0CBFF294C311053E8D12454B /* WatchComplicationStore.swift in Sources */,
+				2E0675F31F95701E98445A41 /* ToolboxIdentifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1975,7 +1989,6 @@
 				CODE_SIGN_ENTITLEMENTS = AppleToolbox/AppleToolbox-tvOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppleToolbox/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
@@ -1984,7 +1997,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.tvos;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.tvos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -2004,12 +2017,11 @@
 				CODE_SIGN_ENTITLEMENTS = AppleToolbox/Widget/AppleToolboxWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AppleToolbox/Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
@@ -2051,7 +2063,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.macos;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.macos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
@@ -2072,7 +2084,6 @@
 				CODE_SIGN_ENTITLEMENTS = AppleToolbox/AppleToolbox.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2096,7 +2107,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios";
 				PRODUCT_MODULE_NAME = AppleToolbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -2120,7 +2131,6 @@
 				CODE_SIGN_ENTITLEMENTS = AppleToolbox/AppleToolbox.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2144,7 +2154,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios";
 				PRODUCT_MODULE_NAME = AppleToolbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -2162,6 +2172,7 @@
 		};
 		5B13F638303DA62000AA8D3F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D906B9CADD3C34A4E50C0F6D /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2195,7 +2206,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2224,6 +2234,7 @@
 		};
 		5B13F639303DA62000AA8D3F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D906B9CADD3C34A4E50C0F6D /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2257,7 +2268,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2282,11 +2292,10 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolboxTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolboxTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -2307,11 +2316,10 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolboxTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolboxTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -2331,11 +2339,10 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolboxUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolboxUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -2354,11 +2361,10 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolboxUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolboxUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -2380,7 +2386,6 @@
 				CODE_SIGN_ENTITLEMENTS = AppleToolbox/AppleToolbox-tvOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppleToolbox/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
@@ -2389,7 +2394,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.tvos;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.tvos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -2429,7 +2434,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.macos;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.macos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
@@ -2449,12 +2454,11 @@
 				CODE_SIGN_ENTITLEMENTS = AppleToolbox/Widget/AppleToolboxWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AppleToolbox/Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
@@ -2475,13 +2479,12 @@
 				CODE_SIGN_ENTITLEMENTS = AppleToolbox/WatchApp/AppleToolboxWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Joris Apple Toolbox reads your heart rate on Apple Watch for the Heart Rate screen and its complication, and only shows it on this watch.";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.jorisconrad.AppleToolbox.ios;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = watchos;
@@ -2505,13 +2508,12 @@
 				CODE_SIGN_ENTITLEMENTS = AppleToolbox/WatchApp/AppleToolboxWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Joris Apple Toolbox reads your heart rate on Apple Watch for the Heart Rate screen and its complication, and only shows it on this watch.";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.jorisconrad.AppleToolbox.ios;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = watchos;
@@ -2532,12 +2534,11 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AppleToolbox/NotificationContent/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jorisconrad.AppleToolbox.ios.notification-content";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.notification-content";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -2556,12 +2557,11 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AppleToolbox/NotificationContent/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jorisconrad.AppleToolbox.ios.notification-content";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.notification-content";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -2579,11 +2579,10 @@
 				CODE_SIGN_ENTITLEMENTS = AppleToolbox/WatchWidget/AppleToolboxWatchWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AppleToolbox/WatchWidget/Info.plist;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.watchkitapp.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.watchkitapp.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = watchos;
@@ -2605,11 +2604,10 @@
 				CODE_SIGN_ENTITLEMENTS = AppleToolbox/WatchWidget/AppleToolboxWatchWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AppleToolbox/WatchWidget/Info.plist;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.watchkitapp.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_ID_PREFIX).AppleToolbox.ios.watchkitapp.widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = watchos;

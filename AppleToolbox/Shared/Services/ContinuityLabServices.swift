@@ -13,7 +13,8 @@ import CoreTransferable
 /// The `NSUserActivity` each open experiment advertises for Handoff. Handoff only offers activity types the
 /// receiving app declares in `NSUserActivityTypes`, and only between apps signed by the same team.
 nonisolated enum ExperimentHandoff {
-    static let activityType = "com.jorisconrad.AppleToolbox.experiment"
+    /// Info.plist declares it as `$(BUNDLE_ID_PREFIX).AppleToolbox.experiment`.
+    static let activityType = "\(ToolboxIdentifiers.base).experiment"
     static let experimentIDKey = "experimentID"
     static let infoPlistKey = "NSUserActivityTypes"
 
@@ -294,7 +295,7 @@ final class UniversalLinksService: ObservableObject {
 #if canImport(GroupActivities) && (os(iOS) || os(macOS))
 /// "Explore together": everyone in the FaceTime call or Messages conversation follows the experiment a participant opens.
 nonisolated struct ExploreTogetherActivity: GroupActivity, Sendable {
-    static let activityIdentifier = "com.jorisconrad.AppleToolbox.explore-together"
+    static let activityIdentifier = "\(ToolboxIdentifiers.base).explore-together"
 
     var metadata: GroupActivityMetadata {
         var metadata = GroupActivityMetadata()

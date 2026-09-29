@@ -26,12 +26,12 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.jorisconrad.AppleToolbox</string>
+		<string>group.$(BUNDLE_ID_PREFIX).AppleToolbox</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
 		<string>$(AppIdentifierPrefix)$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-		<string>$(AppIdentifierPrefix)com.jorisconrad.AppleToolbox.shared</string>
+		<string>$(AppIdentifierPrefix)$(BUNDLE_ID_PREFIX).AppleToolbox.shared</string>
 	</array>
 </dict>
 </plist>

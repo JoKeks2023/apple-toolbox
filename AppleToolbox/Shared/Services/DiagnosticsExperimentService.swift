@@ -27,7 +27,7 @@ enum DiagnosticLogLevel: String, CaseIterable, Identifiable {
 /// cellular radio access technology (Field Test Mode's public subset).
 @MainActor
 final class DiagnosticsExperimentService: NSObject, ObservableObject {
-    nonisolated static let subsystem = Bundle.main.bundleIdentifier ?? "com.jorisconrad.AppleToolbox"
+    nonisolated static let subsystem = Bundle.main.bundleIdentifier ?? ToolboxIdentifiers.base
     private static let logger = Logger(subsystem: subsystem, category: "Diagnostics")
 
     @Published private(set) var output = "Write test entries or load the app's own log."

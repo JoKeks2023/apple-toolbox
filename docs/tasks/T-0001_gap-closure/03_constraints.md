@@ -5,4 +5,4 @@
 - **Philosophy (SPEC.md):** only public APIs, never fake results, never bypass entitlements; unsupported states are explained.
 - **Git:** push directly to `main`; one commit per issue; no squash merges; agents work in separate worktrees and their commits are cherry-picked onto `main`.
 - **UI rule:** enumerable choices use a Picker (dropdown), not free text.
-- **Signing:** new capabilities (HomeKit, HealthKit, NFC, App Groups, Sign in with Apple, …) must be enabled for the App IDs of team T9CA6D7T8N; automatic signing is expected to register them on the first device build.
+- **Signing:** new capabilities (HomeKit, HealthKit, NFC, App Groups, Sign in with Apple, …) must be enabled for the App IDs of the signing team (set in `Config/Local.xcconfig`, see `Config/Signing.xcconfig`); automatic signing is expected to register them on the first device build.

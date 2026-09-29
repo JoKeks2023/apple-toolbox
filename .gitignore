@@ -16,3 +16,6 @@ build/
 # Swift Package Manager
 .swiftpm/
 Package.resolved
+
+# Local signing (see Config/Signing.xcconfig)
+Config/Local.xcconfig

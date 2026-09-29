@@ -9,8 +9,8 @@ import Security
 nonisolated enum KeychainAccessGroupOption: String, CaseIterable, Identifiable, Sendable {
     case appDefault, shared, appGroup
 
-    static let sharedGroupSuffix = "com.jorisconrad.AppleToolbox.shared"
-    static let appGroupIdentifier = "group.com.jorisconrad.AppleToolbox"
+    static let sharedGroupSuffix = "\(ToolboxIdentifiers.base).shared"
+    static let appGroupIdentifier = ToolboxIdentifiers.appGroup
 
     var id: String { rawValue }
     var title: String {
@@ -50,7 +50,7 @@ nonisolated struct KeychainSharingReport: Sendable {
 
 /// Keychain calls for the sharing lab. Every result is the real OSStatus; nothing is cached or simulated.
 nonisolated enum KeychainSharingStore {
-    static let service = "com.jorisconrad.appletoolbox.sharing"
+    static let service = "\(ToolboxIdentifiers.base).sharing"
     static let account = "shared-demo"
 
     // MARK: Pure helpers
