@@ -167,6 +167,8 @@
 		C4E90154EC9D5477636F2490 /* ShazamKitRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FF487C4E4F3DC0834277E5 /* ShazamKitRunView.swift */; };
 		036456533EAEDDBB22902835 /* RoomPlanRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2622D29D41C1BD604E8A44 /* RoomPlanRunView.swift */; };
 		B9ED3B6763F50CC2A2A77BD4 /* RoomPlanRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2622D29D41C1BD604E8A44 /* RoomPlanRunView.swift */; };
+		51AC604608BC29988A57A0F3 /* IndoorMapRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2A9BF7FEB0F98C6C5EA88 /* IndoorMapRunView.swift */; };
+		629343AE63A45DF45620B3F9 /* IndoorMapRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2A9BF7FEB0F98C6C5EA88 /* IndoorMapRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -308,6 +310,7 @@
 		0D20BC5F9B0F34C9FE0D0677 /* SecureStorageServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureStorageServices.swift; path = AppleToolbox/Shared/Services/SecureStorageServices.swift; sourceTree = "<group>"; };
 		40FF487C4E4F3DC0834277E5 /* ShazamKitRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ShazamKitRunView.swift; path = AppleToolbox/UI/Experiments/ShazamKitRunView.swift; sourceTree = "<group>"; };
 		FA2622D29D41C1BD604E8A44 /* RoomPlanRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RoomPlanRunView.swift; path = AppleToolbox/UI/Experiments/RoomPlanRunView.swift; sourceTree = "<group>"; };
+		3AE2A9BF7FEB0F98C6C5EA88 /* IndoorMapRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IndoorMapRunView.swift; path = AppleToolbox/UI/Experiments/IndoorMapRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -520,6 +523,7 @@
 				0D20BC5F9B0F34C9FE0D0677 /* SecureStorageServices.swift */,
 				40FF487C4E4F3DC0834277E5 /* ShazamKitRunView.swift */,
 				FA2622D29D41C1BD604E8A44 /* RoomPlanRunView.swift */,
+				3AE2A9BF7FEB0F98C6C5EA88 /* IndoorMapRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -868,6 +872,7 @@
 				1210675432719EAC472083CE /* SecureStorageServices.swift in Sources */,
 				081BE9E790018F5C1D195631 /* ShazamKitRunView.swift in Sources */,
 				036456533EAEDDBB22902835 /* RoomPlanRunView.swift in Sources */,
+				51AC604608BC29988A57A0F3 /* IndoorMapRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -994,6 +999,7 @@
 				B00F77C58B2576A8826F664A /* SecureStorageServices.swift in Sources */,
 				C4E90154EC9D5477636F2490 /* ShazamKitRunView.swift in Sources */,
 				B9ED3B6763F50CC2A2A77BD4 /* RoomPlanRunView.swift in Sources */,
+				629343AE63A45DF45620B3F9 /* IndoorMapRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

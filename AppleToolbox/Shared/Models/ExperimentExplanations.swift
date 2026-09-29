@@ -108,6 +108,10 @@ extension ExperimentDescriptor {
             .permissionDenied: ExperimentExplanation(reason: "Camera access was denied, and RoomPlan scans the room through the camera.", required: "Camera Usage Description",
                                                      nextStep: "Allow camera access in Settings › Privacy & Security › Camera, then return to the app."),
         ],
+        "indoor-imdf": [
+            .platformUnsupported: ExperimentExplanation(reason: "IMDF archives are imported through the document picker, which Apple TV and Apple Watch do not offer to this app.", required: "iOS, iPadOS or macOS",
+                                                        nextStep: "Open Apple Toolbox on iPhone, iPad or Mac and import the unzipped IMDF folder."),
+        ],
         "shazamkit": [
             .hardwareUnsupported: ExperimentExplanation(reason: "No microphone input is available, so ShazamKit has no audio to match.", required: "A built-in or connected microphone",
                                                         nextStep: "Connect a microphone or run the experiment on iPhone, iPad or a Mac with a microphone."),

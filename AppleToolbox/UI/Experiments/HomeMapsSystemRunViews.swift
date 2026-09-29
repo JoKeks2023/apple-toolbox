@@ -1,7 +1,4 @@
 import SwiftUI
-#if canImport(UniformTypeIdentifiers)
-import UniformTypeIdentifiers
-#endif
 
 struct MapKitSearchRunView: View {
     @StateObject private var maps = MapExperimentService()
@@ -11,24 +8,6 @@ struct MapKitSearchRunView: View {
         Button(maps.isSearching ? "Searching…" : "Search", action: maps.search).buttonStyle(.borderedProminent).disabled(maps.isSearching || maps.query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         MapResultsView(results: maps.results)
         OutputView(text: maps.output, isError: maps.output.localizedCaseInsensitiveContains("error") || maps.output.localizedCaseInsensitiveContains("not available"))
-    }
-}
-
-struct IndoorIMDFRunView: View {
-    @StateObject private var indoor = IndoorIMDFExperimentService()
-    @State private var showingImporter = false
-
-    var body: some View {
-        Button("Import IMDF JSON", action: { showingImporter = true }).buttonStyle(.borderedProminent)
-            #if canImport(UniformTypeIdentifiers) && !os(tvOS)
-            .fileImporter(isPresented: $showingImporter, allowedContentTypes: [.json], allowsMultipleSelection: false) { result in
-                switch result {
-                case .success(let urls): if let url = urls.first { indoor.load(url: url) }
-                case .failure(let error): indoor.reportImportFailure(error)
-                }
-            }
-            #endif
-        OutputView(text: indoor.output, isError: indoor.status == .unavailable)
     }
 }
 
