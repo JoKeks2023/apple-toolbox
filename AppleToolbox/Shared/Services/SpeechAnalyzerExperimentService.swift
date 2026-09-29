@@ -218,6 +218,12 @@ final class SpeechAnalyzerExperimentService: ObservableObject {
     /// Live: ends the input and lets the analyzer finalize the volatile text. File: cancels the analysis.
     func stop() {
         #if canImport(Speech) && canImport(AVFoundation) && (os(iOS) || os(macOS))
+        if !isRunning, runTask != nil || installProgress != nil {
+            // An asset install started from installAssets(): cancel the download.
+            runTask?.cancel()
+            runTask = nil
+            return
+        }
         guard isRunning, !isFinishing else { return }
         guard let analyzer else {
             // Still downloading assets or preparing: nothing has been analyzed yet.
@@ -323,11 +329,18 @@ final class SpeechAnalyzerExperimentService: ObservableObject {
             guard let format = await SpeechAnalyzer.bestAvailableAudioFormat(compatibleWith: [transcriber]) else {
                 return finishRun("SpeechAnalyzer.bestAvailableAudioFormat returned nil for this transcriber.", error: true)
             }
-            try AudioSessionController.activateForRecording()
+            // Set before the await: a stop meanwhile enqueues its deactivation after this activation.
             isAudioSessionActive = true
-            let input = engine.inputNode
-            let micFormat = input.outputFormat(forBus: 0)
-            guard micFormat.sampleRate > 0, micFormat.channelCount > 0 else {
+            try await AudioSessionController.activateForRecording()
+            guard isRunning, !isFinishing, !Task.isCancelled else { return }
+            let queueEngine = engine // Only touched on the audio queue.
+            nonisolated(unsafe) var queueFormat: AVAudioFormat?
+            try await AudioSessionController.perform {
+                // The first inputNode access brings up the I/O unit, which can block.
+                queueFormat = queueEngine.inputNode.outputFormat(forBus: 0)
+            }
+            guard isRunning, !isFinishing, !Task.isCancelled else { return }
+            guard let micFormat = queueFormat, micFormat.sampleRate > 0, micFormat.channelCount > 0 else {
                 return finishRun("No audio input is available right now.", error: true)
             }
             inputFormat = Self.describe(micFormat)
@@ -345,10 +358,15 @@ final class SpeechAnalyzerExperimentService: ObservableObject {
             observe(transcriber)
             try await analyzer.prepareToAnalyze(in: format)
             try await analyzer.start(inputSequence: stream)
-            guard isRunning else { return }
-            input.installTap(onBus: 0, bufferSize: 4_096, format: micFormat, block: Self.makeTap(converter))
-            engine.prepare()
-            try engine.start()
+            guard isRunning, !isFinishing, !Task.isCancelled else { return }
+            try await AudioSessionController.perform {
+                let input = queueEngine.inputNode
+                input.installTap(onBus: 0, bufferSize: 4_096, format: micFormat, block: Self.makeTap(converter))
+                queueEngine.prepare()
+                do { try queueEngine.start() } catch { input.removeTap(onBus: 0); throw error }
+            }
+            // Stopped while starting: stopAudioInput() enqueued the engine stop after this start.
+            guard isRunning, !isFinishing, !Task.isCancelled else { return }
             setOutput("Listening in \(option.name)… Grey text is volatile and may still change; black text is finalized.", error: false)
         } catch {
             finishRun("Could not start live transcription: \(Self.describe(error))", error: true)
@@ -409,13 +427,17 @@ final class SpeechAnalyzerExperimentService: ObservableObject {
     }
 
     private func stopAudioInput() {
-        engine.inputNode.removeTap(onBus: 0)
-        if engine.isRunning { engine.stop() }
+        let queueEngine = engine // Only touched on the audio queue.
+        let converter = converter
+        AudioSessionController.enqueue {
+            queueEngine.inputNode.removeTap(onBus: 0)
+            if queueEngine.isRunning { queueEngine.stop() }
+            converter?.finish() // After the stop, so the last tap buffer is still delivered.
+        }
         if isAudioSessionActive {
             AudioSessionController.deactivate()
             isAudioSessionActive = false
         }
-        converter?.finish()
     }
 
     /// Built outside the main actor: the tap runs on the audio render thread and only hands the buffer to the converter's queue.
@@ -471,7 +493,14 @@ final class SpeechAnalyzerExperimentService: ObservableObject {
 
 #if !os(watchOS)
 extension SpeechAnalyzerExperimentService: StoppableExperiment {
-    var isActive: Bool { isRunning }
+    /// Includes an asset install in flight, so leaving the experiment cancels the download too.
+    var isActive: Bool {
+        #if canImport(Speech) && canImport(AVFoundation) && (os(iOS) || os(macOS))
+        isRunning || runTask != nil || installProgress != nil
+        #else
+        isRunning || installProgress != nil
+        #endif
+    }
 }
 #endif
 

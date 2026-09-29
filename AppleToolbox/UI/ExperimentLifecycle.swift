@@ -85,8 +85,8 @@ extension MultipeerConnectivityExperimentService: StoppableExperiment { var isAc
 extension VisionLabService: StoppableExperiment {}
 extension CameraLabService: StoppableExperiment {}
 extension AudioExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
-extension SpeechExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
+extension SpeechExperimentService: StoppableExperiment { var isActive: Bool { isRunning || isStarting } }
 extension ARLabService: StoppableExperiment {}
 extension ShazamExperimentService: StoppableExperiment { var isActive: Bool { isListening || isCapturing } }
 extension RoomPlanExperimentService: StoppableExperiment {}
-extension AudioFileRecorderService: StoppableExperiment { var isActive: Bool { isRecording || isPlaying } }
+extension AudioFileRecorderService: StoppableExperiment { var isActive: Bool { isRecording || isPlaying || isStarting } }

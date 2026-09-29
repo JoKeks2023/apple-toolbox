@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import Synchronization
 #if canImport(AVFoundation) && (os(iOS) || os(macOS))
 import AVFoundation
 #endif
@@ -83,13 +84,8 @@ final class AudioExperimentService: ObservableObject {
     @Published private(set) var status: ExperimentStatus = .available
     @Published private(set) var isTonePlaying = false
     @Published private(set) var isMicrophoneRunning = false
-    @Published private(set) var rmsLevel: Double = 0
-    @Published private(set) var peakLevel: Double = 0
-    @Published private(set) var levelHistory: [Double] = []
-    @Published private(set) var channelCount = 0
-    @Published private(set) var sampleRate = 0
-    @Published private(set) var spectrum: [SpectrumBand] = []
-    @Published private(set) var dominantPeak: SpectrumPeak?
+    /// Per-frame values live in their own object: only the meter and spectrum views observe it.
+    let meter = AudioMeterState()
     @Published private(set) var route = AudioRouteInspector.snapshot()
     @Published private(set) var engineDetails: [AudioRouteDetail] = []
     @Published private(set) var events: [AudioEventEntry] = []
@@ -97,13 +93,19 @@ final class AudioExperimentService: ObservableObject {
     static let fftSize = 4_096
     static let bandCount = 72
 
-    var isRunning: Bool { isTonePlaying || isMicrophoneRunning }
+    /// Includes starts still in flight, so leaving the experiment stops them and a stop elsewhere keeps the session active.
+    var isRunning: Bool { isTonePlaying || isMicrophoneRunning || isToneStarting || isMicrophoneStarting }
 
     private let tone = ToneParameters(waveform: .sine, frequency: 440, amplitude: 0.2)
     private let routeMonitor = AudioRouteMonitor()
+    private var toneGeneration = 0
+    private var isToneStarting = false
+    private var microphoneGeneration = 0
+    private var isMicrophoneStarting = false
     #if canImport(AVFoundation) && (os(iOS) || os(macOS))
+    // Engines are created and referenced here, but start/stop, graph changes and taps run on the
+    // AudioSessionController queue. A stop bumps the generation so a start still in flight cannot publish.
     private var toneEngine: AVAudioEngine?
-    private var toneSource: AVAudioSourceNode?
     private let equalizerUnit = AVAudioUnitEQ(numberOfBands: EqualizerSetting.bandCount)
     private let distortionUnit = AVAudioUnitDistortion()
     private let delayUnit = AVAudioUnitDelay()
@@ -144,26 +146,13 @@ final class AudioExperimentService: ObservableObject {
 
     func startTone() {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
-        guard !isTonePlaying else { return }
-        do {
-            if isMicrophoneRunning { try AudioSessionController.activateForPlayAndRecord() } else { try AudioSessionController.activateForPlayback() }
-            let engine = AVAudioEngine()
-            toneEngine = engine // Before building: a failure below tears down (and detaches the shared units from) this engine.
-            try buildToneGraph(in: engine)
-            try engine.start()
-            toneObserver = observeConfigurationChanges(of: engine)
-            isTonePlaying = true
-            status = .available
-            startRouteMonitoring()
-            refreshRoute()
-            output = "Playing \(waveform.title.lowercased()) at \(ToneFrequencyScale.label(frequency)), \(AudioText.decibels(SpectrumMath.decibels(fromAmplitude: volume))): AVAudioSourceNode → EQ → distortion → delay → reverb → main mixer → \(route.outputSummary)."
-            log("Tone started", "\(AudioText.sampleRate(engine.outputNode.outputFormat(forBus: 0).sampleRate)) on \(route.outputSummary)")
-        } catch {
-            tearDownToneGraph()
-            if !isMicrophoneRunning { AudioSessionController.deactivate() }
-            status = .unavailable
-            output = "Audio engine error: \(error.localizedDescription)"
-        }
+        guard !isTonePlaying, !isToneStarting else { return }
+        isToneStarting = true
+        toneGeneration += 1
+        let engine = AVAudioEngine()
+        toneEngine = engine // Set before any await: a stop meanwhile tears down (and detaches the shared units from) this engine.
+        let generation = toneGeneration
+        Task { await startTone(on: engine, generation: generation) }
         #else
         status = .platformUnsupported
         output = "The Audio Analyzer runs on iPhone, iPad and Mac."
@@ -173,6 +162,8 @@ final class AudioExperimentService: ObservableObject {
     func stopTone() {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
         guard isTonePlaying || toneEngine != nil else { return }
+        toneGeneration += 1
+        isToneStarting = false
         tearDownToneGraph()
         isTonePlaying = false
         log("Tone stopped")
@@ -182,49 +173,103 @@ final class AudioExperimentService: ObservableObject {
     }
 
     #if canImport(AVFoundation) && (os(iOS) || os(macOS))
-    private func buildToneGraph(in engine: AVAudioEngine) throws {
+    private var effectUnits: [AVAudioNode] { [equalizerUnit, distortionUnit, delayUnit, reverbUnit] }
+
+    private func startTone(on engine: AVAudioEngine, generation: Int) async {
+        // After this point the engine and the effect units are only touched on the audio queue.
+        let queueEngine = engine
+        let units = effectUnits
+        let tone = tone
+        do {
+            // A microphone start in flight also needs input: activating Playback here would switch its category away.
+            if isMicrophoneRunning || isMicrophoneStarting { try await AudioSessionController.activateForPlayAndRecord() } else { try await AudioSessionController.activateForPlayback() }
+            // Stopped during activation: stopTone() already enqueued the teardown and deactivation.
+            guard generation == toneGeneration else { return }
+            let rate = try await AudioSessionController.perform {
+                try Self.buildToneGraph(in: queueEngine, units: units, tone: tone)
+                try queueEngine.start()
+                return queueEngine.outputNode.outputFormat(forBus: 0).sampleRate
+            }
+            // Stopped while starting: the teardown was enqueued after this start, so the engine ends stopped.
+            guard generation == toneGeneration else { return }
+            isToneStarting = false
+            toneObserver = observeConfigurationChanges(of: engine)
+            isTonePlaying = true
+            status = .available
+            startRouteMonitoring()
+            refreshRoute()
+            output = "Playing \(waveform.title.lowercased()) at \(ToneFrequencyScale.label(frequency)), \(AudioText.decibels(SpectrumMath.decibels(fromAmplitude: volume))): AVAudioSourceNode → EQ → distortion → delay → reverb → main mixer → \(route.outputSummary)."
+            log("Tone started", "\(AudioText.sampleRate(rate)) on \(route.outputSummary)")
+        } catch {
+            guard generation == toneGeneration else { return }
+            isToneStarting = false
+            tearDownToneGraph()
+            if !isRunning { AudioSessionController.deactivate() }
+            status = .unavailable
+            output = "Audio engine error: \(error.localizedDescription)"
+        }
+    }
+
+    /// Runs on the audio queue.
+    nonisolated private static func buildToneGraph(in engine: AVAudioEngine, units: [AVAudioNode], tone: ToneParameters) throws {
         let hardware = engine.outputNode.outputFormat(forBus: 0)
         let rate = hardware.sampleRate > 0 ? hardware.sampleRate : 48_000
         guard let format = AVAudioFormat(standardFormatWithSampleRate: rate, channels: 2) else {
             throw AudioAnalyzerError.unsupportedFormat(rate)
         }
         let source = AVAudioSourceNode(format: format, renderBlock: ToneRenderBlock.make(for: ToneOscillator(parameters: tone, sampleRate: rate)))
-        toneSource = source
-        let chain: [AVAudioNode] = [source, equalizerUnit, distortionUnit, delayUnit, reverbUnit]
+        let chain: [AVAudioNode] = [source] + units
         chain.forEach(engine.attach)
         for (from, to) in zip(chain, chain.dropFirst()) { engine.connect(from, to: to, format: format) }
-        engine.connect(reverbUnit, to: engine.mainMixerNode, format: format)
+        if let last = chain.last { engine.connect(last, to: engine.mainMixerNode, format: format) }
         engine.prepare()
+    }
+
+    /// Runs on the audio queue. Detaches the tone source and the shared effect units so the next engine can attach them.
+    nonisolated private static func detachToneGraph(from engine: AVAudioEngine, units: [AVAudioNode]) {
+        engine.stop()
+        for node in engine.attachedNodes where node is AVAudioSourceNode || units.contains(where: { $0 === node }) {
+            engine.detach(node)
+        }
     }
 
     private func tearDownToneGraph() {
         if let toneObserver { NotificationCenter.default.removeObserver(toneObserver) }
         toneObserver = nil
         guard let engine = toneEngine else { return }
-        engine.stop()
-        let nodes: [AVAudioNode] = [toneSource, equalizerUnit, distortionUnit, delayUnit, reverbUnit].compactMap { $0 }
-        for node in nodes where node.engine === engine { engine.detach(node) }
-        toneSource = nil
         toneEngine = nil
+        let queueEngine = engine // Only touched on the audio queue.
+        let units = effectUnits
+        AudioSessionController.enqueue { Self.detachToneGraph(from: queueEngine, units: units) }
     }
 
     /// The engine stops itself when the I/O format or device changes (route change, category change, sample rate).
     private func restartToneAfterConfigurationChange() {
         guard isTonePlaying, let engine = toneEngine else { return }
-        engine.stop()
-        let nodes: [AVAudioNode] = [toneSource, equalizerUnit, distortionUnit, delayUnit, reverbUnit].compactMap { $0 }
-        nodes.forEach(engine.detach)
-        do {
-            try buildToneGraph(in: engine)
-            try engine.start()
-            log("Tone engine reconfigured", "Output changed; restarted at \(AudioText.sampleRate(engine.outputNode.outputFormat(forBus: 0).sampleRate)).")
-        } catch {
-            log("Tone engine restart failed", error.localizedDescription)
-            stopTone()
-            status = .unavailable
-            output = "The output changed and the tone could not restart: \(error.localizedDescription)"
+        let generation = toneGeneration
+        let queueEngine = engine // Only touched on the audio queue.
+        let units = effectUnits
+        let tone = tone
+        Task {
+            guard generation == toneGeneration else { return }
+            do {
+                let rate = try await AudioSessionController.perform {
+                    Self.detachToneGraph(from: queueEngine, units: units)
+                    try Self.buildToneGraph(in: queueEngine, units: units, tone: tone)
+                    try queueEngine.start()
+                    return queueEngine.outputNode.outputFormat(forBus: 0).sampleRate
+                }
+                guard generation == toneGeneration else { return }
+                log("Tone engine reconfigured", "Output changed; restarted at \(AudioText.sampleRate(rate)).")
+            } catch {
+                guard generation == toneGeneration else { return }
+                log("Tone engine restart failed", error.localizedDescription)
+                stopTone()
+                status = .unavailable
+                output = "The output changed and the tone could not restart: \(error.localizedDescription)"
+            }
+            refreshRoute()
         }
-        refreshRoute()
     }
     #endif
 
@@ -273,7 +318,7 @@ final class AudioExperimentService: ObservableObject {
 
     func startMicrophone() {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
-        guard !isMicrophoneRunning else { return }
+        guard !isMicrophoneRunning, !isMicrophoneStarting else { return }
         guard AVCaptureDevice.authorizationStatus(for: .audio) == .authorized else {
             status = .permissionRequired
             AVCaptureDevice.requestAccess(for: .audio) { @Sendable [weak self] granted in
@@ -287,43 +332,13 @@ final class AudioExperimentService: ObservableObject {
             }
             return
         }
-        do { try AudioSessionController.activateForPlayAndRecord() }
-        catch { output = "Audio session error: \(error.localizedDescription)"; status = .unavailable; return }
-        let engine = AVAudioEngine()
-        let input = engine.inputNode
-        let format = input.outputFormat(forBus: 0)
-        guard format.sampleRate > 0, format.channelCount > 0 else {
-            if !isTonePlaying { AudioSessionController.deactivate() }
-            output = "No audio input is available right now. The tone generator still works."
-            status = .hardwareUnsupported
-            return
-        }
         guard let analyzer = SpectrumAnalyzer(size: Self.fftSize) else { output = "vDSP could not create an FFT setup."; status = .unavailable; return }
-        channelCount = Int(format.channelCount)
-        sampleRate = Int(format.sampleRate)
-        let deliver: @Sendable (AudioAnalysisFrame) -> Void = { [weak self] frame in
-            Task { @MainActor in self?.apply(frame) }
-        }
-        input.installTap(onBus: 0, bufferSize: 2_048, format: format,
-                         block: MicrophoneAnalysisTap.make(analyzer: analyzer, sampleRate: format.sampleRate, bandCount: Self.bandCount, deliver: deliver))
-        do {
-            try engine.start()
-        } catch {
-            input.removeTap(onBus: 0)
-            if !isTonePlaying { AudioSessionController.deactivate() }
-            output = "Audio engine error: \(error.localizedDescription)"
-            status = .unavailable
-            return
-        }
-        microphoneEngine = engine
-        microphoneObserver = observeConfigurationChanges(of: engine)
-        isMicrophoneRunning = true
-        status = .available
-        levelHistory = []
-        startRouteMonitoring()
-        refreshRoute()
-        output = "Microphone running: \(channelCount) ch at \(AudioText.sampleRate(format.sampleRate)), \(Self.fftSize)-point Hann-windowed FFT (\(SpectrumMath.binWidth(sampleRate: format.sampleRate, fftSize: Self.fftSize).formatted(.number.precision(.fractionLength(1)))) Hz per bin)."
-        log("Microphone started", route.inputs.map(\.name).joined(separator: " + "))
+        isMicrophoneStarting = true
+        microphoneGeneration += 1
+        let engine = AVAudioEngine()
+        microphoneEngine = engine // Set before any await so a stop meanwhile stops this engine.
+        let generation = microphoneGeneration
+        Task { await startMicrophone(on: engine, analyzer: analyzer, generation: generation) }
         #else
         status = .platformUnsupported
         output = "Microphone analysis runs on iPhone, iPad and Mac."
@@ -333,29 +348,93 @@ final class AudioExperimentService: ObservableObject {
     func stopMicrophone() {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
         guard isMicrophoneRunning || microphoneEngine != nil else { return }
+        microphoneGeneration += 1
+        isMicrophoneStarting = false
         if let microphoneObserver { NotificationCenter.default.removeObserver(microphoneObserver) }
         microphoneObserver = nil
-        microphoneEngine?.inputNode.removeTap(onBus: 0)
-        microphoneEngine?.stop()
+        if let engine = microphoneEngine {
+            let queueEngine = engine // Only touched on the audio queue.
+            AudioSessionController.enqueue {
+                queueEngine.inputNode.removeTap(onBus: 0)
+                queueEngine.stop()
+            }
+        }
         microphoneEngine = nil
         isMicrophoneRunning = false
-        rmsLevel = 0
-        peakLevel = 0
+        meter.resetLevels()
         log("Microphone stopped")
         output = "Microphone stopped. The last spectrum stays visible."
         sessionEnded()
         #endif
     }
 
-    private func apply(_ frame: AudioAnalysisFrame) {
-        guard isMicrophoneRunning else { return }
-        rmsLevel = Double(frame.rms)
-        peakLevel = Double(frame.peak)
-        levelHistory = Array((levelHistory + [Double(frame.peak)]).suffix(48))
-        if !frame.bands.isEmpty {
-            spectrum = frame.bands
-            dominantPeak = frame.dominant
+    #if canImport(AVFoundation) && (os(iOS) || os(macOS))
+    private func startMicrophone(on engine: AVAudioEngine, analyzer: SpectrumAnalyzer, generation: Int) async {
+        do { try await AudioSessionController.activateForPlayAndRecord() }
+        catch {
+            guard generation == microphoneGeneration else { return }
+            abandonMicrophoneStart()
+            output = "Audio session error: \(error.localizedDescription)"
+            status = .unavailable
+            return
         }
+        // Stopped during activation: stopMicrophone() already enqueued the stop and deactivation.
+        guard generation == microphoneGeneration else { return }
+        let throttle = AnalysisFrameThrottle(framesPerSecond: 15)
+        let deliver: @Sendable (AudioAnalysisFrame) -> Void = { [weak self] frame in
+            guard throttle.admit() else { return }
+            Task { @MainActor in self?.apply(frame, generation: generation) }
+        }
+        let bandCount = Self.bandCount
+        let queueEngine = engine // Only touched on the audio queue from here on.
+        let hardware: AudioInputFormat?
+        do {
+            hardware = try await AudioSessionController.perform { () throws -> AudioInputFormat? in
+                let input = queueEngine.inputNode
+                let format = input.outputFormat(forBus: 0)
+                guard format.sampleRate > 0, format.channelCount > 0 else { return nil }
+                input.installTap(onBus: 0, bufferSize: 2_048, format: format,
+                                 block: MicrophoneAnalysisTap.make(analyzer: analyzer, sampleRate: format.sampleRate, bandCount: bandCount, deliver: deliver))
+                do { try queueEngine.start() } catch { input.removeTap(onBus: 0); throw error }
+                return AudioInputFormat(sampleRate: format.sampleRate, channelCount: Int(format.channelCount))
+            }
+        } catch {
+            guard generation == microphoneGeneration else { return }
+            abandonMicrophoneStart()
+            output = "Audio engine error: \(error.localizedDescription)"
+            status = .unavailable
+            return
+        }
+        // Stopped while starting: the stop was enqueued after this start, so the engine ends stopped.
+        guard generation == microphoneGeneration else { return }
+        guard let hardware else {
+            abandonMicrophoneStart()
+            output = "No audio input is available right now. The tone generator still works."
+            status = .hardwareUnsupported
+            return
+        }
+        isMicrophoneStarting = false
+        meter.begin(channelCount: hardware.channelCount, sampleRate: Int(hardware.sampleRate))
+        microphoneObserver = observeConfigurationChanges(of: engine)
+        isMicrophoneRunning = true
+        status = .available
+        startRouteMonitoring()
+        refreshRoute()
+        output = "Microphone running: \(hardware.channelCount) ch at \(AudioText.sampleRate(hardware.sampleRate)), \(Self.fftSize)-point Hann-windowed FFT (\(SpectrumMath.binWidth(sampleRate: hardware.sampleRate, fftSize: Self.fftSize).formatted(.number.precision(.fractionLength(1)))) Hz per bin)."
+        log("Microphone started", route.inputs.map(\.name).joined(separator: " + "))
+    }
+
+    /// A start that failed before the engine ran: nothing to stop, only the session to release.
+    private func abandonMicrophoneStart() {
+        isMicrophoneStarting = false
+        microphoneEngine = nil
+        if !isRunning { AudioSessionController.deactivate() }
+    }
+    #endif
+
+    private func apply(_ frame: AudioAnalysisFrame, generation: Int) {
+        guard isMicrophoneRunning, generation == microphoneGeneration else { return }
+        meter.apply(frame)
     }
 
     #if canImport(AVFoundation) && (os(iOS) || os(macOS))
@@ -409,13 +488,21 @@ final class AudioExperimentService: ObservableObject {
 
     private func resumeAfterInterruption() {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
-        do {
-            if isMicrophoneRunning { try AudioSessionController.activateForPlayAndRecord() } else if isTonePlaying { try AudioSessionController.activateForPlayback() }
-            if isTonePlaying, let toneEngine, !toneEngine.isRunning { try toneEngine.start() }
-            if isMicrophoneRunning, let microphoneEngine, !microphoneEngine.isRunning { try microphoneEngine.start() }
-            log("Resumed after interruption")
-        } catch {
-            log("Resume failed", error.localizedDescription)
+        Task {
+            do {
+                if isMicrophoneRunning { try await AudioSessionController.activateForPlayAndRecord() } else if isTonePlaying { try await AudioSessionController.activateForPlayback() } else { return }
+                // Read after the activation: an engine stopped meanwhile is nil here, and a later stop is enqueued after this start.
+                let tone = isTonePlaying ? toneEngine : nil // Only touched on the audio queue.
+                let microphone = isMicrophoneRunning ? microphoneEngine : nil
+                guard tone != nil || microphone != nil else { return }
+                try await AudioSessionController.perform {
+                    if let tone, !tone.isRunning { try tone.start() }
+                    if let microphone, !microphone.isRunning { try microphone.start() }
+                }
+                log("Resumed after interruption")
+            } catch {
+                log("Resume failed", error.localizedDescription)
+            }
         }
         #endif
     }
@@ -486,3 +573,66 @@ private extension ReverbSetting {
     }
 }
 #endif
+
+/// Live meter and spectrum values. Kept out of `AudioExperimentService` so a frame only redraws the views that observe it,
+/// not the controls, pickers and event log.
+@MainActor
+final class AudioMeterState: ObservableObject {
+    static let historyCapacity = 48
+
+    @Published private(set) var rmsLevel: Double = 0
+    @Published private(set) var peakLevel: Double = 0
+    /// Most recent peaks, oldest first, never longer than `historyCapacity`.
+    @Published private(set) var levelHistory: [Double] = []
+    @Published private(set) var channelCount = 0
+    @Published private(set) var sampleRate = 0
+    @Published private(set) var spectrum: [SpectrumBand] = []
+    @Published private(set) var dominantPeak: SpectrumPeak?
+
+    fileprivate func begin(channelCount: Int, sampleRate: Int) {
+        self.channelCount = channelCount
+        self.sampleRate = sampleRate
+        levelHistory.removeAll(keepingCapacity: true)
+    }
+
+    fileprivate func resetLevels() {
+        rmsLevel = 0
+        peakLevel = 0
+    }
+
+    fileprivate func apply(_ frame: AudioAnalysisFrame) {
+        rmsLevel = Double(frame.rms)
+        peakLevel = Double(frame.peak)
+        levelHistory.append(Double(frame.peak))
+        if levelHistory.count > Self.historyCapacity { levelHistory.removeFirst(levelHistory.count - Self.historyCapacity) }
+        if !frame.bands.isEmpty {
+            spectrum = frame.bands
+            dominantPeak = frame.dominant
+        }
+    }
+}
+
+/// Lets at most one analysis frame per interval through from the tap thread, so the UI updates at a steady rate
+/// instead of once per buffer.
+nonisolated final class AnalysisFrameThrottle: Sendable {
+    private let interval: Duration
+    private let lastDelivery = Mutex<ContinuousClock.Instant?>(nil)
+
+    init(framesPerSecond: Int) {
+        interval = .seconds(1) / framesPerSecond
+    }
+
+    func admit() -> Bool {
+        let now = ContinuousClock.now
+        return lastDelivery.withLock { last in
+            if let last, now - last < interval { return false }
+            last = now
+            return true
+        }
+    }
+}
+
+nonisolated struct AudioInputFormat: Sendable {
+    let sampleRate: Double
+    let channelCount: Int
+}

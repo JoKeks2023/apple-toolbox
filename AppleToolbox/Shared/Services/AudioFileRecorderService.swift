@@ -72,6 +72,10 @@ final class AudioFileRecorderService: NSObject, ObservableObject {
     @Published var format = AudioRecordingFormat.aac
     @Published private(set) var isRecording = false
     @Published private(set) var isPlaying = false
+    /// True while the session activation for a recording or playback is in flight.
+    var isStarting: Bool { pendingStart != nil }
+    /// The start waiting for its session activation; stop() clears it so the start gives up after the await.
+    private var pendingStart: UUID?
     @Published private(set) var fileURL: URL?
     @Published private(set) var fileDetails: [AudioRouteDetail] = []
     @Published private(set) var output = "Pick a file format and record the microphone to a file, then play it back or share it."
@@ -92,7 +96,7 @@ final class AudioFileRecorderService: NSObject, ObservableObject {
 
     func startRecording() {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
-        guard !isRecording else { return }
+        guard !isRecording, !isStarting else { return }
         guard AVCaptureDevice.authorizationStatus(for: .audio) == .authorized else {
             AVCaptureDevice.requestAccess(for: .audio) { @Sendable [weak self] granted in
                 Task { @MainActor in
@@ -108,8 +112,23 @@ final class AudioFileRecorderService: NSObject, ObservableObject {
         fileURL = nil
         fileDetails = []
         let url = URL.temporaryDirectory.appending(path: "AppleToolbox-Recording-\(Int(Date.now.timeIntervalSince1970)).\(format.fileExtension)")
+        let token = UUID()
+        pendingStart = token
+        Task { await startRecording(to: url, token: token) }
+        #else
+        fail("Recording to a file needs a microphone; Apple Toolbox records only on iPhone, iPad and Mac.")
+        #endif
+    }
+
+    #if canImport(AVFoundation) && (os(iOS) || os(macOS))
+    private func startRecording(to url: URL, token: UUID) async {
+        var activated = false
         do {
-            try AudioSessionController.activateForRecording()
+            try await AudioSessionController.activateForRecording()
+            // Cancelled during activation: cancelPendingStart() already enqueued the deactivation.
+            guard pendingStart == token else { return }
+            pendingStart = nil
+            activated = true
             let recorder = try AVAudioRecorder(url: url, settings: format.recorderSettings(sampleRate: 44_100, channels: 1))
             recorder.isMeteringEnabled = true
             guard recorder.prepareToRecord(), recorder.record() else {
@@ -122,15 +141,25 @@ final class AudioFileRecorderService: NSObject, ObservableObject {
             isError = false
             output = "Recording \(format.label) at 44.1 kHz mono to \(url.lastPathComponent)…"
         } catch {
+            if !activated {
+                guard pendingStart == token else { return } // Cancelled meanwhile: nothing to report.
+                pendingStart = nil
+            }
             AudioSessionController.deactivate()
             fail("AVAudioRecorder could not be created: \(error.localizedDescription)\nDomain: \((error as NSError).domain) · Code: \((error as NSError).code)")
         }
-        #else
-        fail("Recording to a file needs a microphone; Apple Toolbox records only on iPhone, iPad and Mac.")
-        #endif
+    }
+    #endif
+
+    /// Drops a recording or playback start whose activation is still in flight and releases its session.
+    private func cancelPendingStart() {
+        guard pendingStart != nil else { return }
+        pendingStart = nil
+        AudioSessionController.deactivate()
     }
 
     func stopRecording() {
+        cancelPendingStart()
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
         guard let recorder, isRecording else { return }
         let duration = recorder.currentTime
@@ -147,9 +176,22 @@ final class AudioFileRecorderService: NSObject, ObservableObject {
 
     func play() {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
-        guard let fileURL, !isRecording else { return }
+        guard let fileURL, !isRecording, !isStarting else { return }
+        let token = UUID()
+        pendingStart = token
+        Task { await play(fileURL, token: token) }
+        #endif
+    }
+
+    #if canImport(AVFoundation) && (os(iOS) || os(macOS))
+    private func play(_ fileURL: URL, token: UUID) async {
+        var activated = false
         do {
-            try AudioSessionController.activateForPlayback()
+            try await AudioSessionController.activateForPlayback()
+            // Cancelled during activation: cancelPendingStart() already enqueued the deactivation.
+            guard pendingStart == token else { return }
+            pendingStart = nil
+            activated = true
             let player = try AVAudioPlayer(contentsOf: fileURL)
             player.delegate = self
             guard player.play() else { fail("AVAudioPlayer could not start playback."); return }
@@ -158,12 +200,17 @@ final class AudioFileRecorderService: NSObject, ObservableObject {
             isError = false
             output = "Playing \(fileURL.lastPathComponent) with AVAudioPlayer…"
         } catch {
+            if !activated {
+                guard pendingStart == token else { return } // Cancelled meanwhile: nothing to report.
+                pendingStart = nil
+            }
             fail("AVAudioPlayer could not open the file: \(error.localizedDescription)")
         }
-        #endif
     }
+    #endif
 
     func stopPlayback() {
+        cancelPendingStart()
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
         player?.stop()
         player = nil

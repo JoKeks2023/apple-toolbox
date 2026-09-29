@@ -130,12 +130,30 @@ final class MediaPlaybackService: ObservableObject {
     private var itemCancellables: Set<AnyCancellable> = []
     private var timeObserver: Any?
     private var commandTargets: [(MPRemoteCommand, Any)] = []
+    /// The start waiting for its session activation; stop() clears it so the start gives up after the await.
+    private var pendingStart: UUID?
 
     func start() {
         guard !isActive else { return }
-        do { try AudioSessionController.activateForPlayback(video: true) }
-        catch { status = .unavailable; output = "Audio session error: \(error.localizedDescription)"; return }
+        // Active from the tap on: a stop() during the activation cancels this start and enqueues the deactivation after it.
         isActive = true
+        let token = UUID()
+        pendingStart = token
+        Task { await start(token: token) }
+    }
+
+    private func start(token: UUID) async {
+        do { try await AudioSessionController.activateForPlayback(video: true) }
+        catch {
+            guard pendingStart == token else { return }
+            pendingStart = nil
+            isActive = false
+            status = .unavailable
+            output = "Audio session error: \(error.localizedDescription)"
+            return
+        }
+        guard pendingStart == token else { return }
+        pendingStart = nil
         status = .available
         observePlayer()
         registerRemoteCommands()
@@ -146,6 +164,7 @@ final class MediaPlaybackService: ObservableObject {
 
     func stop() {
         guard isActive else { return }
+        pendingStart = nil
         player.pause()
         player.replaceCurrentItem(with: nil)
         itemCancellables.removeAll()

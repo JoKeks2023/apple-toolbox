@@ -19,8 +19,8 @@ struct AudioAnalyzerRunView: View {
         ToneControls(audio: audio)
         OutputView(text: audio.output, isError: [.unavailable, .permissionDenied, .hardwareUnsupported, .platformUnsupported].contains(audio.status))
         EffectsChainSection(audio: audio)
-        SpectrumSection(audio: audio)
-        AudioMeterView(audio: audio)
+        SpectrumSection(meter: audio.meter)
+        AudioMeterView(meter: audio.meter)
         AudioFileRecorderSection()
         AudioRouteSection(route: audio.route, extraDetails: audio.engineDetails, refresh: audio.refreshRoute)
         Section("Route and engine events") {
@@ -147,14 +147,15 @@ private struct EffectsChainSection: View {
     }
 }
 
+/// Observes only the meter state, which changes per analysis frame (~15 Hz).
 private struct SpectrumSection: View {
-    @ObservedObject var audio: AudioExperimentService
+    @ObservedObject var meter: AudioMeterState
 
     var body: some View {
         Section("Microphone spectrum · vDSP FFT \(AudioExperimentService.fftSize)") {
-            SpectrumView(bands: audio.spectrum, peak: audio.dominantPeak, nyquist: audio.sampleRate > 0 ? Double(audio.sampleRate) / 2 : 24_000)
+            SpectrumView(bands: meter.spectrum, peak: meter.dominantPeak, nyquist: meter.sampleRate > 0 ? Double(meter.sampleRate) / 2 : 24_000)
                 .frame(height: 170)
-            if let peak = audio.dominantPeak {
+            if let peak = meter.dominantPeak {
                 LabeledContent("Dominant frequency") {
                     Text("\(ToneFrequencyScale.label(peak.frequency)) · \(AudioText.decibels(Double(peak.level)))")
                         .font(.body.monospacedDigit())
@@ -218,16 +219,17 @@ private struct SpectrumView: View {
     }
 }
 
+/// Observes only the meter state, which changes per analysis frame (~15 Hz).
 private struct AudioMeterView: View {
-    @ObservedObject var audio: AudioExperimentService
+    @ObservedObject var meter: AudioMeterState
 
     var body: some View {
         Section("Live microphone meter") {
-            LabeledContent("Channels", value: audio.channelCount == 0 ? "—" : "\(audio.channelCount)")
-            LabeledContent("Sample rate", value: audio.sampleRate == 0 ? "—" : "\(audio.sampleRate) Hz")
-            LevelRow(title: "RMS", value: audio.rmsLevel)
-            LevelRow(title: "Peak", value: audio.peakLevel)
-            AudioLevelChart(levels: audio.levelHistory)
+            LabeledContent("Channels", value: meter.channelCount == 0 ? "—" : "\(meter.channelCount)")
+            LabeledContent("Sample rate", value: meter.sampleRate == 0 ? "—" : "\(meter.sampleRate) Hz")
+            LevelRow(title: "RMS", value: meter.rmsLevel)
+            LevelRow(title: "Peak", value: meter.peakLevel)
+            AudioLevelChart(levels: meter.levelHistory)
                 .frame(height: 110)
             Text("Speak or make a sound near the microphone to see the levels move.")
                 .font(.caption)

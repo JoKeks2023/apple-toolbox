@@ -74,6 +74,8 @@ final class ShazamExperimentService: ObservableObject {
     private var generator: SHSignatureGenerator?
     private var appendFailure: OSAllocatedUnfairLock<String?>?
     private var captureTask: Task<Void, Never>?
+    /// Bumped by tearDownCapture(): a capture that resumes after an await with an older value gives up.
+    private var captureGeneration = 0
     #endif
 
     var isCapturing: Bool { captureMode != nil }
@@ -154,53 +156,10 @@ final class ShazamExperimentService: ObservableObject {
         }
         let duration = mode == .reference ? captureLength.seconds
             : ShazamCaptureLength.queryDuration(requested: captureLength.seconds, minimum: customCatalog.minimumQuerySignatureDuration, maximum: customCatalog.maximumQuerySignatureDuration)
-        do {
-            try AudioSessionController.activateForRecording()
-            let engine = AVAudioEngine()
-            let input = engine.inputNode
-            let format = input.outputFormat(forBus: 0)
-            guard format.sampleRate > 0, format.channelCount > 0 else {
-                AudioSessionController.deactivate()
-                catalogFailed("The microphone input reports no usable format (sample rate \(format.sampleRate) Hz, \(format.channelCount) channels). No microphone is available.")
-                return
-            }
-            let generator = SHSignatureGenerator()
-            let failure = OSAllocatedUnfairLock<String?>(initialState: nil)
-            // SHSignatureGenerator is not Sendable; only this tap appends to it until the engine stops, then the main actor reads it.
-            nonisolated(unsafe) let tapGenerator = generator
-            input.installTap(onBus: 0, bufferSize: 4_096, format: format) { @Sendable buffer, time in
-                do { try tapGenerator.append(buffer, at: time) } catch {
-                    let message = error.localizedDescription
-                    failure.withLock { if $0 == nil { $0 = message } }
-                }
-            }
-            engine.prepare()
-            try engine.start()
-            captureEngine = engine
-            self.generator = generator
-            appendFailure = failure
-            captureMode = mode
-            captureProgress = 0
-            catalogMatches = []
-            catalogIsError = false
-            catalogOutput = mode == .reference
-                ? "Recording a \(Int(duration)) s reference signature at \(Int(format.sampleRate)) Hz · \(format.channelCount) ch…"
-                : "Recording a \(duration.formatted(.number.precision(.fractionLength(0...1)))) s query signature (catalog allows \(customCatalog.minimumQuerySignatureDuration.formatted(.number.precision(.fractionLength(0...1))))–\(customCatalog.maximumQuerySignatureDuration.formatted(.number.precision(.fractionLength(0...1)))) s)…"
-            captureTask = Task { [weak self] in
-                let start = Date.now
-                while !Task.isCancelled {
-                    let elapsed = Date.now.timeIntervalSince(start)
-                    self?.captureProgress = min(elapsed / duration, 1)
-                    if elapsed >= duration { break }
-                    try? await Task.sleep(for: .milliseconds(200))
-                }
-                guard !Task.isCancelled else { return }
-                await self?.finishCapture(mode)
-            }
-        } catch {
-            tearDownCapture()
-            catalogFailed("The microphone could not start: \(error.localizedDescription)")
-        }
+        let generation = captureGeneration
+        captureMode = mode // Set before the awaits so cancelCapture() and leaving the experiment stop a start in flight.
+        captureProgress = 0
+        captureTask = Task { [weak self] in await self?.runCapture(mode, duration: duration, generation: generation) }
         #else
         catalogFailed("SHSignatureGenerator from the microphone is only available on iPhone, iPad and Mac.")
         #endif
@@ -212,9 +171,72 @@ final class ShazamExperimentService: ObservableObject {
     }
 
     #if canImport(ShazamKit) && canImport(AVFoundation) && (os(iOS) || os(macOS))
+    private func runCapture(_ mode: ShazamCaptureMode, duration: TimeInterval, generation: Int) async {
+        do {
+            try await AudioSessionController.activateForRecording()
+            // Cancelled during activation: tearDownCapture() already enqueued the deactivation.
+            guard generation == captureGeneration else { return }
+            let engine = AVAudioEngine()
+            captureEngine = engine
+            let generator = SHSignatureGenerator()
+            let failure = OSAllocatedUnfairLock<String?>(initialState: nil)
+            // SHSignatureGenerator is not Sendable; only this tap appends to it until the engine stops, then the main actor reads it.
+            nonisolated(unsafe) let tapGenerator = generator
+            let queueEngine = engine // Only touched on the audio queue.
+            let (format, started) = try await AudioSessionController.perform { () throws -> (AudioInputFormat, Bool) in
+                let input = queueEngine.inputNode
+                let format = input.outputFormat(forBus: 0)
+                let reported = AudioInputFormat(sampleRate: format.sampleRate, channelCount: Int(format.channelCount))
+                guard format.sampleRate > 0, format.channelCount > 0 else { return (reported, false) }
+                input.installTap(onBus: 0, bufferSize: 4_096, format: format) { @Sendable buffer, time in
+                    do { try tapGenerator.append(buffer, at: time) } catch {
+                        let message = error.localizedDescription
+                        failure.withLock { if $0 == nil { $0 = message } }
+                    }
+                }
+                queueEngine.prepare()
+                do { try queueEngine.start() } catch { input.removeTap(onBus: 0); throw error }
+                return (reported, true)
+            }
+            // Cancelled while starting: tearDownCapture() enqueued the engine stop after this start.
+            guard generation == captureGeneration else { return }
+            guard started else {
+                tearDownCapture()
+                catalogFailed("The microphone input reports no usable format (sample rate \(format.sampleRate) Hz, \(format.channelCount) channels). No microphone is available.")
+                return
+            }
+            self.generator = generator
+            appendFailure = failure
+            catalogMatches = []
+            catalogIsError = false
+            catalogOutput = mode == .reference
+                ? "Recording a \(Int(duration)) s reference signature at \(Int(format.sampleRate)) Hz · \(format.channelCount) ch…"
+                : "Recording a \(duration.formatted(.number.precision(.fractionLength(0...1)))) s query signature (catalog allows \(customCatalog.minimumQuerySignatureDuration.formatted(.number.precision(.fractionLength(0...1))))–\(customCatalog.maximumQuerySignatureDuration.formatted(.number.precision(.fractionLength(0...1)))) s)…"
+            let start = Date.now
+            while !Task.isCancelled, generation == captureGeneration {
+                let elapsed = Date.now.timeIntervalSince(start)
+                captureProgress = min(elapsed / duration, 1)
+                if elapsed >= duration { break }
+                try? await Task.sleep(for: .milliseconds(200))
+            }
+            guard !Task.isCancelled, generation == captureGeneration else { return }
+            await finishCapture(mode, generation: generation)
+        } catch {
+            guard generation == captureGeneration else { return }
+            tearDownCapture()
+            catalogFailed("The microphone could not start: \(error.localizedDescription)")
+        }
+    }
+
     private func tearDownCapture() {
-        captureEngine?.inputNode.removeTap(onBus: 0)
-        captureEngine?.stop()
+        captureGeneration += 1
+        if let captureEngine {
+            let queueEngine = captureEngine // Only touched on the audio queue.
+            AudioSessionController.enqueue {
+                queueEngine.inputNode.removeTap(onBus: 0)
+                queueEngine.stop()
+            }
+        }
         captureEngine = nil
         generator = nil
         appendFailure = nil
@@ -223,10 +245,18 @@ final class ShazamExperimentService: ObservableObject {
         AudioSessionController.deactivate()
     }
 
-    private func finishCapture(_ mode: ShazamCaptureMode) async {
+    private func finishCapture(_ mode: ShazamCaptureMode, generation: Int) async {
         captureTask = nil
-        captureEngine?.inputNode.removeTap(onBus: 0)
-        captureEngine?.stop()
+        if let captureEngine {
+            // Wait for the stop: the generator is read below and the tap must no longer append to it.
+            let queueEngine = captureEngine // Only touched on the audio queue.
+            try? await AudioSessionController.perform {
+                queueEngine.inputNode.removeTap(onBus: 0)
+                queueEngine.stop()
+            }
+        }
+        // Cancelled while stopping: cancelCapture() already tore everything down.
+        guard generation == captureGeneration else { return }
         let failure = appendFailure?.withLock { $0 }
         guard let generator else { tearDownCapture(); return }
         let signature = generator.signature()
