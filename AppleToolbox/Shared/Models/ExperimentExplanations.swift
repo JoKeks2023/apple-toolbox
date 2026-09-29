@@ -120,6 +120,12 @@ extension ExperimentDescriptor {
             .unavailable: ExperimentExplanation(reason: "No game controller is connected right now.", required: "A paired MFi, Xbox, PlayStation, or Switch controller (the Siri Remote counts on Apple TV)",
                                                 nextStep: "Pair the controller in Bluetooth settings, or put an MFi controller in pairing mode and start wireless discovery below."),
         ],
+        "matter-status": [
+            .platformUnsupported: ExperimentExplanation(reason: "Apple Toolbox starts Apple Home's accessory setup only on iPhone and iPad; watchOS and tvOS have no setup API.", required: "iOS or iPadOS 15.4+ with Apple Home",
+                                                        nextStep: "Open Apple Toolbox on an iPhone or iPad."),
+            .unavailable: ExperimentExplanation(reason: "The system reports that accessory setup is not supported on this device (HMAccessorySetupManager.isSupported is false).", required: "An iPhone or iPad that supports Apple Home accessory setup",
+                                                nextStep: "Run the experiment on a physical iPhone or iPad with Apple Home set up."),
+        ],
         "widgetkit": [
             .entitlementRequired: ExperimentExplanation(reason: "The App Group container is not provisioned, so the app cannot share data with its widget.", required: "com.apple.security.application-groups with group.com.jorisconrad.AppleToolbox for the app and the widget extension",
                                                         nextStep: "Register the App Group for both App IDs in Signing & Capabilities and reinstall the app."),

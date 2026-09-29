@@ -122,12 +122,58 @@ extension HomeExperimentService: HMHomeManagerDelegate {
 }
 #endif
 
-struct MatterExperimentService {
-    static func statusText() -> String {
-        #if canImport(Matter)
-        return "Matter framework is present. Commissioning requires a setup payload, supported accessory, and Apple-approved flow."
+/// Starts Apple Home's own accessory setup UI, which commissions Matter accessories into a home. The app needs the
+/// HomeKit entitlement but no home-data authorization. No setup payload is passed, so the
+/// com.apple.developer.matter.allow-setup-payload entitlement is not required.
+@MainActor
+final class MatterSetupExperimentService: ObservableObject {
+    @Published private(set) var output = "Starts Apple Home's setup flow to add a Matter accessory to one of your homes."
+    @Published private(set) var isRunning = false
+    @Published private(set) var isError = false
+    @Published private(set) var homeIdentifier: String?
+    @Published private(set) var accessoryIdentifiers: [String] = []
+    #if canImport(HomeKit) && os(iOS)
+    private var manager: HMAccessorySetupManager?
+    #endif
+
+    func startSetup() {
+        #if canImport(HomeKit) && os(iOS)
+        let manager = HMAccessorySetupManager()
+        self.manager = manager
+        isRunning = true
+        isError = false
+        output = "Apple Home setup is open. Scan the accessory's setup code and follow the system steps."
+        Task {
+            defer { isRunning = false; self.manager = nil }
+            do {
+                let result = try await manager.performAccessorySetup(using: HMAccessorySetupRequest())
+                let home = result.homeUniqueIdentifier.uuidString
+                homeIdentifier = home
+                accessoryIdentifiers = result.accessoryUniqueIdentifiers.map(\.uuidString)
+                output = "Setup finished: \(accessoryIdentifiers.count) accessory(ies) added to home \(home).\nHomeKit Discovery lists them by name once HomeKit access is granted."
+            } catch let error as HMError where error.code == .operationCancelled {
+                isError = true
+                output = "Setup was cancelled before an accessory was added."
+            } catch {
+                let nsError = error as NSError
+                isError = true
+                output = "Setup failed: \(error.localizedDescription)\n\(nsError.domain) code \(nsError.code)"
+            }
+        }
         #else
-        return "Matter framework is not available in this SDK/platform target."
+        output = "Apple Home accessory setup (HMAccessorySetupManager) is not available on this platform."
+        #endif
+    }
+}
+
+extension ExperimentAvailability {
+    /// Apple Home's setup UI needs no home-data authorization, so the HomeKit permission does not gate it.
+    static func matterSetup() -> ExperimentStatus {
+        #if canImport(HomeKit) && os(iOS)
+        if #available(iOS 27.0, *) { return HMAccessorySetupManager.isSupported ? .available : .unavailable }
+        return .available
+        #else
+        return .platformUnsupported
         #endif
     }
 }

@@ -71,7 +71,7 @@ struct ExperimentRunView: View {
         case "mapkit-search": MapKitSearchRunView()
         case "indoor-imdf": IndoorIMDFRunView()
         case "homekit-discovery": HomeKitRunView()
-        case "matter-status": StatusCheckRunView(experiment: experiment, title: "Inspect Matter Availability", check: MatterExperimentService.statusText)
+        case "matter-status": MatterSetupRunView()
         case "arkit": ARKitRunView()
         case "roomplan": StatusCheckRunView(experiment: experiment, title: "Check RoomPlan Hardware", check: RoomPlanExperimentService.statusText)
         case "healthkit-status": HealthKitRunView()

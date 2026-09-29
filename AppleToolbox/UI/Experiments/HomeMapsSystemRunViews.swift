@@ -42,6 +42,21 @@ struct HomeKitRunView: View {
     }
 }
 
+struct MatterSetupRunView: View {
+    @StateObject private var matter = MatterSetupExperimentService()
+
+    var body: some View {
+        Button(matter.isRunning ? "Setup in Progress…" : "Add Accessory to Apple Home", action: matter.startSetup).buttonStyle(.borderedProminent).disabled(matter.isRunning)
+        if let home = matter.homeIdentifier {
+            LabeledContent("Home") { Text(home).font(.caption.monospaced()) }
+            ForEach(matter.accessoryIdentifiers, id: \.self) { accessory in
+                LabeledContent("Accessory") { Text(accessory).font(.caption.monospaced()) }
+            }
+        }
+        OutputView(text: matter.output, isError: matter.isError)
+    }
+}
+
 struct ARKitRunView: View {
     @StateObject private var ar = ARExperimentService()
 
