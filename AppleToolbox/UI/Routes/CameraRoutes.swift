@@ -7,7 +7,7 @@ struct CameraRunRoutes: View {
     var body: some View {
         switch experiment.id {
         case "camera-lab": CameraLabRunView()
-        case "camera-vision": CameraVisionRunView()
+        case "camera-vision": VisionLabRunView()
         default: UnroutedExperimentView()
         }
     }

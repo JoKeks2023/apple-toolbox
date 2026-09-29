@@ -348,6 +348,10 @@
 		88AEC658E10176073543FEE6 /* CameraLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273C5380A7608600BAAB798E /* CameraLabService.swift */; };
 		68485B07EEFE34CED7B2CB3C /* CameraLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */; };
 		8055348A9658F4D82184A5A1 /* CameraLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */; };
+		8D4F07A03F5597E083D4C32B /* VisionLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2BE4B38195F31A280013F /* VisionLabService.swift */; };
+		D763452C9E2E045724BE7EB2 /* VisionLabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2BE4B38195F31A280013F /* VisionLabService.swift */; };
+		B98034C63B5A07CF61FAA43C /* VisionLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */; };
+		3489EB818B1EE3D5100EDA59 /* VisionLabRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -566,6 +570,8 @@
 		1469DACD79441802363A7C56 /* HealthRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HealthRunViews.swift; path = AppleToolbox/UI/Experiments/HealthRunViews.swift; sourceTree = "<group>"; };
 		273C5380A7608600BAAB798E /* CameraLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraLabService.swift; path = AppleToolbox/Shared/Services/CameraLabService.swift; sourceTree = "<group>"; };
 		8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CameraLabRunView.swift; path = AppleToolbox/UI/Experiments/CameraLabRunView.swift; sourceTree = "<group>"; };
+		EFE2BE4B38195F31A280013F /* VisionLabService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VisionLabService.swift; path = AppleToolbox/Shared/Services/VisionLabService.swift; sourceTree = "<group>"; };
+		B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VisionLabRunView.swift; path = AppleToolbox/UI/Experiments/VisionLabRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -855,6 +861,8 @@
 				1469DACD79441802363A7C56 /* HealthRunViews.swift */,
 				273C5380A7608600BAAB798E /* CameraLabService.swift */,
 				8AA49C969EFBB1B88F8C08F5 /* CameraLabRunView.swift */,
+				EFE2BE4B38195F31A280013F /* VisionLabService.swift */,
+				B7B6242C240BE801454E8D1A /* VisionLabRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1280,6 +1288,8 @@
 				DA50FEFC27E81BDEF0827783 /* HealthRunViews.swift in Sources */,
 				CD8D3A4EA5A818862A1498BF /* CameraLabService.swift in Sources */,
 				68485B07EEFE34CED7B2CB3C /* CameraLabRunView.swift in Sources */,
+				8D4F07A03F5597E083D4C32B /* VisionLabService.swift in Sources */,
+				B98034C63B5A07CF61FAA43C /* VisionLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1510,6 +1520,8 @@
 				904B20C154C8E4321B8D38A8 /* HealthRunViews.swift in Sources */,
 				88AEC658E10176073543FEE6 /* CameraLabService.swift in Sources */,
 				8055348A9658F4D82184A5A1 /* CameraLabRunView.swift in Sources */,
+				D763452C9E2E045724BE7EB2 /* VisionLabService.swift in Sources */,
+				3489EB818B1EE3D5100EDA59 /* VisionLabRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

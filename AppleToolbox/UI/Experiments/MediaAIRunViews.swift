@@ -1,16 +1,5 @@
 import SwiftUI
 
-struct CameraVisionRunView: View {
-    @StateObject private var media = CameraVisionExperimentService()
-
-    var body: some View {
-        Button(media.isRunning ? "Stop Camera & Vision" : "Start Camera & Vision") { media.isRunning ? media.stop() : media.start() }.buttonStyle(.borderedProminent)
-            .experimentSession(media)
-        VisionResultsView(results: media.detectedTexts)
-        OutputView(text: media.output, isError: media.status != .available)
-    }
-}
-
 struct AudioInputRunView: View {
     @StateObject private var audio = AudioExperimentService()
 
@@ -51,30 +40,6 @@ struct SpeechRunView: View {
         }
         .experimentSession(speech)
         OutputView(text: speech.output, isError: speech.output.localizedCaseInsensitiveContains("error") || speech.output.localizedCaseInsensitiveContains("denied"))
-    }
-}
-
-private struct VisionResultsView: View {
-    let results: [VisionTextResult]
-
-    var body: some View {
-        Section("Recognized text") {
-            if results.isEmpty {
-                Text("Start the camera and point it at readable text.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            } else {
-                ForEach(results) { result in
-                    HStack {
-                        Text(result.text)
-                        Spacer()
-                        Text("\(Int(result.confidence * 100))%")
-                            .font(.caption.monospacedDigit())
-                            .foregroundStyle(.secondary)
-                    }
-                }
-            }
-        }
     }
 }
 

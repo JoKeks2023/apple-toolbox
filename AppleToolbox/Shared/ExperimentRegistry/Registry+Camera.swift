@@ -13,7 +13,12 @@ extension ExperimentRegistry {
                 .platformUnsupported: ExperimentExplanation(reason: "Apple TV has no built-in camera (tvOS only offers an iPhone as Continuity Camera, which this lab does not cover), and watchOS has no camera API.", required: "iPhone, iPad or Mac",
                     nextStep: "Open the Camera Lab on an iPhone, iPad or Mac."),
             ]),
-        ExperimentDescriptor(id: "camera-vision", name: "Camera & Vision", category: .camera,
-            description: "Capture live camera frames and run Vision text recognition on the real image stream.", frameworks: ["AVFoundation", "Vision"], supportedPlatforms: [.iOS, .iPadOS, .macOS], hardwareRequirements: ["Camera"], osRequirements: ["iOS 11+ · macOS 10.15+"], permissions: ["Camera Usage Description"], capabilities: [], entitlements: [], documentationURL: URL(string: "https://developer.apple.com/documentation/vision")!, evaluate: ExperimentAvailability.camera),
+        ExperimentDescriptor(id: "camera-vision", name: "Vision Lab", category: .camera,
+            description: "Run Vision's Swift requests on live camera frames or a picked photo: barcodes, face rectangles and landmarks, human body and hand pose, image classification, document segmentation, text recognition and object tracking, with the observations drawn over the analyzed image.", frameworks: ["Vision", "AVFoundation", "PhotosUI"], supportedPlatforms: [.iOS, .iPadOS, .macOS], hardwareRequirements: ["Camera for live frames and tracking (photos work without one)"], osRequirements: ["iOS 18+ · iPadOS 18+ · macOS 15+ (Vision Swift API)"], permissions: ["Camera Usage Description (live frames only)"], capabilities: ["On-device Vision requests"], entitlements: [], documentationURL: URL(string: "https://developer.apple.com/documentation/vision")!, evaluate: { .available },
+            useCase: ExperimentUseCase(id: "vision-lab-analyze", title: "See what Vision finds in a frame", summary: "Point the camera at a QR code, a face, a hand, a document or any scene, or pick a photo, and inspect every observation Vision returns.", interaction: "Choose a request, then start the live camera or pick a photo. For object tracking, start the camera and drag a rectangle around an object."),
+            explanations: [
+                .platformUnsupported: ExperimentExplanation(reason: "Vision itself exists on tvOS, but Apple TV has no camera and no PhotosPicker, so this lab has no image to analyze; watchOS lacks most of these requests.", required: "iPhone, iPad or Mac",
+                    nextStep: "Open the Vision Lab on an iPhone, iPad or Mac."),
+            ]),
     ]
 }
