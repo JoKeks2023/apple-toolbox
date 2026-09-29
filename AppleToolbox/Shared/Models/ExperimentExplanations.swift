@@ -121,8 +121,8 @@ extension ExperimentDescriptor {
                                                 nextStep: "Pair the controller in Bluetooth settings, or put an MFi controller in pairing mode and start wireless discovery below."),
         ],
         "app-attest": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "App Attest is not supported here (for example in the Simulator).", required: "A physical device with a Secure Enclave",
-                                                        nextStep: "Run the experiment on a real device."),
+            .hardwareUnsupported: ExperimentExplanation(reason: "DCAppAttestService reports that App Attest is not supported here (for example in the Simulator).", required: "A physical device with a Secure Enclave and an App ID registered with Apple",
+                                                        nextStep: "Run the experiment on a real device; the DeviceCheck token can still be tried below."),
         ],
     ]
 }

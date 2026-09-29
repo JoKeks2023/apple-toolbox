@@ -129,6 +129,10 @@
 		269B5D1C218592E6A1093599 /* GameControllerExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A18EDE511B727640FF35CDA /* GameControllerExperimentService.swift */; };
 		DFB7F2998844029F10E79662 /* GameControllerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A082415FFA4DB395CF6783 /* GameControllerRunView.swift */; };
 		ACFE80B65BF96FEA292622EC /* GameControllerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A082415FFA4DB395CF6783 /* GameControllerRunView.swift */; };
+		04FDB23F4C89E34144CBE95A /* AppAttestExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9BBC80985F365FCAE54BAB /* AppAttestExperimentService.swift */; };
+		083E92C5E44027026D40B7A1 /* AppAttestExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9BBC80985F365FCAE54BAB /* AppAttestExperimentService.swift */; };
+		42AD02522844D21219E09159 /* IdentityRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E6A0C1A8FC25C723A1E05 /* IdentityRunViews.swift */; };
+		5E00D312E59877F5708A5BA8 /* IdentityRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E6A0C1A8FC25C723A1E05 /* IdentityRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -252,6 +256,8 @@
 		41D35DE1C00677CD5C5B4E6A /* WatchLabViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchLabViews.swift; path = AppleToolbox/WatchApp/WatchLabViews.swift; sourceTree = "<group>"; };
 		1A18EDE511B727640FF35CDA /* GameControllerExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GameControllerExperimentService.swift; path = AppleToolbox/Shared/Services/GameControllerExperimentService.swift; sourceTree = "<group>"; };
 		43A082415FFA4DB395CF6783 /* GameControllerRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GameControllerRunView.swift; path = AppleToolbox/UI/Experiments/GameControllerRunView.swift; sourceTree = "<group>"; };
+		7F9BBC80985F365FCAE54BAB /* AppAttestExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppAttestExperimentService.swift; path = AppleToolbox/Shared/Services/AppAttestExperimentService.swift; sourceTree = "<group>"; };
+		EA3E6A0C1A8FC25C723A1E05 /* IdentityRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IdentityRunViews.swift; path = AppleToolbox/UI/Experiments/IdentityRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -445,6 +451,8 @@
 				41D35DE1C00677CD5C5B4E6A /* WatchLabViews.swift */,
 				1A18EDE511B727640FF35CDA /* GameControllerExperimentService.swift */,
 				43A082415FFA4DB395CF6783 /* GameControllerRunView.swift */,
+				7F9BBC80985F365FCAE54BAB /* AppAttestExperimentService.swift */,
+				EA3E6A0C1A8FC25C723A1E05 /* IdentityRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -776,6 +784,8 @@
 				EB97970FF0C458E04D92FD86 /* DeviceScannerRunView.swift in Sources */,
 				E859694049D0C4AD52018350 /* GameControllerExperimentService.swift in Sources */,
 				DFB7F2998844029F10E79662 /* GameControllerRunView.swift in Sources */,
+				04FDB23F4C89E34144CBE95A /* AppAttestExperimentService.swift in Sources */,
+				42AD02522844D21219E09159 /* IdentityRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -882,6 +892,8 @@
 				EA150673D2C12043831FF906 /* DeviceScannerRunView.swift in Sources */,
 				91FCC5081C266E13AE4D108E /* GameControllerExperimentService.swift in Sources */,
 				ACFE80B65BF96FEA292622EC /* GameControllerRunView.swift in Sources */,
+				083E92C5E44027026D40B7A1 /* AppAttestExperimentService.swift in Sources */,
+				5E00D312E59877F5708A5BA8 /* IdentityRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
