@@ -4,6 +4,13 @@
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Joris Apple Toolbox uses your location to inspect live Core Location updates.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Joris Apple Toolbox asks for Always access only when you choose to test visit and significant-change monitoring.</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>LiveDashboard</key>
+		<string>Precise location shows your exact position and lets the Core Location experiment monitor a small region around you.</string>
+	</dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Joris Apple Toolbox uses Face ID for the LocalAuthentication and Keychain experiments.</string>
 	<key>NSAppleMusicUsageDescription</key>

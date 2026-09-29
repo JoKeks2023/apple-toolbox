@@ -74,6 +74,12 @@ extension ExperimentDescriptor {
             .hardwareUnsupported: ExperimentExplanation(reason: "This device or simulator does not provide a Secure Enclave.", required: "A device with a Secure Enclave (iPhone 5s or later, Apple silicon or T2 Mac, Apple Watch)",
                                                         nextStep: "Run the experiment on a physical device."),
         ],
+        "core-location": [
+            .permissionRequired: ExperimentExplanation(reason: "The app has not asked for location access yet.", required: "Location When In Use (Always only for visits and significant changes)",
+                                                       nextStep: "Tap Request Location Permission; the Always upgrade is offered separately."),
+            .permissionDenied: ExperimentExplanation(reason: "Location access is denied, restricted by Screen Time or MDM, or Location Services are off.", required: "Location Services on and Apple Toolbox allowed While Using the App",
+                                                     nextStep: "Turn on Settings › Privacy & Security › Location Services and allow Apple Toolbox."),
+        ],
         "core-motion": [
             .hardwareUnsupported: ExperimentExplanation(reason: "Device motion data is not available (for example in the Simulator).", required: "Accelerometer and gyroscope",
                                                         nextStep: "Run on an iPhone, iPad or Apple Watch."),

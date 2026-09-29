@@ -47,7 +47,9 @@ private struct ExperimentSessionRegistration<Service: StoppableExperiment>: View
     }
 }
 
-extension LocationExperimentService: StoppableExperiment { var isActive: Bool { isUpdating } }
+extension LocationExperimentService: StoppableExperiment {
+    var isActive: Bool { isUpdating || monitoredRegion != nil || isMonitoringVisits || isMonitoringSignificantChanges }
+}
 extension MotionExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension NetworkExperimentService: StoppableExperiment { var isActive: Bool { isMonitoring } }
 extension BluetoothExperimentService: StoppableExperiment { var isActive: Bool { isScanning } }
