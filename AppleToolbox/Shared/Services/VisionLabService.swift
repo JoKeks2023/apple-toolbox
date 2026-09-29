@@ -21,6 +21,9 @@ nonisolated enum VisionLabRequest: String, CaseIterable, Identifiable, Sendable 
     case document = "Document segmentation"
     case text = "Text recognition (OCR)"
     case tracking = "Object tracking"
+    case animals = "Animal recognition"
+    case humans = "Human rectangles"
+    case saliency = "Objectness saliency"
 
     var id: String { rawValue }
 
@@ -35,6 +38,9 @@ nonisolated enum VisionLabRequest: String, CaseIterable, Identifiable, Sendable 
         case .document: "DetectDocumentSegmentationRequest"
         case .text: "RecognizeTextRequest"
         case .tracking: "TrackObjectRequest"
+        case .animals: "RecognizeAnimalsRequest"
+        case .humans: "DetectHumanRectanglesRequest"
+        case .saliency: "GenerateObjectnessBasedSaliencyImageRequest"
         }
     }
 }
@@ -149,6 +155,19 @@ nonisolated enum VisionLabFormat {
     }
 
     static func percent(_ confidence: Float) -> String { "\(Int((confidence * 100).rounded())) %" }
+
+    /// Overlay label for a detection box, e.g. "Cat 92 %".
+    static func detectionLabel(_ title: String, confidence: Float) -> String { "\(title) \(percent(confidence))" }
+
+    /// A normalized bounding box (lower-left origin) as origin and size, e.g. "x 0.10 y 0.20 · 0.30 × 0.40".
+    static func normalizedBox(_ rect: CGRect) -> String {
+        String(format: "x %.2f y %.2f · %.2f × %.2f", rect.minX, rect.minY, rect.width, rect.height)
+    }
+
+    /// Animal labels sorted by confidence and joined, e.g. "Cat 92 % · Dog 5 %".
+    static func rankedLabels(_ labels: [(identifier: String, confidence: Float)]) -> String {
+        labels.sorted { $0.confidence > $1.confidence }.map { detectionLabel(classificationLabel($0.identifier), confidence: $0.confidence) }.joined(separator: " · ")
+    }
 }
 
 #if canImport(Vision) && canImport(AVFoundation) && (os(iOS) || os(macOS))
@@ -168,6 +187,9 @@ nonisolated enum VisionLabAnalyzer {
             case .document: return try await document(image)
             case .text: return try await text(image, live: live)
             case .tracking: return try await track(image, tracker: tracker)
+            case .animals: return try await animals(image)
+            case .humans: return try await humans(image)
+            case .saliency: return try await saliency(image)
             }
         } catch {
             return VisionAnalysis(summary: "\(request.apiName) failed: \(error.localizedDescription)", isError: true)
@@ -250,6 +272,50 @@ nonisolated enum VisionLabAnalyzer {
         var analysis = VisionAnalysis(summary: top.first.map { "Top label: \(VisionLabFormat.classificationLabel($0.identifier)) (\(VisionLabFormat.percent($0.confidence)))." } ?? "No label above 1 % confidence.")
         analysis.rows = top.map { VisionResultRow(title: VisionLabFormat.classificationLabel($0.identifier), detail: VisionLabFormat.percent($0.confidence)) }
         analysis.rows.append(VisionResultRow(title: "Taxonomy", detail: "\(observations.count) labels scored"))
+        return analysis
+    }
+
+    private static func animals(_ image: CGImage) async throws -> VisionAnalysis {
+        let observations = try await RecognizeAnimalsRequest().perform(on: image)
+        var analysis = VisionAnalysis(summary: observations.isEmpty ? "No cat or dog recognized. RecognizeAnimalsRequest only knows cats and dogs." : "\(observations.count) animal(s).")
+        for (index, animal) in observations.enumerated() {
+            let top = animal.labels.max { $0.confidence < $1.confidence }
+            let name = top.map { VisionLabFormat.classificationLabel($0.identifier) } ?? "Animal"
+            let box = animal.boundingBox.cgRect
+            analysis.shapes.append(VisionOverlayShape(kind: .polygon, points: VisionGeometry.corners(of: box), label: VisionLabFormat.detectionLabel(name, confidence: top?.confidence ?? animal.confidence)))
+            let labels = VisionLabFormat.rankedLabels(animal.labels.map { (identifier: $0.identifier, confidence: $0.confidence) })
+            analysis.rows.append(VisionResultRow(title: "Animal \(index + 1) · \(VisionLabFormat.percent(animal.confidence))", detail: "\(labels)\n\(VisionLabFormat.normalizedBox(box))"))
+        }
+        return analysis
+    }
+
+    private static func humans(_ image: CGImage) async throws -> VisionAnalysis {
+        var request = DetectHumanRectanglesRequest()
+        request.upperBodyOnly = false
+        let observations = try await request.perform(on: image)
+        var analysis = VisionAnalysis(summary: observations.isEmpty ? "No person detected." : "\(observations.count) person(s).")
+        for (index, human) in observations.enumerated() {
+            let box = human.boundingBox.cgRect
+            let extent = human.isUpperBodyOnly ? "upper body" : "full body"
+            analysis.shapes.append(VisionOverlayShape(kind: .polygon, points: VisionGeometry.corners(of: box), label: VisionLabFormat.detectionLabel("Person \(index + 1)", confidence: human.confidence)))
+            analysis.rows.append(VisionResultRow(title: "Person \(index + 1) · \(extent)", detail: "Confidence \(VisionLabFormat.percent(human.confidence)) · \(VisionLabFormat.normalizedBox(box))"))
+        }
+        return analysis
+    }
+
+    private static func saliency(_ image: CGImage) async throws -> VisionAnalysis {
+        let observation = try await GenerateObjectnessBasedSaliencyImageRequest().perform(on: image)
+        let objects = observation.salientObjects
+        var analysis = VisionAnalysis(summary: objects.isEmpty ? "No salient object found." : "\(objects.count) salient object region(s).")
+        for (index, object) in objects.enumerated() {
+            let corners = [object.bottomLeft, object.bottomRight, object.topRight, object.topLeft].map(\.cgPoint)
+            analysis.shapes.append(VisionOverlayShape(kind: .polygon, points: corners, tint: .secondary, label: VisionLabFormat.detectionLabel("Object \(index + 1)", confidence: object.confidence)))
+            let box = CGRect(x: corners.map(\.x).min() ?? 0, y: corners.map(\.y).min() ?? 0,
+                             width: (corners.map(\.x).max() ?? 0) - (corners.map(\.x).min() ?? 0), height: (corners.map(\.y).max() ?? 0) - (corners.map(\.y).min() ?? 0))
+            analysis.rows.append(VisionResultRow(title: "Object \(index + 1)", detail: "Confidence \(VisionLabFormat.percent(object.confidence)) · \(VisionLabFormat.normalizedBox(box))"))
+        }
+        let heatMap = observation.heatMap.size
+        analysis.rows.append(VisionResultRow(title: "Saliency heat map", detail: "\(Int(heatMap.width)) × \(Int(heatMap.height)) · objectness-based"))
         return analysis
     }
 

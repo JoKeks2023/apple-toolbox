@@ -51,4 +51,23 @@ struct ARLabTests {
         #expect(experiment.explanation(for: .platformUnsupported) != nil)
         #expect(ARLabMode.allCases.map(\.configurationName).allSatisfy { $0.hasPrefix("AR") && $0.hasSuffix("Configuration") })
     }
+
+    @Test func worldMapCanBeSavedOnlyOnceMappingIsExtendingOrMapped() {
+        #expect(ARLabMappingReadiness.allCases.filter(\.canSave) == [.extending, .mapped])
+        #expect(ARLabMappingReadiness.allCases.allSatisfy { !$0.advice.isEmpty })
+    }
+
+    @Test func worldMapSummaryAndScanExtentLabels() {
+        #expect(ARLabFormat.worldMapSummary(anchors: 3, featurePoints: 1200, bytes: 0).hasPrefix("3 anchor(s) · 1200 feature points · "))
+        #expect(ARLabScanExtent.allCases.map(\.label) == ["20 cm cube", "30 cm cube", "50 cm cube"])
+        #expect(ARLabMode.objectScan.configurationName == "ARObjectScanningConfiguration")
+    }
+
+    #if canImport(ARKit) && os(iOS)
+    @Test func mappingStatusMapsToReadiness() {
+        #expect(ARLabMappingReadiness(.mapped) == .mapped)
+        #expect(ARLabMappingReadiness(.limited) == .limited)
+        #expect(ARLabMappingReadiness(.notAvailable) == .notAvailable)
+    }
+    #endif
 }

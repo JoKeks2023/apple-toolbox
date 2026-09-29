@@ -56,4 +56,11 @@ struct VisionLabTests {
         #expect(experiment.frameworks.contains("Vision"))
         #expect(!experiment.supportedPlatforms.contains(.tvOS))
     }
+
+    @Test func detectionLabelsAndBoxesAreFormatted() {
+        #expect(VisionLabFormat.detectionLabel("Cat", confidence: 0.923) == "Cat 92 %")
+        #expect(VisionLabFormat.normalizedBox(CGRect(x: 0.1, y: 0.2, width: 0.3, height: 0.4)) == "x 0.10 y 0.20 · 0.30 × 0.40")
+        #expect(VisionLabFormat.rankedLabels([("Dog", 0.05), ("Cat", 0.9)]) == "Cat 90 % · Dog 5 %")
+        #expect(VisionLabRequest.animals.apiName == "RecognizeAnimalsRequest")
+    }
 }

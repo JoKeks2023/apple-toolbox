@@ -76,6 +76,12 @@ struct ARLabRunView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
+        if ar.mode == .world {
+            ARWorldMapSection(ar: ar)
+        }
+        if ar.mode == .objectScan {
+            ARObjectScanSection(ar: ar)
+        }
         if ar.mode == .image {
             ARReferenceImageSection(ar: ar)
         }
@@ -123,6 +129,73 @@ struct ARLabRunView: View {
 }
 
 #if canImport(ARKit) && canImport(RealityKit) && os(iOS)
+/// Save and restore an ARWorldMap (with the placed entities' ARAnchors) to a file.
+private struct ARWorldMapSection: View {
+    @ObservedObject var ar: ARLabService
+
+    var body: some View {
+        Section("World map · ARWorldMap") {
+            LabeledContent("Mapping status", value: ar.isRunning ? ar.mappingReadiness.rawValue : "Session not running")
+            Text(ar.mappingReadiness.advice)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            HStack {
+                Button(ar.isSavingWorldMap ? "Saving…" : "Save World Map", systemImage: "square.and.arrow.down") { ar.saveWorldMap() }
+                    .buttonStyle(.bordered)
+                    .disabled(!ar.isRunning || !ar.mappingReadiness.canSave || ar.isSavingWorldMap)
+                Button("Restore", systemImage: "arrow.counterclockwise") { ar.restoreWorldMap() }
+                    .buttonStyle(.bordered)
+                    .disabled(ar.worldMapFileURL == nil)
+            }
+            if let url = ar.worldMapFileURL {
+                LabeledContent("Saved file", value: url.lastPathComponent)
+                if let info = ar.worldMapInfo { LabeledContent("Contents", value: info) }
+                HStack {
+                    ShareLink(item: url) { Label("Share", systemImage: "square.and.arrow.up") }
+                    Button("Delete", systemImage: "trash", role: .destructive) { ar.deleteWorldMap() }
+                }
+            }
+            Text("Placed entities are backed by named ARAnchors, so they are part of the saved map. After Restore, ARKit relocalizes against the saved feature points and the entities reappear where they were.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+}
+
+/// ARObjectScanningConfiguration → ARReferenceObject → detection in world tracking.
+private struct ARObjectScanSection: View {
+    @ObservedObject var ar: ARLabService
+
+    var body: some View {
+        Section("Object scanning · ARReferenceObject") {
+            if !ar.isSupported(.objectScan) {
+                Text("ARObjectScanningConfiguration.isSupported is false on this device, so ARKit cannot scan reference objects here. It needs an iPhone or iPad with an A9 chip or later.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                Picker("Scan box", selection: $ar.scanExtent) {
+                    ForEach(ARLabScanExtent.allCases) { Text($0.label).tag($0) }
+                }
+                .disabled(ar.hasScanBox)
+                Button(ar.isCreatingReferenceObject ? "Creating…" : "Create Reference Object", systemImage: "cube.transparent") { ar.createReferenceObject() }
+                    .buttonStyle(.bordered)
+                    .disabled(!ar.isRunning || !ar.hasScanBox || ar.isCreatingReferenceObject)
+                if let info = ar.scannedObjectInfo { LabeledContent("Reference object", value: info) }
+                if let url = ar.scannedObjectFileURL {
+                    ShareLink(item: url) { Label("Share .arobject", systemImage: "square.and.arrow.up") }
+                }
+                if ar.hasScannedObject {
+                    Button("Detect in World Tracking", systemImage: "viewfinder") { ar.detectScannedObject() }
+                        .buttonStyle(.bordered)
+                }
+                Text("Tap the surface under the object to place the scan box, walk around it, then create the reference object. Scanning takes several seconds of feature collection; plain or shiny objects often fail with a real ARError.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+}
+
 private struct ARReferenceImageSection: View {
     @ObservedObject var ar: ARLabService
 

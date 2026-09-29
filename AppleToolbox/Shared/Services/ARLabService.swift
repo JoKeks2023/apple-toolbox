@@ -17,6 +17,7 @@ nonisolated enum ARLabMode: String, CaseIterable, Identifiable, Sendable {
     case face = "Face tracking (TrueDepth)"
     case body = "Body tracking"
     case image = "Image tracking"
+    case objectScan = "Object scanning"
     var id: String { rawValue }
 
     var configurationName: String {
@@ -25,6 +26,7 @@ nonisolated enum ARLabMode: String, CaseIterable, Identifiable, Sendable {
         case .face: "ARFaceTrackingConfiguration"
         case .body: "ARBodyTrackingConfiguration"
         case .image: "ARImageTrackingConfiguration"
+        case .objectScan: "ARObjectScanningConfiguration"
         }
     }
 }
@@ -67,6 +69,33 @@ nonisolated enum ARLabAnimation: String, CaseIterable, Identifiable, Sendable {
     var id: String { rawValue }
 }
 
+/// ARKit's world-mapping status, mirrored so the save rules are testable without a session.
+nonisolated enum ARLabMappingReadiness: String, CaseIterable, Sendable {
+    case notAvailable = "Not available"
+    case limited = "Limited"
+    case extending = "Extending"
+    case mapped = "Mapped"
+
+    /// `getCurrentWorldMap` needs enough mapped features; Apple recommends saving at `.extending` or `.mapped`.
+    var canSave: Bool { self == .extending || self == .mapped }
+
+    var advice: String {
+        switch self {
+        case .notAvailable: "No world map yet. Start world tracking and move the device around the room."
+        case .limited: "Mapping is limited. Keep moving the device slowly across the area until the status reaches Extending or Mapped."
+        case .extending: "The map is usable and still growing; saving now captures the area seen so far."
+        case .mapped: "The visible area is well mapped; this is the best moment to save."
+        }
+    }
+}
+
+/// Edge length of the cube ARKit scans with `createReferenceObject(transform:center:extent:)`.
+nonisolated enum ARLabScanExtent: Float, CaseIterable, Identifiable, Sendable {
+    case small = 0.2, medium = 0.3, large = 0.5
+    var id: Float { rawValue }
+    var label: String { "\(Int((rawValue * 100).rounded())) cm cube" }
+}
+
 nonisolated struct ARLabRow: Identifiable, Equatable, Sendable {
     let id: String
     let title: String
@@ -90,6 +119,10 @@ nonisolated struct ARLabFrameStats: Equatable, Sendable {
 
 nonisolated enum ARLabFormat {
     static func meters(_ value: Float) -> String { String(format: "%.2f m", value) }
+
+    static func worldMapSummary(anchors: Int, featurePoints: Int, bytes: Int) -> String {
+        "\(anchors) anchor(s) · \(featurePoints) feature points · \(bytes.formatted(.byteCount(style: .file)))"
+    }
 
     static func fps(frames: Int, seconds: Double) -> Double {
         seconds > 0 ? Double(frames) / seconds : 0
@@ -197,6 +230,16 @@ final class ARLabService: NSObject, ObservableObject {
     @Published private(set) var referenceImage: CGImage?
     @Published private(set) var referenceImageURL: URL?
     @Published private(set) var referenceValidation: String?
+    @Published private(set) var mappingReadiness: ARLabMappingReadiness = .notAvailable
+    @Published private(set) var worldMapFileURL: URL?
+    @Published private(set) var worldMapInfo: String?
+    @Published private(set) var isSavingWorldMap = false
+    @Published var scanExtent: ARLabScanExtent = .medium
+    @Published private(set) var hasScanBox = false
+    @Published private(set) var isCreatingReferenceObject = false
+    @Published private(set) var scannedObjectFileURL: URL?
+    @Published private(set) var scannedObjectInfo: String?
+    @Published private(set) var hasScannedObject = false
     let support: [ARLabRow]
 
     var isActive: Bool { isRunning }
@@ -208,6 +251,12 @@ final class ARLabService: NSObject, ObservableObject {
     private var trackedAnchors: [UUID: ARAnchor] = [:]
     private var imageEntities: [UUID: AnchorEntity] = [:]
     private var placedAnchors: [AnchorEntity] = []
+    /// ARAnchors behind placed entities; they are what an ARWorldMap persists.
+    private var placedAnchorIDs: Set<UUID> = []
+    private var pendingWorldMap: ARWorldMap?
+    private var scanTransform: simd_float4x4?
+    private var scanBoxAnchor: AnchorEntity?
+    private var scannedObject: ARReferenceObject?
     private var anchorsChanged = false
     private var windowStart: TimeInterval = 0
     private var windowFrames = 0
@@ -218,6 +267,7 @@ final class ARLabService: NSObject, ObservableObject {
         #if canImport(ARKit) && canImport(RealityKit) && os(iOS)
         support = Self.supportRows()
         status = ExperimentAvailability.arKit()
+        worldMapFileURL = FileManager.default.fileExists(atPath: Self.worldMapURL.path(percentEncoded: false)) ? Self.worldMapURL : nil
         output = ARWorldTrackingConfiguration.isSupported
             ? "Choose a configuration and start the session. In world tracking, tap a detected surface to place an entity."
             : "ARWorldTrackingConfiguration.isSupported is false on this device, so world tracking cannot run."
@@ -238,6 +288,7 @@ final class ARLabService: NSObject, ObservableObject {
         case .face: ARFaceTrackingConfiguration.isSupported
         case .body: ARBodyTrackingConfiguration.isSupported
         case .image: ARImageTrackingConfiguration.isSupported
+        case .objectScan: ARObjectScanningConfiguration.isSupported
         }
         #else
         false
@@ -357,8 +408,12 @@ final class ARLabService: NSObject, ObservableObject {
         #if canImport(ARKit) && canImport(RealityKit) && os(iOS)
         for anchor in placedAnchors { anchor.removeFromParent() }
         placedAnchors.removeAll()
+        if let session = arView?.session {
+            for anchor in session.currentFrame?.anchors ?? [] where placedAnchorIDs.contains(anchor.identifier) { session.remove(anchor: anchor) }
+        }
+        placedAnchorIDs.removeAll()
         placedCount = 0
-        output = "Removed all placed entities."
+        output = "Removed all placed entities and their ARAnchors."
         #endif
     }
 
@@ -373,6 +428,7 @@ final class ARLabService: NSObject, ObservableObject {
         case .face: "Face tracking needs a TrueDepth camera (or an A12+ chip with a front camera)."
         case .body: "Body tracking needs an A12 Bionic or later."
         case .image: "Image tracking needs an A9 or later chip and a rear camera."
+        case .objectScan: "Object scanning needs an A9 or later chip and a rear camera, and is only offered on iPhone and iPad."
         }
     }
 
@@ -382,6 +438,7 @@ final class ARLabService: NSObject, ObservableObject {
         case .face: "Look at the front camera; a sphere floats above the tracked face and the anchor list shows blend shapes."
         case .body: "Point the rear camera at a whole person; a sphere follows the body anchor's hip joint."
         case .image: "Point the camera at the reference pattern shown below (on another screen or printed)."
+        case .objectScan: "Put a small, textured, rigid object on a table, tap the table under it to set the scan box, then walk around it before creating the reference object."
         }
     }
 
@@ -403,6 +460,11 @@ final class ARLabService: NSObject, ObservableObject {
             // Some combinations are not allowed together; fall back to people occlusion alone.
             if !ARWorldTrackingConfiguration.supportsFrameSemantics(semantics) { semantics.remove(.sceneDepth) }
             configuration.frameSemantics = semantics
+            if let scannedObject { configuration.detectionObjects = [scannedObject] }
+            if let pendingWorldMap {
+                configuration.initialWorldMap = pendingWorldMap
+                self.pendingWorldMap = nil
+            }
             return configuration
         case .face:
             let configuration = ARFaceTrackingConfiguration()
@@ -417,6 +479,10 @@ final class ARLabService: NSObject, ObservableObject {
             let configuration = ARImageTrackingConfiguration()
             configuration.trackingImages = arReferenceImage.map { [$0] } ?? []
             configuration.maximumNumberOfTrackedImages = 1
+            return configuration
+        case .objectScan:
+            let configuration = ARObjectScanningConfiguration()
+            configuration.planeDetection = .horizontal
             return configuration
         }
     }
@@ -445,6 +511,11 @@ final class ARLabService: NSObject, ObservableObject {
         trackedAnchors.removeAll()
         imageEntities.removeAll()
         placedAnchors.removeAll()
+        placedAnchorIDs.removeAll()
+        scanTransform = nil
+        scanBoxAnchor = nil
+        hasScanBox = false
+        mappingReadiness = .notAvailable
         placedCount = 0
         anchors = []
         stats = ARLabFrameStats()
@@ -470,7 +541,7 @@ final class ARLabService: NSObject, ObservableObject {
             let marker = ModelEntity(mesh: .generateSphere(radius: 0.06), materials: [makeMaterial()])
             anchor.addChild(marker)
             view.scene.addAnchor(anchor)
-        case .world, .image:
+        case .world, .image, .objectScan:
             break
         }
     }
@@ -480,6 +551,10 @@ final class ARLabService: NSObject, ObservableObject {
         let point = recognizer.location(in: view)
         if let entity = view.entity(at: point), let model = placedModel(containing: entity) {
             interact(with: model)
+            return
+        }
+        if mode == .objectScan {
+            setScanBox(at: point, in: view)
             return
         }
         guard mode == .world || mode == .body else {
@@ -497,7 +572,11 @@ final class ARLabService: NSObject, ObservableObject {
 
     private func place(at result: ARRaycastResult, fromExistingPlane: Bool) {
         guard let view = arView else { return }
-        let anchor = AnchorEntity(raycastResult: result)
+        // A named ARAnchor (instead of a raycast-only AnchorEntity) so ARWorldMap saves the placement.
+        let arAnchor = ARAnchor(name: Self.placedAnchorName, transform: result.worldTransform)
+        placedAnchorIDs.insert(arAnchor.identifier)
+        view.session.add(anchor: arAnchor)
+        let anchor = AnchorEntity(anchor: arAnchor)
         let model = makeModel()
         let halfHeight: Float = 0.05 // Both shapes are 10 cm tall.
         let horizontal = result.targetAlignment == .horizontal
@@ -648,6 +727,161 @@ final class ARLabService: NSObject, ObservableObject {
         }
     }
 
+    // MARK: World map
+
+    static let placedAnchorName = "ATBPlaced"
+    static var worldMapURL: URL { URL.documentsDirectory.appending(path: "AppleToolbox.arworldmap") }
+
+    /// Recreates an entity for a placed anchor that came back from a restored ARWorldMap.
+    fileprivate func restorePlacedEntity(for anchor: ARAnchor) {
+        guard let view = arView, anchor.name == Self.placedAnchorName, !placedAnchorIDs.contains(anchor.identifier) else { return }
+        placedAnchorIDs.insert(anchor.identifier)
+        let entity = AnchorEntity(anchor: anchor)
+        let model = makeModel()
+        model.position = [0, 0.05, 0]
+        entity.addChild(model)
+        view.scene.addAnchor(entity)
+        placedAnchors.append(entity)
+        placedCount = placedAnchors.count
+        output = "Relocalized: restored \(placedCount) placed entit\(placedCount == 1 ? "y" : "ies") from the saved ARWorldMap."
+    }
+
+    func saveWorldMap() {
+        guard let arView, isRunning, mode == .world, !isSavingWorldMap else { return }
+        isSavingWorldMap = true
+        let url = Self.worldMapURL
+        arView.session.getCurrentWorldMap { @Sendable [weak self] map, error in
+            let result: Result<String, WorldMapError>
+            if let map {
+                do {
+                    let data = try NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+                    try data.write(to: url, options: [.atomic, .completeFileProtection])
+                    result = .success(ARLabFormat.worldMapSummary(anchors: map.anchors.count, featurePoints: map.rawFeaturePoints.points.count, bytes: data.count))
+                } catch {
+                    result = .failure(WorldMapError(message: "The world map could not be archived or written: \(error.localizedDescription)"))
+                }
+            } else {
+                let code = (error as? ARError).map { " (ARError code \($0.errorCode))" } ?? ""
+                result = .failure(WorldMapError(message: "getCurrentWorldMap failed\(code): \(error?.localizedDescription ?? "no map returned"). Map more of the area until the status is Extending or Mapped."))
+            }
+            Task { @MainActor in self?.worldMapSaved(result, url: url) }
+        }
+    }
+
+    private func worldMapSaved(_ result: Result<String, WorldMapError>, url: URL) {
+        isSavingWorldMap = false
+        switch result {
+        case .success(let summary):
+            worldMapFileURL = url
+            worldMapInfo = summary
+            output = "Saved ARWorldMap to \(url.lastPathComponent): \(summary)."
+        case .failure(let error):
+            status = .unavailable
+            output = error.message
+        }
+    }
+
+    func restoreWorldMap() {
+        guard mode == .world else { return }
+        let url = Self.worldMapURL
+        do {
+            let data = try Data(contentsOf: url)
+            guard let map = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) else {
+                output = "The file \(url.lastPathComponent) does not contain an ARWorldMap."
+                return
+            }
+            let summary = ARLabFormat.worldMapSummary(anchors: map.anchors.count, featurePoints: map.rawFeaturePoints.points.count, bytes: data.count)
+            worldMapInfo = summary
+            pendingWorldMap = map
+            if isRunning, let arView {
+                for anchor in placedAnchors { anchor.removeFromParent() }
+                placedAnchors.removeAll()
+                placedAnchorIDs.removeAll()
+                placedCount = 0
+                arView.session.run(makeConfiguration(), options: [.resetTracking, .removeExistingAnchors])
+            } else {
+                start()
+            }
+            output = "Running world tracking with initialWorldMap (\(summary)). Point the camera at the area where the map was saved; tracking stays “relocalizing” until ARKit recognizes it."
+        } catch {
+            output = "The saved world map could not be read: \(error.localizedDescription)"
+        }
+    }
+
+    func deleteWorldMap() {
+        try? FileManager.default.removeItem(at: Self.worldMapURL)
+        worldMapFileURL = nil
+        worldMapInfo = nil
+        output = "Deleted the saved ARWorldMap."
+    }
+
+    // MARK: Object scanning
+
+    private func setScanBox(at point: CGPoint, in view: ARView) {
+        guard let result = view.raycast(from: point, allowing: .estimatedPlane, alignment: .horizontal).first else {
+            output = "The raycast hit no horizontal surface. Move the device until the table is detected, then tap under the object."
+            return
+        }
+        scanBoxAnchor?.removeFromParent()
+        let extent = scanExtent.rawValue
+        let anchor = AnchorEntity(world: result.worldTransform)
+        let box = ModelEntity(mesh: .generateBox(size: extent), materials: [UnlitMaterial(color: UIColor.systemCyan.withAlphaComponent(0.25))])
+        box.position = [0, extent / 2, 0]
+        anchor.addChild(box)
+        view.scene.addAnchor(anchor)
+        scanBoxAnchor = anchor
+        scanTransform = result.worldTransform
+        hasScanBox = true
+        output = "Scan box set (\(scanExtent.label)). Walk around the object so ARKit collects feature points on every side, then create the reference object."
+    }
+
+    func createReferenceObject() {
+        guard let arView, isRunning, mode == .objectScan, let transform = scanTransform, !isCreatingReferenceObject else { return }
+        isCreatingReferenceObject = true
+        let extent = scanExtent.rawValue
+        let url = URL.temporaryDirectory.appending(path: "AppleToolbox-Scan.arobject")
+        arView.session.createReferenceObject(transform: transform, center: [0, extent / 2, 0], extent: [extent, extent, extent]) { @Sendable [weak self] object, error in
+            guard let object else {
+                let code = (error as? ARError).map { " (ARError code \($0.errorCode))" } ?? ""
+                let message = "createReferenceObject failed\(code): \(error?.localizedDescription ?? "no object returned"). Scan longer and from more angles; the object needs enough texture for feature points."
+                Task { @MainActor in self?.referenceObjectCreated(nil, info: message, url: nil) }
+                return
+            }
+            var info = "\(object.rawFeaturePoints.points.count) feature points · extent \(String(format: "%.2f × %.2f × %.2f m", object.extent.x, object.extent.y, object.extent.z))"
+            var written: URL?
+            do {
+                try? FileManager.default.removeItem(at: url)
+                try object.export(to: url, previewImage: nil)
+                written = url
+            } catch {
+                info += "\nExport failed: \(error.localizedDescription)"
+            }
+            let finalInfo = info, finalURL = written
+            Task { @MainActor in self?.referenceObjectCreated(object, info: finalInfo, url: finalURL) }
+        }
+    }
+
+    private func referenceObjectCreated(_ object: ARReferenceObject?, info: String, url: URL?) {
+        isCreatingReferenceObject = false
+        guard let object else {
+            status = .unavailable
+            output = info
+            return
+        }
+        scannedObject = object
+        hasScannedObject = true
+        scannedObjectInfo = info
+        scannedObjectFileURL = url
+        output = "Created an ARReferenceObject: \(info). Switch to world tracking to detect it."
+    }
+
+    /// Runs world tracking with the scanned object in `detectionObjects`.
+    func detectScannedObject() {
+        guard hasScannedObject else { return }
+        setMode(.world)
+        if !isRunning { start() }
+    }
+
     // MARK: Frame and anchor bookkeeping (main queue)
 
     fileprivate func ingest(_ frame: ARFrame) {
@@ -659,6 +893,8 @@ final class ARLabService: NSObject, ObservableObject {
         var stats = ARLabFrameStats()
         stats.trackingState = ARLabFormat.trackingState(frame.camera.trackingState)
         stats.worldMapping = mode == .world ? ARLabFormat.worldMapping(frame.worldMappingStatus) : "Not used by \(mode.configurationName)"
+        let readiness = ARLabMappingReadiness(frame.worldMappingStatus)
+        if readiness != mappingReadiness { mappingReadiness = readiness }
         stats.framesPerSecond = ARLabFormat.fps(frames: windowFrames, seconds: elapsed)
         stats.frames = totalFrames
         let resolution = frame.camera.imageResolution
@@ -749,7 +985,9 @@ final class ARLabService: NSObject, ObservableObject {
             ARLabRow(id: "body2d", title: "2D body detection", detail: "frameSemantics .bodyDetection", supported: ARWorldTrackingConfiguration.supportsFrameSemantics(.bodyDetection)),
             ARLabRow(id: "image", title: "Image tracking", detail: "ARImageTrackingConfiguration with a runtime reference image", supported: ARImageTrackingConfiguration.isSupported),
             ARLabRow(id: "geo", title: "Geo tracking", detail: "ARGeoTrackingConfiguration — also depends on location and coverage; not run by this lab", supported: ARGeoTrackingConfiguration.isSupported),
-            ARLabRow(id: "object", title: "Object detection", detail: "Needs a scanned reference object; the app bundles none, so this lab does not run it", supported: nil),
+            ARLabRow(id: "object-scan", title: "Object scanning", detail: "ARObjectScanningConfiguration → ARReferenceObject", supported: ARObjectScanningConfiguration.isSupported),
+            ARLabRow(id: "object", title: "Object detection", detail: "detectionObjects in world tracking, using an object scanned in this lab", supported: ARWorldTrackingConfiguration.isSupported),
+            ARLabRow(id: "world-map", title: "World map persistence", detail: "getCurrentWorldMap / initialWorldMap", supported: ARWorldTrackingConfiguration.isSupported),
             ARLabRow(id: "hand", title: "Hand tracking", detail: "ARKit hand tracking (HandTrackingProvider) is visionOS-only; on iPhone and iPad use the Vision Lab's hand pose", supported: false),
             ARLabRow(id: "formats", title: "Video formats", detail: best.map { "\(formats.count) · best \(Int($0.imageResolution.width)) × \(Int($0.imageResolution.height)) @ \($0.framesPerSecond) fps" } ?? "None reported", supported: nil),
         ]
@@ -766,6 +1004,10 @@ extension ARLabService: ARSessionDelegate {
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         track(anchors, removed: false)
         for case let image as ARImageAnchor in anchors { attachImageEntity(to: image) }
+        for anchor in anchors where anchor.name == Self.placedAnchorName { restorePlacedEntity(for: anchor) }
+        for case let object as ARObjectAnchor in anchors {
+            output = "Detected the scanned object “\(object.referenceObject.name ?? "ARReferenceObject")” as an ARObjectAnchor."
+        }
     }
 
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) { track(anchors, removed: false) }
@@ -789,6 +1031,21 @@ extension ARLabService: ARSessionDelegate {
 
     func sessionInterruptionEnded(_ session: ARSession) {
         output = "The AR session interruption ended; tracking resumes and may need to relocalize."
+    }
+}
+
+nonisolated struct WorldMapError: Error {
+    let message: String
+}
+
+nonisolated extension ARLabMappingReadiness {
+    init(_ status: ARFrame.WorldMappingStatus) {
+        switch status {
+        case .limited: self = .limited
+        case .extending: self = .extending
+        case .mapped: self = .mapped
+        default: self = .notAvailable
+        }
     }
 }
 
