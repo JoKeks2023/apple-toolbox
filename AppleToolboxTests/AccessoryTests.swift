@@ -65,3 +65,12 @@ struct MIDIMessageFormatterTests {
         #expect(MIDIMessageFormatter.hex([0x2090_3C64, 0x0000_0001]) == "20903C64 00000001")
     }
 }
+
+struct UnconfiguredAccessoryTests {
+
+    @Test func decodesAccessoryProperties() {
+        #expect(UnconfiguredAccessoryInfo.features(rawValue: 0) == [])
+        #expect(UnconfiguredAccessoryInfo.features(rawValue: 0b101) == ["AirPlay", "HomeKit"])
+        #expect(UnconfiguredAccessoryInfo.features(rawValue: 0b010) == ["AirPrint"])
+    }
+}

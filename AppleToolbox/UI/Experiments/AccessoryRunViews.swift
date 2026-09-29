@@ -242,3 +242,28 @@ private struct BluetoothMIDICentralView: UIViewControllerRepresentable {
 extension AccessorySetupKitExperimentService: StoppableExperiment {}
 extension ExternalAccessoryExperimentService: StoppableExperiment { var isActive: Bool { isMonitoring } }
 extension MIDIExperimentService: StoppableExperiment { var isActive: Bool { isListening } }
+
+struct WirelessAccessoryConfigurationRunView: View {
+    @StateObject private var service = WirelessAccessoryConfigurationService()
+
+    var body: some View {
+        Button(service.isSearching ? "Stop Search" : "Search for Unconfigured Accessories") {
+            service.isSearching ? service.stop() : service.start()
+        }
+        .buttonStyle(.borderedProminent)
+        .experimentSession(service)
+        LabeledContent("Browser state", value: service.state)
+        ForEach(service.accessories) { accessory in
+            VStack(alignment: .leading, spacing: 2) {
+                Text(accessory.name).font(.headline)
+                Text("\(accessory.manufacturer) · \(accessory.model)").font(.caption).foregroundStyle(.secondary)
+                Text("SSID \(accessory.ssid) · MAC \(accessory.macAddress)").font(.caption2.monospaced()).foregroundStyle(.secondary)
+                if !accessory.features.isEmpty {
+                    Text(accessory.features.joined(separator: " · ")).font(.caption2).foregroundStyle(.secondary)
+                }
+                Button("Configure…") { service.configure(accessory.id) }.buttonStyle(.bordered)
+            }
+        }
+        OutputView(text: service.output, isError: service.isError)
+    }
+}

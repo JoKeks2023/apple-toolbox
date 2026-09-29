@@ -10,6 +10,7 @@ struct ConnectivityRunRoutes: View {
         case "bluetooth-peripheral": BluetoothPeripheralModeRunView()
         case "accessory-setup-kit": AccessorySetupKitRunView()
         case "external-accessory": ExternalAccessoryRunView()
+        case "wireless-accessory-configuration": WirelessAccessoryConfigurationRunView()
         case "bluetooth-midi": BluetoothMIDIRunView()
         case "multipeer-connectivity": MultipeerRunView()
         case "continuity": WatchConnectivityRunView()

@@ -74,6 +74,111 @@ nonisolated enum ISO7816Command {
     }
 }
 
+/// Native MIFARE commands sent with sendMiFareCommand / sendMiFareISO7816Command.
+nonisolated enum MiFareCommand {
+    /// Ultralight / NTAG GET_VERSION (0x60): returns 8 bytes (vendor, type, subtype, version, storage size, protocol).
+    static let ultralightGetVersion = Data([0x60])
+
+    /// Ultralight / NTAG READ (0x30, page): returns 16 bytes, i.e. four 4-byte pages starting at `page` (wrapping at the end).
+    static func ultralightRead(page: UInt8) -> Data { Data([0x30, page]) }
+
+    /// A DESFire native command wrapped in ISO 7816-4: CLA 90, INS = native command, P1 P2 00, [Lc data], Le 00.
+    static func desfireWrapped(_ command: UInt8, data: Data = Data()) -> Data {
+        var apdu = Data([0x90, command, 0x00, 0x00])
+        if !data.isEmpty { apdu.append(UInt8(data.count)); apdu.append(data) }
+        apdu.append(0x00)
+        return apdu
+    }
+
+    /// DESFire GetVersion (native 0x60); the card answers in three frames, each but the last ending in 91 AF.
+    static var desfireGetVersion: Data { desfireWrapped(0x60) }
+    /// DESFire ADDITIONAL_FRAME (native 0xAF) fetches the next frame.
+    static var desfireAdditionalFrame: Data { desfireWrapped(0xAF) }
+
+    /// Status word 91 AF: more data follows.
+    static func desfireHasMoreFrames(sw1: UInt8, sw2: UInt8) -> Bool { sw1 == 0x91 && sw2 == 0xAF }
+
+    /// Meaning of a DESFire status word (SW1 91 carries the native status in SW2).
+    static func desfireStatus(sw1: UInt8, sw2: UInt8) -> String {
+        guard sw1 == 0x91 else { return ISO7816StatusWord(sw1: sw1, sw2: sw2).meaning }
+        switch sw2 {
+        case 0x00: return "Operation OK"
+        case 0xAF: return "Additional frame expected"
+        case 0x1C: return "Illegal command code"
+        case 0x7E: return "Length error"
+        case 0x9D: return "Permission denied"
+        case 0xAE: return "Authentication error"
+        case 0xBE: return "Boundary error"
+        case 0xCA: return "Command aborted"
+        default: return "DESFire status \(String(format: "%02X", sw2))"
+        }
+    }
+}
+
+/// Decoded answer to the Ultralight / NTAG GET_VERSION command.
+nonisolated struct UltralightVersion: Equatable, Sendable {
+    let vendor: UInt8
+    let productType: UInt8
+    let productSubtype: UInt8
+    let majorVersion: UInt8
+    let minorVersion: UInt8
+    let storageSize: UInt8
+
+    init?(_ data: Data) {
+        guard data.count >= 8 else { return nil }
+        let bytes = [UInt8](data)
+        vendor = bytes[1]; productType = bytes[2]; productSubtype = bytes[3]
+        majorVersion = bytes[4]; minorVersion = bytes[5]; storageSize = bytes[6]
+    }
+
+    var vendorName: String { vendor == 0x04 ? "NXP" : String(format: "0x%02X", vendor) }
+
+    /// Product name from the NXP data sheets (NTAG21x, Ultralight EV1).
+    var productName: String {
+        switch (productType, storageSize) {
+        case (0x04, 0x0F): "NTAG213"
+        case (0x04, 0x11): "NTAG215"
+        case (0x04, 0x13): "NTAG216"
+        case (0x03, 0x0B): "MIFARE Ultralight EV1 (MF0UL11)"
+        case (0x03, 0x0E): "MIFARE Ultralight EV1 (MF0UL21)"
+        case (0x04, _): "NTAG (unknown size)"
+        case (0x03, _): "MIFARE Ultralight (unknown size)"
+        default: String(format: "Product type 0x%02X", productType)
+        }
+    }
+
+    /// Bit 0 set means the size lies between 2^n and 2^(n+1) bytes; otherwise it is exactly 2^n bytes.
+    var storageDescription: String {
+        let exponent = Int(storageSize >> 1)
+        guard exponent < 32 else { return String(format: "0x%02X", storageSize) }
+        let base = 1 << exponent
+        return storageSize & 1 == 0 ? "\(base) bytes" : "\(base)–\(base * 2) bytes"
+    }
+}
+
+/// Extra read commands the inspector runs after connecting, chosen in the run view.
+nonisolated struct NFCReadOptions: Equatable, Sendable {
+    static let blockStartChoices = Array(0..<64)
+    static let blockCountChoices = [1, 2, 4, 8, 16, 32]
+    static let ultralightPageChoices: [UInt8] = stride(from: 0, through: 44, by: 4).map { UInt8($0) }
+
+    var blockStart = 0
+    var blockCount = 4
+    var ultralightPage: UInt8 = 4
+}
+
+/// Block range choices for ISO 15693 reads.
+nonisolated enum ISO15693BlockRange {
+    /// Clamps a requested range to what the tag reports; `totalBlocks` < 0 means the tag did not report its size.
+    static func clamp(start: Int, count: Int, totalBlocks: Int) -> ClosedRange<Int>? {
+        guard start >= 0, count > 0 else { return nil }
+        let upper = start + count - 1
+        guard totalBlocks > 0 else { return start...min(upper, 255) }
+        guard start < totalBlocks else { return nil }
+        return start...min(upper, totalBlocks - 1, 255)
+    }
+}
+
 /// A parsed ISO/IEC 7816-4 command APDU in short or extended length encoding.
 nonisolated struct ISO7816CommandAPDU: Equatable, Sendable {
     let cla: UInt8

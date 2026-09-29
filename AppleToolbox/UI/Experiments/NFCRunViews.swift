@@ -59,6 +59,19 @@ struct NFCInspectorRunView: View {
                 }
             }
         }
+        if nfc.polling == .all || nfc.polling == .iso14443 {
+            Picker("MIFARE Ultralight READ page", selection: $nfc.readOptions.ultralightPage) {
+                ForEach(NFCReadOptions.ultralightPageChoices, id: \.self) { Text("Pages \($0)–\(Int($0) + 3)").tag($0) }
+            }
+        }
+        if nfc.polling == .all || nfc.polling == .iso15693 {
+            Picker("ISO 15693 first block", selection: $nfc.readOptions.blockStart) {
+                ForEach(NFCReadOptions.blockStartChoices, id: \.self) { Text("Block \($0)").tag($0) }
+            }
+            Picker("ISO 15693 block count", selection: $nfc.readOptions.blockCount) {
+                ForEach(NFCReadOptions.blockCountChoices, id: \.self) { Text($0 == 1 ? "1 block (single read)" : "\($0) blocks").tag($0) }
+            }
+        }
         HStack {
             Button(nfc.activity == .inspecting ? "Inspecting…" : "Inspect Tag", systemImage: "wave.3.right", action: nfc.inspect)
                 .buttonStyle(.borderedProminent)

@@ -167,6 +167,7 @@ enum CapabilityRegistry {
             requirement: "Enable WeatherKit both as capability and as app service on the App ID, and show Apple Weather attribution.", documentation: "weatherkit"),
         CapabilityDescriptor(id: "wireless-accessory-configuration", name: "Wireless Accessory Configuration", keys: ["com.apple.external-accessory.wireless-configuration"], kind: .hardwareDependent, platforms: mobile, framework: "ExternalAccessory", personalTeam: true,
             hardware: "An MFi-certified Wi-Fi accessory that supports Wireless Accessory Configuration.",
+            experiment: "wireless-accessory-configuration",
             requirement: "Enable Wireless Accessory Configuration and present the accessory setup flow for a nearby unconfigured accessory.", documentation: entitlement("com.apple.external-accessory.wireless-configuration")),
 
         CapabilityDescriptor(id: "game-center", name: "Game Center", keys: ["com.apple.developer.game-center"], kind: .developerCapability, platforms: every, framework: "GameKit", personalTeam: true,

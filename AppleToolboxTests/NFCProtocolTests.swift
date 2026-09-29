@@ -125,3 +125,39 @@ struct NFCProtocolTests {
         #expect(CardEmulationDemo.response(to: Data([0x00])).response == Data([0x67, 0x00]))
     }
 }
+
+struct MiFareCommandTests {
+
+    @Test func ultralightCommands() {
+        #expect(MiFareCommand.ultralightGetVersion == Data([0x60]))
+        #expect(MiFareCommand.ultralightRead(page: 4) == Data([0x30, 0x04]))
+    }
+
+    @Test func desfireCommandsAreWrappedInISO7816() {
+        #expect(MiFareCommand.desfireGetVersion == Data([0x90, 0x60, 0x00, 0x00, 0x00]))
+        #expect(MiFareCommand.desfireAdditionalFrame == Data([0x90, 0xAF, 0x00, 0x00, 0x00]))
+        #expect(MiFareCommand.desfireWrapped(0x5A, data: Data([0x01, 0x02, 0x03])) == Data([0x90, 0x5A, 0x00, 0x00, 0x03, 0x01, 0x02, 0x03, 0x00]))
+    }
+
+    @Test func desfireStatusWords() {
+        #expect(MiFareCommand.desfireHasMoreFrames(sw1: 0x91, sw2: 0xAF))
+        #expect(!MiFareCommand.desfireHasMoreFrames(sw1: 0x91, sw2: 0x00))
+        #expect(MiFareCommand.desfireStatus(sw1: 0x91, sw2: 0x00) == "Operation OK")
+        #expect(MiFareCommand.desfireStatus(sw1: 0x91, sw2: 0x9D) == "Permission denied")
+    }
+
+    @Test func decodesNTAG215Version() throws {
+        let version = try #require(UltralightVersion(Data([0x00, 0x04, 0x04, 0x02, 0x01, 0x00, 0x11, 0x03])))
+        #expect(version.vendorName == "NXP")
+        #expect(version.productName == "NTAG215")
+        #expect(version.storageDescription == "256–512 bytes")
+        #expect(UltralightVersion(Data([0x00, 0x04])) == nil)
+    }
+
+    @Test func clampsISO15693BlockRanges() {
+        #expect(ISO15693BlockRange.clamp(start: 0, count: 4, totalBlocks: 28) == 0...3)
+        #expect(ISO15693BlockRange.clamp(start: 24, count: 8, totalBlocks: 28) == 24...27)
+        #expect(ISO15693BlockRange.clamp(start: 30, count: 4, totalBlocks: 28) == nil)
+        #expect(ISO15693BlockRange.clamp(start: 2, count: 4, totalBlocks: -1) == 2...5)
+    }
+}

@@ -10,6 +10,9 @@ import UIKit
 #if canImport(ExternalAccessory) && !os(watchOS)
 import ExternalAccessory
 #endif
+#if canImport(ExternalAccessory) && os(iOS)
+import UIKit
+#endif
 
 #if canImport(CoreMIDI) && (os(iOS) || os(macOS))
 import CoreMIDI
@@ -549,6 +552,157 @@ extension ExperimentAvailability {
     static func externalAccessory() -> ExperimentStatus {
         #if canImport(ExternalAccessory) && !os(watchOS)
         EAAccessoryManager.shared().connectedAccessories.isEmpty ? .unavailable : .available
+        #else
+        .platformUnsupported
+        #endif
+    }
+}
+
+// MARK: Wireless Accessory Configuration
+
+nonisolated struct UnconfiguredAccessoryInfo: Identifiable, Equatable, Sendable {
+    var id: String { macAddress + ssid }
+    let name: String
+    let manufacturer: String
+    let model: String
+    let ssid: String
+    let macAddress: String
+    let features: [String]
+
+    /// Decodes EAWiFiUnconfiguredAccessoryProperties (bit 0 AirPlay, bit 1 AirPrint, bit 2 HomeKit).
+    static func features(rawValue: UInt) -> [String] {
+        [(1 << 0, "AirPlay"), (1 << 1, "AirPrint"), (1 << 2, "HomeKit")].compactMap { rawValue & UInt($0.0) != 0 ? $0.1 : nil }
+    }
+}
+
+/// Finds Wi-Fi accessories that are not yet on a network (MFi Wireless Accessory Configuration, e.g. AirPlay speakers
+/// in setup mode) with EAWiFiUnconfiguredAccessoryBrowser and hands one to Apple's configuration sheet. The browser
+/// calls its delegate on the main queue (queue: nil).
+@MainActor
+final class WirelessAccessoryConfigurationService: NSObject, ObservableObject {
+    @Published private(set) var accessories: [UnconfiguredAccessoryInfo] = []
+    @Published private(set) var state = "Stopped"
+    @Published private(set) var isSearching = false
+    @Published private(set) var output = "Put a Wi-Fi accessory that supports Wireless Accessory Configuration into setup mode, then search."
+    @Published private(set) var isError = false
+    #if canImport(ExternalAccessory) && os(iOS)
+    private var browser: EAWiFiUnconfiguredAccessoryBrowser?
+    private var found: [String: EAWiFiUnconfiguredAccessory] = [:]
+    #endif
+
+    func start() {
+        #if canImport(ExternalAccessory) && os(iOS)
+        let browser = self.browser ?? EAWiFiUnconfiguredAccessoryBrowser(delegate: self, queue: nil)
+        self.browser = browser
+        accessories = []
+        found = [:]
+        isError = false
+        isSearching = true
+        browser.startSearchingForUnconfiguredAccessories(matching: nil)
+        output = "Searching (startSearchingForUnconfiguredAccessories). Only accessories in Wi-Fi setup mode that implement MFi Wireless Accessory Configuration appear; the list stays empty without one nearby."
+        #else
+        isError = true
+        output = "EAWiFiUnconfiguredAccessoryBrowser is available on iPhone and iPad only."
+        #endif
+    }
+
+    func stop() {
+        #if canImport(ExternalAccessory) && os(iOS)
+        browser?.stopSearchingForUnconfiguredAccessories()
+        #endif
+        guard isSearching else { return }
+        isSearching = false
+        output = accessories.isEmpty
+            ? "Search stopped. No unconfigured accessory was advertising. This is expected without an MFi Wi-Fi accessory in setup mode nearby."
+            : "Search stopped with \(accessories.count) unconfigured accessory(ies)."
+    }
+
+    func configure(_ id: String) {
+        #if canImport(ExternalAccessory) && os(iOS)
+        guard let browser, let accessory = found[id] else { return }
+        guard let presenter = Self.topViewController() else {
+            isError = true
+            output = "No view controller to present Apple's configuration sheet on."
+            return
+        }
+        browser.configureAccessory(accessory, withConfigurationUIOn: presenter)
+        output = "Apple's configuration sheet is open for \(accessory.name). It shares a Wi-Fi network with the accessory; Apple Toolbox never sees the password."
+        #endif
+    }
+
+    #if canImport(ExternalAccessory) && os(iOS)
+    private static func topViewController() -> UIViewController? {
+        let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        let scene = scenes.first { $0.activationState == .foregroundActive } ?? scenes.first
+        var controller = (scene?.windows.first(where: \.isKeyWindow) ?? scene?.windows.first)?.rootViewController
+        while let presented = controller?.presentedViewController { controller = presented }
+        return controller
+    }
+
+    fileprivate func update(_ accessories: Set<EAWiFiUnconfiguredAccessory>, added: Bool) {
+        for accessory in accessories {
+            let info = UnconfiguredAccessoryInfo(name: accessory.name, manufacturer: accessory.manufacturer, model: accessory.model, ssid: accessory.ssid,
+                                                 macAddress: accessory.macAddress, features: UnconfiguredAccessoryInfo.features(rawValue: accessory.properties.rawValue))
+            if added { found[info.id] = accessory } else { found[info.id] = nil }
+            self.accessories.removeAll { $0.id == info.id }
+            if added { self.accessories.append(info) }
+        }
+        output = added ? "Found \(accessories.map(\.name).joined(separator: ", "))." : "\(accessories.map(\.name).joined(separator: ", ")) left setup mode."
+    }
+
+    fileprivate func stateChanged(_ state: EAWiFiUnconfiguredAccessoryBrowserState) {
+        switch state {
+        case .wiFiUnavailable:
+            self.state = "Wi-Fi unavailable"
+            isError = true
+            output = "The browser reports Wi-Fi as unavailable. Turn Wi-Fi on; the search resumes by itself."
+        case .stopped: self.state = "Stopped"
+        case .searching: self.state = "Searching"
+        case .configuring: self.state = "Configuring"
+        @unknown default: self.state = "Unknown (\(state.rawValue))"
+        }
+    }
+
+    fileprivate func finished(_ accessory: EAWiFiUnconfiguredAccessory, status: EAWiFiUnconfiguredAccessoryConfigurationStatus) {
+        switch status {
+        case .success:
+            isError = false
+            output = "\(accessory.name) was configured and joins the network."
+        case .userCancelledConfiguration:
+            isError = true
+            output = "Configuration of \(accessory.name) was cancelled."
+        case .failed:
+            isError = true
+            output = "Configuration of \(accessory.name) failed (EAWiFiUnconfiguredAccessoryConfigurationStatusFailed). The API gives no further reason."
+        @unknown default:
+            isError = true
+            output = "Configuration ended with an unknown status (\(status.rawValue))."
+        }
+    }
+    #endif
+}
+
+#if canImport(ExternalAccessory) && os(iOS)
+extension WirelessAccessoryConfigurationService: EAWiFiUnconfiguredAccessoryBrowserDelegate {
+    func accessoryBrowser(_ browser: EAWiFiUnconfiguredAccessoryBrowser, didUpdate state: EAWiFiUnconfiguredAccessoryBrowserState) { stateChanged(state) }
+    func accessoryBrowser(_ browser: EAWiFiUnconfiguredAccessoryBrowser, didFindUnconfiguredAccessories accessories: Set<EAWiFiUnconfiguredAccessory>) { update(accessories, added: true) }
+    func accessoryBrowser(_ browser: EAWiFiUnconfiguredAccessoryBrowser, didRemoveUnconfiguredAccessories accessories: Set<EAWiFiUnconfiguredAccessory>) { update(accessories, added: false) }
+    func accessoryBrowser(_ browser: EAWiFiUnconfiguredAccessoryBrowser, didFinishConfiguringAccessory accessory: EAWiFiUnconfiguredAccessory,
+                          with status: EAWiFiUnconfiguredAccessoryConfigurationStatus) { finished(accessory, status: status) }
+}
+#endif
+
+#if !os(watchOS)
+extension WirelessAccessoryConfigurationService: StoppableExperiment {
+    var isActive: Bool { isSearching }
+}
+#endif
+
+extension ExperimentAvailability {
+    /// Live status: the browser exists on iOS only; whether an accessory is nearby is only known after searching.
+    static func wirelessAccessoryConfiguration() -> ExperimentStatus {
+        #if canImport(ExternalAccessory) && os(iOS)
+        .available
         #else
         .platformUnsupported
         #endif
