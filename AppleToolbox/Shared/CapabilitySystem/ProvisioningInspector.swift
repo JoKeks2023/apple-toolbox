@@ -66,7 +66,12 @@ enum ProvisioningInspector {
         #endif
     }
 
-    static func load() -> ProvisioningLookup {
+    /// The embedded profile can't change while the app runs; status checks ask for it many times per screen.
+    static func load() -> ProvisioningLookup { cached }
+
+    private static let cached = read()
+
+    private static func read() -> ProvisioningLookup {
         let url = profileURL
         guard FileManager.default.fileExists(atPath: url.path) else { return .missing(missingProfileReason) }
         do {

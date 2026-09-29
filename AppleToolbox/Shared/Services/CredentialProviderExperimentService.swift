@@ -146,12 +146,29 @@ final class CredentialProviderExperimentService: ObservableObject {
 
     #if canImport(AuthenticationServices) && (os(iOS) || os(macOS))
     /// Runs off the main actor so the non-Sendable identities never cross it; only the rendered lines do.
+    ///
+    /// Not `credentialIdentities()`: on iOS 27 the store returns passkeys as a private class that doesn't bridge to
+    /// `any ASCredentialIdentity`, and the Swift overlay traps ("NSArray element failed to match the Swift Array
+    /// Element type"). The Objective-C method's array is read as a plain NSArray, and each element through KVC.
     @concurrent private nonisolated static func identityLines() async -> [String] {
-        let identities = await ASCredentialIdentityStore.shared.credentialIdentities()
-        return identities.map { identity in
-            let kind = identity is ASPasskeyCredentialIdentity ? "passkey" : identity is ASPasswordCredentialIdentity ? "password" : "identity"
-            return "\(kind) · \(identity.user) @ \(identity.serviceIdentifier.identifier)"
-        }.sorted()
+        await withCheckedContinuation { continuation in
+            ASCredentialIdentityStore.shared.__getCredentialIdentities(forService: nil, credentialIdentityTypes: []) { identities in
+                let raw = identities as NSArray
+                continuation.resume(returning: raw.compactMap { ($0 as? NSObject).map(describeIdentity) }.sorted())
+            }
+        }
+    }
+
+    nonisolated static func describeIdentity(_ identity: NSObject) -> String {
+        func string(_ key: String) -> String? {
+            guard identity.responds(to: NSSelectorFromString(key.components(separatedBy: ".")[0])) else { return nil }
+            return identity.value(forKeyPath: key) as? String
+        }
+        let type = String(describing: Swift.type(of: identity))
+        let kind = type.contains("Passkey") ? "passkey" : type.contains("Password") ? "password" : type.contains("OneTimeCode") ? "one-time code" : "identity"
+        let user = string("user") ?? string("userName") ?? "unknown user"
+        let service = string("serviceIdentifier.identifier") ?? string("relyingPartyIdentifier") ?? "unknown service"
+        return "\(kind) · \(user) @ \(service)"
     }
     #endif
 
