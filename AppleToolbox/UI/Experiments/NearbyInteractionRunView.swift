@@ -48,7 +48,9 @@ private struct NearbyLiveSection: View {
             LabeledContent("Horizontal angle", value: reading?.horizontalAngle.map(NearbyGeometry.degrees) ?? "Not available")
             LabeledContent("Vertical estimate", value: reading?.verticalEstimate ?? "—")
             LabeledContent("Convergence", value: nearby.convergence)
-            Text("Start ranging on two UWB devices (iPhone 11 or later) near each other; they exchange discovery tokens over MultipeerConnectivity. Direction needs the devices in portrait, facing each other within the UWB field of view. With camera assistance, ARKit adds a horizontal angle and a vertical estimate after you sweep the phone; convergence tells you which motion is still missing.")
+            LabeledContent("World transform", value: nearby.worldTransformState)
+            LabeledContent("Peer in world space (x · y · z)", value: nearby.worldPosition.map(NearbyGeometry.worldPositionText) ?? "—")
+            Text("Start ranging on two UWB devices (iPhone 11 or later) near each other; they exchange discovery tokens over MultipeerConnectivity. Direction needs the devices in portrait, facing each other within the UWB field of view. With camera assistance, ARKit adds a horizontal angle and a vertical estimate after you sweep the phone; convergence tells you which motion is still missing, and NISession.worldTransform(for:) places the peer in ARKit's world coordinates once converged.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -110,6 +112,8 @@ private struct NearbyAccessorySection: View {
 
     var body: some View {
         Section("Accessory sessions") {
+            Text("Accessory sessions need third-party UWB hardware: an accessory or development kit that implements Apple's Nearby Interaction Accessory Protocol. Another iPhone or an Apple Watch cannot act as one; for those, use the peer ranging above.")
+                .font(.caption.weight(.semibold))
             Text("Third-party UWB accessories (built on Apple's Nearby Interaction Accessory Protocol with certified UWB chipsets) send their own configuration data over Bluetooth LE after a vendor-specific handshake. The app passes that data to NINearbyAccessoryConfiguration; without the vendor's accessory and firmware there is nothing to range with, and Apple Toolbox cannot generate it.")
                 .font(.caption)
                 .foregroundStyle(.secondary)

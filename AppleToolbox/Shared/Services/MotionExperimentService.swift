@@ -9,6 +9,9 @@ struct MotionVector: Equatable {
     var y: Double = 0
     var z: Double = 0
 
+    /// Euclidean length, e.g. ≈ 1 g for a resting accelerometer.
+    var magnitude: Double { (x * x + y * y + z * z).squareRoot() }
+
     var formattedValues: String {
         [x, y, z].map { $0.formatted(.number.precision(.fractionLength(3))) }.joined(separator: "  ·  ")
     }
@@ -49,6 +52,10 @@ final class MotionExperimentService: ObservableObject {
     @Published private(set) var attitude = MotionVector()
     /// Magnetic field in microtesla.
     @Published private(set) var magneticField = MotionVector()
+    /// Raw CMAccelerometerData (includes gravity, uncalibrated) and CMGyroData (includes bias).
+    @Published private(set) var rawAcceleration = MotionVector()
+    @Published private(set) var rawRotationRate = MotionVector()
+    @Published private(set) var rawSensors = "Not started"
     @Published private(set) var magneticSource = "Not started"
     @Published private(set) var magneticAccuracy = "—"
     @Published private(set) var lastUpdated: Date?
@@ -133,6 +140,28 @@ final class MotionExperimentService: ObservableObject {
                 self.output = "Live device motion is updating."
             }
         }
+        var raw: [String] = []
+        if manager.isAccelerometerAvailable {
+            manager.accelerometerUpdateInterval = 0.1
+            manager.startAccelerometerUpdates(to: .main) { [weak self] data, error in
+                guard let self else { return }
+                if let error { self.output = "Accelerometer error: \(Self.describe(error))"; return }
+                guard let a = data?.acceleration else { return }
+                self.rawAcceleration = MotionVector(x: a.x, y: a.y, z: a.z)
+            }
+            raw.append("accelerometer")
+        }
+        if manager.isGyroAvailable {
+            manager.gyroUpdateInterval = 0.1
+            manager.startGyroUpdates(to: .main) { [weak self] data, error in
+                guard let self else { return }
+                if let error { self.output = "Gyroscope error: \(Self.describe(error))"; return }
+                guard let r = data?.rotationRate else { return }
+                self.rawRotationRate = MotionVector(x: r.x, y: r.y, z: r.z)
+            }
+            raw.append("gyroscope")
+        }
+        rawSensors = raw.isEmpty ? "No raw accelerometer or gyroscope on this device" : "Raw " + raw.joined(separator: " + ") + " at 10 Hz"
         if let frame {
             magneticSource = "Device motion · calibrated (\(Self.frameName(frame)))"
         } else if rawMagnetometer {
@@ -158,6 +187,8 @@ final class MotionExperimentService: ObservableObject {
         #if os(iOS) || os(watchOS)
         manager.stopDeviceMotionUpdates()
         manager.stopMagnetometerUpdates()
+        manager.stopAccelerometerUpdates()
+        manager.stopGyroUpdates()
         #endif
         isRunning = false
     }

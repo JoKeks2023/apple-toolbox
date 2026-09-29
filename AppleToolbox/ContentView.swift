@@ -4,6 +4,7 @@ private enum SidebarItem: Hashable {
     case tool(String)
     case category(ExperimentCategory)
     case entitlements
+    case search(String)
 }
 
 struct ContentView: View {
@@ -75,6 +76,8 @@ struct ContentView: View {
                         CategoryView(category: category, experiments: experiments.filter { $0.category == category })
                     case .entitlements:
                         EntitlementExplorerView()
+                    case .search(let term):
+                        SearchResultsView(term: term, experiments: ExperimentSearch.matches(term, in: experiments))
                     case nil:
                         WelcomeView()
                     }
@@ -106,6 +109,9 @@ struct ContentView: View {
         switch request {
         case .category(let category):
             selection = .category(category)
+            detailPath = NavigationPath()
+        case .search(let term):
+            selection = .search(term)
             detailPath = NavigationPath()
         case .experiment(let id):
             guard let experiment = ExperimentRegistry.descriptor(for: id) else { return }
@@ -142,6 +148,22 @@ private struct CategoryView: View {
                     .accessibilityIdentifier("experiment.\(experiment.id)")
             }
         }.navigationTitle(category.rawValue)
+    }
+}
+
+/// Results of the system search intent (`SearchExperimentsIntent`).
+private struct SearchResultsView: View {
+    let term: String
+    let experiments: [ExperimentDescriptor]
+    var body: some View {
+        List {
+            if experiments.isEmpty {
+                ContentUnavailableView.search(text: term)
+            }
+            ForEach(experiments) { experiment in
+                NavigationLink(value: experiment.id) { ExperimentRow(experiment: experiment) }
+            }
+        }.navigationTitle("Search: \(term)")
     }
 }
 

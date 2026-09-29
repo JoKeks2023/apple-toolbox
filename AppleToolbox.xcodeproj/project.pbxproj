@@ -502,6 +502,8 @@
 		D2E77A0604C7416E4BEC5882 /* RegionAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */; };
 		15EFDB452347B645052D8330 /* RegionAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */; };
 		20F207940E7FE4DB9944E776 /* TVHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B0F5F2D699434790FC5B8E /* TVHomeView.swift */; };
+		DFDC0724B9D89E50E951F473 /* WiFiFingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21203BE774CD392ED461D73 /* WiFiFingerprint.swift */; };
+		AF7DAD5D2C72CE2078A421E3 /* WiFiFingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21203BE774CD392ED461D73 /* WiFiFingerprint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -845,6 +847,7 @@
 		A603B37B531F799216B58E92 /* AudioFileRecorderService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioFileRecorderService.swift; path = AppleToolbox/Shared/Services/AudioFileRecorderService.swift; sourceTree = "<group>"; };
 		321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RegionAvailability.swift; path = AppleToolbox/Shared/Services/RegionAvailability.swift; sourceTree = "<group>"; };
 		E4B0F5F2D699434790FC5B8E /* TVHomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TVHomeView.swift; path = AppleToolbox/UI/TVHomeView.swift; sourceTree = "<group>"; };
+		D21203BE774CD392ED461D73 /* WiFiFingerprint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WiFiFingerprint.swift; path = AppleToolbox/Shared/Services/WiFiFingerprint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -1264,6 +1267,7 @@
 				A603B37B531F799216B58E92 /* AudioFileRecorderService.swift */,
 				321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */,
 				E4B0F5F2D699434790FC5B8E /* TVHomeView.swift */,
+				D21203BE774CD392ED461D73 /* WiFiFingerprint.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1876,6 +1880,7 @@
 				56C5F0DFEBA53D7014EA91A8 /* CoreAIRunView.swift in Sources */,
 				6F3FE7CA653F5E838D986489 /* AudioFileRecorderService.swift in Sources */,
 				6058E8E10C0014928F479EDB /* RegionAvailability.swift in Sources */,
+				DFDC0724B9D89E50E951F473 /* WiFiFingerprint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2185,6 +2190,7 @@
 				ED67F8E2A46FAE09A9C39825 /* AudioFileRecorderService.swift in Sources */,
 				D2E77A0604C7416E4BEC5882 /* RegionAvailability.swift in Sources */,
 				20F207940E7FE4DB9944E776 /* TVHomeView.swift in Sources */,
+				AF7DAD5D2C72CE2078A421E3 /* WiFiFingerprint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

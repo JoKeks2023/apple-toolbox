@@ -48,6 +48,10 @@ struct TVHomeView: View {
             case .category(let category):
                 paths[.category(category)] = NavigationPath()
                 selection = .category(category)
+            case .search(let term):
+                guard let first = ExperimentSearch.matches(term, in: experiments).first else { selection = .tools; return }
+                paths[.category(first.category)] = NavigationPath()
+                selection = .category(first.category)
             case .experiment(let id):
                 guard let experiment = ExperimentRegistry.descriptor(for: id) else { return }
                 paths[.category(experiment.category)] = NavigationPath([id])

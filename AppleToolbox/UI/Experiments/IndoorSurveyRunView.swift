@@ -32,8 +32,14 @@ struct IndoorSurveyRunView: View {
         SurveyContentsView(survey: survey)
         SurveyHeatmapSettings(options: $map)
         SurveyCalibrationView(survey: survey)
-        Section("Why are there no Wi-Fi fingerprints?") {
-            Text("A fingerprint is the list of nearby access points with their signal strength (RSSI) at a spot. iOS and macOS give third-party apps no API to scan for access points or read their RSSI: NEHotspotNetwork.fetchCurrent returns only the joined network's SSID and BSSID (with an entitlement and location access), and per-network signal strength is reserved for approved Hotspot Helper apps. Apple collects fingerprints for indoor positioning with its own Indoor Survey app in the Indoor Maps Program. This utility therefore records what Core Location exposes: the resulting position, its reported accuracy and floor.")
+        Section(WiFiFingerprint.isScanSupported ? "Wi-Fi fingerprints · CoreWLAN" : "Why are there no Wi-Fi fingerprints?") {
+            if WiFiFingerprint.isScanSupported {
+                Toggle("Scan Wi-Fi at every recorded point", isOn: $survey.recordsWiFi)
+                Text("On the Mac, CWInterface.scanForNetworks(withName:) lists nearby access points with RSSI, noise and channel, and the result is stored with the point and exported in GeoJSON. SSID and BSSID are only returned when Apple Toolbox has location authorization; a scan takes a few seconds.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Text("A fingerprint is the list of nearby access points with their signal strength (RSSI) at a spot. macOS apps can scan with CoreWLAN; iOS, iPadOS and tvOS give third-party apps no API to scan for access points or read their RSSI: NEHotspotNetwork.fetchCurrent returns only the joined network's SSID and BSSID (with an entitlement and location access), and per-network signal strength is reserved for approved Hotspot Helper apps. Apple collects fingerprints for indoor positioning with its own Indoor Survey app in the Indoor Maps Program. On those devices this utility records what Core Location exposes: the resulting position, its reported accuracy and floor.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -299,6 +305,9 @@ private struct SurveyPointRow: View {
                 Text("\(measurement.fixCount) fix(es) over \(TrackText.number(measurement.duration)) s · spread \(TrackText.number(measurement.spread)) m · best ±\(TrackText.number(measurement.bestAccuracy)) m")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+            }
+            if let wifi = point.wifi {
+                Text("Wi-Fi · " + WiFiFingerprint.summary(wifi)).font(.caption).foregroundStyle(.secondary)
             }
             Text([point.level.map { "Level \($0.ordinal) · \($0.name)" } ?? "No IMDF level",
                   point.measurement?.floor.map { "CLFloor \($0)" } ?? "no CLFloor",

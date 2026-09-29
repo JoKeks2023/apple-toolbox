@@ -97,6 +97,8 @@ nonisolated struct SurveyPoint: Identifiable, Codable, Equatable, Sendable {
     var level: SurveyLevel?
     var confidence: SurveyConfidence
     var note: String
+    /// Access points seen by a CoreWLAN scan at this spot (macOS only); `nil` when no scan ran.
+    var wifi: [WiFiAccessPointSample]? = nil
 
     /// Reference position if known, otherwise the measured one.
     var coordinate: SurveyCoordinate? {
@@ -336,6 +338,12 @@ nonisolated enum IndoorSurveyExporter {
             ]
             addLevel(point.level, to: &properties)
             if let reference = point.reference { properties["reference"] = [reference.longitude, reference.latitude] }
+            if let wifi = point.wifi {
+                properties["wifi"] = wifi.map { sample -> [String: Any] in
+                    ["ssid": orNull(sample.ssid), "bssid": orNull(sample.bssid), "rssi_dbm": sample.rssi, "noise_dbm": sample.noise,
+                     "channel": sample.channel, "band": sample.band]
+                }
+            }
             if let measurement = point.measurement {
                 properties["measured"] = [measurement.longitude, measurement.latitude]
                 properties["horizontal_accuracy_m"] = measurement.horizontalAccuracy
@@ -430,6 +438,9 @@ final class IndoorSurveyService: NSObject, ObservableObject {
     @Published private(set) var isReducedAccuracy = false
     @Published private(set) var exportURL: URL?
     @Published private(set) var isError = false
+    /// Scan Wi-Fi with CoreWLAN for every recorded point (macOS only).
+    @Published var recordsWiFi = WiFiFingerprint.isScanSupported
+    @Published private(set) var isScanningWiFi = false
     @Published private(set) var output = "Import an IMDF level (optional), start location, then tap reference points or record at your position."
 
     /// The IMDF level new points and paths are recorded on; set by the run view.
@@ -590,6 +601,31 @@ final class IndoorSurveyService: NSObject, ObservableObject {
         survey.points.append(point)
         note = ""
         persist()
+        if recordsWiFi && WiFiFingerprint.isScanSupported { scanWiFi(for: point.id) }
+    }
+
+    /// Attaches a CoreWLAN scan (access points with RSSI) to the point. SSID and BSSID are only returned when the app
+    /// has location authorization; without it macOS reports them as nil.
+    private func scanWiFi(for pointID: UUID) {
+        isScanningWiFi = true
+        Task { [weak self] in
+            do {
+                let samples = try await WiFiFingerprint.scan()
+                guard let self else { return }
+                self.isScanningWiFi = false
+                guard let index = self.survey.points.firstIndex(where: { $0.id == pointID }) else { return }
+                self.survey.points[index].wifi = samples
+                self.persist()
+                var message = "Wi-Fi fingerprint for point \(index + 1): \(WiFiFingerprint.summary(samples))."
+                if WiFiFingerprint.identifiersHidden(samples) {
+                    message += " SSID and BSSID are hidden: macOS only returns them with location authorization."
+                }
+                self.report(message)
+            } catch {
+                self?.isScanningWiFi = false
+                self?.report("CoreWLAN scan failed: \(error.localizedDescription)", isError: true)
+            }
+        }
     }
 
     func deletePoints(at offsets: IndexSet) {

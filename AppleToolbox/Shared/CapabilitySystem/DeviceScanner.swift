@@ -44,6 +44,12 @@ import WatchConnectivity
 #if canImport(Network)
 import Network
 #endif
+#if canImport(MatterSupport) && (os(iOS) || os(macOS))
+import MatterSupport
+#endif
+#if canImport(MusicKit)
+import MusicKit
+#endif
 #if canImport(UIKit)
 import UIKit
 #endif
@@ -109,6 +115,7 @@ enum DeviceScanner {
         let display = displayItems()
         let controllers = gameControllerItem()
         let pairing = watchPairingItems()
+        let home = [matterItem(), await musicKitItem()]
         // Location Services and capture-device discovery must not block the main thread.
         let probes = Task.detached(priority: .userInitiated) { DeviceProbes.run() }
         let network = await DeviceProbes.networkInterfaceItems()
@@ -118,7 +125,7 @@ enum DeviceScanner {
             CapabilitySection(title: "Sensors", symbol: "gyroscope", items: probed.sensors),
             CapabilitySection(title: "Cameras & Audio", symbol: "camera", items: probed.media),
             CapabilitySection(title: "Display", symbol: "display", items: display),
-            CapabilitySection(title: "Apple Features", symbol: "sparkles", items: probed.features + pairing),
+            CapabilitySection(title: "Apple Features", symbol: "sparkles", items: probed.features + pairing + home),
             CapabilitySection(title: "System", symbol: "gearshape", items: system + probed.system)
         ])
     }
@@ -193,6 +200,41 @@ enum DeviceScanner {
     }
 
     /// Pairing is only read from the already activated WatchConnectivity session; the scanner never activates one.
+    /// MatterAddDeviceRequest.isSupported: whether this device can add Matter accessories through MatterSupport.
+    private static func matterItem() -> CapabilityItem {
+        #if canImport(MatterSupport) && (os(iOS) || os(macOS))
+        return .flag("Matter", MatterAddDeviceRequest.isSupported, yes: "MatterAddDeviceRequest.isSupported · accessory setup available",
+                     no: "MatterAddDeviceRequest.isSupported is false on this device")
+        #else
+        return .unavailable("Matter", "MatterSupport is not available on this platform.")
+        #endif
+    }
+
+    /// MusicAuthorization.currentStatus never prompts; the subscription is only read once access was granted.
+    private static func musicKitItem() async -> CapabilityItem {
+        #if canImport(MusicKit)
+        let name = "MusicKit"
+        switch MusicAuthorization.currentStatus {
+        case .authorized:
+            do {
+                let subscription = try await MusicSubscription.current
+                let detail = "Authorized · catalog playback: \(yesNo(subscription.canPlayCatalogContent)) · can subscribe: \(yesNo(subscription.canBecomeSubscriber)) · cloud library: \(yesNo(subscription.hasCloudLibraryEnabled))"
+                return subscription.canPlayCatalogContent ? .available(name, detail) : .unavailable(name, detail)
+            } catch {
+                return .unknown(name, "Authorized, but MusicSubscription.current failed: \(error.localizedDescription)")
+            }
+        case .notDetermined: return .unknown(name, "Not asked yet: the subscription is read after access is granted in the MusicKit experiment.")
+        case .denied: return .unavailable(name, "Access to Apple Music was denied in Settings.")
+        case .restricted: return .unavailable(name, "Access to Apple Music is restricted on this device.")
+        @unknown default: return .unknown(name, "Unknown authorization status.")
+        }
+        #else
+        return .unavailable("MusicKit", "MusicKit is not available on this platform.")
+        #endif
+    }
+
+    private static func yesNo(_ value: Bool) -> String { value ? "yes" : "no" }
+
     private static func watchPairingItems() -> [CapabilityItem] {
         #if os(iOS) && canImport(WatchConnectivity)
         guard WCSession.isSupported() else { return [] }

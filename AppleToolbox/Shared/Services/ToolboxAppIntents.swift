@@ -11,6 +11,7 @@ final class ToolboxNavigator: ObservableObject {
     enum Request: Equatable {
         case category(ExperimentCategory)
         case experiment(String)
+        case search(String)
     }
 
     static let shared = ToolboxNavigator()
@@ -124,9 +125,7 @@ struct ExperimentEntityQuery: EntityStringQuery {
     }
 
     @MainActor func entities(matching string: String) async throws -> [ExperimentEntity] {
-        ExperimentRegistry.all
-            .filter { $0.name.localizedCaseInsensitiveContains(string) || $0.frameworks.contains { $0.localizedCaseInsensitiveContains(string) } }
-            .map(ExperimentEntity.init)
+        ExperimentSearch.matches(string, in: ExperimentRegistry.all).map(ExperimentEntity.init)
     }
 
     @MainActor func suggestedEntities() async throws -> [ExperimentEntity] {
@@ -153,6 +152,22 @@ struct OpenCategoryIntent: AppIntent {
         return .result(value: "Opened \(category.rawValue) with \(count) experiment(s).")
     }
 }
+
+#if os(iOS) || os(macOS)
+/// Adopts the Apple Intelligence system search schema (`.system.search`, ShowInAppSearchResultsIntent), so Siri and
+/// Apple Intelligence can run an in-app search: the app opens on the experiments matching the term.
+/// (`.system.searchInApp` replaces it from iOS 27 / macOS 27; the deployment target is 26.5.)
+@AppIntent(schema: .system.search)
+struct SearchExperimentsIntent: ShowInAppSearchResultsIntent {
+    static let searchScopes: [StringSearchScope] = [.general]
+    var criteria: StringSearchCriteria
+
+    @MainActor func perform() async throws -> some IntentResult {
+        ToolboxNavigator.shared.request = .search(criteria.term)
+        return .result()
+    }
+}
+#endif
 
 /// An `OpenIntent`, so Spotlight can open an indexed `ExperimentEntity` result with it and Siri can learn from its donations.
 struct OpenExperimentIntent: OpenIntent {
@@ -274,3 +289,16 @@ final class AppIntentsExperimentService: ObservableObject {
 }
 #endif
 #endif
+
+/// Experiment search shared by the entity query and the system search intent: name, frameworks and category.
+enum ExperimentSearch {
+    static func matches(_ term: String, in experiments: [ExperimentDescriptor]) -> [ExperimentDescriptor] {
+        let term = term.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !term.isEmpty else { return [] }
+        return experiments.filter { experiment in
+            experiment.name.localizedCaseInsensitiveContains(term)
+                || experiment.frameworks.contains { $0.localizedCaseInsensitiveContains(term) }
+                || experiment.category.rawValue.localizedCaseInsensitiveContains(term)
+        }
+    }
+}

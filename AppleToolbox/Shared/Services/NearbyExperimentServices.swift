@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import simd
 
 #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
 import NearbyInteraction
@@ -41,6 +42,15 @@ nonisolated enum PeerInvitationPolicy {
 
 /// Pure geometry and naming for Nearby Interaction readings, shared by the Nearby and Spatial Link views.
 nonisolated enum NearbyGeometry {
+    /// Translation column of a camera-assisted world transform (ARKit world space, meters).
+    static func position(from transform: simd_float4x4) -> SIMD3<Float> {
+        SIMD3(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
+    }
+
+    static func worldPositionText(_ position: SIMD3<Float>) -> String {
+        [position.x, position.y, position.z].map { $0.formatted(.number.precision(.fractionLength(2))) }.joined(separator: " · ") + " m"
+    }
+
     /// Horizontal angle in radians (positive = to the right) from NI's unit direction vector, as in Apple's samples.
     static func azimuth(_ direction: SIMD3<Float>) -> Float {
         asin(max(-1, min(1, direction.x)))
@@ -148,6 +158,10 @@ final class NearbyExperimentService: NSObject, ObservableObject {
     @Published private(set) var useCameraAssistance = false
     @Published private(set) var useExtendedDistance = false
     @Published private(set) var accessoryReport: String?
+    /// Peer position in ARKit world space from NISession.worldTransform(for:), only with camera assistance.
+    @Published private(set) var worldPosition: SIMD3<Float>?
+    @Published private(set) var worldTransformState = "Camera assistance off"
+    private var cameraAssistanceActive = false
 
     #if canImport(NearbyInteraction) && !os(macOS) && !os(tvOS)
     private var session: NISession?
@@ -268,10 +282,15 @@ final class NearbyExperimentService: NSObject, ObservableObject {
         guard let session, let peerToken else { return }
         let configuration = NINearbyPeerConfiguration(peerToken: peerToken)
         var notes: [String] = []
+        cameraAssistanceActive = false
+        worldPosition = nil
+        worldTransformState = "Camera assistance off"
         #if os(iOS)
         if useCameraAssistance {
             if capabilities.cameraAssistance {
                 configuration.isCameraAssistanceEnabled = true
+                cameraAssistanceActive = true
+                worldTransformState = "Waiting for ARKit to converge"
                 notes.append("camera assistance on (keep the camera unobstructed and move the phone slowly)")
             } else {
                 notes.append("camera assistance is not supported on this device")
@@ -363,6 +382,17 @@ extension NearbyExperimentService: NISessionDelegate {
         let horizontalAngle: Float? = object.horizontalAngle
         reading = NearbyReading(distance: object.distance, direction: object.direction, horizontalAngle: horizontalAngle,
                                 verticalEstimate: Self.title(object.verticalDirectionEstimate), date: Date())
+        #if os(iOS)
+        if cameraAssistanceActive {
+            if let transform = session.worldTransform(for: object) {
+                worldPosition = NearbyGeometry.position(from: transform)
+                worldTransformState = "Available (ARKit world space)"
+            } else {
+                worldPosition = nil
+                worldTransformState = "Not available yet: sweep the phone slowly so ARKit and UWB converge"
+            }
+        }
+        #endif
         phase = "Ranging"
     }
 

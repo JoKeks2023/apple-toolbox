@@ -218,6 +218,14 @@ private struct MotionReadingView: View {
                     .foregroundStyle(.secondary)
             }
         }
+        Section("Raw sensors · CMAccelerometerData · CMGyroData") {
+            VectorRow(title: "Accelerometer (incl. gravity)", symbol: "move.3d", vector: motion.rawAcceleration, unit: "g")
+            VectorRow(title: "Gyroscope (uncorrected bias)", symbol: "gyroscope", vector: motion.rawRotationRate, unit: "rad/s")
+            LabeledContent("|a|", value: motion.rawAcceleration.magnitude.formatted(.number.precision(.fractionLength(3))) + " g")
+            Text(motion.rawSensors + ". Device motion above is sensor-fused (gravity removed, bias corrected); these are the raw streams, so a resting device shows |a| ≈ 1 g and a small gyro offset.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
     }
 }
 
