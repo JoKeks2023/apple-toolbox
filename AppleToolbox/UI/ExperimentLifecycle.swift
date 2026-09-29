@@ -61,3 +61,4 @@ extension AudioExperimentService: StoppableExperiment { var isActive: Bool { isR
 extension SpeechExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension ARExperimentService: StoppableExperiment { var isActive: Bool { isRunning } }
 extension ShazamExperimentService: StoppableExperiment { var isActive: Bool { isListening } }
+extension RoomPlanExperimentService: StoppableExperiment {}

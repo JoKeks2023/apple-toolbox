@@ -103,8 +103,10 @@ extension ExperimentDescriptor {
                                                         nextStep: "Run the experiment on a recent iPhone or iPad."),
         ],
         "roomplan": [
-            .hardwareUnsupported: ExperimentExplanation(reason: "This device does not provide LiDAR.", required: "A LiDAR-capable iPhone Pro or iPad Pro",
+            .hardwareUnsupported: ExperimentExplanation(reason: "RoomCaptureSession.isSupported is false: this device (or the Simulator) has no LiDAR Scanner.", required: "A LiDAR-capable iPhone Pro or iPad Pro",
                                                         nextStep: "Run the experiment on a LiDAR device."),
+            .permissionDenied: ExperimentExplanation(reason: "Camera access was denied, and RoomPlan scans the room through the camera.", required: "Camera Usage Description",
+                                                     nextStep: "Allow camera access in Settings › Privacy & Security › Camera, then return to the app."),
         ],
         "shazamkit": [
             .hardwareUnsupported: ExperimentExplanation(reason: "No microphone input is available, so ShazamKit has no audio to match.", required: "A built-in or connected microphone",

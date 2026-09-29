@@ -73,7 +73,7 @@ struct ExperimentRunView: View {
         case "homekit-discovery": HomeKitRunView()
         case "matter-status": MatterSetupRunView()
         case "arkit": ARKitRunView()
-        case "roomplan": StatusCheckRunView(experiment: experiment, title: "Check RoomPlan Hardware", check: RoomPlanExperimentService.statusText)
+        case "roomplan": RoomPlanRunView()
         case "healthkit-status": HealthKitRunView()
         case "notifications": NotificationsRunView()
         case "wallet-status": StatusCheckRunView(experiment: experiment, title: "Inspect Wallet Capability", check: WalletExperimentService.statusText)
