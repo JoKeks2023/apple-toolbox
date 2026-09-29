@@ -388,6 +388,10 @@
 		7430171C4DF60404B938D33D /* CreateMLExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B11BD7776E193A86ABE5D15 /* CreateMLExperimentService.swift */; };
 		E3882E73A1E0F2C26A286B20 /* CreateMLRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE7377B131EECAB7B646829 /* CreateMLRunView.swift */; };
 		A231C0454C7D5E6A94BFDFBC /* CreateMLRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE7377B131EECAB7B646829 /* CreateMLRunView.swift */; };
+		97083AC7817B690A08F88E67 /* FoundationModelsConversationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6FF5796465EB5A5A804231 /* FoundationModelsConversationService.swift */; };
+		9BE370077080258EF2FA05D5 /* FoundationModelsConversationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6FF5796465EB5A5A804231 /* FoundationModelsConversationService.swift */; };
+		15029C1D6533F4F47D4A448A /* FoundationModelsConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F8E1172050A00A69E329C1 /* FoundationModelsConversationView.swift */; };
+		2C1680A7979D3E08CB28B839 /* FoundationModelsConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F8E1172050A00A69E329C1 /* FoundationModelsConversationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -636,6 +640,8 @@
 		67E7CFE0142D010E63E30474 /* SpeechAnalyzerRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpeechAnalyzerRunView.swift; path = AppleToolbox/UI/Experiments/SpeechAnalyzerRunView.swift; sourceTree = "<group>"; };
 		7B11BD7776E193A86ABE5D15 /* CreateMLExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateMLExperimentService.swift; path = AppleToolbox/Shared/Services/CreateMLExperimentService.swift; sourceTree = "<group>"; };
 		3BE7377B131EECAB7B646829 /* CreateMLRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateMLRunView.swift; path = AppleToolbox/UI/Experiments/CreateMLRunView.swift; sourceTree = "<group>"; };
+		2C6FF5796465EB5A5A804231 /* FoundationModelsConversationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsConversationService.swift; path = AppleToolbox/Shared/Services/FoundationModelsConversationService.swift; sourceTree = "<group>"; };
+		F6F8E1172050A00A69E329C1 /* FoundationModelsConversationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FoundationModelsConversationView.swift; path = AppleToolbox/UI/Experiments/FoundationModelsConversationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -958,6 +964,8 @@
 				67E7CFE0142D010E63E30474 /* SpeechAnalyzerRunView.swift */,
 				7B11BD7776E193A86ABE5D15 /* CreateMLExperimentService.swift */,
 				3BE7377B131EECAB7B646829 /* CreateMLRunView.swift */,
+				2C6FF5796465EB5A5A804231 /* FoundationModelsConversationService.swift */,
+				F6F8E1172050A00A69E329C1 /* FoundationModelsConversationView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1425,6 +1433,8 @@
 				00BF567EFDF92AAD2645D8CA /* SpeechAnalyzerRunView.swift in Sources */,
 				D375B5B6F73586466F2E0500 /* CreateMLExperimentService.swift in Sources */,
 				E3882E73A1E0F2C26A286B20 /* CreateMLRunView.swift in Sources */,
+				97083AC7817B690A08F88E67 /* FoundationModelsConversationService.swift in Sources */,
+				15029C1D6533F4F47D4A448A /* FoundationModelsConversationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1672,6 +1682,8 @@
 				BD3CAC92FE16F0AB889228D9 /* SpeechAnalyzerRunView.swift in Sources */,
 				71AF13730DC5D81F86B82E59 /* CreateMLExperimentService.swift in Sources */,
 				A231C0454C7D5E6A94BFDFBC /* CreateMLRunView.swift in Sources */,
+				9BE370077080258EF2FA05D5 /* FoundationModelsConversationService.swift in Sources */,
+				2C1680A7979D3E08CB28B839 /* FoundationModelsConversationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

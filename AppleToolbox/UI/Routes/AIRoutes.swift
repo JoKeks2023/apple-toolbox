@@ -8,6 +8,7 @@ struct AIRunRoutes: View {
         switch experiment.id {
         case "natural-language": NaturalLanguageRunView()
         case "foundation-models": FoundationModelsRunView()
+        case "foundation-models-tools": FoundationModelsConversationView()
         case "speech": SpeechRunView()
         case "speech-analyzer": SpeechAnalyzerRunView()
         case "core-ml": CoreMLRunView()
