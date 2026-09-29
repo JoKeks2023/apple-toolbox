@@ -6,7 +6,7 @@ struct AudioRunRoutes: View {
 
     var body: some View {
         switch experiment.id {
-        case "audio-input": AudioInputRunView()
+        case "audio-input": AudioAnalyzerRunView()
         case "sound-analysis": SoundAnalysisRunView()
         case "musickit": MusicKitRunView()
         case "shazamkit": ShazamKitRunView()

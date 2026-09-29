@@ -43,7 +43,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Joris Apple Toolbox uses the camera for the Camera Lab, Vision Lab, ARKit &amp; RealityKit Lab and RoomPlan experiments.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Joris Apple Toolbox uses the microphone for the Audio Input, Speech Recognition, SpeechAnalyzer, Sound Analysis and ShazamKit experiments, and for sound in Camera Lab videos.</string>
+	<string>Joris Apple Toolbox uses the microphone for the Audio Analyzer, Speech Recognition, SpeechAnalyzer, Sound Analysis and ShazamKit experiments, and for sound in Camera Lab videos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Joris Apple Toolbox saves a Camera Lab photo or video to your library only when you choose Save in its share sheet.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
