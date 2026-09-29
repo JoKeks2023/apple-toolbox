@@ -1,8 +1,13 @@
 import SwiftUI
+#if os(iOS)
+import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
 
 /// UserNotifications (spec §26): authorization and settings, categories with actions, interruption levels,
 /// runtime-rendered attachments, threads, badge, pending/delivered lists, the delegate log, the content
-/// extension, APNs registration and the communication/critical boundaries.
+/// extension, APNs registration, the service extension for remote pushes and the communication/critical boundaries.
 struct NotificationsRunView: View {
     @StateObject private var service = NotificationExperimentService()
     @ObservedObject private var log = NotificationEventLog.shared
@@ -20,6 +25,7 @@ struct NotificationsRunView: View {
         #endif
         NotificationAPNsSection(service: service, log: log)
         #if !os(tvOS)
+        NotificationServiceExtensionSection(service: service)
         NotificationBoundariesSection(service: service)
         #endif
     }
@@ -238,6 +244,69 @@ private struct NotificationAPNsSection: View {
 }
 
 #if !os(tvOS)
+/// The notification service extension only sees remote pushes, so this section shows whether it is embedded, the payload
+/// that reaches it, and what it did with the last push (written to the App Group by the extension).
+private struct NotificationServiceExtensionSection: View {
+    @ObservedObject var service: NotificationExperimentService
+    private let payload = NotificationServicePayload.samplePayload()
+
+    var body: some View {
+        Section("Service extension · remote pushes") {
+            let extensions = service.embeddedServiceExtensions
+            LabeledContent("Embedded", value: extensions.isEmpty ? "No" : "Yes")
+            ForEach(extensions, id: \.fileName) { Text($0.summary).font(.caption.monospaced()) }
+            Text(boundary(isEmbedded: !extensions.isEmpty))
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Sample APNs payload").font(.subheadline.weight(.semibold))
+                Text(payload).font(.caption.monospaced()).textSelection(.enabled)
+                Text(service.sampleHeaders).font(.caption2.monospaced()).foregroundStyle(.secondary).textSelection(.enabled)
+                CopyTextButton(title: "Copy Payload", text: payload)
+                    .buttonStyle(.bordered)
+            }
+            if let record = service.lastServiceRecord {
+                OutputView(text: "Last push rewritten by the extension\n" + record.summary, isError: record.outcome == .timedOut)
+                Button("Clear Last Run", systemImage: "trash", role: .destructive, action: service.clearServiceRecord)
+            } else {
+                Text("The extension has not rewritten a push on this device yet. After it runs, it writes the result to the App Group and it appears here.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Button("Re-read Last Run", systemImage: "arrow.clockwise", action: service.reloadServiceRecord)
+        }
+        .onAppear(perform: service.reloadServiceRecord)
+    }
+
+    private func boundary(isEmbedded: Bool) -> String {
+        #if os(iOS)
+        let flow = "Only remote notifications pass through a service extension: APNs must deliver an alert with \"mutable-content\": 1. Local notifications scheduled above never do. The extension marks the title, downloads \(NotificationServicePayload.attachmentKey) (https only) as an attachment, and has about 30 seconds; if time runs out, serviceExtensionTimeWillExpire delivers the best attempt without the attachment. Send the payload to the device token above with your provider server or the Push Notifications Console in your developer account."
+        return isEmbedded ? flow : "This build embeds no notification service extension, so pushes with mutable-content arrive unchanged. " + flow
+        #else
+        return "The notification service extension is only embedded in the iOS app; on the Mac, pushes with mutable-content arrive unchanged. Only remote notifications with \"mutable-content\": 1 would pass through one; local notifications never do."
+        #endif
+    }
+}
+
+/// Copies text to the general pasteboard.
+private struct CopyTextButton: View {
+    let title: String
+    let text: String
+    @State private var copied = false
+
+    var body: some View {
+        Button(copied ? "Copied" : title, systemImage: copied ? "checkmark" : "doc.on.doc") {
+            #if os(iOS)
+            UIPasteboard.general.string = text
+            #elseif os(macOS)
+            NSPasteboard.general.clearContents()
+            NSPasteboard.general.setString(text, forType: .string)
+            #endif
+            copied = true
+        }
+    }
+}
+
 private struct NotificationBoundariesSection: View {
     @ObservedObject var service: NotificationExperimentService
 

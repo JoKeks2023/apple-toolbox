@@ -59,3 +59,55 @@ struct NotificationTests {
         #expect(Set(ToolboxNotificationCategories.all.map(\.identifier)) == ["toolbox.actions", "toolbox.report"])
     }
 }
+
+struct NotificationServicePayloadTests {
+
+    @Test func readsAnHTTPSAttachmentURL() {
+        let payload = NotificationServicePayload(userInfo: ["attachment-url": " https://example.com/a/b.png "])
+        #expect(payload.attachmentURL == URL(string: "https://example.com/a/b.png"))
+        #expect(payload.attachmentProblem == nil)
+    }
+
+    @Test func explainsUnusableAttachmentValues() {
+        #expect(NotificationServicePayload(userInfo: [:]).attachmentURL == nil)
+        #expect(NotificationServicePayload(userInfo: [:]).attachmentProblem == nil)
+        let http = NotificationServicePayload(userInfo: ["attachment-url": "http://example.com/a.png"])
+        #expect(http.attachmentURL == nil)
+        #expect(http.attachmentProblem?.contains("https") == true)
+        #expect(NotificationServicePayload(userInfo: ["attachment-url": "not a url"]).attachmentProblem != nil)
+        #expect(NotificationServicePayload(userInfo: ["attachment-url": 42]).attachmentProblem != nil)
+    }
+
+    @Test func marksTheTitleOnce() {
+        let marked = NotificationServicePayload.mutatedTitle("Apple Toolbox")
+        #expect(marked == "Apple Toolbox \(NotificationServicePayload.titleMarker)")
+        #expect(NotificationServicePayload.mutatedTitle(marked) == marked)
+        #expect(NotificationServicePayload.mutatedTitle("") == NotificationServicePayload.titleMarker)
+    }
+
+    @Test func picksTheAttachmentFileExtension() {
+        let url = URL(string: "https://example.com/download?id=1")!
+        #expect(NotificationServicePayload.attachmentFileExtension(mimeType: "image/png", url: url) == "png")
+        #expect(NotificationServicePayload.attachmentFileExtension(mimeType: "image/JPEG; charset=binary", url: url) == "jpg")
+        #expect(NotificationServicePayload.attachmentFileExtension(mimeType: "application/octet-stream", url: URL(string: "https://example.com/clip.MP4")!) == "mp4")
+        #expect(NotificationServicePayload.attachmentFileExtension(mimeType: nil, url: URL(string: "https://example.com/photo.jpeg")!) == "jpg")
+        #expect(NotificationServicePayload.attachmentFileExtension(mimeType: "text/html", url: url) == nil)
+    }
+
+    @Test func samplePayloadReachesTheServiceExtension() throws {
+        let json = NotificationServicePayload.samplePayload()
+        let object = try #require(try JSONSerialization.jsonObject(with: Data(json.utf8)) as? [String: Any])
+        let aps = try #require(object["aps"] as? [String: Any])
+        #expect(NotificationServicePayload.reachesServiceExtension(aps: aps))
+        #expect(object["attachment-url"] as? String == NotificationServicePayload.sampleAttachmentURL.absoluteString)
+        #expect(!NotificationServicePayload.reachesServiceExtension(aps: ["alert": "Hi"]))
+        #expect(!NotificationServicePayload.reachesServiceExtension(aps: ["mutable-content": 1, "content-available": 1]))
+    }
+
+    @Test func recordSummaryNamesTheOutcome() {
+        let record = NotificationServiceRecord(date: Date(timeIntervalSinceReferenceDate: 0), requestIdentifier: "req", originalTitle: "A",
+                                               deliveredTitle: "A ✦", outcome: .timedOut, attachment: "the download did not finish before the time limit")
+        #expect(record.summary.contains("time limit reached"))
+        #expect(record.summary.contains("“A” → “A ✦”"))
+    }
+}

@@ -537,6 +537,7 @@ final class NotificationExperimentService: ObservableObject {
         #endif
         refreshLists()
         #endif
+        reloadServiceRecord()
     }
 
     func refreshLists() {
@@ -780,6 +781,32 @@ final class NotificationExperimentService: ObservableObject {
         #else
         false
         #endif
+    }
+
+    // MARK: Service extension
+
+    static let serviceExtensionPoint = "com.apple.usernotifications.service"
+
+    /// The notification service extensions embedded in this app bundle.
+    var embeddedServiceExtensions: [EmbeddedAppExtension] {
+        EmbeddedAppExtension.embedded(extensionPoint: Self.serviceExtensionPoint)
+    }
+
+    /// What the service extension wrote to the App Group after the last push it rewrote.
+    @Published private(set) var lastServiceRecord = NotificationServiceRecordStore.load()
+
+    func reloadServiceRecord() {
+        lastServiceRecord = NotificationServiceRecordStore.load()
+    }
+
+    func clearServiceRecord() {
+        NotificationServiceRecordStore.clear()
+        reloadServiceRecord()
+    }
+
+    /// The HTTP/2 headers a provider sends with the sample payload.
+    var sampleHeaders: String {
+        "apns-push-type: alert\napns-topic: \(Bundle.main.bundleIdentifier ?? "<bundle identifier>")\napns-priority: 10"
     }
 
     private func show(_ text: String, isError: Bool) {
