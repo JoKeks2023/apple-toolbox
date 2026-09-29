@@ -1,6 +1,7 @@
 import SwiftUI
 
 private enum SidebarItem: Hashable {
+    case tool(String)
     case category(ExperimentCategory)
     case entitlements
 }
@@ -17,6 +18,14 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             List(selection: $selection) {
+                Section("Tools") {
+                    ForEach(ToolboxTools.all.filter { $0.experiment != nil }) { tool in
+                        NavigationLink(value: SidebarItem.tool(tool.id)) {
+                            Label(tool.title, systemImage: tool.symbolName)
+                        }
+                        .accessibilityIdentifier("tool.\(tool.id)")
+                    }
+                }
                 Section("Explore") {
                     ForEach(ExperimentCategory.allCases) { category in
                         let count = experiments.filter { $0.category == category }.count
@@ -42,6 +51,10 @@ struct ContentView: View {
             NavigationStack(path: $detailPath) {
                 Group {
                     switch selection {
+                    case .tool(let id):
+                        if let experiment = ExperimentRegistry.descriptor(for: id) {
+                            ExperimentDetailView(experiment: experiment).id(id)
+                        }
                     case .category(let category):
                         CategoryView(category: category, experiments: experiments.filter { $0.category == category })
                     case .entitlements:
@@ -100,7 +113,7 @@ private struct WelcomeView: View {
         ContentUnavailableView {
             Label("Joris Apple Toolbox", systemImage: "wrench.and.screwdriver")
         } description: {
-            Text("A native laboratory for discovering what your Apple devices can actually do.")
+            Text("A native laboratory for discovering what your Apple devices can actually do. Start with a tool, or explore the experiments by category.")
         }
     }
 }

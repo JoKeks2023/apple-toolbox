@@ -20,6 +20,7 @@ final class AppleToolboxUITests: XCTestCase {
         XCTAssertTrue(app.buttons["category.Security"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.buttons["category.Location"].exists)
         XCTAssertTrue(app.buttons["inspect.entitlements"].exists)
+        XCTAssertTrue(app.buttons["tool.cryptokit"].exists)
     }
 
     @MainActor
