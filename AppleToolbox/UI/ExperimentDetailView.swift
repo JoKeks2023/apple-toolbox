@@ -25,6 +25,9 @@ struct ExperimentDetailView: View {
                 }
             }
             RequirementsView(experiment: experiment)
+            if let guide = ImplementationGuides.guide(for: experiment.id) {
+                ImplementationGuideSection(guide: guide)
+            }
             Section("Documentation") { Link(destination: experiment.documentationURL) { Label("Open Apple Developer Documentation", systemImage: "book.closed") } }
         }
         .tvFocusableLabeledContent()

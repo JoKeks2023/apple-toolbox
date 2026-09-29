@@ -504,6 +504,46 @@
 		20F207940E7FE4DB9944E776 /* TVHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B0F5F2D699434790FC5B8E /* TVHomeView.swift */; };
 		DFDC0724B9D89E50E951F473 /* WiFiFingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21203BE774CD392ED461D73 /* WiFiFingerprint.swift */; };
 		AF7DAD5D2C72CE2078A421E3 /* WiFiFingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21203BE774CD392ED461D73 /* WiFiFingerprint.swift */; };
+		143FE3AD5BF04BA857D3B3F8 /* Guides+AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23553AEB65D21267A1F47420 /* Guides+AI.swift */; };
+		D1B7912DB7FB88D7BEA2D107 /* Guides+AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23553AEB65D21267A1F47420 /* Guides+AI.swift */; };
+		0BB3C4E4DA30AB26BCD6DA4C /* Guides+Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2372F410FB6B667A6153D5 /* Guides+Audio.swift */; };
+		E46D7344178C68F7A24E2347 /* Guides+Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2372F410FB6B667A6153D5 /* Guides+Audio.swift */; };
+		06E908638200556D7F06DFCC /* Guides+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD4317A68CC5AC79872792B /* Guides+Camera.swift */; };
+		98B3FD557FC4D7DB4933FD8F /* Guides+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD4317A68CC5AC79872792B /* Guides+Camera.swift */; };
+		2BC2431EC2C457EB015C6D76 /* Guides+Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE434BFEC53ADF6931D62508 /* Guides+Connectivity.swift */; };
+		E72851902971368D22026286 /* Guides+Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE434BFEC53ADF6931D62508 /* Guides+Connectivity.swift */; };
+		7A2DCD027341E015A76F639A /* Guides+Developer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF21E21BC2000CC391D2C6FD /* Guides+Developer.swift */; };
+		3B0AE88EA2CC7528826556DB /* Guides+Developer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF21E21BC2000CC391D2C6FD /* Guides+Developer.swift */; };
+		40FE5DCB6E76B73B83F7F9A5 /* Guides+Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222159B45EC535BBDD2DA2B /* Guides+Health.swift */; };
+		23AC24F00BAA0D3EFF6C4EE8 /* Guides+Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222159B45EC535BBDD2DA2B /* Guides+Health.swift */; };
+		7A5273605C75E2BF1E2FDB65 /* Guides+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53984D39384DD7CD0E7E0496 /* Guides+Home.swift */; };
+		04F92C643A1BC41BF34AE288 /* Guides+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53984D39384DD7CD0E7E0496 /* Guides+Home.swift */; };
+		F134C0452422A94E59F518CF /* Guides+Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7E3F13C629722357A77C1A /* Guides+Input.swift */; };
+		368387FB896EABB85A08C074 /* Guides+Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7E3F13C629722357A77C1A /* Guides+Input.swift */; };
+		898F36C887A989AD337B37B6 /* Guides+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60169A276CEFC14D9D28733 /* Guides+Location.swift */; };
+		331C92ACAE4424553510EFE5 /* Guides+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60169A276CEFC14D9D28733 /* Guides+Location.swift */; };
+		7D0FFD506C8862C7C1648378 /* Guides+Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBEB92985816D6371B165A /* Guides+Maps.swift */; };
+		FC0D06A81146E51892EDAC23 /* Guides+Maps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CBEB92985816D6371B165A /* Guides+Maps.swift */; };
+		6C8F8213345BC8C0618CB048 /* Guides+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E663B39CAC80F4A9FC2B42B /* Guides+Networking.swift */; };
+		6A5DF60E684B51765A6851E0 /* Guides+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E663B39CAC80F4A9FC2B42B /* Guides+Networking.swift */; };
+		B11D695EEB4583A6712FABFD /* Guides+NFC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F16F501B0CE806FCFE687B /* Guides+NFC.swift */; };
+		7FEE7AA3BFB607CD1FFDF75D /* Guides+NFC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F16F501B0CE806FCFE687B /* Guides+NFC.swift */; };
+		942205F1BE522E74B3028F58 /* Guides+Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F471C3FE59B4E9B7C4EA72 /* Guides+Platform.swift */; };
+		DA1886339D6376572D6C60D9 /* Guides+Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F471C3FE59B4E9B7C4EA72 /* Guides+Platform.swift */; };
+		59F01BCD25D0B7094414576B /* Guides+Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDD72269F6818DCD0B16755 /* Guides+Security.swift */; };
+		77F45FBB79288422C7517AC7 /* Guides+Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDD72269F6818DCD0B16755 /* Guides+Security.swift */; };
+		8E9DC80B3DA75693E63D5241 /* Guides+Sensors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1CA78423319F9B34DA2D7F /* Guides+Sensors.swift */; };
+		C030133691F2CD7D4390F28E /* Guides+Sensors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1CA78423319F9B34DA2D7F /* Guides+Sensors.swift */; };
+		3F7DA24CCEDE8754BCC67364 /* Guides+Spatial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED6BB5D07AB1FDB21E7BC52 /* Guides+Spatial.swift */; };
+		C217CBEC688723FC4ECAE4A7 /* Guides+Spatial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED6BB5D07AB1FDB21E7BC52 /* Guides+Spatial.swift */; };
+		DE397981FEC1E52411C6D0E3 /* Guides+System.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0535A7F7AB00129D5E7F6AF /* Guides+System.swift */; };
+		C4F958B69640A120AB505360 /* Guides+System.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0535A7F7AB00129D5E7F6AF /* Guides+System.swift */; };
+		1745E4AA135B4BD7D83F0BF3 /* Guides+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AAC67445EB954F65FE19C0 /* Guides+Wallet.swift */; };
+		04C847999EFC1FEB65172B56 /* Guides+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AAC67445EB954F65FE19C0 /* Guides+Wallet.swift */; };
+		8B9A9D2764D25102BF4E17D5 /* ImplementationGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD6134FF354D1EFFF6FB086 /* ImplementationGuide.swift */; };
+		81875B4AED0FA5361C07799E /* ImplementationGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD6134FF354D1EFFF6FB086 /* ImplementationGuide.swift */; };
+		885DD0D3888F464712BA68D8 /* ImplementationGuideSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD32BAFE25F07F0C38202B90 /* ImplementationGuideSection.swift */; };
+		600DEA8E6C8F53B7A2C14C65 /* ImplementationGuideSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD32BAFE25F07F0C38202B90 /* ImplementationGuideSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -848,6 +888,26 @@
 		321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RegionAvailability.swift; path = AppleToolbox/Shared/Services/RegionAvailability.swift; sourceTree = "<group>"; };
 		E4B0F5F2D699434790FC5B8E /* TVHomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TVHomeView.swift; path = AppleToolbox/UI/TVHomeView.swift; sourceTree = "<group>"; };
 		D21203BE774CD392ED461D73 /* WiFiFingerprint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WiFiFingerprint.swift; path = AppleToolbox/Shared/Services/WiFiFingerprint.swift; sourceTree = "<group>"; };
+		23553AEB65D21267A1F47420 /* Guides+AI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+AI.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+AI.swift"; sourceTree = "<group>"; };
+		AB2372F410FB6B667A6153D5 /* Guides+Audio.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Audio.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Audio.swift"; sourceTree = "<group>"; };
+		5AD4317A68CC5AC79872792B /* Guides+Camera.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Camera.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Camera.swift"; sourceTree = "<group>"; };
+		FE434BFEC53ADF6931D62508 /* Guides+Connectivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Connectivity.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Connectivity.swift"; sourceTree = "<group>"; };
+		DF21E21BC2000CC391D2C6FD /* Guides+Developer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Developer.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Developer.swift"; sourceTree = "<group>"; };
+		2222159B45EC535BBDD2DA2B /* Guides+Health.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Health.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Health.swift"; sourceTree = "<group>"; };
+		53984D39384DD7CD0E7E0496 /* Guides+Home.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Home.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Home.swift"; sourceTree = "<group>"; };
+		BF7E3F13C629722357A77C1A /* Guides+Input.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Input.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Input.swift"; sourceTree = "<group>"; };
+		A60169A276CEFC14D9D28733 /* Guides+Location.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Location.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Location.swift"; sourceTree = "<group>"; };
+		54CBEB92985816D6371B165A /* Guides+Maps.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Maps.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Maps.swift"; sourceTree = "<group>"; };
+		6E663B39CAC80F4A9FC2B42B /* Guides+Networking.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Networking.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Networking.swift"; sourceTree = "<group>"; };
+		69F16F501B0CE806FCFE687B /* Guides+NFC.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+NFC.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+NFC.swift"; sourceTree = "<group>"; };
+		A5F471C3FE59B4E9B7C4EA72 /* Guides+Platform.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Platform.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Platform.swift"; sourceTree = "<group>"; };
+		7FDD72269F6818DCD0B16755 /* Guides+Security.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Security.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Security.swift"; sourceTree = "<group>"; };
+		0C1CA78423319F9B34DA2D7F /* Guides+Sensors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Sensors.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Sensors.swift"; sourceTree = "<group>"; };
+		2ED6BB5D07AB1FDB21E7BC52 /* Guides+Spatial.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Spatial.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Spatial.swift"; sourceTree = "<group>"; };
+		F0535A7F7AB00129D5E7F6AF /* Guides+System.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+System.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+System.swift"; sourceTree = "<group>"; };
+		48AAC67445EB954F65FE19C0 /* Guides+Wallet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Guides+Wallet.swift"; path = "AppleToolbox/Shared/ImplementationGuides/Guides+Wallet.swift"; sourceTree = "<group>"; };
+		6DD6134FF354D1EFFF6FB086 /* ImplementationGuide.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImplementationGuide.swift; path = AppleToolbox/Shared/ImplementationGuides/ImplementationGuide.swift; sourceTree = "<group>"; };
+		AD32BAFE25F07F0C38202B90 /* ImplementationGuideSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImplementationGuideSection.swift; path = AppleToolbox/UI/ImplementationGuideSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -1268,6 +1328,26 @@
 				321E8481ADD9CDDA4693D20E /* RegionAvailability.swift */,
 				E4B0F5F2D699434790FC5B8E /* TVHomeView.swift */,
 				D21203BE774CD392ED461D73 /* WiFiFingerprint.swift */,
+				23553AEB65D21267A1F47420 /* Guides+AI.swift */,
+				AB2372F410FB6B667A6153D5 /* Guides+Audio.swift */,
+				5AD4317A68CC5AC79872792B /* Guides+Camera.swift */,
+				FE434BFEC53ADF6931D62508 /* Guides+Connectivity.swift */,
+				DF21E21BC2000CC391D2C6FD /* Guides+Developer.swift */,
+				2222159B45EC535BBDD2DA2B /* Guides+Health.swift */,
+				53984D39384DD7CD0E7E0496 /* Guides+Home.swift */,
+				BF7E3F13C629722357A77C1A /* Guides+Input.swift */,
+				A60169A276CEFC14D9D28733 /* Guides+Location.swift */,
+				54CBEB92985816D6371B165A /* Guides+Maps.swift */,
+				6E663B39CAC80F4A9FC2B42B /* Guides+Networking.swift */,
+				69F16F501B0CE806FCFE687B /* Guides+NFC.swift */,
+				A5F471C3FE59B4E9B7C4EA72 /* Guides+Platform.swift */,
+				7FDD72269F6818DCD0B16755 /* Guides+Security.swift */,
+				0C1CA78423319F9B34DA2D7F /* Guides+Sensors.swift */,
+				2ED6BB5D07AB1FDB21E7BC52 /* Guides+Spatial.swift */,
+				F0535A7F7AB00129D5E7F6AF /* Guides+System.swift */,
+				48AAC67445EB954F65FE19C0 /* Guides+Wallet.swift */,
+				6DD6134FF354D1EFFF6FB086 /* ImplementationGuide.swift */,
+				AD32BAFE25F07F0C38202B90 /* ImplementationGuideSection.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1881,6 +1961,26 @@
 				6F3FE7CA653F5E838D986489 /* AudioFileRecorderService.swift in Sources */,
 				6058E8E10C0014928F479EDB /* RegionAvailability.swift in Sources */,
 				DFDC0724B9D89E50E951F473 /* WiFiFingerprint.swift in Sources */,
+				143FE3AD5BF04BA857D3B3F8 /* Guides+AI.swift in Sources */,
+				0BB3C4E4DA30AB26BCD6DA4C /* Guides+Audio.swift in Sources */,
+				06E908638200556D7F06DFCC /* Guides+Camera.swift in Sources */,
+				2BC2431EC2C457EB015C6D76 /* Guides+Connectivity.swift in Sources */,
+				7A2DCD027341E015A76F639A /* Guides+Developer.swift in Sources */,
+				40FE5DCB6E76B73B83F7F9A5 /* Guides+Health.swift in Sources */,
+				7A5273605C75E2BF1E2FDB65 /* Guides+Home.swift in Sources */,
+				F134C0452422A94E59F518CF /* Guides+Input.swift in Sources */,
+				898F36C887A989AD337B37B6 /* Guides+Location.swift in Sources */,
+				7D0FFD506C8862C7C1648378 /* Guides+Maps.swift in Sources */,
+				6C8F8213345BC8C0618CB048 /* Guides+Networking.swift in Sources */,
+				B11D695EEB4583A6712FABFD /* Guides+NFC.swift in Sources */,
+				942205F1BE522E74B3028F58 /* Guides+Platform.swift in Sources */,
+				59F01BCD25D0B7094414576B /* Guides+Security.swift in Sources */,
+				8E9DC80B3DA75693E63D5241 /* Guides+Sensors.swift in Sources */,
+				3F7DA24CCEDE8754BCC67364 /* Guides+Spatial.swift in Sources */,
+				DE397981FEC1E52411C6D0E3 /* Guides+System.swift in Sources */,
+				1745E4AA135B4BD7D83F0BF3 /* Guides+Wallet.swift in Sources */,
+				8B9A9D2764D25102BF4E17D5 /* ImplementationGuide.swift in Sources */,
+				885DD0D3888F464712BA68D8 /* ImplementationGuideSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2191,6 +2291,26 @@
 				D2E77A0604C7416E4BEC5882 /* RegionAvailability.swift in Sources */,
 				20F207940E7FE4DB9944E776 /* TVHomeView.swift in Sources */,
 				AF7DAD5D2C72CE2078A421E3 /* WiFiFingerprint.swift in Sources */,
+				D1B7912DB7FB88D7BEA2D107 /* Guides+AI.swift in Sources */,
+				E46D7344178C68F7A24E2347 /* Guides+Audio.swift in Sources */,
+				98B3FD557FC4D7DB4933FD8F /* Guides+Camera.swift in Sources */,
+				E72851902971368D22026286 /* Guides+Connectivity.swift in Sources */,
+				3B0AE88EA2CC7528826556DB /* Guides+Developer.swift in Sources */,
+				23AC24F00BAA0D3EFF6C4EE8 /* Guides+Health.swift in Sources */,
+				04F92C643A1BC41BF34AE288 /* Guides+Home.swift in Sources */,
+				368387FB896EABB85A08C074 /* Guides+Input.swift in Sources */,
+				331C92ACAE4424553510EFE5 /* Guides+Location.swift in Sources */,
+				FC0D06A81146E51892EDAC23 /* Guides+Maps.swift in Sources */,
+				6A5DF60E684B51765A6851E0 /* Guides+Networking.swift in Sources */,
+				7FEE7AA3BFB607CD1FFDF75D /* Guides+NFC.swift in Sources */,
+				DA1886339D6376572D6C60D9 /* Guides+Platform.swift in Sources */,
+				77F45FBB79288422C7517AC7 /* Guides+Security.swift in Sources */,
+				C030133691F2CD7D4390F28E /* Guides+Sensors.swift in Sources */,
+				C217CBEC688723FC4ECAE4A7 /* Guides+Spatial.swift in Sources */,
+				C4F958B69640A120AB505360 /* Guides+System.swift in Sources */,
+				04C847999EFC1FEB65172B56 /* Guides+Wallet.swift in Sources */,
+				81875B4AED0FA5361C07799E /* ImplementationGuide.swift in Sources */,
+				600DEA8E6C8F53B7A2C14C65 /* ImplementationGuideSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
