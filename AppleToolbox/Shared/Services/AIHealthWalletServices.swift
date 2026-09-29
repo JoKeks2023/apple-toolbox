@@ -9,10 +9,6 @@ import NaturalLanguage
 import HealthKit
 #endif
 
-#if canImport(PassKit) && !os(watchOS)
-import PassKit
-#endif
-
 @MainActor
 final class AIExperimentService: ObservableObject {
     @Published private(set) var output = "On-device language analysis is ready."
@@ -38,17 +34,6 @@ struct HealthExperimentService {
         return HKHealthStore.isHealthDataAvailable() ? "HealthKit is available. Reading health data requires explicit user authorization and HealthKit entitlement." : "HealthKit is not available on this device."
         #else
         return "HealthKit is not available on this platform."
-        #endif
-    }
-}
-
-struct WalletExperimentService {
-    static func statusText() -> String {
-        #if canImport(PassKit) && !os(watchOS)
-        let library = PKPassLibrary()
-        return "PassKit is available. Stored passes visible to this app: \(library.passes().count)\nAdvanced credentials require Apple-issued entitlements and approval."
-        #else
-        return "PassKit pass library is not available on this platform."
         #endif
     }
 }

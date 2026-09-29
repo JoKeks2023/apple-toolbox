@@ -283,6 +283,11 @@
 		BBC84843EEFF90019351E351 /* NFCCardEmulationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E24B1DB8BDDE4F55B62ACFC /* NFCCardEmulationService.swift */; };
 		B793C799629853AE2E2159EB /* NFCCardEmulationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E24B1DB8BDDE4F55B62ACFC /* NFCCardEmulationService.swift */; };
 		3B8E09A97490A34B1516809F /* NFCCardEmulationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E24B1DB8BDDE4F55B62ACFC /* NFCCardEmulationService.swift */; };
+		23576C1ADBC8C820DD02CBF7 /* WalletPaymentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5AC73D0C8706847AE75DDA /* WalletPaymentServices.swift */; };
+		831854A40763B57B26BE5FAE /* WalletPaymentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5AC73D0C8706847AE75DDA /* WalletPaymentServices.swift */; };
+		BF921231766EAA7C374724A0 /* WalletPaymentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5AC73D0C8706847AE75DDA /* WalletPaymentServices.swift */; };
+		0AC6D3115567944D90E5876E /* WalletRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C2AFBC07DB112A750B48C /* WalletRunViews.swift */; };
+		7C50E89D9003AABED4103657 /* WalletRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1C2AFBC07DB112A750B48C /* WalletRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -472,6 +477,8 @@
 		14C879137E5F59428A25DDF8 /* NFCServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCServices.swift; path = AppleToolbox/Shared/Services/NFCServices.swift; sourceTree = "<group>"; };
 		31BC2D8423371FBA4FE69A1A /* NFCRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCRunViews.swift; path = AppleToolbox/UI/Experiments/NFCRunViews.swift; sourceTree = "<group>"; };
 		8E24B1DB8BDDE4F55B62ACFC /* NFCCardEmulationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NFCCardEmulationService.swift; path = AppleToolbox/Shared/Services/NFCCardEmulationService.swift; sourceTree = "<group>"; };
+		0B5AC73D0C8706847AE75DDA /* WalletPaymentServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WalletPaymentServices.swift; path = AppleToolbox/Shared/Services/WalletPaymentServices.swift; sourceTree = "<group>"; };
+		8D1C2AFBC07DB112A750B48C /* WalletRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WalletRunViews.swift; path = AppleToolbox/UI/Experiments/WalletRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -732,6 +739,8 @@
 				14C879137E5F59428A25DDF8 /* NFCServices.swift */,
 				31BC2D8423371FBA4FE69A1A /* NFCRunViews.swift */,
 				8E24B1DB8BDDE4F55B62ACFC /* NFCCardEmulationService.swift */,
+				0B5AC73D0C8706847AE75DDA /* WalletPaymentServices.swift */,
+				8D1C2AFBC07DB112A750B48C /* WalletRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1128,6 +1137,8 @@
 				9C036E685E3BAD3358B5DBBE /* NFCServices.swift in Sources */,
 				269A9634221738AD32132150 /* NFCRunViews.swift in Sources */,
 				BBC84843EEFF90019351E351 /* NFCCardEmulationService.swift in Sources */,
+				23576C1ADBC8C820DD02CBF7 /* WalletPaymentServices.swift in Sources */,
+				0AC6D3115567944D90E5876E /* WalletRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1187,6 +1198,7 @@
 				BBBA693C389E9D0AE1AFA287 /* NFCProtocols.swift in Sources */,
 				A4FAE2166052B2BD24BAA8B5 /* NFCServices.swift in Sources */,
 				3B8E09A97490A34B1516809F /* NFCCardEmulationService.swift in Sources */,
+				BF921231766EAA7C374724A0 /* WalletPaymentServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1322,6 +1334,8 @@
 				F765AC1A71E7294FB5CE2013 /* NFCServices.swift in Sources */,
 				DB7B32A0BF548678745ECF32 /* NFCRunViews.swift in Sources */,
 				B793C799629853AE2E2159EB /* NFCCardEmulationService.swift in Sources */,
+				831854A40763B57B26BE5FAE /* WalletPaymentServices.swift in Sources */,
+				7C50E89D9003AABED4103657 /* WalletRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
