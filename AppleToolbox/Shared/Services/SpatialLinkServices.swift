@@ -125,7 +125,7 @@ final class SpatialLinkService: NSObject, ObservableObject {
         localDevice = SpatialLinkDeviceInfo(name: name, platform: Self.platformName, supportsUWB: Self.localSupportsUWB,
                                             system: ProcessInfo.processInfo.operatingSystemVersionString)
         #if canImport(MultipeerConnectivity) && !os(watchOS) && !os(tvOS)
-        peerID = MCPeerID(displayName: name)
+        peerID = MCPeerID(displayName: MultipeerPeerName.sanitized(name))
         #endif
         super.init()
     }

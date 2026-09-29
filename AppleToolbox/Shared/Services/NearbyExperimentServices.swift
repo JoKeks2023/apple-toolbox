@@ -155,7 +155,7 @@ final class NearbyExperimentService: NSObject, ObservableObject {
     #endif
 
     #if canImport(MultipeerConnectivity) && os(iOS)
-    private let peerID = MCPeerID(displayName: UIDevice.current.name)
+    private let peerID = MCPeerID(displayName: MultipeerPeerName.sanitized(UIDevice.current.name))
     nonisolated private let invitationIdentifier = UUID().uuidString
     private var transportSession: MCSession?
     private var advertiser: MCNearbyServiceAdvertiser?
@@ -450,6 +450,23 @@ extension NearbyExperimentService: MCSessionDelegate, MCNearbyServiceAdvertiserD
 }
 #endif
 
+/// `MCPeerID(displayName:)` raises an Objective-C exception for an empty name or one longer than 63 UTF-8 bytes,
+/// and a Mac's computer name can be longer than that.
+nonisolated enum MultipeerPeerName {
+    static let maxUTF8Bytes = 63
+
+    static func sanitized(_ name: String, fallback: String = "Apple Toolbox") -> String {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return fallback }
+        var result = ""
+        for character in trimmed {
+            guard result.utf8.count + String(character).utf8.count <= maxUTF8Bytes else { break }
+            result.append(character)
+        }
+        return result.isEmpty ? fallback : result
+    }
+}
+
 #if canImport(MultipeerConnectivity) && !os(watchOS) && !os(tvOS)
 @MainActor
 final class MultipeerConnectivityExperimentService: NSObject, ObservableObject {
@@ -463,6 +480,8 @@ final class MultipeerConnectivityExperimentService: NSObject, ObservableObject {
     private var session: MCSession?
     private var advertiser: MCNearbyServiceAdvertiser?
     private var browser: MCNearbyServiceBrowser?
+    /// Tracked by peer, not by name: since iOS 16 every iPhone advertises itself as just "iPhone".
+    private var discovered: [MCPeerID] = []
 
     override init() {
         #if os(macOS)
@@ -470,7 +489,7 @@ final class MultipeerConnectivityExperimentService: NSObject, ObservableObject {
         #else
         let displayName = UIDevice.current.name
         #endif
-        peerID = MCPeerID(displayName: displayName)
+        peerID = MCPeerID(displayName: MultipeerPeerName.sanitized(displayName))
         super.init()
     }
 
@@ -503,6 +522,7 @@ final class MultipeerConnectivityExperimentService: NSObject, ObservableObject {
         session = nil
         isRunning = false
         connectedPeers = []
+        discovered = []
         discoveredPeers = []
         output = "MultipeerConnectivity session stopped."
     }
@@ -560,8 +580,9 @@ extension MultipeerConnectivityExperimentService: MCSessionDelegate, MCNearbySer
         let invite = PeerInvitationPolicy.shouldInvite(localIdentifier: invitationIdentifier, discoveryInfo: info)
         nonisolated(unsafe) let browser = browser, peerID = peerID // Thread-safe MultipeerConnectivity objects.
         Task { @MainActor [weak self] in
-            guard let self, !discoveredPeers.contains(peerID.displayName) else { return }
-            discoveredPeers.append(peerID.displayName)
+            guard let self, !discovered.contains(peerID) else { return }
+            discovered.append(peerID)
+            discoveredPeers = discovered.map(\.displayName)
             guard let session else { return }
             if invite {
                 browser.invitePeer(peerID, to: session, withContext: nil, timeout: 15)
@@ -574,9 +595,12 @@ extension MultipeerConnectivityExperimentService: MCSessionDelegate, MCNearbySer
 
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         let peerName = peerID.displayName
+        nonisolated(unsafe) let peerID = peerID // Immutable, thread-safe MultipeerConnectivity object.
         Task { @MainActor [weak self] in
-            self?.discoveredPeers.removeAll { $0 == peerName }
-            self?.output = "Peer left discovery: \(peerName)."
+            guard let self else { return }
+            discovered.removeAll { $0 == peerID }
+            discoveredPeers = discovered.map(\.displayName)
+            output = "Peer left discovery: \(peerName)."
         }
     }
 
