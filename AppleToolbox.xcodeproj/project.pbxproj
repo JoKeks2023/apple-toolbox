@@ -378,6 +378,11 @@
 		431A2A092E619BEE7BAAE020 /* NaturalLanguageExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D9CDB110CD15DF999D4BAF /* NaturalLanguageExperimentService.swift */; };
 		96CF0861626DF40F629F1492 /* NaturalLanguageRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE583746A6C90B542D91FB6 /* NaturalLanguageRunView.swift */; };
 		935341EA322BD9FFCD327563 /* NaturalLanguageRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE583746A6C90B542D91FB6 /* NaturalLanguageRunView.swift */; };
+		4C1CF088AEF5151C408E446F /* SpeechAnalyzerExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F7E61D0A3355D29B2F5A0E /* SpeechAnalyzerExperimentService.swift */; };
+		97CDBD3ADCB7C6BD6E6C498D /* SpeechAnalyzerExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F7E61D0A3355D29B2F5A0E /* SpeechAnalyzerExperimentService.swift */; };
+		023060AD41FB51B9DC07E5E7 /* SpeechAnalyzerExperimentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F7E61D0A3355D29B2F5A0E /* SpeechAnalyzerExperimentService.swift */; };
+		00BF567EFDF92AAD2645D8CA /* SpeechAnalyzerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67E7CFE0142D010E63E30474 /* SpeechAnalyzerRunView.swift */; };
+		BD3CAC92FE16F0AB889228D9 /* SpeechAnalyzerRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67E7CFE0142D010E63E30474 /* SpeechAnalyzerRunView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -622,6 +627,8 @@
 		981645C806854E2AB22F9E54 /* ToolboxWidgetIntents.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ToolboxWidgetIntents.swift; path = AppleToolbox/Shared/Services/ToolboxWidgetIntents.swift; sourceTree = "<group>"; };
 		78D9CDB110CD15DF999D4BAF /* NaturalLanguageExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NaturalLanguageExperimentService.swift; path = AppleToolbox/Shared/Services/NaturalLanguageExperimentService.swift; sourceTree = "<group>"; };
 		3FE583746A6C90B542D91FB6 /* NaturalLanguageRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NaturalLanguageRunView.swift; path = AppleToolbox/UI/Experiments/NaturalLanguageRunView.swift; sourceTree = "<group>"; };
+		E8F7E61D0A3355D29B2F5A0E /* SpeechAnalyzerExperimentService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpeechAnalyzerExperimentService.swift; path = AppleToolbox/Shared/Services/SpeechAnalyzerExperimentService.swift; sourceTree = "<group>"; };
+		67E7CFE0142D010E63E30474 /* SpeechAnalyzerRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpeechAnalyzerRunView.swift; path = AppleToolbox/UI/Experiments/SpeechAnalyzerRunView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -940,6 +947,8 @@
 				981645C806854E2AB22F9E54 /* ToolboxWidgetIntents.swift */,
 				78D9CDB110CD15DF999D4BAF /* NaturalLanguageExperimentService.swift */,
 				3FE583746A6C90B542D91FB6 /* NaturalLanguageRunView.swift */,
+				E8F7E61D0A3355D29B2F5A0E /* SpeechAnalyzerExperimentService.swift */,
+				67E7CFE0142D010E63E30474 /* SpeechAnalyzerRunView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1403,6 +1412,8 @@
 				8364B2B4CA16977709362E7F /* WidgetKitRunView.swift in Sources */,
 				BC8B2B154ED965BE3EE3D1DE /* NaturalLanguageExperimentService.swift in Sources */,
 				96CF0861626DF40F629F1492 /* NaturalLanguageRunView.swift in Sources */,
+				4C1CF088AEF5151C408E446F /* SpeechAnalyzerExperimentService.swift in Sources */,
+				00BF567EFDF92AAD2645D8CA /* SpeechAnalyzerRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1469,6 +1480,7 @@
 				BF53A2410EC256A4EA9B6D18 /* HomeKitServices.swift in Sources */,
 				6D82054F9F427AF326077EAC /* HealthKitServices.swift in Sources */,
 				3586B16529E6C8B22ED506A5 /* LiveActivityServices.swift in Sources */,
+				023060AD41FB51B9DC07E5E7 /* SpeechAnalyzerExperimentService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1644,6 +1656,8 @@
 				3D4C1F6F4C98DE02BF385413 /* WidgetKitRunView.swift in Sources */,
 				431A2A092E619BEE7BAAE020 /* NaturalLanguageExperimentService.swift in Sources */,
 				935341EA322BD9FFCD327563 /* NaturalLanguageRunView.swift in Sources */,
+				97CDBD3ADCB7C6BD6E6C498D /* SpeechAnalyzerExperimentService.swift in Sources */,
+				BD3CAC92FE16F0AB889228D9 /* SpeechAnalyzerRunView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
