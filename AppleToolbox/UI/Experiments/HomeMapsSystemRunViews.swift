@@ -11,31 +11,6 @@ struct MapKitSearchRunView: View {
     }
 }
 
-struct HomeKitRunView: View {
-    @StateObject private var home = HomeExperimentService()
-
-    var body: some View {
-        Button("Refresh Homes and Accessories", action: home.refresh).buttonStyle(.borderedProminent)
-        HomeResultsView(homes: home.homes)
-        OutputView(text: home.output, isError: home.status == .unavailable || home.status == .permissionDenied)
-    }
-}
-
-struct MatterSetupRunView: View {
-    @StateObject private var matter = MatterSetupExperimentService()
-
-    var body: some View {
-        Button(matter.isRunning ? "Setup in Progress…" : "Add Accessory to Apple Home", action: matter.startSetup).buttonStyle(.borderedProminent).disabled(matter.isRunning)
-        if let home = matter.homeIdentifier {
-            LabeledContent("Home") { Text(home).font(.caption.monospaced()) }
-            ForEach(matter.accessoryIdentifiers, id: \.self) { accessory in
-                LabeledContent("Accessory") { Text(accessory).font(.caption.monospaced()) }
-            }
-        }
-        OutputView(text: matter.output, isError: matter.isError)
-    }
-}
-
 struct ARKitRunView: View {
     @StateObject private var ar = ARExperimentService()
 
@@ -156,30 +131,6 @@ private struct MapResultsView: View {
                             .font(.headline)
                         if !result.address.isEmpty { Text(result.address).font(.subheadline) }
                         Text(result.coordinate).font(.caption.monospaced()).foregroundStyle(.secondary)
-                    }
-                }
-            }
-        }
-    }
-}
-
-private struct HomeResultsView: View {
-    let homes: [HomeSummary]
-
-    var body: some View {
-        Section("HomeKit homes (\(homes.count))") {
-            if homes.isEmpty {
-                Text("Refresh to inspect homes shared with this device.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            } else {
-                ForEach(homes) { home in
-                    HStack {
-                        Label(home.name, systemImage: "house")
-                        Spacer()
-                        Text("\(home.rooms) rooms · \(home.accessories) accessories")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
                     }
                 }
             }

@@ -71,7 +71,7 @@ enum DeveloperToolsCatalog {
             documentation: "https://developer.apple.com/augmented-reality/tools/"),
         DeveloperToolEntry("homekit-accessory-simulator", "HomeKit Accessory Simulator", .developerTool,
             summary: "Simulates HomeKit accessories, services and characteristics on the Mac (Additional Tools for Xcode).",
-            inToolbox: "Add simulated accessories to a home, then inspect them with the HomeKit experiment.",
+            inToolbox: "Pair simulated accessories with a home, then read, write and watch their characteristics in the Home Inspector.",
             related: ["homekit-discovery"],
             documentation: "https://developer.apple.com/documentation/homekit/testing-your-app-with-the-homekit-accessory-simulator"),
         DeveloperToolEntry("packetlogger", "PacketLogger", .developerTool,

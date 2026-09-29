@@ -334,6 +334,11 @@
 		FE78E57D2C83B8C168F997B8 /* SpatialLinkServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5635DB0551FD85E581141B13 /* SpatialLinkServices.swift */; };
 		3822BD5982F50EC9694228A3 /* SpatialLinkRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B6C6DC12A0634919A138E /* SpatialLinkRunView.swift */; };
 		F69D8FB5911B5C18C1B01C2D /* SpatialLinkRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8B6C6DC12A0634919A138E /* SpatialLinkRunView.swift */; };
+		BF4B34718DBDBAD6E085DF72 /* HomeKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082468F2A161F7880FFEBCDF /* HomeKitServices.swift */; };
+		A324F4B94954D7E6F314BBAA /* HomeKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082468F2A161F7880FFEBCDF /* HomeKitServices.swift */; };
+		60721A72B5822822F70088BF /* HomeKitServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082468F2A161F7880FFEBCDF /* HomeKitServices.swift */; };
+		A2BEBB310ACADE24D9A8E160 /* HomeRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */; };
+		E32A3B47C949B8EDDAD22968 /* HomeRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -546,6 +551,8 @@
 		6F5756851E4980E36BA5EED6 /* NearbyInteractionRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NearbyInteractionRunView.swift; path = AppleToolbox/UI/Experiments/NearbyInteractionRunView.swift; sourceTree = "<group>"; };
 		5635DB0551FD85E581141B13 /* SpatialLinkServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpatialLinkServices.swift; path = AppleToolbox/Shared/Services/SpatialLinkServices.swift; sourceTree = "<group>"; };
 		3C8B6C6DC12A0634919A138E /* SpatialLinkRunView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpatialLinkRunView.swift; path = AppleToolbox/UI/Experiments/SpatialLinkRunView.swift; sourceTree = "<group>"; };
+		082468F2A161F7880FFEBCDF /* HomeKitServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeKitServices.swift; path = AppleToolbox/Shared/Services/HomeKitServices.swift; sourceTree = "<group>"; };
+		9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeRunViews.swift; path = AppleToolbox/UI/Experiments/HomeRunViews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -829,6 +836,8 @@
 				6F5756851E4980E36BA5EED6 /* NearbyInteractionRunView.swift */,
 				5635DB0551FD85E581141B13 /* SpatialLinkServices.swift */,
 				3C8B6C6DC12A0634919A138E /* SpatialLinkRunView.swift */,
+				082468F2A161F7880FFEBCDF /* HomeKitServices.swift */,
+				9B22CD75BDCF9C74B03C460B /* HomeRunViews.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1248,6 +1257,8 @@
 				73824327E7B970C69592CF6C /* NearbyInteractionRunView.swift in Sources */,
 				AB0A6B1C9CDB5F8FF52509CC /* SpatialLinkServices.swift in Sources */,
 				3822BD5982F50EC9694228A3 /* SpatialLinkRunView.swift in Sources */,
+				BF4B34718DBDBAD6E085DF72 /* HomeKitServices.swift in Sources */,
+				A2BEBB310ACADE24D9A8E160 /* HomeRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1312,6 +1323,7 @@
 				EAE43697E862C4B7A0B3F851 /* AccessoryExperimentServices.swift in Sources */,
 				972235B9DFDDE9EC9025BCDB /* BeaconRangingService.swift in Sources */,
 				5315246DCF29B6BE8C97A1E5 /* NetworkCapabilityServices.swift in Sources */,
+				60721A72B5822822F70088BF /* HomeKitServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1470,6 +1482,8 @@
 				04308AAD78735F95893A39D2 /* NearbyInteractionRunView.swift in Sources */,
 				FE78E57D2C83B8C168F997B8 /* SpatialLinkServices.swift in Sources */,
 				F69D8FB5911B5C18C1B01C2D /* SpatialLinkRunView.swift in Sources */,
+				A324F4B94954D7E6F314BBAA /* HomeKitServices.swift in Sources */,
+				E32A3B47C949B8EDDAD22968 /* HomeRunViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

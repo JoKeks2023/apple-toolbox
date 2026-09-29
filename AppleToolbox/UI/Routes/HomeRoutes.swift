@@ -6,7 +6,7 @@ struct HomeRunRoutes: View {
 
     var body: some View {
         switch experiment.id {
-        case "homekit-discovery": HomeKitRunView()
+        case "homekit-discovery": HomeInspectorRunView(experiment: experiment)
         case "matter-status": MatterSetupRunView()
         default: UnroutedExperimentView()
         }
