@@ -8,7 +8,7 @@ struct WatchMotionView: View {
     var body: some View {
         List {
             Button(motion.isRunning ? "Stop" : "Start", systemImage: motion.isRunning ? "stop.fill" : "play.fill") {
-                motion.isRunning ? motion.stop() : motion.start()
+                motion.isRunning ? motion.stopMotion() : motion.startMotion()
             }
             WatchVectorRow(title: "Acceleration · g", vector: motion.userAcceleration)
             WatchVectorRow(title: "Rotation · rad/s", vector: motion.rotationRate)

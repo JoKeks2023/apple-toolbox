@@ -83,6 +83,8 @@ extension ExperimentDescriptor {
         "core-motion": [
             .hardwareUnsupported: ExperimentExplanation(reason: "Device motion data is not available (for example in the Simulator).", required: "Accelerometer and gyroscope",
                                                         nextStep: "Run on an iPhone, iPad or Apple Watch."),
+            .permissionDenied: ExperimentExplanation(reason: "Motion & Fitness access is denied or restricted, so the pedometer and altimeter return no data. Device motion still works.", required: "Motion & Fitness access for Apple Toolbox and Fitness Tracking turned on",
+                                                     nextStep: "Allow it in Settings › Privacy & Security › Motion & Fitness."),
         ],
         "core-nfc": [
             .hardwareUnsupported: ExperimentExplanation(reason: "This device has no NFC reader available to apps.", required: "iPhone 7 or later (iPad has no NFC reader)",

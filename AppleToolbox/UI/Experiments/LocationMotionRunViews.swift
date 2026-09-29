@@ -29,10 +29,14 @@ struct CoreMotionRunView: View {
     @StateObject private var motion = MotionExperimentService()
 
     var body: some View {
-        Button(motion.isRunning ? "Stop Motion Updates" : "Start Motion Updates") { motion.isRunning ? motion.stop() : motion.start() }.buttonStyle(.borderedProminent)
+        Button(motion.isRunning ? "Stop Motion Updates" : "Start Motion Updates") { motion.isRunning ? motion.stopMotion() : motion.startMotion() }.buttonStyle(.borderedProminent)
             .experimentSession(motion)
+        OutputView(text: motion.output, isError: motion.output.localizedCaseInsensitiveContains("not available") || motion.output.localizedCaseInsensitiveContains("error") || motion.output.localizedCaseInsensitiveContains("denied"))
         MotionReadingView(motion: motion)
-        OutputView(text: motion.output, isError: motion.output.localizedCaseInsensitiveContains("not available") || motion.output.localizedCaseInsensitiveContains("error"))
+        AttitudeMagnetView(motion: motion)
+        PedometerView(motion: motion)
+        AltimeterView(motion: motion)
+        MotionAvailabilityView(features: motion.features)
     }
 }
 
@@ -212,6 +216,71 @@ private struct MotionReadingView: View {
                 Text("Start updates and move the device to see live values.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+            }
+        }
+    }
+}
+
+private struct AttitudeMagnetView: View {
+    @ObservedObject var motion: MotionExperimentService
+
+    var body: some View {
+        Section("Attitude & magnetic field") {
+            LabeledContent("Roll", value: Self.degrees(motion.attitude.x))
+            LabeledContent("Pitch", value: Self.degrees(motion.attitude.y))
+            LabeledContent("Yaw", value: Self.degrees(motion.attitude.z))
+            VectorRow(title: "Magnetic field", symbol: "location.north.line", vector: motion.magneticField, unit: "µT")
+            LabeledContent("Source", value: motion.magneticSource)
+            LabeledContent("Calibration", value: motion.magneticAccuracy)
+        }
+    }
+
+    private static func degrees(_ value: Double) -> String {
+        value.formatted(.number.precision(.fractionLength(1))) + "°"
+    }
+}
+
+private struct PedometerView: View {
+    @ObservedObject var motion: MotionExperimentService
+
+    var body: some View {
+        Section("Pedometer · CMPedometer") {
+            Button(motion.isPedometerRunning ? "Stop Pedometer" : "Start Pedometer") { motion.isPedometerRunning ? motion.stopPedometer() : motion.startPedometer() }
+            LabeledContent("Steps since start", value: motion.pedometerReading.steps)
+            LabeledContent("Distance", value: motion.pedometerReading.distance)
+            LabeledContent("Floors", value: motion.pedometerReading.floors)
+            LabeledContent("Cadence", value: motion.pedometerReading.cadence)
+            LabeledContent("Pace", value: motion.pedometerReading.pace)
+            LabeledContent("Today so far", value: motion.pedometerReading.today)
+        }
+    }
+}
+
+private struct AltimeterView: View {
+    @ObservedObject var motion: MotionExperimentService
+
+    var body: some View {
+        Section("Altimeter · CMAltimeter") {
+            Button(motion.isAltimeterRunning ? "Stop Altimeter" : "Start Altimeter") { motion.isAltimeterRunning ? motion.stopAltimeter() : motion.startAltimeter() }
+            LabeledContent("Relative altitude", value: motion.altitudeReading.relative)
+            LabeledContent("Pressure", value: motion.altitudeReading.pressure)
+            LabeledContent("Absolute altitude", value: motion.altitudeReading.absolute)
+            LabeledContent("Absolute accuracy", value: motion.altitudeReading.absoluteAccuracy)
+        }
+    }
+}
+
+private struct MotionAvailabilityView: View {
+    let features: [MotionFeature]
+
+    var body: some View {
+        Section("Availability on this device") {
+            ForEach(features) { feature in
+                LabeledContent {
+                    Text(feature.detail).multilineTextAlignment(.trailing)
+                } label: {
+                    Label(feature.title, systemImage: feature.isAvailable ? "checkmark.circle.fill" : "xmark.circle")
+                }
             }
         }
     }

@@ -11,6 +11,8 @@
 		<key>LiveDashboard</key>
 		<string>Precise location shows your exact position and lets the Core Location experiment monitor a small region around you.</string>
 	</dict>
+	<key>NSMotionUsageDescription</key>
+	<string>Joris Apple Toolbox reads steps, distance, floors and barometric altitude for the Core Motion experiment.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Joris Apple Toolbox uses Face ID for the LocalAuthentication and Keychain experiments.</string>
 	<key>NSAppleMusicUsageDescription</key>

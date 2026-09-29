@@ -133,7 +133,7 @@ enum ExperimentUseCaseCatalog {
         case "secure-enclave": secureEnclave
         case "localauthentication": localAuthentication
         case "core-location": ExperimentUseCase(id: "location-dashboard", title: "Build a live location dashboard", summary: "Use the device's real location stream, heading, and a geofence around you.", interaction: "Grant permission and start updates, then monitor a region around you and walk in or out to see entry and exit events. Upgrade to Always only if you want visits and significant changes.")
-        case "core-motion": ExperimentUseCase(id: "motion-meter", title: "Move the device", summary: "Turn your iPhone or Apple Watch into a live motion meter.", interaction: "Start updates, tilt or move the device, and compare acceleration, rotation, and gravity vectors.")
+        case "core-motion": ExperimentUseCase(id: "motion-meter", title: "Move the device", summary: "Turn your iPhone or Apple Watch into a live motion meter, compass, step counter, and barometer.", interaction: "Start motion updates and tilt the device to watch attitude and the magnetic field, then start the pedometer or altimeter and walk or take the stairs.")
         case "multipeer-connectivity": multipeerConnectivity
         case "game-controller": ExperimentUseCase(id: "controller-input-monitor", title: "Test a game controller", summary: "See which controllers the system reports and watch every button, trigger, and stick as you use it.", interaction: "Start monitoring, turn on or pair a controller (or use the Siri Remote on Apple TV), then press buttons and move the sticks.")
         default: ExperimentUseCase(
