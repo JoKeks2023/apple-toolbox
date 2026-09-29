@@ -170,3 +170,29 @@ struct PeerInvitationPolicyTests {
     }
 }
 #endif
+
+@MainActor
+struct ExperimentStatusCacheTests {
+
+    private final class Counter { var value = 0 }
+
+    @Test func evaluatesOncePerPermissionRevision() {
+        let center = PermissionCenter()
+        let cache = ExperimentStatusCache(center: center)
+        let counter = Counter()
+        let experiment = ExperimentDescriptor(
+            id: "cache-test", name: "Cache test", category: .security, description: "", frameworks: [],
+            supportedPlatforms: [CurrentPlatform.value], hardwareRequirements: [], osRequirements: [], permissions: [],
+            capabilities: [], entitlements: [], documentationURL: URL(string: "https://developer.apple.com")!,
+            evaluate: { counter.value += 1; return .available })
+
+        #expect(cache.status(for: experiment) == .available)
+        #expect(cache.status(for: experiment) == .available)
+        _ = cache.checks(for: experiment, status: .available)
+        #expect(counter.value == 1)
+
+        center.invalidate()
+        #expect(cache.status(for: experiment) == .available)
+        #expect(counter.value == 2)
+    }
+}

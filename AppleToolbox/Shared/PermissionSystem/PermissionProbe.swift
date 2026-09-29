@@ -38,9 +38,15 @@ enum PermissionState: String {
 
 /// Reads authorization states without ever triggering a permission prompt.
 enum PermissionProbe {
+    #if canImport(CoreLocation)
+    /// One manager for authorization and accuracy reads; creating a CLLocationManager per read is expensive.
+    /// Only read for status here (no delegate), so sharing it across isolation domains is safe.
+    nonisolated(unsafe) static let locationManager = CLLocationManager()
+    #endif
+
     static func location() -> PermissionState {
         #if canImport(CoreLocation)
-        switch CLLocationManager().authorizationStatus {
+        switch locationManager.authorizationStatus {
         case .notDetermined: return .notDetermined
         case .restricted: return .restricted
         case .denied: return .denied
@@ -166,5 +172,43 @@ final class PermissionCenter: ObservableObject {
     func refresh() async {
         await PermissionProbe.refreshNotificationState()
         invalidate()
+    }
+}
+
+/// Memoizes experiment status and pre-run checks per experiment id. Evaluators create system objects
+/// (location managers, LAContext, speech recognizers, …), so they run once per `PermissionCenter.revision`
+/// instead of on every render.
+@MainActor
+final class ExperimentStatusCache {
+    static let shared = ExperimentStatusCache()
+
+    private let center: PermissionCenter
+    private var revision: Int?
+    private var statuses: [String: ExperimentStatus] = [:]
+    private var checks: [String: (status: ExperimentStatus, checks: [ExperimentCheck])] = [:]
+
+    init(center: PermissionCenter = .shared) { self.center = center }
+
+    func status(for experiment: ExperimentDescriptor) -> ExperimentStatus {
+        dropIfStale()
+        if let status = statuses[experiment.id] { return status }
+        let status = experiment.uncachedStatus
+        statuses[experiment.id] = status
+        return status
+    }
+
+    func checks(for experiment: ExperimentDescriptor, status: ExperimentStatus) -> [ExperimentCheck] {
+        dropIfStale()
+        if let entry = checks[experiment.id], entry.status == status { return entry.checks }
+        let result = experiment.uncachedChecks(for: status)
+        checks[experiment.id] = (status, result)
+        return result
+    }
+
+    private func dropIfStale() {
+        guard revision != center.revision else { return }
+        revision = center.revision
+        statuses.removeAll(keepingCapacity: true)
+        checks.removeAll(keepingCapacity: true)
     }
 }

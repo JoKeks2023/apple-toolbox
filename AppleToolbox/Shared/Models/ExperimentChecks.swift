@@ -13,6 +13,10 @@ struct ExperimentCheck: Identifiable {
 extension ExperimentDescriptor {
     /// Platform, OS, hardware, permission and entitlement checks derived from the descriptor and its live status.
     func checks(for status: ExperimentStatus) -> [ExperimentCheck] {
+        ExperimentStatusCache.shared.checks(for: self, status: status)
+    }
+
+    func uncachedChecks(for status: ExperimentStatus) -> [ExperimentCheck] {
         let platform = CurrentPlatform.value
         let version = ProcessInfo.processInfo.operatingSystemVersion
         let osVersion = "\(platform.rawValue) \(version.majorVersion).\(version.minorVersion)"

@@ -99,7 +99,11 @@ struct ExperimentDescriptor: Identifiable {
     /// Apple programs or agreements needed beyond the developer program (spec §5).
     var applePrograms: [String] = []
 
-    var currentStatus: ExperimentStatus {
+    /// The live status, memoized per `PermissionCenter.revision` by `ExperimentStatusCache`.
+    var currentStatus: ExperimentStatus { ExperimentStatusCache.shared.status(for: self) }
+
+    /// Runs the evaluator; use `currentStatus` everywhere else.
+    var uncachedStatus: ExperimentStatus {
         guard supportedPlatforms.contains(CurrentPlatform.value) else { return .platformUnsupported }
         let status = evaluate()
         #if targetEnvironment(simulator)

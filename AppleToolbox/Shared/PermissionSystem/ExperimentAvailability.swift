@@ -65,9 +65,15 @@ enum ExperimentAvailability {
         PermissionProbe.bluetooth().experimentStatus ?? .available
     }
 
+    #if canImport(AVFoundation) && (os(iOS) || os(macOS))
+    /// Capture hardware presence, read once instead of on every status evaluation.
+    private static let hasCamera = AVCaptureDevice.default(for: .video) != nil
+    private static let hasMicrophone = AVCaptureDevice.default(for: .audio) != nil
+    #endif
+
     static func camera() -> ExperimentStatus {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
-        guard AVCaptureDevice.default(for: .video) != nil else { return .hardwareUnsupported }
+        guard hasCamera else { return .hardwareUnsupported }
         return PermissionProbe.camera().experimentStatus ?? .available
         #else
         return .platformUnsupported
@@ -76,7 +82,7 @@ enum ExperimentAvailability {
 
     static func microphone() -> ExperimentStatus {
         #if canImport(AVFoundation) && (os(iOS) || os(macOS))
-        guard AVCaptureDevice.default(for: .audio) != nil else { return .hardwareUnsupported }
+        guard hasMicrophone else { return .hardwareUnsupported }
         return PermissionProbe.microphone().experimentStatus ?? .available
         #else
         return .platformUnsupported

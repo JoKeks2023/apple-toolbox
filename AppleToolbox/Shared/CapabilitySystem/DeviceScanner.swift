@@ -272,22 +272,23 @@ nonisolated enum DeviceProbes {
 
     // MARK: Shared with DeviceCapabilities
 
-    static var hasSecureEnclave: Bool {
+    /// Hardware facts: read once, they cannot change while the app runs.
+    static let hasSecureEnclave: Bool = {
         #if canImport(CryptoKit)
         SecureEnclave.isAvailable
         #else
         false
         #endif
-    }
+    }()
 
-    static var hasMotionSensors: Bool {
+    static let hasMotionSensors: Bool = {
         #if canImport(CoreMotion) && (os(iOS) || os(watchOS))
         let manager = CMMotionManager()
         return manager.isDeviceMotionAvailable || manager.isAccelerometerAvailable
         #else
         return false
         #endif
-    }
+    }()
 
     static var hasCoreLocation: Bool {
         #if canImport(CoreLocation)

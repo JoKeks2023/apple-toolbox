@@ -91,7 +91,8 @@ enum CredentialProviderExtensionScan {
         }
     }
 
-    static var bundled: [Provider] {
+    /// The app bundle cannot change while running, so the PlugIns folder and profiles are parsed once.
+    static let bundled: [Provider] = {
         guard let plugIns = Bundle.main.builtInPlugInsURL,
               let urls = try? FileManager.default.contentsOfDirectory(at: plugIns, includingPropertiesForKeys: nil) else { return [] }
         return urls.filter { $0.pathExtension == "appex" }.compactMap { url in
@@ -99,7 +100,7 @@ enum CredentialProviderExtensionScan {
             provider.entitlement = entitlementState(inExtensionAt: url)
             return provider
         }
-    }
+    }()
 }
 
 /// What the running app can show about an identity entitlement. The embedded provisioning profile decides; only when no

@@ -8,8 +8,9 @@ struct DeviceCapabilities {
     /// read by `DeviceScanner`, off the main thread, because that call can block.
     let location: Bool
 
-    static var current: DeviceCapabilities {
+    /// Hardware facts that cannot change while the app runs, read once.
+    static let current: DeviceCapabilities = {
         DeviceCapabilities(secureEnclave: DeviceProbes.hasSecureEnclave, biometricType: DeviceProbes.biometry().name ?? "Not available",
                            motion: DeviceProbes.hasMotionSensors, location: DeviceProbes.hasCoreLocation)
-    }
+    }()
 }

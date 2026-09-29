@@ -24,9 +24,7 @@ nonisolated enum WatchComplicationStore {
 
     /// nil when the App Group is not provisioned for this process; `UserDefaults(suiteName:)` would still succeed
     /// but would not share anything with the other process.
-    static var containerURL: URL? {
-        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)
-    }
+    static let containerURL: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)
 
     private static var defaults: UserDefaults? {
         containerURL == nil ? nil : UserDefaults(suiteName: appGroup)

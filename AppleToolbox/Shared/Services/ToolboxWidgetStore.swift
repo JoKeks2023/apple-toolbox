@@ -85,9 +85,7 @@ nonisolated enum ToolboxWidgetStore {
 
     /// nil when the App Group entitlement is not provisioned for this process. `UserDefaults(suiteName:)` alone
     /// would still succeed in that case, but its data would not be shared with the other process.
-    static var containerURL: URL? {
-        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)
-    }
+    static let containerURL: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)
 
     private static var defaults: UserDefaults? {
         containerURL == nil ? nil : UserDefaults(suiteName: appGroup)

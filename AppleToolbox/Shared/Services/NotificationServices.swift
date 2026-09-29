@@ -763,7 +763,9 @@ final class NotificationExperimentService: ObservableObject {
     // MARK: Content extension
 
     /// The notification content extensions embedded in this app bundle, read from their Info.plists.
-    var embeddedContentExtensions: [String] {
+    var embeddedContentExtensions: [String] { Self.bundledContentExtensions }
+
+    private static let bundledContentExtensions: [String] = {
         guard let plugIns = Bundle.main.builtInPlugInsURL,
               let urls = try? FileManager.default.contentsOfDirectory(at: plugIns, includingPropertiesForKeys: nil) else { return [] }
         return urls.filter { $0.pathExtension == "appex" }.compactMap { url in
@@ -773,7 +775,7 @@ final class NotificationExperimentService: ObservableObject {
             let categories = (attributes?["UNNotificationExtensionCategory"] as? String).map { [$0] } ?? attributes?["UNNotificationExtensionCategory"] as? [String] ?? []
             return "\(url.lastPathComponent) · categories: \(categories.joined(separator: ", "))"
         }
-    }
+    }()
 
     var supportsContentExtensions: Bool {
         #if canImport(UserNotifications)

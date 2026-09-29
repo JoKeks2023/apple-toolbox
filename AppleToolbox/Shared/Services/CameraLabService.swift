@@ -267,10 +267,10 @@ final class CameraLabService: ObservableObject {
         status = ExperimentAvailability.camera()
         output = "Pick a camera and start the preview. Nothing is captured until you tap the shutter or record."
         captureDelegate.service = self
-        refreshDevices()
-        if devices.isEmpty {
-            status = .hardwareUnsupported
-            output = "AVCaptureDevice.DiscoverySession reports no video capture device on this \(CurrentPlatform.value.rawValue) device."
+        refreshDevices { service in
+            guard service.devices.isEmpty else { return }
+            service.status = .hardwareUnsupported
+            service.output = "AVCaptureDevice.DiscoverySession reports no video capture device on this \(CurrentPlatform.value.rawValue) device."
         }
         #else
         status = .platformUnsupported
@@ -299,14 +299,18 @@ final class CameraLabService: ObservableObject {
             reportDenied()
             return
         }
-        refreshDevices()
-        guard !selectedDeviceID.isEmpty else {
-            status = .hardwareUnsupported
-            output = "No camera is available on this device."
-            return
+        let id = generation
+        refreshDevices { service in
+            // stop() or a second start() may have happened while the devices were discovered.
+            guard id == service.generation, !service.isActive else { return }
+            guard !service.selectedDeviceID.isEmpty else {
+                service.status = .hardwareUnsupported
+                service.output = "No camera is available on this device."
+                return
+            }
+            service.observeSession()
+            service.reconfigure(start: true)
         }
-        observeSession()
-        reconfigure(start: true)
         #endif
     }
 
@@ -564,12 +568,20 @@ final class CameraLabService: ObservableObject {
 
     // MARK: Internals
 
-    private func refreshDevices() {
-        let found = AVCaptureDevice.DiscoverySession(deviceTypes: Self.deviceTypes, mediaType: .video, position: .unspecified).devices
-        devices = found.map { CameraDeviceOption(id: $0.uniqueID, name: $0.localizedName, kind: Self.typeName($0.deviceType), position: Self.positionName($0.position)) }
-        if !devices.contains(where: { $0.id == selectedDeviceID }) {
+    /// Device discovery can block, so it runs on sessionQueue; the result is published on the main actor.
+    private func refreshDevices(then completion: @escaping @MainActor (CameraLabService) -> Void = { _ in }) {
+        sessionQueue.async { [weak self] in
+            let found = AVCaptureDevice.DiscoverySession(deviceTypes: Self.deviceTypes, mediaType: .video, position: .unspecified).devices
+            let options = found.map { CameraDeviceOption(id: $0.uniqueID, name: $0.localizedName, kind: Self.typeName($0.deviceType), position: Self.positionName($0.position)) }
             let preferred = AVCaptureDevice.default(for: .video)?.uniqueID
-            selectedDeviceID = devices.first(where: { $0.id == preferred })?.id ?? devices.first?.id ?? ""
+            Task { @MainActor in
+                guard let self else { return }
+                self.devices = options
+                if !options.contains(where: { $0.id == self.selectedDeviceID }) {
+                    self.selectedDeviceID = options.first(where: { $0.id == preferred })?.id ?? options.first?.id ?? ""
+                }
+                completion(self)
+            }
         }
     }
 

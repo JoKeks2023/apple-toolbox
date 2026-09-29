@@ -278,6 +278,7 @@ final class LiveActivityExperimentService: ObservableObject {
             for await state in updates {
                 guard let self else { return }
                 self.stateLog.insert("\(Date().formatted(date: .omitted, time: .standard))  \(LiveActivityErrors.title(state))", at: 0)
+                if self.stateLog.count > 50 { self.stateLog.removeLast(self.stateLog.count - 50) }
                 if state == .dismissed || state == .ended {
                     self.refresh()
                     // The activity is over: stop observing it (a cancelled task was already replaced, so leave stateTask alone).

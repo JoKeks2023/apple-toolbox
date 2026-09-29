@@ -57,7 +57,7 @@ nonisolated enum WiFiLocationRequirement: Equatable {
 
     static var current: WiFiLocationRequirement {
         #if canImport(CoreLocation) && (os(iOS) || os(macOS))
-        let manager = CLLocationManager()
+        let manager = PermissionProbe.locationManager
         return from(manager.authorizationStatus, manager.accuracyAuthorization)
         #else
         return .unavailable

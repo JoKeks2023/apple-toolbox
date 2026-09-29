@@ -25,8 +25,11 @@ nonisolated struct EmbeddedAppExtension: Equatable, Sendable {
         }
     }
 
+    /// The app's own PlugIns folder, read once: the bundle cannot change while the app runs.
+    static let bundled = all()
+
     static func embedded(extensionPoint: String) -> [EmbeddedAppExtension] {
-        all().filter { $0.extensionPoint == extensionPoint }
+        bundled.filter { $0.extensionPoint == extensionPoint }
     }
 
     var summary: String { "\(fileName) · \(bundleIdentifier)" }
