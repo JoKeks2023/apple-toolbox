@@ -9,7 +9,13 @@ struct WalletRunRoutes: View {
         case "wallet-status": WalletPassLibraryRunView()
         case "apple-pay": ApplePayRunView()
         case "wallet-creator": WalletPassCreatorRunView()
-        default: UnroutedExperimentView()
+        case "secure-element-passes": SecureElementPassesRunView()
+        default:
+            if let credential = AdvancedCredentialCatalog.credential(for: experiment.id) {
+                AdvancedCredentialRunView(credential: credential)
+            } else {
+                UnroutedExperimentView()
+            }
         }
     }
 }

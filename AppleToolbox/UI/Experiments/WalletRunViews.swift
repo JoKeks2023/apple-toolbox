@@ -103,6 +103,73 @@ struct ApplePayRunView: View {
     }
 }
 
+struct SecureElementPassesRunView: View {
+    @StateObject private var wallet = AdvancedWalletService()
+
+    var body: some View {
+        Button("Query Secure Element Passes", systemImage: "lock.rectangle.stack") {
+            Task { await wallet.inspect(nil) }
+        }
+        .buttonStyle(.borderedProminent)
+        AdvancedWalletChecksView(checks: wallet.checks)
+        OutputView(text: wallet.output, isError: wallet.isError)
+        Section("Secure Element passes (\(wallet.passes.count))") {
+            if wallet.passes.isEmpty {
+                Text(wallet.hasRun ? "PassKit returned no Secure Element passes for this app, on this device or on paired devices." : "Query PassKit to list the Secure Element passes it shows this app.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(wallet.passes) { pass in
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(pass.name).font(.headline)
+                        Text(pass.organization).font(.caption)
+                        Text(pass.account).font(.caption.monospaced())
+                        Text("\(pass.activation) · \(pass.location)").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct AdvancedCredentialRunView: View {
+    let credential: AdvancedCredential
+    @StateObject private var wallet = AdvancedWalletService()
+
+    var body: some View {
+        LabeledContent("Apple program") {
+            Text(credential.program).font(.caption).multilineTextAlignment(.trailing)
+        }
+        LabeledContent("Issuer API") {
+            Text(credential.issuerAPI).font(.caption).multilineTextAlignment(.trailing)
+        }
+        Button("Run Live Checks", systemImage: "checklist") {
+            Task { await wallet.inspect(credential) }
+        }
+        .buttonStyle(.borderedProminent)
+        AdvancedWalletChecksView(checks: wallet.checks)
+        OutputView(text: wallet.hasRun ? wallet.output : "Not issued by this app. \(credential.reason)", isError: !wallet.hasRun || wallet.isError)
+    }
+}
+
+private struct AdvancedWalletChecksView: View {
+    let checks: [AdvancedWalletCheck]
+
+    var body: some View {
+        if !checks.isEmpty {
+            Section("Live checks") {
+                ForEach(checks) { check in
+                    LabeledContent {
+                        Text(check.value).font(.caption).multilineTextAlignment(.trailing)
+                    } label: {
+                        Label(check.title, systemImage: check.passed == true ? "checkmark.circle.fill" : check.passed == false ? "xmark.octagon.fill" : "info.circle")
+                    }
+                }
+            }
+        }
+    }
+}
+
 #if canImport(PassKit) && os(iOS)
 /// Hosts PKAddPassesViewController, which shows the pass and lets the person add it to Wallet.
 private struct AddPassesSheet: UIViewControllerRepresentable {

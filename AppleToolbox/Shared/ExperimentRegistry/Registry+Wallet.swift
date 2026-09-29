@@ -23,5 +23,39 @@ extension ExperimentRegistry {
         ExperimentDescriptor(id: "wallet-creator", name: "Wallet Pass Creator", category: .wallet,
             description: "Create and export a real pass.json draft. An installable Apple Wallet pass still requires Apple signing credentials.", frameworks: ["PassKit", "Foundation"], supportedPlatforms: [.iOS, .iPadOS, .macOS], hardwareRequirements: [], osRequirements: ["iOS 6+ · macOS 10.9+"], permissions: ["User-selected export destination"], capabilities: ["Wallet pass format"], entitlements: ["Pass Type ID certificate for installable .pkpass"], documentationURL: URL(string: "https://developer.apple.com/documentation/walletpasses")!, evaluate: { [.iOS, .iPadOS, .macOS].contains(CurrentPlatform.value) ? .approvalRequired : .platformUnsupported },
             applePrograms: ["Apple Developer Program: signing an installable pass needs a Pass Type ID certificate"]),
-    ]
+        ExperimentDescriptor(id: "secure-element-passes", name: "Secure Element Passes", category: .wallet,
+            description: "Query the Secure Element passes PassKit shows this app on this device and paired devices, with their activation state, plus the issuer entitlements and NFC & SE Platform eligibility that gate advanced Wallet credentials.", frameworks: ["PassKit", "SecureElementCredential"], supportedPlatforms: [.iOS, .iPadOS, .macOS], hardwareRequirements: ["Secure Element (iPhone, Apple Watch or Mac with Touch ID)"], osRequirements: ["iOS 13.4+ · macOS 11+ · SecureElementCredential iOS 18.1+"], permissions: [], capabilities: ["In-App Provisioning, Contactless Pass Provisioning or NFC & SE Platform (Apple approval)"], entitlements: ["com.apple.developer.payment-pass-provisioning", "com.apple.developer.contactless-payment-pass-provisioning", "com.apple.developer.secure-element-credential"], documentationURL: URL(string: "https://developer.apple.com/documentation/passkit/pksecureelementpass")!, evaluate: ExperimentAvailability.secureElementPasses,
+            useCase: ExperimentUseCase(id: "secure-element-passes", title: "Look for issuer passes", summary: "See which cards, keys and badges in the Secure Element PassKit reveals to an app, and why an app that did not issue them sees none.", interaction: "Query PassKit: the pass list, activation availability and NFC & SE Platform eligibility come straight from the system."),
+            explanations: [
+                .appleProgramRequired: ExperimentExplanation(reason: "PassKit only reveals Secure Element passes to their issuer's app, and that app needs an issuer entitlement from Apple. This app has none, so the query returns no passes even when Wallet holds cards and keys.", required: "In-App Provisioning, Contactless Pass Provisioning or the NFC & SE Platform (Secure Element Credential), granted by Apple to card, access and credential issuers",
+                    nextStep: "Take part in the matching Apple issuer program. The query below still runs and shows exactly what PassKit returns."),
+                .unavailable: ExperimentExplanation(reason: "PKPassLibrary.isPassLibraryAvailable() is false, so Wallet cannot be queried here.", required: "A device with Wallet that is not restricted",
+                    nextStep: "Run the experiment on iPhone or a Mac with Wallet."),
+            ],
+            applePrograms: ["Apple issuer programs: In-App Provisioning, Contactless Pass Provisioning or NFC & SE Platform"]),
+    ] + AdvancedCredentialCatalog.all.map(\.descriptor)
+}
+
+private extension AdvancedCredential {
+    /// Advanced credentials are listed apart from normal passes and marked with their Apple program (spec §25).
+    var descriptor: ExperimentDescriptor {
+        let capabilities = capabilityIDs.compactMap(CapabilityRegistry.descriptor(for:))
+        let credentialID = id
+        var explanations: [ExperimentStatus: ExperimentExplanation] = [
+            .appleProgramRequired: ExperimentExplanation(reason: reason, required: program, nextStep: nextStep),
+        ]
+        if checksPaymentCardReader {
+            explanations[.hardwareUnsupported] = ExperimentExplanation(reason: "PaymentCardReader.isSupported is false: this iPhone model cannot run Tap to Pay on iPhone.", required: "iPhone XS or later",
+                                                                       nextStep: "Use a supported iPhone; Tap to Pay does not run on iPad or in the Simulator.")
+        }
+        return ExperimentDescriptor(id: id, name: name, category: .wallet,
+            description: summary + " Shown with its Apple program requirements; this app cannot issue it.", frameworks: frameworks, supportedPlatforms: [.iOS],
+            hardwareRequirements: [checksPaymentCardReader ? "iPhone XS or later" : "iPhone with NFC and Secure Element"],
+            osRequirements: [checksPaymentCardReader ? "iOS 15.4+" : "iOS 13.4+ · SecureElementCredential iOS 18.1+"], permissions: [],
+            capabilities: capabilities.map(\.name), entitlements: capabilities.flatMap(\.keys), documentationURL: documentationURL,
+            evaluate: { ExperimentAvailability.advancedCredential(credentialID) },
+            useCase: ExperimentUseCase(id: id, title: "See the boundary", summary: "Find out which Apple program issues this credential and what an app needs to take part.", interaction: "Run the live checks: they read the app's provisioning for the program entitlements and query the public PassKit and eligibility APIs."),
+            explanations: explanations,
+            applePrograms: [program])
+    }
 }
