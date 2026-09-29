@@ -9,10 +9,16 @@ struct AppleToolboxWatchApp: App {
 
     var body: some Scene {
         WindowGroup { WatchHomeView() }
+            // Scheduled by WatchComplicationUpdater with this identifier as userInfo.
+            .backgroundTask(.appRefresh(WatchComplicationStore.refreshIdentifier)) {
+                await WatchComplicationUpdater.handleBackgroundRefresh()
+            }
     }
 }
 
 private struct WatchHomeView: View {
+    @Environment(\.scenePhase) private var scenePhase
+
     var body: some View {
         NavigationStack {
             List {
@@ -21,6 +27,8 @@ private struct WatchHomeView: View {
                     NavigationLink { WatchHapticsView() } label: { Label("Haptics", systemImage: "hand.tap") }
                     NavigationLink { WatchLinkView() } label: { Label("iPhone Link", systemImage: "iphone.radiowaves.left.and.right") }
                     NavigationLink { WatchDeviceView() } label: { Label("Device", systemImage: "applewatch") }
+                    NavigationLink { WatchHeartRateView() } label: { Label("Heart Rate", systemImage: "heart.fill") }
+                    NavigationLink { WatchComplicationLabView() } label: { Label("Complication", systemImage: "applewatch.watchface") }
                 }
                 Section {
                     NavigationLink { WatchExperimentListView() } label: { Label("All Experiments", systemImage: "list.bullet") }
@@ -29,6 +37,12 @@ private struct WatchHomeView: View {
                 }
             }
             .navigationTitle("Toolbox")
+        }
+        // Keep the complication current whenever the app becomes active, and keep a background refresh pending.
+        .onChange(of: scenePhase, initial: true) { _, phase in
+            guard phase == .active else { return }
+            WatchComplicationUpdater.record(source: "App")
+            Task { await WatchComplicationUpdater.scheduleNextRefresh() }
         }
     }
 }

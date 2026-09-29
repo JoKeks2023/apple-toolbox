@@ -438,6 +438,11 @@
 		641A40821D793C1C86A8F97F /* IPadLabServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02C580C78E6BE373A6E64E4 /* IPadLabServices.swift */; };
 		6CCB4CDA6B1B0F443F82411E /* IPadLabRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27D79BD806FE164637844DA /* IPadLabRunViews.swift */; };
 		DE73DF1A2990AC74742BE1D5 /* IPadLabRunViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27D79BD806FE164637844DA /* IPadLabRunViews.swift */; };
+		2487577D55D543FA666A3F69 /* AppleToolbox Watch Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FD8F764B13F9AAF839177AA2 /* AppleToolbox Watch Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		11EA2847922A2BAC26AD7DCF /* WatchHealthServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0A0672A612B29A46C93F62 /* WatchHealthServices.swift */; };
+		D59858E9D43B812BA32E4A8E /* WatchComplicationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E01391F8A8017A8FA8BABC2 /* WatchComplicationStore.swift */; };
+		829801854F06034263EC3D6B /* AppleToolboxWatchWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7B12C6D2F54B96688718D9 /* AppleToolboxWatchWidget.swift */; };
+		0CBFF294C311053E8D12454B /* WatchComplicationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E01391F8A8017A8FA8BABC2 /* WatchComplicationStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -476,6 +481,13 @@
 			remoteGlobalIDString = 0FFE048137AF8C900B4E3D72;
 			remoteInfo = "AppleToolbox Notification Content";
 		};
+		B22E59EEBA343727667AA1B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B13F609303DA61D00AA8D3F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B754CBD1C1321CFF1C2EEEF5;
+			remoteInfo = "AppleToolbox Watch Widget";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -500,6 +512,17 @@
 				AF378B46B735EFE2034472E2 /* AppleToolbox watchOS.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F44D8A1920DB378BF537F445 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2487577D55D543FA666A3F69 /* AppleToolbox Watch Widget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -709,6 +732,10 @@
 		64348FB0AAFA4C28674AF754 /* PlatformRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PlatformRunViews.swift; path = AppleToolbox/UI/Experiments/PlatformRunViews.swift; sourceTree = "<group>"; };
 		C02C580C78E6BE373A6E64E4 /* IPadLabServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IPadLabServices.swift; path = AppleToolbox/Shared/Services/IPadLabServices.swift; sourceTree = "<group>"; };
 		F27D79BD806FE164637844DA /* IPadLabRunViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = IPadLabRunViews.swift; path = AppleToolbox/UI/Experiments/IPadLabRunViews.swift; sourceTree = "<group>"; };
+		FD8F764B13F9AAF839177AA2 /* AppleToolbox Watch Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "AppleToolbox Watch Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD0A0672A612B29A46C93F62 /* WatchHealthServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchHealthServices.swift; path = AppleToolbox/WatchApp/WatchHealthServices.swift; sourceTree = "<group>"; };
+		8E01391F8A8017A8FA8BABC2 /* WatchComplicationStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchComplicationStore.swift; path = AppleToolbox/WatchWidget/WatchComplicationStore.swift; sourceTree = "<group>"; };
+		EC7B12C6D2F54B96688718D9 /* AppleToolboxWatchWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleToolboxWatchWidget.swift; path = AppleToolbox/WatchWidget/AppleToolboxWatchWidget.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -729,6 +756,12 @@
 				Widget/ToolboxControls.swift,
 				Widget/ToolboxInteractiveWidget.swift,
 				AppleToolbox-macOS.entitlements,
+				WatchApp/AppleToolboxWatch.entitlements,
+				WatchApp/WatchHealthServices.swift,
+				WatchWidget/AppleToolboxWatchWidget.entitlements,
+				WatchWidget/AppleToolboxWatchWidget.swift,
+				WatchWidget/Info.plist,
+				WatchWidget/WatchComplicationStore.swift,
 			);
 			target = 5B13F610303DA61D00AA8D3F /* AppleToolbox iOS */;
 		};
@@ -814,6 +847,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		06423300054BB06859D7F049 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93289556DCF6C43E741D043E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1055,6 +1095,9 @@
 				64348FB0AAFA4C28674AF754 /* PlatformRunViews.swift */,
 				C02C580C78E6BE373A6E64E4 /* IPadLabServices.swift */,
 				F27D79BD806FE164637844DA /* IPadLabRunViews.swift */,
+				AD0A0672A612B29A46C93F62 /* WatchHealthServices.swift */,
+				8E01391F8A8017A8FA8BABC2 /* WatchComplicationStore.swift */,
+				EC7B12C6D2F54B96688718D9 /* AppleToolboxWatchWidget.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1069,6 +1112,7 @@
 				D355699843CD5D90FEB47FD3 /* AppleToolbox Widget.appex */,
 				CAB66606A13A18D68C0C2BB1 /* AppleToolbox tvOS.app */,
 				D5C87DF57516155A427747DB /* AppleToolbox Notification Content.appex */,
+				FD8F764B13F9AAF839177AA2 /* AppleToolbox Watch Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1211,10 +1255,12 @@
 				4D18D780384225A88D70FDFF /* Sources */,
 				A0EAF559FB33C254E11FB38C /* Frameworks */,
 				F514441E2E833B9E8164887D /* Resources */,
+				F44D8A1920DB378BF537F445 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				45097EF6BA6E4B8892CB8DB9 /* PBXTargetDependency */,
 			);
 			name = "AppleToolbox watchOS";
 			productName = "AppleToolbox watchOS";
@@ -1253,6 +1299,23 @@
 			name = "AppleToolbox Notification Content";
 			productName = "AppleToolbox Notification Content";
 			productReference = D5C87DF57516155A427747DB /* AppleToolbox Notification Content.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		B754CBD1C1321CFF1C2EEEF5 /* AppleToolbox Watch Widget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A6C10108A3F50558B600C6AA /* Build configuration list for PBXNativeTarget "AppleToolbox Watch Widget" */;
+			buildPhases = (
+				4A6F69B3944EA5EA517C5809 /* Sources */,
+				93289556DCF6C43E741D043E /* Frameworks */,
+				1ED4DD0AEF60D0F22CFDD693 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppleToolbox Watch Widget";
+			productName = "AppleToolbox Watch Widget";
+			productReference = FD8F764B13F9AAF839177AA2 /* AppleToolbox Watch Widget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -1300,6 +1363,7 @@
 				1EF6F48A1A97D0D6BE48BE6A /* AppleToolbox Widget */,
 				86533D77F49993E6AF3CA4A2 /* AppleToolbox tvOS */,
 				0FFE048137AF8C900B4E3D72 /* AppleToolbox Notification Content */,
+				B754CBD1C1321CFF1C2EEEF5 /* AppleToolbox Watch Widget */,
 			);
 		};
 /* End PBXProject section */
@@ -1358,6 +1422,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		5D4B05350AAD0DA41BCD1472 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1ED4DD0AEF60D0F22CFDD693 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1617,6 +1688,8 @@
 				03DD2D7CF08BC558740361BE /* MetalLabService.swift in Sources */,
 				03AE961185B7FEA0A62FC422 /* MacHardwareService.swift in Sources */,
 				641A40821D793C1C86A8F97F /* IPadLabServices.swift in Sources */,
+				11EA2847922A2BAC26AD7DCF /* WatchHealthServices.swift in Sources */,
+				D59858E9D43B812BA32E4A8E /* WatchComplicationStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1845,6 +1918,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4A6F69B3944EA5EA517C5809 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				829801854F06034263EC3D6B /* AppleToolboxWatchWidget.swift in Sources */,
+				0CBFF294C311053E8D12454B /* WatchComplicationStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1875,6 +1957,12 @@
 			name = "AppleToolbox Notification Content";
 			target = 0FFE048137AF8C900B4E3D72 /* AppleToolbox Notification Content */;
 			targetProxy = 53F64E1804594B02C2D59764 /* PBXContainerItemProxy */;
+		};
+		45097EF6BA6E4B8892CB8DB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppleToolbox Watch Widget";
+			target = B754CBD1C1321CFF1C2EEEF5 /* AppleToolbox Watch Widget */;
+			targetProxy = B22E59EEBA343727667AA1B5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2384,15 +2472,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AppleToolbox/WatchApp/AppleToolboxWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Joris Apple Toolbox reads your heart rate on Apple Watch for the Heart Rate screen and its complication, and only shows it on this watch.";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.jorisconrad.AppleToolbox.ios;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
@@ -2411,15 +2502,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AppleToolbox/WatchApp/AppleToolboxWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T9CA6D7T8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Apple Toolbox";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Joris Apple Toolbox reads your heart rate on Apple Watch for the Heart Rate screen and its complication, and only shows it on this watch.";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.jorisconrad.AppleToolbox.ios;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchos watchsimulator";
@@ -2476,6 +2570,57 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CE997C0649BFDA5E06AA4A4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = AppleToolbox/WatchWidget/AppleToolboxWatchWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9CA6D7T8N;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AppleToolbox/WatchWidget/Info.plist;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.watchkitapp.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		63673B611C86BF3E39C16838 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = AppleToolbox/WatchWidget/AppleToolboxWatchWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9CA6D7T8N;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AppleToolbox/WatchWidget/Info.plist;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jorisconrad.AppleToolbox.ios.watchkitapp.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
 			};
 			name = Debug;
 		};
@@ -2559,6 +2704,15 @@
 			buildConfigurations = (
 				396D8616A2FC0C43373F2CEC /* Release */,
 				66C2BC3FF4FEC9EBBF93027B /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A6C10108A3F50558B600C6AA /* Build configuration list for PBXNativeTarget "AppleToolbox Watch Widget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE997C0649BFDA5E06AA4A4F /* Release */,
+				63673B611C86BF3E39C16838 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

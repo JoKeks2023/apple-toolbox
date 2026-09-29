@@ -1,5 +1,6 @@
 import SwiftUI
 import WatchKit
+import WidgetKit
 
 struct WatchMotionView: View {
     @StateObject private var motion = MotionExperimentService()
@@ -84,6 +85,10 @@ struct WatchLinkView: View {
             Text(link.output).font(.caption2).foregroundStyle(.secondary)
         }
         .navigationTitle("iPhone Link")
+        // The complication shows the last message exchanged with the iPhone.
+        .onChange(of: link.lastMessage) { _, message in
+            if let message { WatchComplicationUpdater.recordPing(message) }
+        }
     }
 }
 
@@ -110,6 +115,80 @@ struct WatchDeviceView: View {
         .onDisappear(perform: device.stop)
         .onChange(of: scenePhase) { _, phase in
             phase == .active ? device.start() : device.stop()
+        }
+    }
+}
+
+struct WatchHeartRateView: View {
+    @StateObject private var heart = WatchHeartRateService()
+    @Environment(\.scenePhase) private var scenePhase
+
+    var body: some View {
+        List {
+            Button(heart.isRunning ? "Stop" : "Start", systemImage: heart.isRunning ? "stop.fill" : "heart.fill") {
+                heart.isRunning ? heart.stop() : heart.start()
+            }
+            .disabled(!heart.isHealthDataAvailable)
+            if let latest = heart.latest {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(Int(latest.beatsPerMinute.rounded())) BPM").font(.title2.monospacedDigit().weight(.semibold))
+                    Text(latest.date, style: .relative).font(.caption2).foregroundStyle(.secondary)
+                }
+                LabeledContent("Context", value: latest.context)
+                LabeledContent("Source", value: latest.source)
+            }
+            LabeledContent("Samples", value: "\(heart.received)")
+            Text(heart.output).font(.caption2).foregroundStyle(.secondary)
+        }
+        .navigationTitle("Heart Rate")
+        .onDisappear { heart.stop() }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background, heart.isRunning { heart.stop() }
+        }
+    }
+}
+
+struct WatchComplicationLabView: View {
+    @State private var snapshot = WatchComplicationStore.load()
+    @State private var output = "The complication reads what this app last wrote to the App Group."
+    @State private var configurations: [String]?
+
+    var body: some View {
+        List {
+            Section {
+                LabeledContent("App Group", value: WatchComplicationStore.containerURL == nil ? "Not provisioned" : "Shared")
+                if let snapshot {
+                    LabeledContent("Experiments", value: "\(snapshot.availableCount) of \(snapshot.totalCount)")
+                    LabeledContent("Heart rate", value: WatchComplicationStore.heartRateText(snapshot) ?? "—")
+                    LabeledContent("Last ping", value: snapshot.lastPing ?? "—")
+                    LabeledContent("Updated", value: "\(snapshot.source), \(snapshot.updatedAt.formatted(date: .omitted, time: .shortened))")
+                    LabeledContent("Next refresh", value: snapshot.nextRefresh?.formatted(date: .omitted, time: .shortened) ?? "Not scheduled")
+                }
+                LabeledContent("On watch faces", value: configurations.map { $0.isEmpty ? "None" : $0.joined(separator: ", ") } ?? "Checking…")
+            }
+            Button("Update Now", systemImage: "arrow.clockwise") {
+                WatchComplicationUpdater.record(source: "App")
+                snapshot = WatchComplicationStore.load()
+                output = "Wrote the snapshot and asked WidgetKit to reload the complication timeline."
+            }
+            Button("Schedule Refresh", systemImage: "clock.arrow.circlepath") {
+                Task {
+                    output = await WatchComplicationUpdater.scheduleNextRefresh()
+                    snapshot = WatchComplicationStore.load()
+                }
+            }
+            Text(output).font(.caption2).foregroundStyle(.secondary)
+        }
+        .navigationTitle("Complication")
+        .task { await loadConfigurations() }
+    }
+
+    private func loadConfigurations() async {
+        do {
+            let infos = try await WidgetCenter.shared.currentConfigurations()
+            configurations = infos.filter { $0.kind == WatchComplicationStore.widgetKind }.map { "\($0.family)" }
+        } catch {
+            configurations = ["Error: \(error.localizedDescription)"]
         }
     }
 }
